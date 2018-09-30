@@ -1,1 +1,39 @@
 :toc:
+
+== Flixctl
+
+=== Dependencies
+----
+env ensure
+----
+
+=== Building
+----
+go install
+----
+
+=== Usage
+----
+$ flixctl --help
+Usage:
+  flixctl [command]
+
+Available Commands:
+  help        Help about any command
+  plex        To Control Plex Media Center
+  torrent     To Control Torrent Client
+
+Flags:
+  -h, --help   help for flixctl
+
+Use "flixctl [command] --help" for more information about a command.
+----
+
+=== Examples
+----
+flixctl plex start
+flixctl plex stop
+flixctl plex status
+flixctl torrent status
+flixctl torrent download --magnet-link magnet:?...
+----

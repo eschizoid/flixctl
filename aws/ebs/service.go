@@ -98,7 +98,7 @@ func Delete(sess *Session, volumeId string) {
 	}
 }
 
-func Find(sess *Session, name string) string {
+func FetchVolumeId(sess *Session, name string) string {
 	var volumeId string
 	svc := ec2.New(sess)
 	params := &ec2.DescribeVolumesInput{

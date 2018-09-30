@@ -39,7 +39,7 @@ func Create(sess *Session, volumeId string) {
 	}
 }
 
-func Find(sess *Session, name string) string {
+func FetchSnapshotId(sess *Session, name string) string {
 	var snapshotId string
 	svc := ec2.New(sess)
 	params := &ec2.DescribeSnapshotsInput{

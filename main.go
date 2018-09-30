@@ -15,7 +15,7 @@ func main() {
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 
-	var instanceId = ec2Service.Find(sess, "*plex*")
+	var instanceId = ec2Service.FetchInstanceId(sess, "plex")
 
 	var startPlexCmd = &cobra.Command{
 		Use:   "start",
@@ -23,16 +23,20 @@ func main() {
 		Long:  `to start the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			ec2Service.Start(sess, instanceId)
-			//Poll
-			println("Waiting for EC2 instance...")
+			//TODO Poll instead of Wait
+			println("Starting for EC2 instance")
 			wait()
-			var snapshotId = snapService.Find(sess, "*plex*")
-			ebsService.Create(sess, snapshotId)
-			//Poll
-			println("Waiting for EBS volume...")
+			var oldSnapshotId = snapService.FetchSnapshotId(sess, "plex")
+			ebsService.Create(sess, oldSnapshotId)
+			//TODO Poll instead of Wait
+			println("Creating for EBS volume")
 			wait()
-			var volumeId = ebsService.Find(sess, "*plex*")
-			ebsService.Attach(sess, instanceId, volumeId)
+			var newVolumeId = ebsService.FetchVolumeId(sess, "plex")
+			ebsService.Attach(sess, instanceId, newVolumeId)
+			//TODO Poll instead of Wait
+			println("Attaching for EBS volume")
+			wait()
+			snapService.Delete(sess, oldSnapshotId)
 		},
 	}
 
@@ -41,16 +45,17 @@ func main() {
 		Short: "To Stop Plex",
 		Long:  `to stop the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			var oldSnapshotId = snapService.Find(sess, "*plex*")
-			var oldVolumeId = ebsService.Find(sess, "*plex*")
+			var oldVolumeId = ebsService.FetchVolumeId(sess, "plex")
 			snapService.Create(sess, oldVolumeId)
+			//TODO Poll instead of Wait
+			println("Creating Snapshot")
+			wait()
 			ec2Service.Stop(sess, instanceId)
 			ebsService.Detach(sess, oldVolumeId)
-			//Poll
-			println("Waiting for EBS volume...")
+			//TODO Poll instead of Wait
+			println("Detaching EBS volume")
 			wait()
 			ebsService.Delete(sess, oldVolumeId)
-			snapService.Delete(sess, oldSnapshotId)
 		},
 	}
 
@@ -68,7 +73,6 @@ func main() {
 		Short: "To Download a Torrent",
 		Long:  `to download a torrent using Transmission client.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			//
 		},
 	}
 
@@ -77,7 +81,6 @@ func main() {
 		Short: "To Get Current Torrent Downloads",
 		Long:  `to get all Transmission current downloads.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			//
 		},
 	}
 

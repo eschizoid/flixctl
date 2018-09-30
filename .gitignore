@@ -8,7 +8,6 @@
 *.dll
 *.so
 *.dylib
-Gopkg.*
 
 # Test binary, build with `go test -c`
 *.test

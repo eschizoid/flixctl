@@ -57,7 +57,8 @@ func Stop(sess *Session, id string) {
 
 }
 
-func Status(sess *Session, id string) {
+func Status(sess *Session, id string) (string) {
+	var status string
 	svc := ec2.New(sess)
 	input := &ec2.DescribeInstancesInput{
 		InstanceIds: []*string{
@@ -71,13 +72,15 @@ func Status(sess *Session, id string) {
 	} else {
 		for _, reservation := range result.Reservations {
 			for _, instance := range reservation.Instances {
-				fmt.Println("Plex current status: " + strings.Title(*instance.State.Name))
+				status = strings.Title(*instance.State.Name)
+				fmt.Println("Plex current status: " + status)
 			}
 		}
 	}
+	return status
 }
 
-func Find(sess *Session, name string) string {
+func FetchInstanceId(sess *Session, name string) string {
 	var instanceId string
 	svc := ec2.New(sess)
 	params := &ec2.DescribeInstancesInput{
