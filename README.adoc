@@ -2,9 +2,15 @@
 
 == Flixctl
 
+=== Pre-requisites
+----
+brew install go
+brew install dep
+----
+
 === Dependencies
 ----
-env ensure
+dep ensure
 ----
 
 === Building

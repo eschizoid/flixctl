@@ -16,7 +16,6 @@
 *.out
 
 ### Go Patch ###
-/vendor/
 /pkg/
 /pkg/
 /src/

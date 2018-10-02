@@ -2,18 +2,19 @@ package ebs
 
 import (
 	"fmt"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	. "github.com/aws/aws-sdk-go/aws/session"
+	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func Attach(sess *Session, instanceId string, volumeId string) {
-	svc := ec2.New(sess)
+func Attach(sess *sess.Session, instanceID string, volumeID string) {
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.AttachVolumeInput{
 		Device:     aws.String("/dev/sdf"),
-		InstanceId: aws.String(instanceId),
-		VolumeId:   aws.String(volumeId),
+		InstanceId: aws.String(instanceID),
+		VolumeId:   aws.String(volumeID),
 	}
 	_, err := svc.AttachVolume(input)
 	if err != nil {
@@ -27,12 +28,18 @@ func Attach(sess *Session, instanceId string, volumeId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds: aws.StringSlice([]string{volumeID}),
+	}
+	if err := svc.WaitUntilVolumeInUse(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
-func Detach(sess *Session, volumeId string) {
-	svc := ec2.New(sess)
+func Detach(sess *sess.Session, volumeID string) {
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.DetachVolumeInput{
-		VolumeId: aws.String(volumeId),
+		VolumeId: aws.String(volumeID),
 	}
 	_, err := svc.DetachVolume(input)
 	if err != nil {
@@ -46,23 +53,29 @@ func Detach(sess *Session, volumeId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds: aws.StringSlice([]string{volumeID}),
+	}
+	if err := svc.WaitUntilVolumeAvailable(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
-func Create(sess *Session, snapshotId string) {
-	svc := ec2.New(sess)
+func Create(sess *sess.Session, snapshotID string, name string) {
+	svc := ec2.New(sess, sess.Config)
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
 				Key:   aws.String("Name"),
-				Value: aws.String("plex"),
+				Value: aws.String(name),
 			},
 		},
 		ResourceType: aws.String(ec2.ResourceTypeVolume),
 	}
 	input := &ec2.CreateVolumeInput{
-		AvailabilityZone: aws.String("us-east-1a"),
-		SnapshotId:       aws.String(snapshotId),
-		VolumeType:       aws.String("sc1"),
+		AvailabilityZone:  aws.String("us-east-1a"),
+		SnapshotId:        aws.String(snapshotID),
+		VolumeType:        aws.String("sc1"),
 		TagSpecifications: []*ec2.TagSpecification{tagList},
 	}
 	_, err := svc.CreateVolume(input)
@@ -77,12 +90,23 @@ func Create(sess *Session, snapshotId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws.String("tag:Name"),
+				Values: []*string{aws.String(name)},
+			},
+		},
+	}
+	if err := svc.WaitUntilVolumeAvailable(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
-func Delete(sess *Session, volumeId string) {
-	svc := ec2.New(sess)
+func Delete(sess *sess.Session, volumeID string) {
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.DeleteVolumeInput{
-		VolumeId: aws.String(volumeId),
+		VolumeId: aws.String(volumeID),
 	}
 	_, err := svc.DeleteVolume(input)
 	if err != nil {
@@ -96,11 +120,17 @@ func Delete(sess *Session, volumeId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds: aws.StringSlice([]string{volumeID}),
+	}
+	if err := svc.WaitUntilVolumeDeleted(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
-func FetchVolumeId(sess *Session, name string) string {
-	var volumeId string
-	svc := ec2.New(sess)
+func FetchVolumeID(sess *sess.Session, name string) string {
+	var volumeID string
+	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeVolumesInput{
 		Filters: []*ec2.Filter{
 			{
@@ -114,7 +144,7 @@ func FetchVolumeId(sess *Session, name string) string {
 		fmt.Println("Error", err)
 	}
 	for _, volumes := range result.Volumes {
-		volumeId = aws.StringValue(volumes.VolumeId)
+		volumeID = aws.StringValue(volumes.VolumeId)
 	}
-	return volumeId
+	return volumeID
 }
