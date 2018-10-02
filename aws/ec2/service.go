@@ -2,34 +2,37 @@ package ec2
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	. "github.com/aws/aws-sdk-go/aws/session"
+	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"strings"
 )
 
-func Start(sess *Session, id string) {
-	svc := ec2.New(sess)
-	instanceId := aws.StringSlice([]string{id})
+const DryRunOperation = "DryRunOperation"
+
+func Start(sess *sess.Session, id string) {
+	svc := ec2.New(sess, sess.Config)
+	instanceID := aws.StringSlice([]string{id})
 	input := &ec2.StartInstancesInput{
-		InstanceIds: instanceId,
-		DryRun: aws.Bool(true),
+		InstanceIds: instanceID,
+		DryRun:      aws.Bool(true),
 	}
 	_, err := svc.StartInstances(input)
 	awsErr, ok := err.(awserr.Error)
 
-	if ok && awsErr.Code() == "DryRunOperation" {
+	if ok && awsErr.Code() == DryRunOperation {
 		input.DryRun = aws.Bool(false)
 		_, err = svc.StartInstances(input)
 		if err != nil {
 			fmt.Println("Error", err)
 		} else {
 			describeInstancesInput := &ec2.DescribeInstancesInput{
-				InstanceIds: instanceId,
+				InstanceIds: instanceID,
 			}
-			if err := svc.WaitUntilInstanceRunning(describeInstancesInput); err != nil {
-				panic(err)
+			if aerr := svc.WaitUntilInstanceRunning(describeInstancesInput); aerr != nil {
+				panic(aerr)
 			}
 		}
 	} else {
@@ -37,8 +40,8 @@ func Start(sess *Session, id string) {
 	}
 }
 
-func Stop(sess *Session, id string) {
-	svc := ec2.New(sess)
+func Stop(sess *sess.Session, id string) {
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.StopInstancesInput{
 		InstanceIds: []*string{
 			aws.String(id),
@@ -47,7 +50,7 @@ func Stop(sess *Session, id string) {
 	}
 	_, err := svc.StopInstances(input)
 	awsErr, ok := err.(awserr.Error)
-	if ok && awsErr.Code() == "DryRunOperation" {
+	if ok && awsErr.Code() == DryRunOperation {
 		input.DryRun = aws.Bool(false)
 		_, err = svc.StopInstances(input)
 		if err != nil {
@@ -56,8 +59,8 @@ func Stop(sess *Session, id string) {
 			describeInstancesInput := &ec2.DescribeInstancesInput{
 				InstanceIds: aws.StringSlice([]string{id}),
 			}
-			if err := svc.WaitUntilInstanceStopped(describeInstancesInput); err != nil {
-				panic(err)
+			if aerr := svc.WaitUntilInstanceStopped(describeInstancesInput); aerr != nil {
+				panic(aerr)
 			}
 		}
 	} else {
@@ -65,9 +68,9 @@ func Stop(sess *Session, id string) {
 	}
 }
 
-func Status(sess *Session, id string) (string) {
+func Status(sess *sess.Session, id string) string {
 	var status string
-	svc := ec2.New(sess)
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.DescribeInstancesInput{
 		InstanceIds: []*string{
 			aws.String(id),
@@ -88,9 +91,9 @@ func Status(sess *Session, id string) (string) {
 	return status
 }
 
-func FetchInstanceId(sess *Session, name string) string {
-	var instanceId string
-	svc := ec2.New(sess)
+func FetchInstanceID(sess *sess.Session, name string) string {
+	var instanceID string
+	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeInstancesInput{
 		Filters: []*ec2.Filter{
 			{
@@ -105,9 +108,9 @@ func FetchInstanceId(sess *Session, name string) string {
 	}
 	for _, reservation := range result.Reservations {
 		for _, instance := range reservation.Instances {
-			instanceId = *instance.InstanceId
+			instanceID = *instance.InstanceId
 			break
 		}
 	}
-	return instanceId
+	return instanceID
 }

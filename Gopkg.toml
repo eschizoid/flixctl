@@ -24,6 +24,7 @@
 #   go-tests = true
 #   unused-packages = true
 
+required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 
 [[constraint]]
   name = "cloud.google.com/go"
@@ -168,3 +169,7 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  name = "github.com/golangci/golangci-lint"
+  version = "1.10.2"

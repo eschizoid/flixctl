@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws/session"
 	ebsService "github.com/eschizoid/flixctl/aws/ebs"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snap"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func main() {
@@ -15,22 +16,22 @@ func main() {
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 
-	var instanceId = ec2Service.FetchInstanceId(sess, "plex")
+	var instanceID = ec2Service.FetchInstanceID(sess, "plex")
 
 	var startPlexCmd = &cobra.Command{
 		Use:   "start",
 		Short: "To Start Plex",
 		Long:  `to start the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			if ec2Service.Status(sess, instanceId) == "Running" {
+			if ec2Service.Status(sess, instanceID) == "Running" {
 				os.Exit(0)
 			}
-			ec2Service.Start(sess, instanceId)
-			var oldSnapshotId = snapService.FetchSnapshotId(sess, "plex")
-			ebsService.Create(sess, oldSnapshotId, "plex")
-			var newVolumeId = ebsService.FetchVolumeId(sess, "plex")
-			ebsService.Attach(sess, instanceId, newVolumeId)
-			snapService.Delete(sess, oldSnapshotId)
+			ec2Service.Start(sess, instanceID)
+			var oldSnapshotID = snapService.FetchSnapshotID(sess, "plex")
+			ebsService.Create(sess, oldSnapshotID, "plex")
+			var newVolumeID = ebsService.FetchVolumeID(sess, "plex")
+			ebsService.Attach(sess, instanceID, newVolumeID)
+			snapService.Delete(sess, oldSnapshotID)
 			fmt.Println("Plex Running")
 		},
 	}
@@ -40,14 +41,14 @@ func main() {
 		Short: "To Stop Plex",
 		Long:  `to stop the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			if ec2Service.Status(sess, instanceId) == "Stopped" {
+			if ec2Service.Status(sess, instanceID) == "Stopped" {
 				os.Exit(0)
 			}
-			var oldVolumeId = ebsService.FetchVolumeId(sess, "plex")
-			snapService.Create(sess, oldVolumeId, "plex")
-			ec2Service.Stop(sess, instanceId)
-			ebsService.Detach(sess, oldVolumeId)
-			ebsService.Delete(sess, oldVolumeId)
+			var oldVolumeID = ebsService.FetchVolumeID(sess, "plex")
+			snapService.Create(sess, oldVolumeID, "plex")
+			ec2Service.Stop(sess, instanceID)
+			ebsService.Detach(sess, oldVolumeID)
+			ebsService.Delete(sess, oldVolumeID)
 			fmt.Println("Plex Stopped")
 		},
 	}
@@ -57,7 +58,7 @@ func main() {
 		Short: "To Get Plex Status",
 		Long:  `to get the status of the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			ec2Service.Status(sess, instanceId)
+			ec2Service.Status(sess, instanceID)
 		},
 	}
 
@@ -85,5 +86,8 @@ func main() {
 	flixctlCmd.AddCommand(plexCmd)
 	torrentCmd.AddCommand(downloadTorrentCmd, statusTorrentCmd)
 	flixctlCmd.AddCommand(torrentCmd)
-	flixctlCmd.Execute()
+	if err := flixctlCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+	os.Exit(0)
 }

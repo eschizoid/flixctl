@@ -2,14 +2,15 @@ package ebs
 
 import (
 	"fmt"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	. "github.com/aws/aws-sdk-go/aws/session"
+	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func Create(sess *Session, volumeId string, name string) {
-	svc := ec2.New(sess)
+func Create(sess *sess.Session, volumeID string, name string) {
+	svc := ec2.New(sess, sess.Config)
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
@@ -21,7 +22,7 @@ func Create(sess *Session, volumeId string, name string) {
 	}
 	input := &ec2.CreateSnapshotInput{
 		Description:       aws.String("Plex Snapshot"),
-		VolumeId:          aws.String(volumeId),
+		VolumeId:          aws.String(volumeID),
 		TagSpecifications: []*ec2.TagSpecification{tagList},
 	}
 	_, err := svc.CreateSnapshot(input)
@@ -49,9 +50,9 @@ func Create(sess *Session, volumeId string, name string) {
 	}
 }
 
-func FetchSnapshotId(sess *Session, name string) string {
-	var snapshotId string
-	svc := ec2.New(sess)
+func FetchSnapshotID(sess *sess.Session, name string) string {
+	var snapshotID string
+	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeSnapshotsInput{
 		Filters: []*ec2.Filter{
 			{
@@ -65,15 +66,15 @@ func FetchSnapshotId(sess *Session, name string) string {
 		fmt.Println("Error", err)
 	}
 	for _, snapshots := range result.Snapshots {
-		snapshotId = aws.StringValue(snapshots.SnapshotId)
+		snapshotID = aws.StringValue(snapshots.SnapshotId)
 	}
-	return snapshotId
+	return snapshotID
 }
 
-func Delete(sess *Session, snapshotId string) {
-	svc := ec2.New(sess)
+func Delete(sess *sess.Session, snapshotID string) {
+	svc := ec2.New(sess, sess.Config)
 	input := &ec2.DeleteSnapshotInput{
-		SnapshotId: aws.String(snapshotId),
+		SnapshotId: aws.String(snapshotID),
 	}
 	_, err := svc.DeleteSnapshot(input)
 	if err != nil {
