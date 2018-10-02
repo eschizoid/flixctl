@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws/session"
 	ebsService "github.com/eschizoid/flixctl/aws/ebs"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snap"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 func main() {
@@ -20,12 +22,16 @@ func main() {
 		Short: "To Start Plex",
 		Long:  `to start the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			if ec2Service.Status(sess, instanceId) == "Running" {
+				os.Exit(0)
+			}
 			ec2Service.Start(sess, instanceId)
 			var oldSnapshotId = snapService.FetchSnapshotId(sess, "plex")
 			ebsService.Create(sess, oldSnapshotId, "plex")
 			var newVolumeId = ebsService.FetchVolumeId(sess, "plex")
 			ebsService.Attach(sess, instanceId, newVolumeId)
 			snapService.Delete(sess, oldSnapshotId)
+			fmt.Println("Plex Running")
 		},
 	}
 
@@ -34,11 +40,15 @@ func main() {
 		Short: "To Stop Plex",
 		Long:  `to stop the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
+			if ec2Service.Status(sess, instanceId) == "Stopped" {
+				os.Exit(0)
+			}
 			var oldVolumeId = ebsService.FetchVolumeId(sess, "plex")
 			snapService.Create(sess, oldVolumeId, "plex")
 			ec2Service.Stop(sess, instanceId)
 			ebsService.Detach(sess, oldVolumeId)
 			ebsService.Delete(sess, oldVolumeId)
+			fmt.Println("Plex Stopped")
 		},
 	}
 
