@@ -27,6 +27,12 @@ func Attach(sess *Session, instanceId string, volumeId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds:  aws.StringSlice([]string{volumeId}),
+	}
+	if err := svc.WaitUntilVolumeInUse(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
 func Detach(sess *Session, volumeId string) {
@@ -46,15 +52,21 @@ func Detach(sess *Session, volumeId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds:  aws.StringSlice([]string{volumeId}),
+	}
+	if err := svc.WaitUntilVolumeAvailable(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
-func Create(sess *Session, snapshotId string) {
+func Create(sess *Session, snapshotId string, name string) {
 	svc := ec2.New(sess)
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
 				Key:   aws.String("Name"),
-				Value: aws.String("plex"),
+				Value: aws.String(name),
 			},
 		},
 		ResourceType: aws.String(ec2.ResourceTypeVolume),
@@ -77,6 +89,17 @@ func Create(sess *Session, snapshotId string) {
 		}
 		return
 	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws.String("tag:Name"),
+				Values: []*string{aws.String(name)},
+			},
+		},
+	}
+	if err := svc.WaitUntilVolumeAvailable(describeVolumesInput); err != nil {
+		panic(err)
+	}
 }
 
 func Delete(sess *Session, volumeId string) {
@@ -95,6 +118,12 @@ func Delete(sess *Session, volumeId string) {
 			fmt.Println(err.Error())
 		}
 		return
+	}
+	describeVolumesInput := &ec2.DescribeVolumesInput{
+		VolumeIds:  aws.StringSlice([]string{volumeId}),
+	}
+	if err := svc.WaitUntilVolumeDeleted(describeVolumesInput); err != nil {
+		panic(err)
 	}
 }
 

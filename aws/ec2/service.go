@@ -11,10 +11,9 @@ import (
 
 func Start(sess *Session, id string) {
 	svc := ec2.New(sess)
+	instanceId := aws.StringSlice([]string{id})
 	input := &ec2.StartInstancesInput{
-		InstanceIds: []*string{
-			aws.String(id),
-		},
+		InstanceIds: instanceId,
 		DryRun: aws.Bool(true),
 	}
 	_, err := svc.StartInstances(input)
@@ -26,7 +25,12 @@ func Start(sess *Session, id string) {
 		if err != nil {
 			fmt.Println("Error", err)
 		} else {
-			fmt.Println("Plex successfully started!")
+			describeInstancesInput := &ec2.DescribeInstancesInput{
+				InstanceIds: instanceId,
+			}
+			if err := svc.WaitUntilInstanceRunning(describeInstancesInput); err != nil {
+				panic(err)
+			}
 		}
 	} else {
 		fmt.Println("Error", err)
@@ -49,12 +53,16 @@ func Stop(sess *Session, id string) {
 		if err != nil {
 			fmt.Println("Error", err)
 		} else {
-			fmt.Println("Plex successfully stopped!")
+			describeInstancesInput := &ec2.DescribeInstancesInput{
+				InstanceIds: aws.StringSlice([]string{id}),
+			}
+			if err := svc.WaitUntilInstanceStopped(describeInstancesInput); err != nil {
+				panic(err)
+			}
 		}
 	} else {
 		fmt.Println("Error", err)
 	}
-
 }
 
 func Status(sess *Session, id string) (string) {

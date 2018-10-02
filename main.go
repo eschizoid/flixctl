@@ -6,8 +6,6 @@ import (
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snap"
 	"github.com/spf13/cobra"
-	"gopkg.in/cheggaaa/pb.v1"
-	"time"
 )
 
 func main() {
@@ -23,19 +21,10 @@ func main() {
 		Long:  `to start the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			ec2Service.Start(sess, instanceId)
-			//TODO Poll instead of Wait
-			println("Starting for EC2 instance")
-			wait()
 			var oldSnapshotId = snapService.FetchSnapshotId(sess, "plex")
-			ebsService.Create(sess, oldSnapshotId)
-			//TODO Poll instead of Wait
-			println("Creating for EBS volume")
-			wait()
+			ebsService.Create(sess, oldSnapshotId, "plex")
 			var newVolumeId = ebsService.FetchVolumeId(sess, "plex")
 			ebsService.Attach(sess, instanceId, newVolumeId)
-			//TODO Poll instead of Wait
-			println("Attaching for EBS volume")
-			wait()
 			snapService.Delete(sess, oldSnapshotId)
 		},
 	}
@@ -46,15 +35,9 @@ func main() {
 		Long:  `to stop the Plex Media Center.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			var oldVolumeId = ebsService.FetchVolumeId(sess, "plex")
-			snapService.Create(sess, oldVolumeId)
-			//TODO Poll instead of Wait
-			println("Creating Snapshot")
-			wait()
+			snapService.Create(sess, oldVolumeId, "plex")
 			ec2Service.Stop(sess, instanceId)
 			ebsService.Detach(sess, oldVolumeId)
-			//TODO Poll instead of Wait
-			println("Detaching EBS volume")
-			wait()
 			ebsService.Delete(sess, oldVolumeId)
 		},
 	}
@@ -93,14 +76,4 @@ func main() {
 	torrentCmd.AddCommand(downloadTorrentCmd, statusTorrentCmd)
 	flixctlCmd.AddCommand(torrentCmd)
 	flixctlCmd.Execute()
-}
-
-func wait() {
-	count := 30
-	bar := pb.StartNew(count)
-	for i := 0; i < count; i++ {
-		bar.Increment()
-		time.Sleep(time.Second)
-	}
-	bar.FinishPrint("Done!")
 }

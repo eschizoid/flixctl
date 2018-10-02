@@ -8,13 +8,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func Create(sess *Session, volumeId string) {
+func Create(sess *Session, volumeId string, name string) {
 	svc := ec2.New(sess)
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
 				Key:   aws.String("Name"),
-				Value: aws.String("plex"),
+				Value: aws.String(name),
 			},
 		},
 		ResourceType: aws.String(ec2.ResourceTypeSnapshot),
@@ -24,7 +24,6 @@ func Create(sess *Session, volumeId string) {
 		VolumeId:          aws.String(volumeId),
 		TagSpecifications: []*ec2.TagSpecification{tagList},
 	}
-
 	_, err := svc.CreateSnapshot(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
@@ -36,6 +35,17 @@ func Create(sess *Session, volumeId string) {
 			fmt.Println(err.Error())
 		}
 		return
+	}
+	describeSnapshotsInput := &ec2.DescribeSnapshotsInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws.String("tag:Name"),
+				Values: []*string{aws.String(name)},
+			},
+		},
+	}
+	if err := svc.WaitUntilSnapshotCompleted(describeSnapshotsInput); err != nil {
+		panic(err)
 	}
 }
 
@@ -50,7 +60,7 @@ func FetchSnapshotId(sess *Session, name string) string {
 			},
 		},
 	}
-	result, err := svc	.DescribeSnapshots(params)
+	result, err := svc.DescribeSnapshots(params)
 	if err != nil {
 		fmt.Println("Error", err)
 	}
