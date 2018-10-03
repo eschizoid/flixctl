@@ -1,4 +1,4 @@
-package ebs
+package snapshot
 
 import (
 	"fmt"
