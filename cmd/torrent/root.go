@@ -9,6 +9,24 @@ var RootTorrentCmd = &cobra.Command{
 	Short: "To Control Torrent Client",
 }
 
+var magnetLink string
+var keywords string
+
 func init() {
-	RootTorrentCmd.AddCommand(DownloadTorrentCmd, StatusTorrentCmd)
+
+	DownloadTorrentCmd.Flags().StringVarP(&magnetLink,
+		"magnet-link",
+		"m",
+		"",
+		"uri of the torrent magnet link to download",
+	)
+
+	SearchTorrentCmd.Flags().StringVarP(&keywords,
+		"keywords",
+		"k",
+		"",
+		"the keywords that will be used to search for available torrents",
+	)
+
+	RootTorrentCmd.AddCommand(SearchTorrentCmd, DownloadTorrentCmd, StatusTorrentCmd)
 }

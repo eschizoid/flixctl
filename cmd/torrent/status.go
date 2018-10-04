@@ -6,8 +6,8 @@ import (
 
 var StatusTorrentCmd = &cobra.Command{
 	Use:   "status",
-	Short: "To Show Torrent Download Status",
-	Long:  `to show current download status of all torrents`,
+	Short: "To Show the Status of the Torrents",
+	Long:  `to show the status of the torrents being downloaded`,
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
