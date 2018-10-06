@@ -19,7 +19,6 @@ before_install:
 # in vendor/
 install: true
 
-# Don't email me the results of the test runs.
 notifications:
   email: false
 
@@ -44,6 +43,5 @@ matrix:
   allow_failures:
   - go: tip
 
-# Only clone the most recent commit.
 git:
   depth: 1

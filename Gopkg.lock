@@ -26,6 +26,14 @@
   version = "v0.3.1"
 
 [[projects]]
+  digest = "1:cf84c1cf34b76875b25f45cbffd95ca409cdf370473a6caa078abc16db06484a"
+  name = "github.com/Jeffail/gabs"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7a0fed31069aba77993a518cc2f37b28ee7aa883"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "2.x"
   digest = "1:5fb9305900d6f7c94d6f663880185504bb0ac9b149d02f73966a31ed04000ebb"
   name = "github.com/Masterminds/semver"
@@ -48,6 +56,22 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "a69c782687b207067fa0e371408bb18f38e1355f"
+
+[[projects]]
+  digest = "1:a62f6ed230a8cd138a9efbe718e7d0b0294f139266f5f55cd942769a9aac8de2"
+  name = "github.com/PuerkitoBio/goquery"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "dc2ec5c7ca4d9aae063b79b9f581dd3ea6afd2b2"
+  version = "v1.4.1"
+
+[[projects]]
+  digest = "1:66b3310cf22cdc96c35ef84ede4f7b9b370971c4025f394c89a2638729653b11"
+  name = "github.com/andybalholm/cascadia"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "901648c87902174f774fac311d7f176f8647bdaa"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:c47f4964978e211c6e566596ec6246c329912ea92e9bb99c00798bb4564c5b09"
@@ -730,6 +754,29 @@
   version = "v4.2.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:1c77e06f7a9638f3511e6224c182fb32c197c295699cc2ff82b0671e7e2959fa"
+  name = "github.com/juliensalinas/go-cloudflare-scraper"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "07e77f4d72248913bc73750de3b99c8055eba77e"
+
+[[projects]]
+  branch = "master"
+  digest = "1:76f5ca931e9d568a6e675362d8774505c90ff4677994ed737a997afb013ed8bd"
+  name = "github.com/juliensalinas/torrengo"
+  packages = [
+    "arc",
+    "core",
+    "otts",
+    "td",
+    "tpb",
+    "ygg",
+  ]
+  pruneopts = "UT"
+  revision = "ddd3dc01135bbcf0ede46b23d2ba71a1c8918ab8"
+
+[[projects]]
   digest = "1:15ec2166e33ef6c60b344a04d050eec79193517e7f5082b6233b2d09ef0d10b8"
   name = "github.com/kisielk/gotool"
   packages = [
@@ -861,6 +908,22 @@
   pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  name = "github.com/robertkrimen/otto"
+  packages = [
+    ".",
+    "ast",
+    "dbg",
+    "file",
+    "parser",
+    "registry",
+    "token",
+  ]
+  pruneopts = "UT"
+  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
 
 [[projects]]
   branch = "master"
@@ -1034,7 +1097,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2a50f94663a4bae94859fcad2b52853b18669bfd625ee132a0822cdfef7968aa"
+  digest = "1:2b42d03e4054f0eff5776f57e9722c9cf338b768581647cf6fb24ba527fd7c8d"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -1051,6 +1114,7 @@
     "internal/socks",
     "internal/sockstest",
     "internal/timeseries",
+    "publicsuffix",
     "trace",
   ]
   pruneopts = "UT"
@@ -1270,6 +1334,17 @@
   revision = "788fd78401277ebd861206a03c884797c6ec5541"
 
 [[projects]]
+  digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
+  name = "gopkg.in/sourcemap.v1"
+  packages = [
+    ".",
+    "base64vlq",
+  ]
+  pruneopts = "UT"
+  revision = "6e83acea0053641eff084973fee085f0c193c61a"
+  version = "v1.0.5"
+
+[[projects]]
   digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
@@ -1299,6 +1374,7 @@
   input-imports = [
     "cloud.google.com/go/storage",
     "github.com/BurntSushi/toml",
+    "github.com/Jeffail/gabs",
     "github.com/Masterminds/semver",
     "github.com/Masterminds/vcs",
     "github.com/armon/go-radix",
@@ -1549,6 +1625,11 @@
     "github.com/gucumber/gucumber",
     "github.com/jmank88/nuts",
     "github.com/jmespath/go-jmespath",
+    "github.com/juliensalinas/torrengo/arc",
+    "github.com/juliensalinas/torrengo/otts",
+    "github.com/juliensalinas/torrengo/td",
+    "github.com/juliensalinas/torrengo/tpb",
+    "github.com/juliensalinas/torrengo/ygg",
     "github.com/nightlyone/lockfile",
     "github.com/nlopes/slack",
     "github.com/ogier/pflag",
@@ -1556,6 +1637,7 @@
     "github.com/pkg/errors",
     "github.com/pmezard/go-difflib/difflib",
     "github.com/sdboyer/constext",
+    "github.com/sirupsen/logrus",
     "github.com/smartystreets/goconvey/convey",
     "github.com/spf13/cobra",
     "github.com/stretchr/objx",
