@@ -2,12 +2,13 @@ package slack
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/nlopes/slack"
 )
 
 func SendMessage() {
-	api := slack.New("YOUR_TOKEN_HERE")
+	api := slack.New(os.Getenv("SLACK_TOKEN"))
 	// If you set debugging, it will log all requests to the console
 	// Useful when encountering issues
 	// api.SetDebug(true)

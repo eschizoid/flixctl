@@ -4,7 +4,7 @@ image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", 
 :toc:
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
-true MaaS (Movies As A Service) architecture.
+true MaaS (Movies as a Service) architecture.
 
 === Pre-requisites
 ----
@@ -45,6 +45,6 @@ flixctl plex start
 flixctl plex stop
 flixctl plex status
 flixctl torrent status
-flixctl torrent search --keyword Trainspotting
-flixctl torrent download --magnet-link "magnet:?xt=urn:btih:62f1de5babcf7b6fc5ce5661b995ad80b54b0217&dn=Skyscraper.2018.1080p.BluRay.x264-SPARKS&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710
+flixctl torrent search --keywords Trainspotting --minimum-quality 1080
+flixctl torrent download --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996BF88DC879BA1B1C0CB67&dn=T2+Trainspotting+2017+BDRip+1080p&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.ch%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.pirateparty.gr%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Feddie4.nl%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2710%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce"
 ----
