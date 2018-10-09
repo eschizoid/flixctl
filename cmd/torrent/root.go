@@ -11,6 +11,7 @@ var RootTorrentCmd = &cobra.Command{
 
 var magnetLink string
 var keywords string
+var quality string
 
 func init() {
 
@@ -26,6 +27,13 @@ func init() {
 		"k",
 		"",
 		"the keywords that will be used to search for available torrents",
+	)
+
+	SearchTorrentCmd.Flags().StringVarP(&quality,
+		"minimum-quality",
+		"q",
+		"",
+		"the minimum quality of the torrent file",
 	)
 
 	RootTorrentCmd.AddCommand(SearchTorrentCmd, DownloadTorrentCmd, StatusTorrentCmd)
