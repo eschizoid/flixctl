@@ -84,7 +84,7 @@ func Status(sess *sess.Session, id string) string {
 		for _, reservation := range result.Reservations {
 			for _, instance := range reservation.Instances {
 				status = strings.Title(*instance.State.Name)
-				fmt.Println("Plex current status: " + status)
+				fmt.Println("EC2 current status: " + status)
 			}
 		}
 	}

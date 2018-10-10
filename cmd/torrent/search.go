@@ -5,17 +5,17 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Jeffail/gabs"
-	torrentService "github.com/eschizoid/flixctl/torrent/service"
+	slackService "github.com/eschizoid/flixctl/slack"
+	torrentService "github.com/eschizoid/flixctl/torrent"
 	"github.com/spf13/cobra"
 )
 
 var SearchTorrentCmd = &cobra.Command{
 	Use:   "search",
-	Short: "To Search for Torrents",
-	Long:  `to search for torrents using the given keywors(s)`,
+	Short: "To SearchTorrents for Torrents",
+	Long:  `to search for torrents using the given keyword(s)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		torrentSearch := torrentService.TorrentSearch{
+		torrentSearch := torrentService.Search{
 			In: keywords,
 			SourcesToLookup: []string{
 				torrentService.ThePirateBayKey,
@@ -27,7 +27,7 @@ var SearchTorrentCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println("Could not process your input")
 		}
-		torrentService.Search(&torrentSearch)
+		torrentService.SearchTorrents(&torrentSearch)
 		errors := torrentService.Merge(&torrentSearch)
 		if errors[0] != nil && errors[1] != nil && errors[2] != nil {
 			fmt.Println("All searches returned an error.")
@@ -37,12 +37,11 @@ var SearchTorrentCmd = &cobra.Command{
 		}
 		choose(&torrentSearch)
 		sortOut(&torrentSearch)
-		resultJSON, _ := gabs.Consume(torrentSearch)
-		fmt.Println(string(resultJSON.EncodeJSON()))
+		slackService.SendDownloadLinks(&torrentSearch)
 	},
 }
 
-func cleanInput(search torrentService.TorrentSearch) error {
+func cleanInput(search torrentService.Search) error {
 	var in = strings.TrimSpace(search.In)
 	if in == "" {
 		return fmt.Errorf("user search should not be empty")
@@ -50,9 +49,9 @@ func cleanInput(search torrentService.TorrentSearch) error {
 	return nil
 }
 
-func choose(search *torrentService.TorrentSearch) {
+func choose(search *torrentService.Search) {
 	var test = func(s string) bool { return strings.Contains(s, quality) }
-	var filteredResult []torrentService.TorrentResult
+	var filteredResult []torrentService.Result
 	for _, torrentResult := range search.Out {
 		if test(torrentResult.Name) {
 			torrentResult.Quality = quality + "p"
@@ -62,7 +61,7 @@ func choose(search *torrentService.TorrentSearch) {
 	search.Out = filteredResult
 }
 
-func sortOut(search *torrentService.TorrentSearch) {
+func sortOut(search *torrentService.Search) {
 	sort.Slice(search.Out, func(i, j int) bool {
 		return search.Out[i].Seeders > search.Out[j].Seeders
 	})

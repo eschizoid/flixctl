@@ -1,4 +1,4 @@
-package service
+package torrent
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ const (
 	OttsKey             = "otts"
 )
 
-type TorrentResult struct {
+type Result struct {
 	FileURL    string
 	Magnet     string
 	DescURL    string
@@ -30,17 +30,17 @@ type TorrentResult struct {
 	FilePath   string
 }
 
-type TorrentSearch struct {
+type Search struct {
 	In              string
-	Out             []TorrentResult
+	Out             []Result
 	SourcesToLookup []string
 }
 
 var Timeout = time.Duration(15000 * 1000 * 1000)
 
-var TdTorListCh = make(chan []TorrentResult)
-var TpbTorListCh = make(chan []TorrentResult)
-var OttsTorListCh = make(chan []TorrentResult)
+var TdTorListCh = make(chan []Result)
+var TpbTorListCh = make(chan []Result)
+var OttsTorListCh = make(chan []Result)
 
 var TdSearchErrCh = make(chan error)
 var TpbSearchErrCh = make(chan error)
@@ -54,7 +54,7 @@ var sources = map[string]string{
 
 var regex = regexp.MustCompile("[[:^ascii:]]")
 
-func Search(search *TorrentSearch) { //nolint:gocyclo
+func SearchTorrents(search *Search) { //nolint:gocyclo
 
 	for _, source := range search.SourcesToLookup {
 		switch source {
@@ -65,10 +65,10 @@ func Search(search *TorrentSearch) { //nolint:gocyclo
 					TdSearchErrCh <- err
 					return
 				}
-				var torrentList []TorrentResult
+				var torrentList []Result
 				for _, tdTorrent := range tdTorrents {
 					_, magnet, _ := td.ExtractTorAndMag(tdTorrent.DescURL, Timeout)
-					result := TorrentResult{
+					result := Result{
 						DescURL:  tdTorrent.DescURL,
 						Magnet:   magnet,
 						Name:     tdTorrent.Name,
@@ -88,9 +88,9 @@ func Search(search *TorrentSearch) { //nolint:gocyclo
 					TpbSearchErrCh <- err
 					return
 				}
-				var torrentList []TorrentResult
+				var torrentList []Result
 				for _, tpbTorrent := range tpbTorrents {
-					result := TorrentResult{
+					result := Result{
 						Magnet:     tpbTorrent.Magnet,
 						Name:       regex.ReplaceAllLiteralString(tpbTorrent.Name, " "),
 						Size:       regex.ReplaceAllLiteralString(tpbTorrent.Size, " "),
@@ -110,10 +110,10 @@ func Search(search *TorrentSearch) { //nolint:gocyclo
 					OttsSearchErrCh <- err
 					return
 				}
-				var torrentList []TorrentResult
+				var torrentList []Result
 				for _, ottsTorrent := range ottsTorrents {
 					magnet, _ := otts.ExtractMag(ottsTorrent.DescURL, Timeout)
-					result := TorrentResult{
+					result := Result{
 						DescURL:    ottsTorrent.DescURL,
 						Magnet:     magnet,
 						Name:       regex.ReplaceAllLiteralString(ottsTorrent.Name, " "),
@@ -131,10 +131,9 @@ func Search(search *TorrentSearch) { //nolint:gocyclo
 	}
 }
 
-func Merge(search *TorrentSearch) [3]error { //nolint:gocyclo
+func Merge(search *Search) [3]error { //nolint:gocyclo
 	var tdSearchErr, tpbSearchErr, ottsSearchErr error
 
-	// Gather all goroutines results
 	for _, source := range search.SourcesToLookup {
 		switch source {
 		case TorrentDownloadsKey:

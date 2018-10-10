@@ -4,23 +4,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	transmissionHostPort = "marianoflix.duckdns.org:9091"
+	ec2RunningStatus     = "Running"
+)
+
 var RootTorrentCmd = &cobra.Command{
 	Use:   "torrent",
 	Short: "To Control Torrent Client",
 }
 
-var magnetLink string
 var keywords string
 var quality string
 
 func init() {
-
-	DownloadTorrentCmd.Flags().StringVarP(&magnetLink,
-		"magnet-link",
-		"m",
-		"",
-		"uri of the torrent magnet link to download",
-	)
 
 	SearchTorrentCmd.Flags().StringVarP(&keywords,
 		"keywords",
