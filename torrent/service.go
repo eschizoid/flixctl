@@ -1,19 +1,25 @@
 package torrent
 
 import (
+	"encoding/base64"
 	"fmt"
+	"os/exec"
 	"regexp"
 	"time"
 
+	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
+	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/juliensalinas/torrengo/otts"
 	"github.com/juliensalinas/torrengo/td"
 	"github.com/juliensalinas/torrengo/tpb"
 )
 
 const (
-	TorrentDownloadsKey = "td"
-	ThePirateBayKey     = "tpb"
-	OttsKey             = "otts"
+	ec2RunningStatus     = "Running"
+	transmissionHostPort = "marianoflix.duckdns.org:9091"
+	TorrentDownloadsKey  = "td"
+	ThePirateBayKey      = "tpb"
+	OttsKey              = "otts"
 )
 
 type Result struct {
@@ -161,4 +167,51 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 	}
 	errors := [...]error{tdSearchErr, tpbSearchErr, ottsSearchErr}
 	return errors
+}
+
+func Status() string {
+	var torrentStatus string
+	ec2status := ec2Service.Status(plex.Session, plex.InstanceID)
+	if ec2status == ec2RunningStatus {
+		out, err := exec.Command("transmission-remote",
+			transmissionHostPort,
+			"--authenv",
+			"--torrent=all",
+			"--list").CombinedOutput()
+		if err != nil {
+			fmt.Printf("Could not list torrents being downloaded: [%s]\n", err)
+		}
+		torrentStatus = string(out)
+		fmt.Println(torrentStatus)
+	}
+	return torrentStatus
+}
+
+func TriggerDownload(envMagnetLink string, argMagnetLink string) {
+	if envMagnetLink == "" {
+		// coming from flixctl
+		downloadTorrent(argMagnetLink)
+	} else {
+		// coming from web-hook
+		decodedEnvMagnetLink, err := base64.StdEncoding.DecodeString(envMagnetLink)
+		if err != nil {
+			fmt.Printf("Could not decode the magnet link: [%s]\n", err)
+		}
+		downloadTorrent(string(decodedEnvMagnetLink))
+	}
+}
+
+func downloadTorrent(magnet string) {
+	status := ec2Service.Status(plex.Session, plex.InstanceID)
+	if status == ec2RunningStatus {
+		transmission := exec.Command("transmission-remote",
+			transmissionHostPort,
+			"--authenv",
+			"--add",
+			magnet)
+		err := transmission.Start()
+		if err != nil {
+			fmt.Println("Could not download torrent using the given magnet link")
+		}
+	}
 }
