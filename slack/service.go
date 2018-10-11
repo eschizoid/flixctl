@@ -3,6 +3,7 @@ package slack
 import (
 	"encoding/base64"
 	"fmt"
+	"net/url"
 	"strconv"
 
 	"github.com/eschizoid/flixctl/torrent"
@@ -18,6 +19,7 @@ func SendDownloadLinks(search *torrent.Search) {
 	var attachments []slack.Attachment
 	for _, torrentResult := range search.Out {
 		encodedMagnetLink := base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet))
+		encodedName := base64.StdEncoding.EncodeToString([]byte(torrentResult.Name))
 		attachmentFieldSize := slack.AttachmentField{
 			Title: "Size",
 			Value: torrentResult.Size,
@@ -41,7 +43,7 @@ func SendDownloadLinks(search *torrent.Search) {
 		attachment := slack.Attachment{
 			Color:     "#36a64f",
 			Title:     torrentResult.Name,
-			TitleLink: outgoingHookURL + "?n=" + torrentResult.Name + "&m=" + encodedMagnetLink,
+			TitleLink: outgoingHookURL + "?n=" + url.QueryEscape(encodedName) + "&m=" + url.QueryEscape(encodedMagnetLink),
 			Fields: []slack.AttachmentField{
 				attachmentFieldSize,
 				attachmentFieldSeeders,
@@ -56,10 +58,14 @@ func SendDownloadLinks(search *torrent.Search) {
 	}
 	err := slack.PostWebhook(incomingSearchHookURL, message)
 	if err != nil {
-		fmt.Printf("error while seding download links: %s\n", err)
+		fmt.Printf("Error while sending download links: %s\n", err)
 	}
 }
 
-func NotifyDownloadStarted(torrentName string) {
-	fmt.Print(torrentName)
+func NotifyDownloadStarted(envTorrentName string) {
+	decodedTorrentName, err := base64.StdEncoding.DecodeString(envTorrentName)
+	if err != nil {
+		fmt.Printf("Could not decode torrent name: [%s]\n", err)
+	}
+	fmt.Print(decodedTorrentName)
 }

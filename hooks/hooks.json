@@ -1,10 +1,10 @@
 [
   {
     "id": "download",
-    "execute-command": "flixctl torrent download --magnet-link ''",
-    "command-working-directory": "/home/centos/go",
-    "response-message": "Starting to download!",
-    "pass-arguments-to-command": [
+    "execute-command": "/opt/webhook-linux-amd64/download-torrent.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Download started!",
+    "pass-environment-to-command": [
       {
         "source": "url",
         "name": "n",

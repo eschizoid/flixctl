@@ -165,7 +165,7 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 			}
 		}
 	}
-	errors := [...]error{tdSearchErr, tpbSearchErr, ottsSearchErr}
+	errors := [3]error{tdSearchErr, tpbSearchErr, ottsSearchErr}
 	return errors
 }
 
