@@ -4,6 +4,6 @@ set -e
 set -u
 set -o pipefail
 
-source ~/.bash_profile
+source ~/.bashrc
 
 flixctl torrent download --magnet-link ${MAGNET_LINK}
