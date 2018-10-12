@@ -68,7 +68,9 @@ func SendDownloadStart(envTorrentName string) {
 		fmt.Printf("Could not decode torrent name: [%s]\n", err)
 	}
 	var attachments []slack.Attachment
-	attachments = append(attachments, slack.Attachment{Text: fmt.Sprintf("Starting to download %s!", decodedTorrentName)})
+	attachments = append(attachments, slack.Attachment{
+		Text: fmt.Sprintf("Starting to download %s!", string(decodedTorrentName)),
+	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
