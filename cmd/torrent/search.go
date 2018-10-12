@@ -2,6 +2,7 @@ package torrent
 
 import (
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 
@@ -15,6 +16,11 @@ var SearchTorrentCmd = &cobra.Command{
 	Short: "To SearchTorrents for Torrents",
 	Long:  `to search for torrents using the given keyword(s)`,
 	Run: func(cmd *cobra.Command, args []string) {
+		envKeywords := os.Getenv("KEYWORDS")
+		if envKeywords != "" {
+			// coming from web-hook
+			keywords = envKeywords
+		}
 		torrentSearch := torrentService.Search{
 			In: keywords,
 			SourcesToLookup: []string{
