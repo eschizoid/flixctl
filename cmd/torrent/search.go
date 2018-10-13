@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	slackService "github.com/eschizoid/flixctl/slack"
+	slackService "github.com/eschizoid/flixctl/slack/torrent"
 	torrentService "github.com/eschizoid/flixctl/torrent"
 	"github.com/spf13/cobra"
 )
