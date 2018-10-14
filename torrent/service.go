@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"time"
 
+	sess "github.com/aws/aws-sdk-go/aws/session"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
-	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/juliensalinas/torrengo/otts"
 	"github.com/juliensalinas/torrengo/td"
 	"github.com/juliensalinas/torrengo/tpb"
@@ -52,13 +52,19 @@ var TdSearchErrCh = make(chan error)
 var TpbSearchErrCh = make(chan error)
 var OttsSearchErrCh = make(chan error)
 
-var sources = map[string]string{
+var Sources = map[string]string{
 	TorrentDownloadsKey: "Torrent Downloads",
 	ThePirateBayKey:     "The Pirate Bay",
 	OttsKey:             "1337x",
 }
 
-var regex = regexp.MustCompile("[[:^ascii:]]")
+var AwsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+	SharedConfigState: sess.SharedConfigEnable,
+}))
+
+var InstanceID = ec2Service.FetchInstanceID(AwsSession, "plex")
+
+var Regex = regexp.MustCompile("[[:^ascii:]]")
 
 func SearchTorrents(search *Search) { //nolint:gocyclo
 
@@ -98,9 +104,9 @@ func SearchTorrents(search *Search) { //nolint:gocyclo
 				for _, tpbTorrent := range tpbTorrents {
 					result := Result{
 						Magnet:     tpbTorrent.Magnet,
-						Name:       regex.ReplaceAllLiteralString(tpbTorrent.Name, " "),
-						Size:       regex.ReplaceAllLiteralString(tpbTorrent.Size, " "),
-						UploadDate: regex.ReplaceAllLiteralString(tpbTorrent.UplDate, " "),
+						Name:       Regex.ReplaceAllLiteralString(tpbTorrent.Name, " "),
+						Size:       Regex.ReplaceAllLiteralString(tpbTorrent.Size, " "),
+						UploadDate: Regex.ReplaceAllLiteralString(tpbTorrent.UplDate, " "),
 						Leechers:   tpbTorrent.Leechers,
 						Seeders:    tpbTorrent.Seeders,
 						Source:     ThePirateBayKey,
@@ -122,9 +128,9 @@ func SearchTorrents(search *Search) { //nolint:gocyclo
 					result := Result{
 						DescURL:    ottsTorrent.DescURL,
 						Magnet:     magnet,
-						Name:       regex.ReplaceAllLiteralString(ottsTorrent.Name, " "),
-						Size:       regex.ReplaceAllLiteralString(ottsTorrent.Size, " "),
-						UploadDate: regex.ReplaceAllLiteralString(ottsTorrent.UplDate, " "),
+						Name:       Regex.ReplaceAllLiteralString(ottsTorrent.Name, " "),
+						Size:       Regex.ReplaceAllLiteralString(ottsTorrent.Size, " "),
+						UploadDate: Regex.ReplaceAllLiteralString(ottsTorrent.UplDate, " "),
 						Leechers:   ottsTorrent.Leechers,
 						Seeders:    ottsTorrent.Seeders,
 						Source:     OttsKey,
@@ -145,21 +151,21 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 		case TorrentDownloadsKey:
 			select {
 			case tdSearchErr = <-TdSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", sources["td"])
+				fmt.Printf("An error occured during search on %v\n", Sources["td"])
 			case tdTorList := <-TdTorListCh:
 				search.Out = append(search.Out, tdTorList...)
 			}
 		case ThePirateBayKey:
 			select {
 			case tpbSearchErr = <-TpbSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", sources["tpb"])
+				fmt.Printf("An error occured during search on %v\n", Sources["tpb"])
 			case tpbTorList := <-TpbTorListCh:
 				search.Out = append(search.Out, tpbTorList...)
 			}
 		case OttsKey:
 			select {
 			case ottsSearchErr = <-OttsSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", sources["otts"])
+				fmt.Printf("An error occured during search on %v\n", Sources["otts"])
 			case ottsTorList := <-OttsTorListCh:
 				search.Out = append(search.Out, ottsTorList...)
 			}
@@ -171,7 +177,7 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 
 func Status() string {
 	var torrentStatus string
-	ec2status := ec2Service.Status(plex.Session, plex.InstanceID)
+	ec2status := ec2Service.Status(AwsSession, InstanceID)
 	if ec2status == ec2RunningStatus {
 		out, err := exec.Command("transmission-remote",
 			transmissionHostPort,
@@ -202,7 +208,7 @@ func TriggerDownload(envMagnetLink string, argMagnetLink string) {
 }
 
 func downloadTorrent(magnet string) {
-	status := ec2Service.Status(plex.Session, plex.InstanceID)
+	status := ec2Service.Status(AwsSession, InstanceID)
 	if status == ec2RunningStatus {
 		transmission := exec.Command("transmission-remote",
 			transmissionHostPort,

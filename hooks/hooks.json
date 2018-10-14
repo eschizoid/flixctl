@@ -51,18 +51,5 @@
         "name": "status"
       }
     ]
-  },
-  {
-    "id": "plex",
-    "execute-command": "/opt/webhook-linux-amd64/plex.sh",
-    "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Plex command successfully executed!",
-    "pass-environment-to-command": [
-      {
-        "source": "payload",
-        "name": "text",
-        "envname": "PLEX_COMMAND"
-      }
-    ]
   }
 ]

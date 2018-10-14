@@ -3,6 +3,7 @@ package plex
 import (
 	"fmt"
 
+	sess "github.com/aws/aws-sdk-go/aws/session"
 	ebsService "github.com/eschizoid/flixctl/aws/ebs"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snapshot"
@@ -15,16 +16,24 @@ var StopPlexCmd = &cobra.Command{
 	Short: "To Stop Plex",
 	Long:  `to stop the Plex Media Center.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if ec2Service.Status(Session, InstanceID) == "Stopped" {
-			slackService.SendStop()
-			return
-		}
-		var oldVolumeID = ebsService.FetchVolumeID(Session, "plex")
-		snapService.Create(Session, oldVolumeID, "plex")
-		ec2Service.Stop(Session, InstanceID)
-		ebsService.Detach(Session, oldVolumeID)
-		ebsService.Delete(Session, oldVolumeID)
-		slackService.SendStop()
-		fmt.Println("Plex Stopped")
+		Stop()
 	},
+}
+
+func Stop() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	var instanceID = ec2Service.FetchInstanceID(awsSession, "plex")
+	if ec2Service.Status(awsSession, instanceID) == "Stopped" {
+		slackService.SendStop()
+		return
+	}
+	var oldVolumeID = ebsService.FetchVolumeID(awsSession, "plex")
+	snapService.Create(awsSession, oldVolumeID, "plex")
+	ec2Service.Stop(awsSession, instanceID)
+	ebsService.Detach(awsSession, oldVolumeID)
+	ebsService.Delete(awsSession, oldVolumeID)
+	slackService.SendStop()
+	fmt.Println("Plex Stopped")
 }
