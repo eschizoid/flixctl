@@ -17,9 +17,14 @@ brew install dep
 dep ensure
 ----
 
+=== Lints
+----
+golangci-lint run
+----
+
 === Building
 ----
-go install
+go install . ./aws/lambda
 ----
 
 === Usage

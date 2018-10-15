@@ -27,28 +27,16 @@
 required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 
 [[constraint]]
-  name = "cloud.google.com/go"
-  version = "0.30.0"
-
-[[constraint]]
   name = "github.com/BurntSushi/toml"
   version = "0.3.1"
 
 [[constraint]]
-  branch = "2.x"
-  name = "github.com/Masterminds/semver"
-
-[[constraint]]
-  name = "github.com/Masterminds/vcs"
-  version = "1.12.0"
-
-[[constraint]]
-  name = "github.com/armon/go-radix"
-  version = "1.0.0"
+  name = "github.com/aws/aws-lambda-go"
+  version = "1.6.0"
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.15.51"
+  version = "1.15.54"
 
 [[constraint]]
   name = "github.com/boltdb/bolt"
@@ -59,24 +47,8 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
   version = "1.1.1"
 
 [[constraint]]
-  name = "github.com/go-ini/ini"
-  version = "1.38.3"
-
-[[constraint]]
-  name = "github.com/go-sql-driver/mysql"
-  version = "1.4.0"
-
-[[constraint]]
-  name = "github.com/golang/dep"
-  version = "0.5.0"
-
-[[constraint]]
   name = "github.com/golang/protobuf"
   version = "1.0.0"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/gucumber/gucumber"
 
 [[constraint]]
   name = "github.com/jmank88/nuts"
@@ -87,16 +59,8 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
   name = "github.com/juliensalinas/torrengo"
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/nightlyone/lockfile"
-
-[[constraint]]
   name = "github.com/nlopes/slack"
   version = "0.4.0"
-
-[[constraint]]
-  name = "github.com/ogier/pflag"
-  version = "0.0.1"
 
 [[constraint]]
   name = "github.com/pelletier/go-toml"
@@ -107,14 +71,6 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
   version = "0.8.0"
 
 [[constraint]]
-  name = "github.com/pmezard/go-difflib"
-  version = "1.0.0"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/sdboyer/constext"
-
-[[constraint]]
   name = "github.com/smartystreets/goconvey"
   version = "1.6.3"
 
@@ -123,20 +79,12 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
   version = "0.0.3"
 
 [[constraint]]
-  name = "github.com/stretchr/objx"
-  version = "0.1.1"
-
-[[constraint]]
   name = "github.com/stretchr/testify"
   version = "1.2.2"
 
 [[constraint]]
   branch = "master"
   name = "go4.org"
-
-[[constraint]]
-  branch = "master"
-  name = "golang.org/x/build"
 
 [[constraint]]
   branch = "master"
@@ -157,14 +105,6 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 [[constraint]]
   branch = "master"
   name = "golang.org/x/sys"
-
-[[constraint]]
-  branch = "master"
-  name = "golang.org/x/text"
-
-[[constraint]]
-  branch = "master"
-  name = "golang.org/x/tools"
 
 [[constraint]]
   branch = "master"
