@@ -42,6 +42,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:efcd30f654ea9ce296e01a42c72a2c18c14f3cb6db5f4b177b1e5eb27a6754b0"
+  name = "github.com/apex/invoke"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "1d3d334929c27a83ab601819d839b649d0d010fc"
+
+[[projects]]
   digest = "1:014e79cf5c422dd0547a87bde33c7f7b3cd29116a96fac8897c7e50f18531dea"
   name = "github.com/aws/aws-lambda-go"
   packages = [
@@ -55,7 +63,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:17acd8f42158859c14a07684238737fdbd3c4f801c345cf434d762bbef947469"
+  digest = "1:0ebd85a8a59ac8b4a6101b647f6cd18663b27778166a79514bfeac1fd587e845"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -81,11 +89,15 @@
     "internal/shareddefaults",
     "private/protocol",
     "private/protocol/ec2query",
+    "private/protocol/json/jsonutil",
+    "private/protocol/jsonrpc",
     "private/protocol/query",
     "private/protocol/query/queryutil",
     "private/protocol/rest",
+    "private/protocol/restjson",
     "private/protocol/xml/xmlutil",
     "service/ec2",
+    "service/lambda",
     "service/sts",
   ]
   pruneopts = "UT"
@@ -955,12 +967,14 @@
   analyzer-version = 1
   input-imports = [
     "github.com/BurntSushi/toml",
+    "github.com/apex/invoke",
     "github.com/aws/aws-lambda-go/events",
     "github.com/aws/aws-lambda-go/lambda",
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/awserr",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/ec2",
+    "github.com/aws/aws-sdk-go/service/lambda",
     "github.com/boltdb/bolt",
     "github.com/boltdb/bolt/cmd/bolt",
     "github.com/davecgh/go-spew/spew",
