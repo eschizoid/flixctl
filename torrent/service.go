@@ -182,7 +182,7 @@ func Status() string {
 		out, err := exec.Command("transmission-remote",
 			transmissionHostPort,
 			"--authenv",
-			"--torrent=all",
+			"--torrent=active",
 			"--list").CombinedOutput()
 		if err != nil {
 			fmt.Printf("Could not list torrents being downloaded: [%s]\n", err)

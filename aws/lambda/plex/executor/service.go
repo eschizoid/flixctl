@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda/plex"
+	types "github.com/eschizoid/flixctl/aws/lambda"
 	"github.com/eschizoid/flixctl/cmd/plex"
 )
 

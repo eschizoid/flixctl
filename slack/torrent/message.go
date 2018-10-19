@@ -82,7 +82,10 @@ func SendDownloadStart(envTorrentName string) {
 
 func SendStatus(status string) {
 	var attachments []slack.Attachment
-	attachments = append(attachments, slack.Attachment{Text: fmt.Sprint(status)})
+	attachments = append(attachments, slack.Attachment{
+		Text:       "```" + fmt.Sprint(status) + "```",
+		MarkdownIn: []string{"text"},
+	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
