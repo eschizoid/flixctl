@@ -3,7 +3,7 @@
     "id": "torrent-download",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Download started!",
+    "response-message": "Executing download command",
     "pass-environment-to-command": [
       {
         "source": "url",
@@ -16,7 +16,7 @@
         "envname": "MAGNET_LINK"
       }
     ],
-    "pass-argument-to-command": [
+    "pass-arguments-to-command": [
       {
         "source": "string",
         "name": "download"
@@ -27,6 +27,7 @@
     "id": "torrent-search",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing search command",
     "pass-environment-to-command": [
       {
         "source": "payload",
@@ -34,7 +35,7 @@
         "envname": "KEYWORDS"
       }
     ],
-    "pass-argument-to-command": [
+    "pass-arguments-to-command": [
       {
         "source": "string",
         "name": "search"
@@ -45,7 +46,8 @@
     "id": "torrent-status",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "pass-argument-to-command": [
+    "response-message": "Executing status command",
+    "pass-arguments-to-command": [
       {
         "source": "string",
         "name": "status"

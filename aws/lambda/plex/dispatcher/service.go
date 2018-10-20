@@ -12,22 +12,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	lambdaService "github.com/aws/aws-sdk-go/service/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda/plex"
+	types "github.com/eschizoid/flixctl/aws/lambda"
 	"github.com/go-playground/form"
 )
-
-type Slash struct {
-	Token       string `form:"token"`
-	TeamID      string `form:"team_id"`
-	TeamDomain  string `form:"team_domain"`
-	ChannelID   string `form:"channel_id"`
-	ChannelName string `form:"chann	el_name"`
-	UserID      string `form:"user_id"`
-	UserName    string `form:"user_name"`
-	Command     string `form:"command"`
-	Text        string `form:"text"`
-	ResponseURL string `form:"response_url"`
-}
 
 var CommandRegexp = regexp.MustCompile(`^(start|stop|status)$`)
 
@@ -45,7 +32,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if err != nil {
 		return clientError(http.StatusBadRequest)
 	}
-	slash := new(Slash)
+	slash := new(types.Slash)
 	err = form.NewDecoder().Decode(slash, values)
 	if err != nil {
 		return clientError(http.StatusUnprocessableEntity)
@@ -61,7 +48,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	}, nil
 }
 
-func invokeLambda(slash *Slash) {
+func invokeLambda(slash *types.Slash) {
 	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
