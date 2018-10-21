@@ -36,10 +36,10 @@ var SearchTorrentCmd = &cobra.Command{
 		torrentService.SearchTorrents(&torrentSearch)
 		errors := torrentService.Merge(&torrentSearch)
 		if errors[0] != nil && errors[1] != nil && errors[2] != nil {
-			fmt.Println("All searches returned an error.")
+			fmt.Println("All searches returned an error")
 		}
 		if len(torrentSearch.Out) == 0 {
-			fmt.Println("No result found...")
+			fmt.Println("No torrents found")
 		}
 		choose(&torrentSearch)
 		sortOut(&torrentSearch)
@@ -64,7 +64,9 @@ func choose(search *torrentService.Search) {
 			filteredResult = append(filteredResult, torrentResult)
 		}
 	}
-	search.Out = filteredResult
+	if len(filteredResult) > 0 {
+		search.Out = filteredResult
+	}
 }
 
 func sortOut(search *torrentService.Search) {

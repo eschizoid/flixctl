@@ -14,17 +14,27 @@ brew install dep
 
 === Dependencies
 ----
-dep ensure
+make deps
 ----
 
 === Lints
 ----
-golangci-lint run
+make lints
 ----
 
-=== Building
+=== Build (CLI and λ's)
 ----
-go install . ./aws/lambda
+make build
+----
+
+=== Install flixctl
+----
+make install
+----
+
+=== Deploy λ's
+----
+make deploy
 ----
 
 === Usage
