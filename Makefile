@@ -46,6 +46,9 @@ lints:
 install:
 	$(GOINSTALL)
 
+update:
+	$(GODEP) ensure -update
+
 zip: zip-lambda-plex-dispatcher zip-lambda-plex-executor
 
 zip-lambda-plex-dispatcher:
