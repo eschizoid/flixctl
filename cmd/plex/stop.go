@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	ebsService "github.com/eschizoid/flixctl/aws/ebs"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snapshot"
@@ -24,16 +25,17 @@ func Stop() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	var instanceID = ec2Service.FetchInstanceID(awsSession, "plex")
-	if ec2Service.Status(awsSession, instanceID) == "Stopped" {
+	svc := ec2.New(awsSession, awsSession.Config)
+	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	if ec2Service.Status(svc, instanceID) == "Stopped" {
 		slackService.SendStop()
 		return
 	}
-	var oldVolumeID = ebsService.FetchVolumeID(awsSession, "plex")
-	snapService.Create(awsSession, oldVolumeID, "plex")
-	ec2Service.Stop(awsSession, instanceID)
-	ebsService.Detach(awsSession, oldVolumeID)
-	ebsService.Delete(awsSession, oldVolumeID)
+	var oldVolumeID = ebsService.FetchVolumeID(svc, "plex")
+	snapService.Create(svc, oldVolumeID, "plex")
+	ec2Service.Stop(svc, instanceID)
+	ebsService.Detach(svc, oldVolumeID)
+	ebsService.Delete(svc, oldVolumeID)
 	slackService.SendStop()
 	fmt.Println("Plex Stopped")
 }

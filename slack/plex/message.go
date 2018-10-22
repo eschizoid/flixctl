@@ -33,7 +33,10 @@ func SendStatus(status string) {
 
 func sendMessage(text string) error {
 	var attachments []slack.Attachment
-	attachments = append(attachments, slack.Attachment{Text: text})
+	attachments = append(attachments, slack.Attachment{
+		Color: "good",
+		Text:  text,
+	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}

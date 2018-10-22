@@ -41,7 +41,7 @@ deps:
 	$(GODEP) ensure -v
 
 lints:
-	$(GOLINT) -v run
+	$(GOLINT) -v --skip-dirs='vendor' run
 
 install:
 	$(GOINSTALL)

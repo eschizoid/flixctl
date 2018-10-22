@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	ebsService "github.com/eschizoid/flixctl/aws/ebs"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	snapService "github.com/eschizoid/flixctl/aws/snapshot"
@@ -24,17 +25,18 @@ func Start() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	var instanceID = ec2Service.FetchInstanceID(awsSession, "plex")
-	if ec2Service.Status(awsSession, instanceID) == "Running" {
+	svc := ec2.New(awsSession, awsSession.Config)
+	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	if ec2Service.Status(svc, instanceID) == "Running" {
 		slackService.SendStart()
 		return
 	}
-	ec2Service.Start(awsSession, instanceID)
-	var oldSnapshotID = snapService.FetchSnapshotID(awsSession, "plex")
-	ebsService.Create(awsSession, oldSnapshotID, "plex")
-	var newVolumeID = ebsService.FetchVolumeID(awsSession, "plex")
-	ebsService.Attach(awsSession, instanceID, newVolumeID)
-	snapService.Delete(awsSession, oldSnapshotID)
+	ec2Service.Start(svc, instanceID)
+	var oldSnapshotID = snapService.FetchSnapshotID(svc, "plex")
+	ebsService.Create(svc, oldSnapshotID, "plex")
+	var newVolumeID = ebsService.FetchVolumeID(svc, "plex")
+	ebsService.Attach(svc, instanceID, newVolumeID)
+	snapService.Delete(svc, oldSnapshotID)
 	slackService.SendStart()
 	fmt.Println("Plex Running")
 }

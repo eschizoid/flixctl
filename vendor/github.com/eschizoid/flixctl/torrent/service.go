@@ -8,6 +8,7 @@ import (
 	"time"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	"github.com/juliensalinas/torrengo/otts"
 	"github.com/juliensalinas/torrengo/td"
@@ -62,7 +63,9 @@ var AwsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 	SharedConfigState: sess.SharedConfigEnable,
 }))
 
-var InstanceID = ec2Service.FetchInstanceID(AwsSession, "plex")
+var SVC = ec2.New(AwsSession, AwsSession.Config)
+
+var InstanceID = ec2Service.FetchInstanceID(SVC, "plex")
 
 var Regex = regexp.MustCompile("[[:^ascii:]]")
 
@@ -177,7 +180,7 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 
 func Status() string {
 	var torrentStatus string
-	ec2status := ec2Service.Status(AwsSession, InstanceID)
+	ec2status := ec2Service.Status(SVC, InstanceID)
 	if ec2status == ec2RunningStatus {
 		out, err := exec.Command("transmission-remote",
 			transmissionHostPort,
@@ -208,7 +211,7 @@ func TriggerDownload(envMagnetLink string, argMagnetLink string) {
 }
 
 func downloadTorrent(magnet string) {
-	status := ec2Service.Status(AwsSession, InstanceID)
+	status := ec2Service.Status(SVC, InstanceID)
 	if status == ec2RunningStatus {
 		transmission := exec.Command("transmission-remote",
 			transmissionHostPort,

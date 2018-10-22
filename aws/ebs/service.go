@@ -5,12 +5,10 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func Attach(sess *sess.Session, instanceID string, volumeID string) {
-	svc := ec2.New(sess, sess.Config)
+func Attach(svc *ec2.EC2, instanceID string, volumeID string) {
 	input := &ec2.AttachVolumeInput{
 		Device:     aws.String("/dev/sdf"),
 		InstanceId: aws.String(instanceID),
@@ -36,8 +34,7 @@ func Attach(sess *sess.Session, instanceID string, volumeID string) {
 	}
 }
 
-func Detach(sess *sess.Session, volumeID string) {
-	svc := ec2.New(sess, sess.Config)
+func Detach(svc *ec2.EC2, volumeID string) {
 	input := &ec2.DetachVolumeInput{
 		VolumeId: aws.String(volumeID),
 	}
@@ -61,8 +58,7 @@ func Detach(sess *sess.Session, volumeID string) {
 	}
 }
 
-func Create(sess *sess.Session, snapshotID string, name string) {
-	svc := ec2.New(sess, sess.Config)
+func Create(svc *ec2.EC2, snapshotID string, name string) {
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
@@ -103,8 +99,7 @@ func Create(sess *sess.Session, snapshotID string, name string) {
 	}
 }
 
-func Delete(sess *sess.Session, volumeID string) {
-	svc := ec2.New(sess, sess.Config)
+func Delete(svc *ec2.EC2, volumeID string) {
 	input := &ec2.DeleteVolumeInput{
 		VolumeId: aws.String(volumeID),
 	}
@@ -128,9 +123,8 @@ func Delete(sess *sess.Session, volumeID string) {
 	}
 }
 
-func FetchVolumeID(sess *sess.Session, name string) string {
+func FetchVolumeID(svc *ec2.EC2, name string) string {
 	var volumeID string
-	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeVolumesInput{
 		Filters: []*ec2.Filter{
 			{

@@ -2,6 +2,7 @@ package plex
 
 import (
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	slackService "github.com/eschizoid/flixctl/slack/plex"
 	"github.com/spf13/cobra"
@@ -20,7 +21,8 @@ func Status() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	var instanceID = ec2Service.FetchInstanceID(awsSession, "plex")
-	plexStatus := ec2Service.Status(awsSession, instanceID)
+	svc := ec2.New(awsSession, awsSession.Config)
+	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	plexStatus := ec2Service.Status(svc, instanceID)
 	slackService.SendStatus(plexStatus)
 }
