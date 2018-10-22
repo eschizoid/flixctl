@@ -1,6 +1,8 @@
 package plex
 
 import (
+	"fmt"
+
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
@@ -24,5 +26,8 @@ func Status() {
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
 	plexStatus := ec2Service.Status(svc, instanceID)
-	slackService.SendStatus(plexStatus)
+	if slackIncomingHookURL != "" {
+		slackService.SendStatus(plexStatus, slackIncomingHookURL)
+	}
+	fmt.Println("EC2 current status: " + plexStatus)
 }

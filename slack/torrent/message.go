@@ -11,11 +11,10 @@ import (
 )
 
 const (
-	outgoingHookURL             = "https://marianoflix.duckdns.org:9000/hooks/torrent-download"
-	transmissionIncomingHookURL = "https://hooks.slack.com/services/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"
+	outgoingHookURL = "https://marianoflix.duckdns.org:9000/hooks/torrent-download"
 )
 
-func SendDownloadLinks(search *torrent.Search) {
+func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
 	for _, torrentResult := range search.Out {
 		encodedMagnetLink := base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet))
@@ -63,13 +62,13 @@ func SendDownloadLinks(search *torrent.Search) {
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
-	err := slack.PostWebhook(transmissionIncomingHookURL, message)
+	err := slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
 		fmt.Printf("Error while sending download links: [%s]\n", err)
 	}
 }
 
-func SendDownloadStart(envTorrentName string) {
+func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 	decodedTorrentName, err := base64.StdEncoding.DecodeString(envTorrentName)
 	if err != nil {
 		fmt.Printf("Could not decode torrent name: [%s]\n", err)
@@ -82,13 +81,13 @@ func SendDownloadStart(envTorrentName string) {
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
-	err = slack.PostWebhook(transmissionIncomingHookURL, message)
+	err = slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
 		fmt.Printf("Error while sending download start notification: [%s]\n", err)
 	}
 }
 
-func SendStatus(status string) {
+func SendStatus(status string, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
 		Color:      "good",
@@ -98,7 +97,7 @@ func SendStatus(status string) {
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
-	err := slack.PostWebhook(transmissionIncomingHookURL, message)
+	err := slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
 		fmt.Printf("Error while sending torrents download status: [%s]\n", err)
 	}

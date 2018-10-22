@@ -16,13 +16,13 @@ case $# in
    1)
       case $1 in
          download)
-            /home/webhook/go/bin/flixctl torrent download --magnet-link "${MAGNET_LINK}"
+            /home/webhook/go/bin/flixctl torrent download --magnet-link "${MAGNET_LINK}" --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          search)
-            /home/webhook/go/bin/flixctl torrent search --keywords "${KEYWORDS}" --minimum-quality "1080"
+            /home/webhook/go/bin/flixctl torrent search --keywords "${KEYWORDS}" --minimum-quality "1080" --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          status)
-            /home/webhook/go/bin/flixctl torrent status
+            /home/webhook/go/bin/flixctl torrent status --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          *)
             echo "'$1' is not a valid torrent command."

@@ -16,6 +16,8 @@ var DownloadTorrentCmd = &cobra.Command{
 		envTorrentName := os.Getenv("TORRENT_NAME")
 		envMagnetLink := os.Getenv("MAGNET_LINK")
 		torrentService.TriggerDownload(envMagnetLink, argMagnetLink)
-		slackService.SendDownloadStart(envTorrentName)
+		if slackIncomingHookURL != "" {
+			slackService.SendDownloadStart(envTorrentName, slackIncomingHookURL)
+		}
 	},
 }

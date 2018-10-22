@@ -28,7 +28,7 @@ func Stop() {
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
 	if ec2Service.Status(svc, instanceID) == "Stopped" {
-		slackService.SendStop()
+		slackService.SendStop(slackIncomingHookURL)
 		return
 	}
 	var oldVolumeID = ebsService.FetchVolumeID(svc, "plex")
@@ -36,6 +36,8 @@ func Stop() {
 	ec2Service.Stop(svc, instanceID)
 	ebsService.Detach(svc, oldVolumeID)
 	ebsService.Delete(svc, oldVolumeID)
-	slackService.SendStop()
+	if slackIncomingHookURL != "" {
+		slackService.SendStop(slackIncomingHookURL)
+	}
 	fmt.Println("Plex Stopped")
 }
