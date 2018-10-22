@@ -5,12 +5,10 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func Create(sess *sess.Session, volumeID string, name string) {
-	svc := ec2.New(sess, sess.Config)
+func Create(svc *ec2.EC2, volumeID string, name string) {
 	tagList := &ec2.TagSpecification{
 		Tags: []*ec2.Tag{
 			{
@@ -50,9 +48,8 @@ func Create(sess *sess.Session, volumeID string, name string) {
 	}
 }
 
-func FetchSnapshotID(sess *sess.Session, name string) string {
+func FetchSnapshotID(svc *ec2.EC2, name string) string {
 	var snapshotID string
-	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeSnapshotsInput{
 		Filters: []*ec2.Filter{
 			{
@@ -71,8 +68,7 @@ func FetchSnapshotID(sess *sess.Session, name string) string {
 	return snapshotID
 }
 
-func Delete(sess *sess.Session, snapshotID string) {
-	svc := ec2.New(sess, sess.Config)
+func Delete(svc *ec2.EC2, snapshotID string) {
 	input := &ec2.DeleteSnapshotInput{
 		SnapshotId: aws.String(snapshotID),
 	}

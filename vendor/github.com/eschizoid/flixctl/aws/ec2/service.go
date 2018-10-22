@@ -6,14 +6,12 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
 const DryRunOperation = "DryRunOperation"
 
-func Start(sess *sess.Session, id string) {
-	svc := ec2.New(sess, sess.Config)
+func Start(svc *ec2.EC2, id string) {
 	instanceID := aws.StringSlice([]string{id})
 	input := &ec2.StartInstancesInput{
 		InstanceIds: instanceID,
@@ -40,8 +38,7 @@ func Start(sess *sess.Session, id string) {
 	}
 }
 
-func Stop(sess *sess.Session, id string) {
-	svc := ec2.New(sess, sess.Config)
+func Stop(svc *ec2.EC2, id string) {
 	input := &ec2.StopInstancesInput{
 		InstanceIds: []*string{
 			aws.String(id),
@@ -68,9 +65,8 @@ func Stop(sess *sess.Session, id string) {
 	}
 }
 
-func Status(sess *sess.Session, id string) string {
+func Status(svc *ec2.EC2, id string) string {
 	var status string
-	svc := ec2.New(sess, sess.Config)
 	input := &ec2.DescribeInstancesInput{
 		InstanceIds: []*string{
 			aws.String(id),
@@ -91,9 +87,8 @@ func Status(sess *sess.Session, id string) string {
 	return status
 }
 
-func FetchInstanceID(sess *sess.Session, name string) string {
+func FetchInstanceID(svc *ec2.EC2, name string) string {
 	var instanceID string
-	svc := ec2.New(sess, sess.Config)
 	params := &ec2.DescribeInstancesInput{
 		Filters: []*ec2.Filter{
 			{
