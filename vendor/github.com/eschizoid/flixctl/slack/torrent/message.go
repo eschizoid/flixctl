@@ -41,7 +41,7 @@ func SendDownloadLinks(search *torrent.Search) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color:     "#36a64f",
+			Color:     "good",
 			Title:     torrentResult.Name,
 			TitleLink: outgoingHookURL + "?n=" + url.QueryEscape(encodedName) + "&m=" + url.QueryEscape(encodedMagnetLink),
 			Fields: []slack.AttachmentField{
@@ -52,6 +52,13 @@ func SendDownloadLinks(search *torrent.Search) {
 			},
 		}
 		attachments = append(attachments, attachment)
+	}
+	if len(attachments) == 0 {
+		attachments = append(attachments, slack.Attachment{
+			Color:      "warning",
+			Text:       "*No Torrents found*",
+			MarkdownIn: []string{"text"},
+		})
 	}
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
