@@ -191,7 +191,6 @@ func Status() string {
 			fmt.Printf("Could not list torrents being downloaded: [%s]\n", err)
 		}
 		torrentStatus = string(out)
-		fmt.Println(torrentStatus)
 	}
 	return torrentStatus
 }

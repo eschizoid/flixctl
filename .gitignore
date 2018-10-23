@@ -20,6 +20,9 @@
 /pkg/
 /src/
 /Godeps/
+flixctl
+/aws/lambda/plex/executor/executor
+/aws/lambda/plex/executor/dispatcher
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

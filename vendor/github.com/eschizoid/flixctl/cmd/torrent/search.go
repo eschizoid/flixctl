@@ -1,6 +1,7 @@
 package torrent
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
@@ -43,7 +44,15 @@ var SearchTorrentCmd = &cobra.Command{
 		}
 		choose(&torrentSearch)
 		sortOut(&torrentSearch)
-		slackService.SendDownloadLinks(&torrentSearch)
+		if slackIncomingHookURL != "" {
+			slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL)
+		}
+		out, err := json.Marshal(torrentSearch.Out)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(out))
 	},
 }
 
