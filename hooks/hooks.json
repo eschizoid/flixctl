@@ -21,7 +21,18 @@
         "source": "string",
         "name": "download"
       }
-    ]
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{ getenv "SLACK_SEARCH_TOKEN" | js }}",
+        "parameter": {
+          "source": "url",
+          "name": "t",
+          "envname": "QUERY"
+        }
+      }
+    }
   },
   {
     "id": "torrent-search",
@@ -40,7 +51,17 @@
         "source": "string",
         "name": "search"
       }
-    ]
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{ getenv "SLACK_SEARCH_TOKEN" | js }}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
   },
   {
     "id": "torrent-status",
@@ -52,6 +73,16 @@
         "source": "string",
         "name": "status"
       }
-    ]
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{ getenv "SLACK_STATUS_TOKEN" | js }}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
   }
 ]

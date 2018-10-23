@@ -37,9 +37,9 @@ make install
 make deploy
 ----
 
-=== Usage
+=== Usage ```flixctl```
 ----
-$ flixctl --help
+flixctl --help
 Usage:
   flixctl [command]
 
@@ -52,6 +52,45 @@ Flags:
   -h, --help   help for flixctl
 
 Use "flixctl [command] --help" for more information about a command.
+
+flixctl torrent --help                                                                                                                                                                                                                    master ✱
+To Control Torrent Client
+----
+
+==== Usage ```flixctl plex```
+----
+flixctl plex --help                                                                                                                                                                                                                       master ✱
+To Control Plex Media Center
+
+Usage:
+  flixctl plex [command]
+
+Available Commands:
+  start       To Start Plex
+  status      To Get Plex Status
+  stop        To Stop Plex
+
+Flags:
+  -h, --help   help for plex
+
+Use "flixctl plex [command] --help" for more information about a command.
+----
+
+==== Usage ```flixctl torrent```
+----
+flixctl torrent --help
+Usage:
+  flixctl torrent [command]
+
+Available Commands:
+  download    To Download a Torrent
+  search      To Search for Torrents
+  status      To Show Torrents Status
+
+Flags:
+  -h, --help   help for torrent
+
+Use "flixctl torrent [command] --help" for more information about a command.
 ----
 
 === Examples

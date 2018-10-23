@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/url"
+	"os"
 	"strconv"
 
 	"github.com/eschizoid/flixctl/torrent"
@@ -40,9 +41,12 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color:     "good",
-			Title:     torrentResult.Name,
-			TitleLink: outgoingHookURL + "?n=" + url.QueryEscape(encodedName) + "&m=" + url.QueryEscape(encodedMagnetLink),
+			Color: "good",
+			Title: torrentResult.Name,
+			TitleLink: outgoingHookURL +
+				"?n=" + url.QueryEscape(encodedName) +
+				"&m=" + url.QueryEscape(encodedMagnetLink) +
+				"&t=" + os.Getenv("SLACK_SEARCH_TOKEN"),
 			Fields: []slack.AttachmentField{
 				attachmentFieldSize,
 				attachmentFieldSeeders,
