@@ -36,10 +36,10 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.15.59"
+  version = "1.15.62"
 
 [[constraint]]
-  branch = "master"
+  branch = "feature/tautulli"
   name = "github.com/eschizoid/flixctl"
 
 [[constraint]]

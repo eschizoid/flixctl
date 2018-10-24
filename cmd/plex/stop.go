@@ -15,7 +15,7 @@ import (
 var StopPlexCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "To Stop Plex",
-	Long:  `to stop the Plex Media Center.`,
+	Long:  "to stop the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
 		Stop()
 	},
