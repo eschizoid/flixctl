@@ -93,8 +93,14 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 
 func SendStatus(status string, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
+	var color string
+	if status == "Command timed out" || status == "Plex Stopped" {
+		color = "warning"
+	} else {
+		color = "good"
+	}
 	attachments = append(attachments, slack.Attachment{
-		Color:      "good",
+		Color:      color,
 		Text:       "```" + fmt.Sprint(status) + "```",
 		MarkdownIn: []string{"text"},
 	})
