@@ -1,6 +1,7 @@
 package torrent
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"os/exec"
@@ -182,15 +183,22 @@ func Status() string {
 	var torrentStatus string
 	ec2status := ec2Service.Status(SVC, InstanceID)
 	if ec2status == ec2RunningStatus {
-		out, err := exec.Command("transmission-remote",
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
+		cmd := exec.CommandContext(ctx, "transmission-remote",
 			transmissionHostPort,
 			"--authenv",
 			"--torrent=active",
-			"--list").CombinedOutput()
-		if err != nil {
+			"--list")
+		out, err := cmd.CombinedOutput()
+		if ctx.Err() == context.DeadlineExceeded {
+			torrentStatus = "Command timed out"
 			fmt.Printf("Could not list torrents being downloaded: [%s]\n", err)
+		} else {
+			torrentStatus = string(out)
 		}
-		torrentStatus = string(out)
+	} else {
+		torrentStatus = "Plex Stopped"
 	}
 	return torrentStatus
 }

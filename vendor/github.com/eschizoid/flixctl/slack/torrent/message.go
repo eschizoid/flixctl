@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/url"
+	"os"
 	"strconv"
 
 	"github.com/eschizoid/flixctl/torrent"
@@ -40,9 +41,12 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color:     "good",
-			Title:     torrentResult.Name,
-			TitleLink: outgoingHookURL + "?n=" + url.QueryEscape(encodedName) + "&m=" + url.QueryEscape(encodedMagnetLink),
+			Color: "good",
+			Title: torrentResult.Name,
+			TitleLink: outgoingHookURL +
+				"?n=" + url.QueryEscape(encodedName) +
+				"&m=" + url.QueryEscape(encodedMagnetLink) +
+				"&t=" + os.Getenv("SLACK_SEARCH_TOKEN"),
 			Fields: []slack.AttachmentField{
 				attachmentFieldSize,
 				attachmentFieldSeeders,
@@ -89,8 +93,14 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 
 func SendStatus(status string, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
+	var color string
+	if status == "Command timed out" || status == "Plex Stopped" {
+		color = "warning"
+	} else {
+		color = "good"
+	}
 	attachments = append(attachments, slack.Attachment{
-		Color:      "good",
+		Color:      color,
 		Text:       "```" + fmt.Sprint(status) + "```",
 		MarkdownIn: []string{"text"},
 	})

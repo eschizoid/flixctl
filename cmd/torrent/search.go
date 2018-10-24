@@ -14,7 +14,7 @@ import (
 
 var SearchTorrentCmd = &cobra.Command{
 	Use:   "search",
-	Short: "To SearchTorrents for Torrents",
+	Short: "To Search for Torrents",
 	Long:  `to search for torrents using the given keyword(s)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		envKeywords := os.Getenv("KEYWORDS")

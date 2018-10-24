@@ -49,7 +49,7 @@ install:
 update:
 	$(GODEP) ensure -update
 
-zip: zip-lambda-plex-dispatcher zip-lambda-plex-executor
+zip: clean build zip-lambda-plex-dispatcher zip-lambda-plex-executor
 
 zip-lambda-plex-dispatcher:
 	cd $(shell pwd)/aws/lambda/plex/dispatcher; \
@@ -59,14 +59,16 @@ zip-lambda-plex-executor:
 	cd $(shell pwd)/aws/lambda/plex/executor; \
 	zip -X lambda.zip executor
 
-deploy: clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executor
+deploy:	clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executor
 
 deploy-lambda-plex-dispatcher:
 	aws lambda update-function-code \
 	--function-name plex \
+	--region us-east-1 \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 
 deploy-lambda-plex-executor:
 	aws lambda update-function-code \
-	--function-name plex-command-executor:current \
+	--function-name plex-command-executor \
+	--region us-east-1 \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
