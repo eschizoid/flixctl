@@ -17,7 +17,11 @@ var StartPlexCmd = &cobra.Command{
 	Short: "To Start Plex",
 	Long:  "to start the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
+		shutdownCh := make(chan struct{})
+		go Indicator(shutdownCh)
 		Start()
+		close(shutdownCh)
+		fmt.Println("\nPlex Running")
 	},
 }
 
@@ -40,5 +44,4 @@ func Start() {
 	if slackIncomingHookURL != "" {
 		slackService.SendStart(slackIncomingHookURL)
 	}
-	fmt.Println("Plex Running")
 }

@@ -10,34 +10,35 @@ import (
 )
 
 func SendStart(slackIncomingHookURL string) {
-	err := sendMessage(fmt.Sprint("Plex successfully started!"), slackIncomingHookURL)
+	err := sendMessage("Plex successfully *started*!", slackIncomingHookURL)
 	if err != nil {
 		fmt.Printf("Error while sending plex start notification: [%s]\n", err)
 	}
 }
 
 func SendStop(slackIncomingHookURL string) {
-	err := sendMessage(fmt.Sprint("Plex successfully stopped!"), slackIncomingHookURL)
+	err := sendMessage("Plex successfully *stopped*!", slackIncomingHookURL)
 	if err != nil {
 		fmt.Printf("Error while sending plex stop notification: [%s]\n", err)
 	}
 }
 
 func SendStatus(status string, slackIncomingHookURL string) {
-	err := sendMessage(fmt.Sprintf("Plex status: %s", status), slackIncomingHookURL)
+	err := sendMessage(fmt.Sprint("Plex status: *", status, "*"), slackIncomingHookURL)
 	if err != nil {
 		fmt.Printf("Error while sending plex status: [%s]\n", err)
 	}
 }
 
 func sendMessage(text string, slackIncomingHookURL string) error {
-	println(text)
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
-		Color:  "good",
-		Text:   text,
-		Footer: "Plex Server",
-		Ts:     json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
+		Color:      "#C97D27",
+		Text:       text,
+		Footer:     "Plex Server",
+		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/plex/a1379540fa1021c2.png",
+		MarkdownIn: []string{"text"},
+		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,

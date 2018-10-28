@@ -1,7 +1,9 @@
 package plex
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -33,4 +35,18 @@ func init() {
 		"slack channel to notify of the plex event",
 	)
 	RootPlexCmd.AddCommand(StartPlexCmd, StopPlexCmd, StatusPlexCmd)
+}
+
+func Indicator(shutdownCh <-chan struct{}) {
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			fmt.Print(".")
+		case <-shutdownCh:
+			fmt.Println("")
+			return
+		}
+	}
 }
