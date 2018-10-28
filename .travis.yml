@@ -48,8 +48,18 @@ matrix:
 git:
   depth: 1
 
-deploy:
-  provider: script
-  script: make deploy
-  on:
-    branch: master
+#before_deploy:
+#  - make VERSION=${TRAVIS_TAG} release-cli -j2
+#
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure:
+#  file: release/*
+#  file_glob: true
+#  skip_cleanup: true
+#  on:
+#    tags: true
+#
+#after_deploy:
+#  - make deploy-lambdas

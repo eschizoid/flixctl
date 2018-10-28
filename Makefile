@@ -8,6 +8,11 @@ GOINSTALL=$(GOCMD) install
 GOLINT=golangci-lint
 GOTEST=$(GOCMD) test
 
+BINARY:=flixctl
+VERSION?=vlatest
+PLATFORMS:=windows linux darwin
+os=$(word 1, $@)
+
 build: build-cli build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router
 
 build-cli:
@@ -70,7 +75,7 @@ zip-lambda-torrent-router:
 	cd $(shell pwd)/aws/lambda/torrent; \
 	zip -X lambda.zip torrent
 
-deploy:	clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
+deploy-lambdas:	clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
 
 deploy-lambda-plex-dispatcher:
 	aws lambda update-function-code \
@@ -89,3 +94,10 @@ deploy-lambda-torrent-router:
 	--function-name torrent-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
+
+release-cli: $(PLATFORMS)
+
+.PHONY: $(PLATFORMS)
+$(PLATFORMS):
+	mkdir -p release
+	GOOS=$(os) GOARCH=amd64 go build -o release/$(BINARY)-$(VERSION)-$(os)-amd64
