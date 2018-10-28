@@ -71,7 +71,7 @@ zip-lambda-plex-executor:
 
 zip-lambda-torrent-router:
 	cd $(shell pwd)/aws/lambda/torrent; \
-	zip -X lambda.zip executor
+	zip -X lambda.zip torrent
 
 deploy:	clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
 
