@@ -13,13 +13,14 @@ import (
 var StatusPlexCmd = &cobra.Command{
 	Use:   "status",
 	Short: "To Get Plex Status",
-	Long:  `to get the status of the Plex Media Center.`,
+	Long:  "to get the status of the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
-		Status()
+		plexStatus := Status()
+		fmt.Println("EC2 current status: " + plexStatus)
 	},
 }
 
-func Status() {
+func Status() string {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
@@ -29,5 +30,5 @@ func Status() {
 	if slackIncomingHookURL != "" {
 		slackService.SendStatus(plexStatus, slackIncomingHookURL)
 	}
-	fmt.Println("EC2 current status: " + plexStatus)
+	return plexStatus
 }

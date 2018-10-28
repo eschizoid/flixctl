@@ -1,8 +1,11 @@
 package plex
 
 import (
+	"encoding/json"
 	"fmt"
+	"strconv"
 
+	util "github.com/eschizoid/flixctl/slack"
 	"github.com/nlopes/slack"
 )
 
@@ -28,10 +31,13 @@ func SendStatus(status string, slackIncomingHookURL string) {
 }
 
 func sendMessage(text string, slackIncomingHookURL string) error {
+	println(text)
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
-		Color: "good",
-		Text:  text,
+		Color:  "good",
+		Text:   text,
+		Footer: "Plex Server",
+		Ts:     json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,

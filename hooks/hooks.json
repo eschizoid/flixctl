@@ -85,4 +85,23 @@
       }
     }
   }
+  {
+    "id": "tautulli-notification",
+    "execute-command": "/opt/webhook-linux-amd64/tautulli.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing tautulli command",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "forward"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "text",
+        "envname": "TAUTULLI_MESSAGE"
+      }
+    ]
+  }
 ]

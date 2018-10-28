@@ -2,11 +2,13 @@ package torrent
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
 	"strconv"
 
+	util "github.com/eschizoid/flixctl/slack"
 	"github.com/eschizoid/flixctl/torrent"
 	"github.com/nlopes/slack"
 )
@@ -53,6 +55,7 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 				attachmentFieldUploadDate,
 				attachmentFieldSource,
 			},
+			Footer: "Torrent Client",
 		}
 		attachments = append(attachments, attachment)
 	}
@@ -61,6 +64,8 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 			Color:      "warning",
 			Text:       "*No Torrents found*",
 			MarkdownIn: []string{"text"},
+			Footer:     "Torrent Client",
+			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 		})
 	}
 	message := &slack.WebhookMessage{
@@ -79,8 +84,10 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 	}
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
-		Color: "good",
-		Text:  fmt.Sprintf("Starting to download %s!", string(decodedTorrentName)),
+		Color:  "good",
+		Text:   fmt.Sprintf("Starting to download %s!", string(decodedTorrentName)),
+		Footer: "Torrent Client",
+		Ts:     json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
@@ -103,6 +110,8 @@ func SendStatus(status string, slackIncomingHookURL string) {
 		Color:      color,
 		Text:       "```" + fmt.Sprint(status) + "```",
 		MarkdownIn: []string{"text"},
+		Footer:     "Torrent Client",
+		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,

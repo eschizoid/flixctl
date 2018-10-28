@@ -11,12 +11,16 @@ import (
 var StatusTorrentCmd = &cobra.Command{
 	Use:   "status",
 	Short: "To Show Torrents Status",
-	Long:  `to show the status of the torrents being downloaded`,
+	Long:  "to show the status of the torrents being downloaded",
 	Run: func(cmd *cobra.Command, args []string) {
-		downloadStatus := torrent.Status()
-		if slackIncomingHookURL != "" {
-			slackService.SendStatus(downloadStatus, slackIncomingHookURL)
-		}
-		fmt.Println(downloadStatus)
+		Status()
 	},
+}
+
+func Status() {
+	downloadStatus := torrent.Status()
+	if slackIncomingHookURL != "" {
+		slackService.SendStatus(downloadStatus, slackIncomingHookURL)
+	}
+	fmt.Println(downloadStatus)
 }

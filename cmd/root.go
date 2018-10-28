@@ -5,16 +5,21 @@ import (
 	"os"
 
 	"github.com/eschizoid/flixctl/cmd/plex"
+	"github.com/eschizoid/flixctl/cmd/tautulli"
 	"github.com/eschizoid/flixctl/cmd/torrent"
 	"github.com/spf13/cobra"
 )
 
 var FlixctlCmd = &cobra.Command{
 	Use: "flixctl",
+	Long: `To Control The Following flixctl Components:
+  * Plex
+  * Tautulli
+  * Torrent`,
 }
 
 func init() {
-	FlixctlCmd.AddCommand(plex.RootPlexCmd, torrent.RootTorrentCmd)
+	FlixctlCmd.AddCommand(plex.RootPlexCmd, torrent.RootTorrentCmd, tautulli.RootTautulliCmd)
 }
 
 func Execute() {

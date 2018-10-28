@@ -15,7 +15,7 @@ import (
 var StartPlexCmd = &cobra.Command{
 	Use:   "start",
 	Short: "To Start Plex",
-	Long:  `to start the Plex Media Center.`,
+	Long:  "to start the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
 		Start()
 	},
