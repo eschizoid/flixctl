@@ -1,7 +1,9 @@
 package torrent
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -54,4 +56,18 @@ func init() {
 		"slack channel to notify of the torrent event",
 	)
 	RootTorrentCmd.AddCommand(SearchTorrentCmd, DownloadTorrentCmd, StatusTorrentCmd)
+}
+
+func Indicator(shutdownCh <-chan struct{}) {
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			fmt.Print(".")
+		case <-shutdownCh:
+			fmt.Println("")
+			return
+		}
+	}
 }

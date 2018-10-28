@@ -44,7 +44,6 @@ make deploy
 To Control The Following flixctl Components:
   * Plex
   * Torrent
-  * Tautulli
 
 Usage:
   flixctl [command]
@@ -52,7 +51,6 @@ Usage:
 Available Commands:
   help        Help about any command
   plex        To Control Plex Media Center
-  tautulli    Used Internally To Forward Tautulli Notifications
   torrent     To Control Torrent Client
 
 Flags:
@@ -97,23 +95,6 @@ Flags:
   -h, --help   help for torrent
 
 Use "flixctl torrent [command] --help" for more information about a command.
-----
-
-==== Usage ```flixctl tautulli```
-----
-flixctl tautulli --help
-Used Internally To Forward Tautulli Notifications
-
-Usage:
-  flixctl tautulli [command]
-
-Available Commands:
-  forward     To Forward a Tautulli Event
-
-Flags:
-  -h, --help   help for tautulli
-
-Use "flixctl tautulli [command] --help" for more information about a command.
 ----
 
 === Examples

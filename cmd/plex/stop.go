@@ -17,7 +17,11 @@ var StopPlexCmd = &cobra.Command{
 	Short: "To Stop Plex",
 	Long:  "to stop the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
+		shutdownCh := make(chan struct{})
+		go Indicator(shutdownCh)
 		Stop()
+		close(shutdownCh)
+		fmt.Println("Plex Stopped")
 	},
 }
 
@@ -39,5 +43,4 @@ func Stop() {
 	if slackIncomingHookURL != "" {
 		slackService.SendStop(slackIncomingHookURL)
 	}
-	fmt.Println("Plex Stopped")
 }

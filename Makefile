@@ -36,15 +36,12 @@ build-lambda-torrent-router:
 
 clean:
 	$(GOCLEAN); \
-	cd $(shell pwd)/aws/lambda/plex/dispatcher; \
-	$(GOCLEAN); \
-	rm -rf lambda.zip; \
-	cd $(shell pwd)/aws/lambda/plex/executor; \
-	$(GOCLEAN); \
-	rm -rf lambda.zip \
-	cd $(shell pwd)/aws/lambda/torrent/torrent; \
-	$(GOCLEAN); \
-	rm -rf lambda.zip
+	rm -rf $(shell pwd)/aws/lambda/plex/executor/executor; \
+	rm -rf $(shell pwd)/aws/lambda/plex/executor/lambda.zip; \
+	rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip; \
+	rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/dispatcher; \
+	rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip; \
+	rm -rf $(shell pwd)/aws/lambda/torrent/torrent;
 
 deps:
 	$(GODEP) check
@@ -78,17 +75,17 @@ deploy:	clean build zip deploy-lambda-plex-dispatcher deploy-lambda-plex-executo
 deploy-lambda-plex-dispatcher:
 	aws lambda update-function-code \
 	--function-name plex \
-	--region us-east-1 \
+	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 
 deploy-lambda-plex-executor:
 	aws lambda update-function-code \
 	--function-name plex-command-executor \
-	--region us-east-1 \
+	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
 
 deploy-lambda-torrent-router:
 	aws lambda update-function-code \
 	--function-name torrent-router \
-	--region us-east-1 \
+	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip

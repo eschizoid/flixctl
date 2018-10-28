@@ -43,7 +43,7 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color: "good",
+			Color: "#C40203",
 			Title: torrentResult.Name,
 			TitleLink: outgoingHookURL +
 				"?n=" + url.QueryEscape(encodedName) +
@@ -55,16 +55,19 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 				attachmentFieldUploadDate,
 				attachmentFieldSource,
 			},
-			Footer: "Torrent Client",
+			Footer:     "Torrent Client",
+			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
+			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 		}
 		attachments = append(attachments, attachment)
 	}
 	if len(attachments) == 0 {
 		attachments = append(attachments, slack.Attachment{
-			Color:      "warning",
+			Color:      "#C40203",
 			Text:       "*No Torrents found*",
 			MarkdownIn: []string{"text"},
 			Footer:     "Torrent Client",
+			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
 			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 		})
 	}
@@ -84,10 +87,12 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 	}
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
-		Color:  "good",
-		Text:   fmt.Sprintf("Starting to download %s!", string(decodedTorrentName)),
-		Footer: "Torrent Client",
-		Ts:     json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
+		Color:      "#C40203",
+		Text:       fmt.Sprintf("Starting to download *%s*!", string(decodedTorrentName)),
+		MarkdownIn: []string{"text"},
+		Footer:     "Torrent Client",
+		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
+		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
@@ -100,17 +105,12 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 
 func SendStatus(status string, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
-	var color string
-	if status == "Command timed out" || status == "Plex Stopped" {
-		color = "warning"
-	} else {
-		color = "good"
-	}
 	attachments = append(attachments, slack.Attachment{
-		Color:      color,
+		Color:      "#C40203",
 		Text:       "```" + fmt.Sprint(status) + "```",
 		MarkdownIn: []string{"text"},
 		Footer:     "Torrent Client",
+		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
 		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 	})
 	message := &slack.WebhookMessage{
