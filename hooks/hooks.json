@@ -84,5 +84,11 @@
         }
       }
     }
+
+  },
+  {
+    "id": "admin",
+    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "include-command-output-in-response": true
   }
 ]
