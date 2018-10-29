@@ -38,6 +38,7 @@ before_script:
 # .golangci.yml file at the top level of your repo.
 script:
   - make lints
+  #- make deploy-lambdas
   #- go test -cover ./...
   #- go test -v -race ./...  # Run all the tests with the race detector enabled
 
@@ -47,19 +48,3 @@ matrix:
 
 git:
   depth: 1
-
-#before_deploy:
-#  - make VERSION=${TRAVIS_TAG} release-cli -j2
-#
-#deploy:
-#  provider: releases
-#  api_key:
-#    secure:
-#  file: release/*
-#  file_glob: true
-#  skip_cleanup: true
-#  on:
-#    tags: true
-#
-#after_deploy:
-#  - make deploy-lambdas
