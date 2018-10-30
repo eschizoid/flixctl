@@ -17,11 +17,30 @@ var FlixctlCmd = &cobra.Command{
   * Torrent`,
 }
 
-func init() {
-	FlixctlCmd.AddCommand(plex.RootPlexCmd, torrent.RootTorrentCmd)
+var (
+	// BUILD and VERSION are set during build
+	BUILD   string
+	VERSION string
+)
+
+var VersionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "To Get flixctl version",
+	Long:  "to get flixctl version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(" " + VERSION)
+		fmt.Println(" " + BUILD)
+	},
 }
 
-func Execute() {
+func init() {
+	FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd)
+}
+
+func Execute(version string, build string) {
+	VERSION = version
+	BUILD = build
+
 	if err := FlixctlCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

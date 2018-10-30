@@ -41,6 +41,7 @@ make deploy
 
 === Usage ```flixctl```
 ----
+flixctl --help
 To Control The Following flixctl Components:
   * Plex
   * Torrent
