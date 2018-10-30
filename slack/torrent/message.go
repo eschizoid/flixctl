@@ -81,14 +81,21 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 }
 
 func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
-	decodedTorrentName, err := base64.StdEncoding.DecodeString(envTorrentName)
-	if err != nil {
-		fmt.Printf("Could not decode torrent name: [%s]\n", err)
+	var text string
+	if envTorrentName != "" {
+		// Coming from webhook
+		decodedTorrentName, err := base64.StdEncoding.DecodeString(envTorrentName)
+		if err != nil {
+			fmt.Printf("Could not decode torrent name: [%s]\n", err)
+		}
+		text = fmt.Sprintf("Starting to download *%s*!", string(decodedTorrentName))
+	} else {
+		text = fmt.Sprintf("Starting download!")
 	}
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
 		Color:      "#C40203",
-		Text:       fmt.Sprintf("Starting to download *%s*!", string(decodedTorrentName)),
+		Text:       text,
 		MarkdownIn: []string{"text"},
 		Footer:     "Torrent Client",
 		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
@@ -97,7 +104,7 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}
-	err = slack.PostWebhook(slackIncomingHookURL, message)
+	err := slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
 		fmt.Printf("Error while sending download start notification: [%s]\n", err)
 	}

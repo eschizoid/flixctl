@@ -19,7 +19,7 @@ all: lint install
 $(TARGET): $(SRC)
 	@go build $(LDFLAGS) -o $(TARGET)
 
-build: $(TARGET) build-lambdas
+build: clean $(TARGET) build-lambdas
 	@true
 
 clean:
