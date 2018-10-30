@@ -5,10 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	types "github.com/eschizoid/flixctl/aws/lambda"
 	"github.com/eschizoid/flixctl/cmd/plex"
+	"github.com/go-playground/form"
 )
 
 const (
@@ -16,25 +20,42 @@ const (
 )
 
 func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var message string
 	switch request.HTTPMethod {
 	case "POST":
-		plexStatus := plex.Status()
-		// Send request to webhooks
-		if plexStatus == "Running" {
-			path := request.Path
-			if path == "/torrent-search" {
-				postToWebhooks(baseHookURL+path, map[string]interface{}{"text": request.Body})
-				message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
-			} else if path == "/torrent-status" {
-				postToWebhooks(baseHookURL+path, map[string]interface{}{})
-				message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
-			}
-		} else {
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Please start Plex"}`)
-		}
+		return dispatch(request)
 	default:
 		return clientError(http.StatusMethodNotAllowed)
+	}
+}
+
+func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	var message string
+	plexStatus := plex.Status()
+	// Send request to webhooks
+	if plexStatus == "Running" {
+		values, err := url.ParseQuery(request.Body)
+		if err != nil {
+			return clientError(http.StatusBadRequest)
+		}
+		slash := new(types.Slash)
+		err = form.NewDecoder().Decode(slash, values)
+		if err != nil {
+			return clientError(http.StatusUnprocessableEntity)
+		}
+		if slash.Command == "/torrent-search" {
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token": os.Getenv("SLACK_SEARCH_TOKEN"),
+				"text":  slash.Text,
+			})
+			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
+		} else if slash.Command == "/torrent-status" {
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token": os.Getenv("SLACK_STATUS_TOKEN"),
+			})
+			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
+		}
+	} else {
+		message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Make sure Plex it's running"}`)
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
