@@ -48,3 +48,7 @@ matrix:
 
 git:
   depth: 1
+
+after_success:
+  - make deploy
+  - make tag

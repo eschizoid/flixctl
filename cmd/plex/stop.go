@@ -21,7 +21,7 @@ var StopPlexCmd = &cobra.Command{
 		go Indicator(shutdownCh)
 		Stop()
 		close(shutdownCh)
-		fmt.Println("Plex Stopped")
+		fmt.Println("\nPlex Stopped")
 	},
 }
 
