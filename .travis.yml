@@ -20,16 +20,8 @@ before_install:
 # Skip the install step. Don't `go get` dependencies. Only build with the code
 # in vendor/
 install: true
-
 notifications:
   email: false
-
-# Anything in before_script that returns a nonzero exit code will flunk the
-# build and immediately stop. It's sorta like having set -e enabled in bash.
-# Make sure golangci-lint is vendored by running
-#   dep ensure -add github.com/golangci/golangci-lint/cmd/golangci-lint
-# ...and adding this to your Gopkg.toml file.
-#   required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 before_script:
   - go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint
 
@@ -38,6 +30,7 @@ before_script:
 # .golangci.yml file at the top level of your repo.
 script:
   - make lint
+  - make build
   #- make deploy-lambdas
   #- go test -cover ./...
   #- go test -v -race ./...  # Run all the tests with the race detector enabled
@@ -49,6 +42,15 @@ matrix:
 git:
   depth: 1
 
+deploy:
+  provider: releases
+  api_key:
+    secure: nWxL7c8HGEfdx3cLSl7PwxBsMB1YDrxVyvChiP/5rJ4dUFf6FsPPVYBVCnSeZmP8aHvgaYZiRu0RpyH/vnelGBJSusV+30ElTHYMHoh4KkTT7AcQ+fiDbRr9H0KpIRiSeTvqwjHR4FUZnVQ/UhGKvEL8CXP+hiUDJLeO3smGzFKgl5nEUCmkN3ks7FfG16gTROX8MqG1b6q6SVDg51zh/67iUygGvQwJsg7phOaYqkWeqtkRwarH8aYgwv4pLFWhIcbTwFOSfC79WyXb8M0FnsIjYW3fAli6Bz9mFhkVNa6NFkWrzdWlWgLVpAyEytGqU49Cqnjerp0usTDx1BEaBae9gJr07P1kZmATvAb6IVNpzGUj7ldoI+YyuDPqZBtyJHus79i0U6VHTsYaw3xocjZqUXwT00ER8JGQR4vXmPWOG8zOHDcUvIgu42ZTYGJlmpWt7kPGLwpfXGubPt3bJe07254yPwlQpFNpjpmo+hpeYaR/4/5PfDt/3ramaAHbebtCjI/ov03cRwZrcNABW3eQYOGgWhhaTom/qD3jZCgp7CbNaYEI8yf2L3RrnkcDUlSd5G4CrMreDn89boPEMcZrboIAwga0W9m7sqhOrXPc1dW3Yg8KBmfH8zLc6qtP9zrvfpjcJ2M4yKiXbi5nga2N93Uv3U5D78G09gSbdU0=
+  file: flixctl
+  skip_cleanup: true
+  on:
+    branch: master
+
 after_success:
-  - make deploy
+  - make deploy-lambdas
   - make tag
