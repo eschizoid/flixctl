@@ -38,6 +38,7 @@ before_script:
 # .golangci.yml file at the top level of your repo.
 script:
   - make lint
+  - make build
   #- make deploy-lambdas
   #- go test -cover ./...
   #- go test -v -race ./...  # Run all the tests with the race detector enabled
@@ -49,6 +50,14 @@ matrix:
 git:
   depth: 1
 
+deploy:
+  provider: releases
+  api_key:
+    secure: jI0dBCTTAmTaeTSsTG/33leuDryEGsH3u0F9LVPAB8aQYt4Y13dgz/MRmN5RnTk/giualPB3rSGCn6nmgpfG9mqdArUuh3q5s0z18rNtRghdBjLglOSeNxjAFy58Y8DYr2ZAHirANWH/+xY1W+K91ZO9mAdcXZMC+nEwaaCX+dvrEBQC/aMmUcsxB9c4hUFXRiwhv3MmgZWbPViEcNurabu0hNNhB7mQGNssLdz4Hyt2qMsDwX03GZZswmDx55+oxYccTgPZyauXlNNWLudJRWWnWCClX2n0FYTMVAWCoF15w8SxfJfMj9iOkFn/xP23VQmgroQCGoVRCzesmlgc7sAkElPz0bMpLGwmviLZEDX0esJiUE8UHxdn2B41rh+acddB7ZbHvTK6bqBA46E1pRLNybWCGywGgdMcSPYE7nQqX5E3nRwVr85O/Lsyvl25bHTYJOQVcCCHwY5kxXHDRGVvPPCNQMMhVXBmHbGIcL3Uybj9Khzcb6TQFg69PiV7ejJBO18IA7RCSfdWnZqOJQUgc4nyhrfb/Cph3EKzLC44HM8dWpRVXmxGeNSNvfUXW/Tp4eIeOxrss3Cae5X9/xxP+dBg397smBTSsQztCRw/j4xn9KS0ke46+4Sg1+t613YmKd0X5UtCzC04GUK7ViHZCc6/4Cm0hPO7KfA/X1M=
+  file: flixctl
+  on:
+    repo: eschizoid/flixctl
+
 after_success:
-  - make deploy
+  - make deploy-lambdas
   - make tag

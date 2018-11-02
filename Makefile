@@ -61,7 +61,7 @@ lint:
 update:
 	$(GODEP) ensure -update
 
-build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-plex-executor
+build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router
 
 build-lambda-plex-dispatcher:
 	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
@@ -89,22 +89,22 @@ zip-lambda-torrent-router:
 	@cd $(shell pwd)/aws/lambda/torrent; \
 	zip -X lambda.zip torrent
 
-deploy-lambdas: zip-lambdas
+deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
 
 deploy-lambda-plex-dispatcher:
-	aws lambda update-function-code \
+	@aws lambda update-function-code \
 	--function-name plex \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 
 deploy-lambda-plex-executor:
-	aws lambda update-function-code \
+	@aws lambda update-function-code \
 	--function-name plex-command-executor \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
 
 deploy-lambda-torrent-router:
-	aws lambda update-function-code \
+	@aws lambda update-function-code \
 	--function-name torrent-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
