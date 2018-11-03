@@ -20,8 +20,10 @@ before_install:
 # Skip the install step. Don't `go get` dependencies. Only build with the code
 # in vendor/
 install: true
+
 notifications:
   email: false
+
 before_script:
   - go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint
 

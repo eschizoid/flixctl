@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -28,8 +29,11 @@ var VersionCmd = &cobra.Command{
 	Short: "To Get flixctl version",
 	Long:  "to get flixctl version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(" " + VERSION)
-		fmt.Println(" " + BUILD)
+		m := make(map[string]string)
+		m["version"] = VERSION
+		m["build"] = BUILD
+		jsonString, _ := json.Marshal(m)
+		fmt.Println(string(jsonString))
 	},
 }
 

@@ -47,7 +47,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:2a398da70342bc4d49a61d5caa9cb5097e3eae57469ebfba6280b1c618dd88ed"
+  digest = "1:a96e79a4819bd6ecbb9cac6e12c205b627e70ceee663fa88e18b077bbbae2448"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -86,12 +86,12 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "34ab03ee1a2b90b3baf97ff666397c8fb9b8714b"
-  version = "v1.15.64"
+  revision = "3264db248fe8d241f6949ed35e33b11c0aec3c93"
+  version = "v1.15.68"
 
 [[projects]]
   branch = "master"
-  digest = "1:6c3c08e99c823d69b507e3e3d4164af01d0d899d440123b9603a5a1883976b12"
+  digest = "1:cc31088a2c0a6b433a81bdaafd1e08d1ea12b00dbacfada171b558fa418d41d3"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -107,7 +107,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "847ea85be2d3132249e84a9d40bb058ebc50cdbb"
+  revision = "89d5f81d5d6d1b5aef37b3e0afb803c439137e5b"
 
 [[projects]]
   digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
@@ -562,7 +562,8 @@
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
+  branch = "master"
+  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -574,15 +575,15 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
+  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
 
 [[projects]]
-  digest = "1:3f53e9e4dfbb664cd62940c9c4b65a2171c66acd0b7621a1a6b8e78513525a52"
+  digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ad15b42461921f1fb3529b058c6786c6a45d5162"
-  version = "v1.1.1"
+  revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
+  version = "v1.2.0"
 
 [[projects]]
   digest = "1:6a4a11ba764a56d2758899ec6f3848d24698d48442ebce85ee7a3f63284526cd"
@@ -641,7 +642,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "e84da0312774c21d64ee2317962ef669b27ffb41"
+  revision = "4d3f4d9ffa16a13f451c3b2999e9c49e9750bf06"
 
 [[projects]]
   branch = "master"
@@ -653,18 +654,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "9b4f9f5ad5197c79fd623a3638e70d8b26cef344"
+  revision = "c10e9556a7bc0e7c942242b606f0acf024ad5d6a"
 
 [[projects]]
   branch = "master"
-  digest = "1:d2605ed96ca0244a457fa8e6c37d5c370ce98ea09dcc21e5e07d967bfcb78878"
+  digest = "1:417d27a82efb8473554234a282be33d23b0d6adc121e636b55950f913ac071d6"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "95b1ffbd15a57cc5abb3f04402b9e8ec0016a52c"
+  revision = "9b800f95dbbc54abff0acf7ee32d88ba4e328c89"
 
 [[projects]]
   digest = "1:5a8c9713f32ff4b05072d1eb87b1b2c3feacb061c1300519cbe12c946a853500"
@@ -684,7 +685,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:6aa9381fe53ab53763996ddd72a57dc1b69ed1cd90fa8aeb4f6b4e567204f8cf"
+  digest = "1:aac721c5ec779073b35cf7a51b7764d13f6db2243d650965d2c71469e8994e5b"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -701,7 +702,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "f60e5f99f0816fc2d9ecb338008ea420248d2943"
+  revision = "96e9e165b75e735822645eff82850b08c377be36"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
