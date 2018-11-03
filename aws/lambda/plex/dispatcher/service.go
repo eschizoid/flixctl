@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"regexp"
 
 	"github.com/apex/invoke"
@@ -39,6 +40,9 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	}
 	if !CommandRegexp.MatchString(slash.Text) || slash.Text == "" {
 		return clientError(http.StatusBadRequest)
+	}
+	if slash.Token != os.Getenv("SLACK_PLEX_TOKEN") {
+		return clientError(http.StatusForbidden)
 	}
 	invokeLambda(slash)
 	return events.APIGatewayProxyResponse{

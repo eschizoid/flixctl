@@ -43,12 +43,18 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			return clientError(http.StatusUnprocessableEntity)
 		}
 		if slash.Command == "/torrent-search" {
+			if slash.Token != os.Getenv("SLACK_SEARCH_TOKEN") {
+				return clientError(http.StatusForbidden)
+			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token": os.Getenv("SLACK_SEARCH_TOKEN"),
 				"text":  slash.Text,
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
 		} else if slash.Command == "/torrent-status" {
+			if slash.Token != os.Getenv("SLACK_STATUS_TOKEN") {
+				return clientError(http.StatusForbidden)
+			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token": os.Getenv("SLACK_STATUS_TOKEN"),
 			})
