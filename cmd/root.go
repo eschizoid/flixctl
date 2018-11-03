@@ -24,7 +24,6 @@ var (
 	VERSION string
 )
 
-
 var VersionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "To Get flixctl version",
