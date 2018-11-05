@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eschizoid/flixctl/cmd/library"
 	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/eschizoid/flixctl/cmd/torrent"
 	"github.com/spf13/cobra"
@@ -26,7 +27,7 @@ var (
 
 var VersionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "To Get flixctl version",
+	Short: "To Get flixctl Version",
 	Long:  "to get flixctl version",
 	Run: func(cmd *cobra.Command, args []string) {
 		m := make(map[string]string)
@@ -38,7 +39,7 @@ var VersionCmd = &cobra.Command{
 }
 
 func init() {
-	FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd)
+	FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd, library.RootLibraryCmd)
 }
 
 func Execute(version string, build string) {

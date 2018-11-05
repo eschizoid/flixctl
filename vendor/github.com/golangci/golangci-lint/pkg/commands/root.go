@@ -6,11 +6,10 @@ import (
 	"runtime"
 	"runtime/pprof"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
 	"github.com/golangci/golangci-lint/pkg/config"
 	"github.com/golangci/golangci-lint/pkg/logutils"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 func (e *Executor) persistentPreRun(cmd *cobra.Command, args []string) {

@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"go/ast"
 
-	"github.com/golangci/prealloc"
-
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
 	"github.com/golangci/golangci-lint/pkg/result"
+	"github.com/golangci/prealloc"
 )
 
 type Prealloc struct{}

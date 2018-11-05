@@ -13,14 +13,11 @@ import (
 	"github.com/golangci/go-tools/unused"
 	"github.com/golangci/tools/go/ssa"
 	"golang.org/x/tools/go/loader"
-	"golang.org/x/tools/go/packages"
 
 	"github.com/golangci/golangci-lint/pkg/fsutils"
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
 	"github.com/golangci/golangci-lint/pkg/result"
 )
-
-const megacheckName = "megacheck"
 
 type Megacheck struct {
 	UnusedEnabled      bool
@@ -45,7 +42,7 @@ func (m Megacheck) Name() string {
 	}
 
 	if len(names) == 3 {
-		return megacheckName // all enabled
+		return "megacheck" // all enabled
 	}
 
 	return fmt.Sprintf("megacheck.{%s}", strings.Join(names, ","))
@@ -62,7 +59,7 @@ func (m Megacheck) Desc() string {
 	return descs[m.Name()]
 }
 
-func prettifyCompilationError(err packages.Error) error {
+func prettifyCompilationError(err error) error {
 	i, _ := TypeCheck{}.parseError(err)
 	if i == nil {
 		return err
@@ -83,15 +80,15 @@ func prettifyCompilationError(err packages.Error) error {
 
 func (m Megacheck) Run(ctx context.Context, lintCtx *linter.Context) ([]result.Issue, error) {
 	if len(lintCtx.NotCompilingPackages) != 0 {
-		var errPkgs []string
-		var errors []packages.Error
+		var packages []string
+		var errors []error
 		for _, p := range lintCtx.NotCompilingPackages {
-			errPkgs = append(errPkgs, p.String())
+			packages = append(packages, p.String())
 			errors = append(errors, p.Errors...)
 		}
 
 		warnText := fmt.Sprintf("Can't run megacheck because of compilation errors in packages %s",
-			errPkgs)
+			packages)
 		if len(errors) != 0 {
 			warnText += fmt.Sprintf(": %s", prettifyCompilationError(errors[0]))
 			if len(errors) > 1 {
@@ -150,6 +147,6 @@ func runMegacheck(program *loader.Program, ssaProg *ssa.Program, conf *loader.Co
 		})
 	}
 
-	fs := lintutil.FlagSet(megacheckName)
+	fs := lintutil.FlagSet("megacheck")
 	return lintutil.ProcessFlagSet(checkers, fs, program, ssaProg, conf)
 }

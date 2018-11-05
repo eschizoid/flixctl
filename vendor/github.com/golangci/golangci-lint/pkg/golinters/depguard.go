@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	depguardAPI "github.com/OpenPeeDeeP/depguard"
-
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
 	"github.com/golangci/golangci-lint/pkg/result"
 )

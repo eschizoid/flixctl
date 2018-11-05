@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	deadcodeAPI "github.com/golangci/go-misc/deadcode"
-
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
 	"github.com/golangci/golangci-lint/pkg/result"
 )

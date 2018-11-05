@@ -4,9 +4,8 @@
 package logutils
 
 import (
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockLog is a mock of Log interface

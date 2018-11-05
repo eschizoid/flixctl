@@ -45,7 +45,8 @@ var SearchTorrentCmd = &cobra.Command{
 		choose(&torrentSearch)
 		sortOut(&torrentSearch)
 		if slackIncomingHookURL != "" {
-			slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL)
+			envDownloadDir := os.Getenv("DOWNLOAD_DIR")
+			slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL, envDownloadDir)
 		}
 		out, err := json.Marshal(torrentSearch.Out)
 		if err != nil {

@@ -45,7 +45,6 @@ func Indicator(shutdownCh <-chan struct{}) {
 		case <-ticker.C:
 			fmt.Print(".")
 		case <-shutdownCh:
-			fmt.Println("")
 			return
 		}
 	}

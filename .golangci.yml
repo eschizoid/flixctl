@@ -33,3 +33,4 @@ linters:
   - maligned
   - prealloc
   - gosec
+  - lll
