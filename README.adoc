@@ -1,7 +1,14 @@
 image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
 
-= flixctl
-:toc:
+== flixctl
+:idprefix:
+:idseparator: -
+:sectanchors:
+:sectlinks:
+:sectnumlevels: 6
+:toc: macro
+:toclevels: 6
+:toc-title:
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture.
@@ -41,9 +48,11 @@ make deploy-lambdas
 
 === Usage ```flixctl```
 ----
-flixctl --help
+$ flixctl --help
 To Control The Following flixctl Components:
+  * Library
   * Plex
+  * Tautulli
   * Torrent
 
 Usage:
@@ -51,6 +60,7 @@ Usage:
 
 Available Commands:
   help        Help about any command
+  library     To Control Media Library
   plex        To Control Plex Media Center
   torrent     To Control Torrent Client
   version     To Get flixctl Version
@@ -63,7 +73,7 @@ Use "flixctl [command] --help" for more information about a command.
 
 ==== Usage ```flixctl plex```
 ----
-flixctl plex --help
+$ flixctl plex --help
 To Control Plex Media Center
 
 Usage:
@@ -80,9 +90,28 @@ Flags:
 Use "flixctl plex [command] --help" for more information about a command.
 ----
 
+==== Usage ```flixctl library```
+----
+$ flixctl library --help
+To Control Media Library
+Usage:
+  flixctl library [command]
+
+Available Commands:
+  archive     To Archive a File To Media Library
+  initiate    To Initiate a File Retrieval
+  jobs        To List Media Library Jobs
+  retrieve    To Retrieve a File From Media Library
+
+Flags:
+  -h, --help   help for library
+
+Use "flixctl library [command] --help" for more information about a command.
+----
+
 ==== Usage ```flixctl torrent```
 ----
-flixctl torrent --help
+$ flixctl torrent --help
 To Control Torrent Client
 
 Usage:

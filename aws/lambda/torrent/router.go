@@ -42,7 +42,8 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		if err != nil {
 			return clientError(http.StatusUnprocessableEntity)
 		}
-		if slash.Command == "/movies-search" {
+		switch slashCommand := slash.Command; slashCommand {
+		case "/movies-search":
 			token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
 			if slash.Token != token {
 				return clientError(http.StatusForbidden)
@@ -53,7 +54,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"directory": "/plex/movies",
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
-		} else if slash.Command == "/shows-search" {
+		case "/shows-search":
 			token := os.Getenv("SLACK_SHOWS_SEARCH_TOKEN")
 			if slash.Token != token {
 				return clientError(http.StatusForbidden)
@@ -64,7 +65,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"directory": "/plex/shows",
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
-		} else if slash.Command == "/torrent-status" {
+		case "/torrent-status":
 			if slash.Token != os.Getenv("SLACK_STATUS_TOKEN") {
 				return clientError(http.StatusForbidden)
 			}

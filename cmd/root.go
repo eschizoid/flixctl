@@ -14,6 +14,7 @@ import (
 var FlixctlCmd = &cobra.Command{
 	Use: "flixctl",
 	Long: `To Control The Following flixctl Components:
+  * Library
   * Plex
   * Tautulli
   * Torrent`,
@@ -38,9 +39,12 @@ var VersionCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd, library.RootLibraryCmd)
-}
+var (
+	_ = func() struct{} {
+		FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd, library.RootLibraryCmd)
+		return struct{}{}
+	}()
+)
 
 func Execute(version string, build string) {
 	VERSION = version
