@@ -17,8 +17,15 @@ var argMagnetLink string
 var keywords string
 var quality string
 var slackIncomingHookURL string
+var downloadDir string
 
 func init() {
+	DownloadTorrentCmd.Flags().StringVarP(&downloadDir,
+		"download-dir",
+		"w",
+		os.Getenv("DOWNLOAD_DIR"),
+		"set the torrent's download folder",
+	)
 	DownloadTorrentCmd.Flags().StringVarP(&argMagnetLink,
 		"magnet-link",
 		"m",
@@ -30,6 +37,12 @@ func init() {
 		"s",
 		os.Getenv("SLACK_TORRENT_INCOMING_HOOK_URL"),
 		"slack channel to notify of the torrent event",
+	)
+	SearchTorrentCmd.Flags().StringVarP(&downloadDir,
+		"download-dir",
+		"w",
+		os.Getenv("DOWNLOAD_DIR"),
+		"set the torrent's download folder",
 	)
 	SearchTorrentCmd.Flags().StringVarP(&keywords,
 		"keywords",
@@ -66,7 +79,6 @@ func Indicator(shutdownCh <-chan struct{}) {
 		case <-ticker.C:
 			fmt.Print(".")
 		case <-shutdownCh:
-			fmt.Println("")
 			return
 		}
 	}

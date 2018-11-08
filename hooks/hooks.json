@@ -14,6 +14,11 @@
         "source": "url",
         "name": "m",
         "envname": "MAGNET_LINK"
+      },
+      {
+        "source": "url",
+        "name": "d",
+        "envname": "DOWNLOAD_DIR"
       }
     ],
     "pass-arguments-to-command": [
@@ -25,7 +30,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_SEARCH_TOKEN"}}",
+        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
         "parameter": {
           "source": "url",
           "name": "t",
@@ -35,7 +40,7 @@
     }
   },
   {
-    "id": "torrent-search",
+    "id": "shows-search",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
     "response-message": "Executing search command",
@@ -44,6 +49,11 @@
         "source": "payload",
         "name": "text",
         "envname": "KEYWORDS"
+      },
+      {
+        "source": "payload",
+        "name": "directory",
+        "envname": "DOWNLOAD_DIR"
       }
     ],
     "pass-arguments-to-command": [
@@ -55,7 +65,41 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_SEARCH_TOKEN"}}",
+        "value": "{{getenv "SLACK_SHOWS_SEARCH_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "movies-search",
+    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing search command",
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "text",
+        "envname": "KEYWORDS"
+      },
+      {
+        "source": "payload",
+        "name": "directory",
+        "envname": "DOWNLOAD_DIR"
+      }
+    ],
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "search"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
         "parameter": {
           "source": "payload",
           "name": "token"
@@ -84,7 +128,6 @@
         }
       }
     }
-
   },
   {
     "id": "admin",

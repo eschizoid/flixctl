@@ -16,12 +16,12 @@ brew install dep
 
 === Dependencies
 ----
-make deps
+make dep
 ----
 
 === Lints
 ----
-make lints
+make lint
 ----
 
 === Build (CLI and λ's)
@@ -36,7 +36,7 @@ make install
 
 === Deploy λ's
 ----
-make deploy
+make deploy-lambdas
 ----
 
 === Usage ```flixctl```
@@ -53,6 +53,7 @@ Available Commands:
   help        Help about any command
   plex        To Control Plex Media Center
   torrent     To Control Torrent Client
+  version     To Get flixctl Version
 
 Flags:
   -h, --help   help for flixctl

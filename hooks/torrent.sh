@@ -18,12 +18,14 @@ case $# in
          download)
             /home/webhook/go/bin/flixctl torrent \
                 download \
+                --download-dir "${DOWNLOAD_DIR}" \
                 --magnet-link "${MAGNET_LINK}" \
                 --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          search)
             /home/webhook/go/bin/flixctl torrent \
                 search \
+                --download-dir "${DOWNLOAD_DIR}" \
                 --keywords "${KEYWORDS}" \
                 --minimum-quality "1080" \
                 --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"

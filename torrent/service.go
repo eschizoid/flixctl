@@ -203,27 +203,28 @@ func Status() string {
 	return torrentStatus
 }
 
-func TriggerDownload(envMagnetLink string, argMagnetLink string) {
+func TriggerDownload(envMagnetLink string, argMagnetLink string, envDownloadDir string) {
 	if envMagnetLink == "" {
 		// coming from flixctl
-		downloadTorrent(argMagnetLink)
+		downloadTorrent(argMagnetLink, envDownloadDir)
 	} else {
 		// coming from web-hook
 		decodedEnvMagnetLink, err := base64.StdEncoding.DecodeString(envMagnetLink)
 		if err != nil {
 			fmt.Printf("Could not decode the magnet link: [%s]\n", err)
 		}
-		downloadTorrent(string(decodedEnvMagnetLink))
+		downloadTorrent(string(decodedEnvMagnetLink), envDownloadDir)
 	}
 }
 
-func downloadTorrent(magnet string) {
+func downloadTorrent(magnet string, downloadDir string) {
 	status := ec2Service.Status(SVC, InstanceID)
 	if status == ec2RunningStatus {
 		transmission := exec.Command("transmission-remote",
 			transmissionHostPort,
 			"--authenv",
 			"--add",
+			fmt.Sprintf("--download-dir=%s", downloadDir),
 			magnet)
 		err := transmission.Start()
 		if err != nil {

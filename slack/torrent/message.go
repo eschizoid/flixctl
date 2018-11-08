@@ -17,8 +17,12 @@ const (
 	outgoingHookURL = "https://marianoflix.duckdns.org:9000/hooks/torrent-download"
 )
 
-func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
+func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, directoryDir string) {
 	var attachments []slack.Attachment
+	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
+	if directoryDir != "" {
+		directoryDir = os.TempDir()
+	}
 	for _, torrentResult := range search.Out {
 		encodedMagnetLink := base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet))
 		encodedName := base64.StdEncoding.EncodeToString([]byte(torrentResult.Name))
@@ -48,7 +52,8 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 			TitleLink: outgoingHookURL +
 				"?n=" + url.QueryEscape(encodedName) +
 				"&m=" + url.QueryEscape(encodedMagnetLink) +
-				"&t=" + os.Getenv("SLACK_SEARCH_TOKEN"),
+				"&t=" + token +
+				"&d=" + directoryDir,
 			Fields: []slack.AttachmentField{
 				attachmentFieldSize,
 				attachmentFieldSeeders,

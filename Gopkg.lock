@@ -47,7 +47,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:a96e79a4819bd6ecbb9cac6e12c205b627e70ceee663fa88e18b077bbbae2448"
+  digest = "1:6b9f7b9ff1ada2c4dede9367dc25ee8248f54bf14e15a61efe29665538295422"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -82,16 +82,16 @@
     "private/protocol/restjson",
     "private/protocol/xml/xmlutil",
     "service/ec2",
+    "service/glacier",
     "service/lambda",
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "3264db248fe8d241f6949ed35e33b11c0aec3c93"
-  version = "v1.15.68"
+  revision = "fa9217848bf00ff03c3c097e9c109cbe833ea130"
+  version = "v1.15.69"
 
 [[projects]]
-  branch = "master"
-  digest = "1:cc31088a2c0a6b433a81bdaafd1e08d1ea12b00dbacfada171b558fa418d41d3"
+  digest = "1:5a7168a15675b05fb6a5b5d49077ec3e618ae40ea26b57d79a9c01e35ed0bfa9"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -107,7 +107,8 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "89d5f81d5d6d1b5aef37b3e0afb803c439137e5b"
+  revision = "65947b3f9588f862a63bc5fe6f71ac79dabfce14"
+  version = "1.0.0"
 
 [[projects]]
   digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
@@ -248,17 +249,17 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:66fcab6100e2be1bb31ae5494a0eb928690e2a4bf739d44eb2923ac7dd687e03"
+  digest = "1:7fa19fb714538cab3783505a0aca7b8e970d30f5149a13a8adcb37290a2e570a"
   name = "github.com/golangci/gofmt"
   packages = [
     "gofmt",
     "goimports",
   ]
   pruneopts = "UT"
-  revision = "2076e05ced53480baa8ba14a05b80a415bec9377"
+  revision = "f021c4179c8204f48aa93990e6badea1b3f9446d"
 
 [[projects]]
-  digest = "1:2b9128d7a3135e2c69c995dc3d794bdf781feb180fe14fccde1328b6b47cd35a"
+  digest = "1:af0fa1acf38bbbe0561c14f45631268e9321fb34cf2754b8c7a71555eb930459"
   name = "github.com/golangci/golangci-lint"
   packages = [
     "cmd/golangci-lint",
@@ -267,7 +268,7 @@
     "pkg/exitcodes",
     "pkg/fsutils",
     "pkg/golinters",
-    "pkg/goutil",
+    "pkg/goutils",
     "pkg/lint",
     "pkg/lint/astcache",
     "pkg/lint/linter",
@@ -281,8 +282,8 @@
     "pkg/timeutils",
   ]
   pruneopts = "UT"
-  revision = "f5f770165069eb1e70455ee42fbf51ab4ea4fea4"
-  version = "v1.11.2"
+  revision = "dbfcf633d5f7b6544efa07d36798600a6f786005"
+  version = "v1.10.2"
 
 [[projects]]
   branch = "master"
@@ -373,7 +374,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0d459e50f313bce282754dfccb74a03b6caf7864eefd9660ffc2866c640b9ca1"
+  digest = "1:f821e22281a3dea9186b73b19a70dcbddad87dba3a3becdb3b03c8d20816dac3"
   name = "github.com/golangci/tools"
   packages = [
     "go/callgraph",
@@ -382,9 +383,12 @@
     "go/callgraph/static",
     "go/ssa",
     "go/ssa/ssautil",
+    "imports",
+    "internal/fastwalk",
+    "internal/gopathwalk",
   ]
   pruneopts = "UT"
-  revision = "01dd7756e01d993519ad7a8415ad8f2de8797be8"
+  revision = "ed64e33c8c8bc9a919e2b85a1a08225b5ae59d70"
 
 [[projects]]
   branch = "master"
@@ -562,8 +566,7 @@
   version = "v0.8.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -575,7 +578,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
+  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
@@ -621,12 +624,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:62d4e1f9d7f4118e60e5861560c64a77ae75eebbdaf5dd5fd5b7cacd66099bbd"
+  digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
   name = "github.com/spf13/pflag"
   packages = ["."]
   pruneopts = "UT"
-  revision = "082b515c9490f4eccc758469c3152b77d139f868"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   digest = "1:214775c11fd26da94a100111a62daa25339198a4f9c57cb4aab352da889f5b93"
@@ -642,7 +645,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "4d3f4d9ffa16a13f451c3b2999e9c49e9750bf06"
+  revision = "bfa7d42eb568d3c454e1853744768cc80718040d"
 
 [[projects]]
   branch = "master"
@@ -654,18 +657,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "c10e9556a7bc0e7c942242b606f0acf024ad5d6a"
+  revision = "10aee181995363b41f712a55844a0dd52ea04646"
 
 [[projects]]
   branch = "master"
-  digest = "1:417d27a82efb8473554234a282be33d23b0d6adc121e636b55950f913ac071d6"
+  digest = "1:f97031542387802b6fd8867c3f29488c2852aac19954ed51df6231a4fadf1707"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "9b800f95dbbc54abff0acf7ee32d88ba4e328c89"
+  revision = "3a76605856fddce5718553cbb8bd50ca492a7274"
 
 [[projects]]
   digest = "1:5a8c9713f32ff4b05072d1eb87b1b2c3feacb061c1300519cbe12c946a853500"
@@ -685,7 +688,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:aac721c5ec779073b35cf7a51b7764d13f6db2243d650965d2c71469e8994e5b"
+  digest = "1:ed4f5d31851969c296589902ef22522561e22c8fc6c169c54458725944ca296c"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -696,13 +699,12 @@
     "go/loader",
     "go/packages",
     "go/types/typeutil",
-    "imports",
     "internal/fastwalk",
     "internal/gopathwalk",
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "96e9e165b75e735822645eff82850b08c377be36"
+  revision = "78dc5bac0cacea7969e98b79c3b86597e0aa4e25"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
@@ -750,6 +752,7 @@
     "github.com/aws/aws-sdk-go/aws/awserr",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/ec2",
+    "github.com/aws/aws-sdk-go/service/glacier",
     "github.com/aws/aws-sdk-go/service/lambda",
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",

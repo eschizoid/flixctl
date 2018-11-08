@@ -111,4 +111,4 @@ deploy-lambda-torrent-router:
 
 tag:
 	@git tag --force $(VERSION)
-	@git push origin --tags
+	@git push origin --tags --force

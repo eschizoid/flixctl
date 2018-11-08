@@ -54,5 +54,7 @@ deploy:
     branch: master
 
 after_success:
-  - make deploy-lambdas
-  - make tag
+  - test $TRAVIS_BRANCH = "master" &&
+    test $TRAVIS_PULL_REQUEST = "false" &&
+    make deploy-lambdas &&
+    make tag

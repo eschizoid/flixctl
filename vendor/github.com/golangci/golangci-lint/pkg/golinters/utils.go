@@ -8,10 +8,10 @@ import (
 	"strings"
 	"sync"
 
-	gopackages "golang.org/x/tools/go/packages"
+	"github.com/golangci/golangci-lint/pkg/lint/linter"
+	"github.com/golangci/golangci-lint/pkg/packages"
 
 	"github.com/golangci/golangci-lint/pkg/config"
-	"github.com/golangci/golangci-lint/pkg/lint/linter"
 )
 
 func formatCode(code string, _ *config.Config) string {
@@ -89,25 +89,11 @@ func markIdentifiers(s string) string {
 	return s
 }
 
-func getAllFileNames(ctx *linter.Context) []string {
-	var ret []string
-	uniqFiles := map[string]bool{} // files are duplicated for test packages
-	for _, pkg := range ctx.Packages {
-		for _, f := range pkg.GoFiles {
-			if uniqFiles[f] {
-				continue
-			}
-			uniqFiles[f] = true
-			ret = append(ret, f)
-		}
-	}
-	return ret
-}
-
-func getASTFilesForGoPkg(ctx *linter.Context, pkg *gopackages.Package) ([]*ast.File, *token.FileSet, error) {
-	var files []*ast.File
+func getASTFilesForPkg(ctx *linter.Context, pkg *packages.Package) ([]*ast.File, *token.FileSet, error) {
+	filenames := pkg.Files(ctx.Cfg.Run.AnalyzeTests)
+	files := make([]*ast.File, 0, len(filenames))
 	var fset *token.FileSet
-	for _, filename := range pkg.GoFiles {
+	for _, filename := range filenames {
 		f := ctx.ASTCache.Get(filename)
 		if f == nil {
 			return nil, nil, fmt.Errorf("no AST for file %s in cache: %+v", filename, *ctx.ASTCache)
