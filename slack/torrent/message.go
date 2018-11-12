@@ -20,7 +20,7 @@ const (
 func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, directoryDir string) {
 	var attachments []slack.Attachment
 	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
-	if directoryDir != "" {
+	if directoryDir == "" {
 		directoryDir = os.TempDir()
 	}
 	for _, torrentResult := range search.Out {
