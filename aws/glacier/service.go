@@ -101,6 +101,7 @@ func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNa
 		}
 		result, err := svc.UploadMultipartPart(input)
 		if err != nil {
+			AbortMultipartUpload(svc, uploadID)
 			if aerr, ok := err.(awserr.Error); ok {
 				switch aerr.Code() {
 				case glacier.ErrCodeResourceNotFoundException:
@@ -142,6 +143,7 @@ func CompleteMultipartUpload(svc *glacier.Glacier, uploadID string, fileName str
 	}
 	result, err := svc.CompleteMultipartUpload(input)
 	if err != nil {
+		AbortMultipartUpload(svc, uploadID)
 		if aerr, ok := err.(awserr.Error); ok {
 			switch aerr.Code() {
 			case glacier.ErrCodeResourceNotFoundException:
@@ -220,6 +222,36 @@ func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutpu
 	}
 	fmt.Println(result)
 	return result
+}
+
+func AbortMultipartUpload(svc *glacier.Glacier, uploadID string) {
+	input := &glacier.AbortMultipartUploadInput{
+		AccountId: aws.String("-"),
+		UploadId:  aws.String(uploadID),
+		VaultName: aws.String("plex"),
+	}
+
+	result, err := svc.AbortMultipartUpload(input)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case glacier.ErrCodeResourceNotFoundException:
+				fmt.Println(glacier.ErrCodeResourceNotFoundException, aerr.Error())
+			case glacier.ErrCodeInvalidParameterValueException:
+				fmt.Println(glacier.ErrCodeInvalidParameterValueException, aerr.Error())
+			case glacier.ErrCodeMissingParameterValueException:
+				fmt.Println(glacier.ErrCodeMissingParameterValueException, aerr.Error())
+			case glacier.ErrCodeServiceUnavailableException:
+				fmt.Println(glacier.ErrCodeServiceUnavailableException, aerr.Error())
+			default:
+				fmt.Println(aerr.Error())
+			}
+		} else {
+			fmt.Println(err.Error())
+		}
+		return
+	}
+	fmt.Println(result)
 }
 
 func getTimeStamp() int64 {
