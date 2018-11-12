@@ -1,17 +1,22 @@
-image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
-
-== flixctl
+= Flixctl
 :idprefix:
 :idseparator: -
 :sectanchors:
 :sectlinks:
 :sectnumlevels: 6
+:sectnums:
 :toc: macro
 :toclevels: 6
 :toc-title:
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture.
+
+image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
+
+toc::[]
+
+
 
 === Architecture Diagram
 
