@@ -83,18 +83,6 @@ extractQueries:
 		}
 	}
 	patterns = restPatterns
-	// Look for the deprecated contains: syntax.
-	// TODO(matloob): delete this around mid-October 2018.
-	restPatterns = restPatterns[:0]
-	for _, pattern := range patterns {
-		if strings.HasPrefix(pattern, "contains:") {
-			containFile := strings.TrimPrefix(pattern, "contains:")
-			containFiles = append(containFiles, containFile)
-		} else {
-			restPatterns = append(restPatterns, pattern)
-		}
-	}
-	containFiles = absJoin(cfg.Dir, containFiles)
 
 	// TODO(matloob): Remove the definition of listfunc and just use golistPackages once go1.12 is released.
 	var listfunc driver
@@ -125,7 +113,8 @@ extractQueries:
 	if sizeserr != nil {
 		return nil, sizeserr
 	}
-	response.Sizes = sizes
+	// types.SizesFor always returns nil or a *types.StdSizes
+	response.Sizes, _ = sizes.(*types.StdSizes)
 
 	if len(containFiles) == 0 && len(packagesNamed) == 0 {
 		return response, nil
@@ -347,7 +336,7 @@ func runNamedQueries(cfg *Config, driver driver, addPkg func(*Package), queries 
 }
 
 func getSizes(cfg *Config) (types.Sizes, error) {
-	stdout, err := invokeGo(cfg, "env", "GOARCH") // TODO(matloob): perhaps merge this call with the roots call?
+	stdout, err := invokeGo(cfg, "env", "GOARCH")
 	if err != nil {
 		return nil, err
 	}

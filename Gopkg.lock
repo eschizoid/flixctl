@@ -47,7 +47,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:6b9f7b9ff1ada2c4dede9367dc25ee8248f54bf14e15a61efe29665538295422"
+  digest = "1:41164b3d6ade5f23f02a50be53e4bd1c86efed9f3123aac22fdb829c5bdccae6"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -87,18 +87,20 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "fa9217848bf00ff03c3c097e9c109cbe833ea130"
-  version = "v1.15.69"
+  revision = "cf00ea20983ce38df17ab0a0814463ab8838459f"
+  version = "v1.15.73"
 
 [[projects]]
-  digest = "1:5a7168a15675b05fb6a5b5d49077ec3e618ae40ea26b57d79a9c01e35ed0bfa9"
+  digest = "1:f953a7d9d52ea8ddcd113e4307e09dcdaaf6615d959699677770f3d3a9c91361"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
     "aws/ec2",
+    "aws/glacier",
     "aws/lambda",
     "aws/snapshot",
     "cmd",
+    "cmd/library",
     "cmd/plex",
     "cmd/torrent",
     "slack",
@@ -107,7 +109,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "65947b3f9588f862a63bc5fe6f71ac79dabfce14"
+  revision = "74aaa446e599ca086349e971398b019b5236ab3f"
   version = "1.0.0"
 
 [[projects]]
@@ -127,12 +129,83 @@
   version = "v1.4.7"
 
 [[projects]]
+  branch = "master"
+  digest = "1:aa518835605d796dda88c513ffc28bc7e6ae614237e1a5329b8cf85316010df6"
+  name = "github.com/go-critic/checkers"
+  packages = [
+    ".",
+    "internal/lintutil",
+  ]
+  pruneopts = "UT"
+  revision = "3a9003b45d11d43c053819901c60464c83757893"
+
+[[projects]]
+  digest = "1:ffe231ca58470578c30abfd63cd913201da4fc04aabc952c3884fd1943663711"
+  name = "github.com/go-lintpack/lintpack"
+  packages = [
+    ".",
+    "astwalk",
+    "internal/lintutil",
+  ]
+  pruneopts = "UT"
+  revision = "b42d32fbe26f8d1fc773e5ba3c2c31c5b9274ea9"
+  version = "v0.5.0"
+
+[[projects]]
   digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
   name = "github.com/go-playground/form"
   packages = ["."]
   pruneopts = "UT"
   revision = "572fa772c66ec5e3606a1a548406e10fb62de317"
   version = "v3.1.3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:69730c6296dfd12387944afcba3eb3815ba6f984b68340c16577ce2900b4d5e6"
+  name = "github.com/go-toolsmith/astcast"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b7a89ed70af1429e7518626ab0aee535a84a6b20"
+
+[[projects]]
+  digest = "1:71ce2e3f3b4acb600c5bbcffccd0d11534cec4e29a73f6de5781bae11ec528a3"
+  name = "github.com/go-toolsmith/astcopy"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "79b422d080c469383ec3cf020d124b70d073956b"
+  version = "0.9.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:db8123e0896cf805cb30c7bacad0b1a1d562edbbcd2a765ceda1af926c9a99a4"
+  name = "github.com/go-toolsmith/astequal"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "dcb477bfacd6e00a13c6d63bfc73db28dd343160"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f4fcc4dafc60c8612e7b8855310f0f7f5b7b6947011e60f26fb9c10a690b0b6f"
+  name = "github.com/go-toolsmith/astfmt"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8f8ee99c30864ae6d51ec6c8454d72a5072fe703"
+
+[[projects]]
+  branch = "master"
+  digest = "1:04989378ee2deb38e1f82fb5ec962a789f675e394c42c9df79fcc8f4e47d9005"
+  name = "github.com/go-toolsmith/astp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0af7e3c24f3087820a2e96679d064e6a56c624e2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:b1f02c5bd489f87613dd60927e613d670b12b7d7c1a84def65c59ce0d83c38ee"
+  name = "github.com/go-toolsmith/typep"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "d63dc7650676b3b54b2e2f01057303e3bf9a09c5"
 
 [[projects]]
   digest = "1:9ae31ce33b4bab257668963e844d98765b44160be4ee98cafc44637a213e530d"
@@ -259,7 +332,7 @@
   revision = "f021c4179c8204f48aa93990e6badea1b3f9446d"
 
 [[projects]]
-  digest = "1:af0fa1acf38bbbe0561c14f45631268e9321fb34cf2754b8c7a71555eb930459"
+  digest = "1:0a04acad62c61d35cb112c8334f8dc8f8db063aa2db295aea979f2e2b1786143"
   name = "github.com/golangci/golangci-lint"
   packages = [
     "cmd/golangci-lint",
@@ -268,7 +341,7 @@
     "pkg/exitcodes",
     "pkg/fsutils",
     "pkg/golinters",
-    "pkg/goutils",
+    "pkg/goutil",
     "pkg/lint",
     "pkg/lint/astcache",
     "pkg/lint/linter",
@@ -282,8 +355,8 @@
     "pkg/timeutils",
   ]
   pruneopts = "UT"
-  revision = "dbfcf633d5f7b6544efa07d36798600a6f786005"
-  version = "v1.10.2"
+  revision = "898ae4d3647ceb1404ca9ee25f20b0c9ea373849"
+  version = "v1.12.2"
 
 [[projects]]
   branch = "master"
@@ -374,7 +447,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f821e22281a3dea9186b73b19a70dcbddad87dba3a3becdb3b03c8d20816dac3"
+  digest = "1:45178302fc877a0241feedf55c941f8cc03212c186be434ee046c1951dd607cc"
   name = "github.com/golangci/tools"
   packages = [
     "go/callgraph",
@@ -388,7 +461,7 @@
     "internal/gopathwalk",
   ]
   pruneopts = "UT"
-  revision = "ed64e33c8c8bc9a919e2b85a1a08225b5ae59d70"
+  revision = "2cefd77fef9bfb73433915eda645312d40a2078d"
 
 [[projects]]
   branch = "master"
@@ -566,7 +639,8 @@
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
+  branch = "master"
+  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -578,7 +652,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
+  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
@@ -645,7 +719,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "bfa7d42eb568d3c454e1853744768cc80718040d"
+  revision = "e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa"
 
 [[projects]]
   branch = "master"
@@ -657,18 +731,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "10aee181995363b41f712a55844a0dd52ea04646"
+  revision = "03003ca0c849e57b6ea29a4bab8d3cb6e4d568fe"
 
 [[projects]]
   branch = "master"
-  digest = "1:f97031542387802b6fd8867c3f29488c2852aac19954ed51df6231a4fadf1707"
+  digest = "1:6a875550c3b582f6c2d7e2ce44aba792511f00016d7c46b0a4fb26f730ef3058"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "3a76605856fddce5718553cbb8bd50ca492a7274"
+  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
 
 [[projects]]
   digest = "1:5a8c9713f32ff4b05072d1eb87b1b2c3feacb061c1300519cbe12c946a853500"
@@ -688,7 +762,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ed4f5d31851969c296589902ef22522561e22c8fc6c169c54458725944ca296c"
+  digest = "1:137de3c4232b899035cb5f19d4c3a92c95284b3876a24695616296d246f67db4"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -704,7 +778,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "78dc5bac0cacea7969e98b79c3b86597e0aa4e25"
+  revision = "6d71ab8aade08605ffc36622332264e2f6991952"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
@@ -726,12 +800,12 @@
   version = "v2.2.1"
 
 [[projects]]
-  branch = "master"
   digest = "1:6a26dcb8f66d1110d3fa7b1cd097e450631bcd4f7a59a417b0f20d2646934a4a"
   name = "sourcegraph.com/sourcegraph/go-diff"
   packages = ["diff"]
   pruneopts = "UT"
-  revision = "119ab63a9fb25c4f02d0bc8088c61bac0f449f7d"
+  revision = "c613306ac97fb4807862c088149199f0dab8685a"
+  version = "v0.5.0"
 
 [[projects]]
   digest = "1:ffbeee69d5d01b594a4ca53e359861e3416c70bdbca8d423c72b815f470ecc49"
@@ -756,9 +830,11 @@
     "github.com/aws/aws-sdk-go/service/lambda",
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",
+    "github.com/eschizoid/flixctl/aws/glacier",
     "github.com/eschizoid/flixctl/aws/lambda",
     "github.com/eschizoid/flixctl/aws/snapshot",
     "github.com/eschizoid/flixctl/cmd",
+    "github.com/eschizoid/flixctl/cmd/library",
     "github.com/eschizoid/flixctl/cmd/plex",
     "github.com/eschizoid/flixctl/cmd/torrent",
     "github.com/eschizoid/flixctl/slack",

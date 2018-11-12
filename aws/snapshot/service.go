@@ -26,10 +26,7 @@ func Create(svc *ec2.EC2, volumeID string, name string) {
 	_, err := svc.CreateSnapshot(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}
@@ -75,10 +72,7 @@ func Delete(svc *ec2.EC2, snapshotID string) {
 	_, err := svc.DeleteSnapshot(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}

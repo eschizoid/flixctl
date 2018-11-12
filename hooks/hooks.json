@@ -1,5 +1,78 @@
 [
   {
+    "id": "admin",
+    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "include-command-output-in-response": true
+  },
+  {
+    "id": "movies-search",
+    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing search command",
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "text",
+        "envname": "KEYWORDS"
+      },
+      {
+        "source": "payload",
+        "name": "directory",
+        "envname": "DOWNLOAD_DIR"
+      }
+    ],
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "search"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "shows-search",
+    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing search command",
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "text",
+        "envname": "KEYWORDS"
+      },
+      {
+        "source": "payload",
+        "name": "directory",
+        "envname": "DOWNLOAD_DIR"
+      }
+    ],
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "search"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_SHOWS_SEARCH_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
     "id": "torrent-download",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
@@ -40,74 +113,6 @@
     }
   },
   {
-    "id": "shows-search",
-    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
-    "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing search command",
-    "pass-environment-to-command": [
-      {
-        "source": "payload",
-        "name": "text",
-        "envname": "KEYWORDS"
-      },
-      {
-        "source": "payload",
-        "name": "directory",
-        "envname": "DOWNLOAD_DIR"
-      }
-    ],
-    "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "search"
-      }
-    ],
-    "trigger-rule": {
-      "match": {
-        "type": "value",
-        "value": "{{getenv "SLACK_SHOWS_SEARCH_TOKEN"}}",
-        "parameter": {
-          "source": "payload",
-          "name": "token"
-        }
-      }
-    }
-  },
-  {
-    "id": "movies-search",
-    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
-    "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing search command",
-    "pass-environment-to-command": [
-      {
-        "source": "payload",
-        "name": "text",
-        "envname": "KEYWORDS"
-      },
-      {
-        "source": "payload",
-        "name": "directory",
-        "envname": "DOWNLOAD_DIR"
-      }
-    ],
-    "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "search"
-      }
-    ],
-    "trigger-rule": {
-      "match": {
-        "type": "value",
-        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
-        "parameter": {
-          "source": "payload",
-          "name": "token"
-        }
-      }
-    }
-  },
-  {
     "id": "torrent-status",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
@@ -130,8 +135,25 @@
     }
   },
   {
-    "id": "admin",
-    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
-    "include-command-output-in-response": true
+    "id": "library-notification",
+    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing status command",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "status"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
   }
 ]

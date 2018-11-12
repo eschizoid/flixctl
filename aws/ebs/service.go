@@ -17,10 +17,7 @@ func Attach(svc *ec2.EC2, instanceID string, volumeID string) {
 	_, err := svc.AttachVolume(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}
@@ -41,10 +38,7 @@ func Detach(svc *ec2.EC2, volumeID string) {
 	_, err := svc.DetachVolume(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}
@@ -77,10 +71,7 @@ func Create(svc *ec2.EC2, snapshotID string, name string) {
 	_, err := svc.CreateVolume(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}
@@ -106,10 +97,7 @@ func Delete(svc *ec2.EC2, volumeID string) {
 	_, err := svc.DeleteVolume(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
+			fmt.Println(aerr.Error())
 		} else {
 			fmt.Println(err.Error())
 		}

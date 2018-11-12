@@ -31,7 +31,7 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 
-install:
+install: update-vendor
 	$(GOINSTALL) $(LDFLAGS)
 
 uninstall: clean
@@ -56,10 +56,17 @@ dep:
 	$(GODEP) ensure -v
 
 lint:
-	$(GOLINT) -v --deadline=5m run
+	$(GOLINT) -v --deadline=5m run --disable gochecknoglobals
 
 update:
 	$(GODEP) ensure -update
+
+update-vendor:
+	@cp -R aws/* vendor/github.com/eschizoid/flixctl/aws
+	@cp -R cmd/* vendor/github.com/eschizoid/flixctl/cmd
+	@cp -R slack/* vendor/github.com/eschizoid/flixctl/slack
+	@cp -R torrent/* vendor/github.com/eschizoid/flixctl/torrent
+	@cp -R worker/* vendor/github.com/eschizoid/flixctl/worker
 
 build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router
 
