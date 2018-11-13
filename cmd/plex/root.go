@@ -8,6 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	Ec2RunnningStatus = "Running"
+	Ec2StoppedStatus  = "Stopped"
+)
+
 var RootPlexCmd = &cobra.Command{
 	Use:   "plex",
 	Short: "To Control Plex Media Center",

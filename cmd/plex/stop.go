@@ -1,6 +1,7 @@
 package plex
 
 import (
+	"encoding/json"
 	"fmt"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -21,7 +22,10 @@ var StopPlexCmd = &cobra.Command{
 		go Indicator(shutdownCh)
 		Stop()
 		close(shutdownCh)
-		fmt.Println("\nPlex Stopped")
+		m := make(map[string]string)
+		m["plex_status"] = "stopped"
+		jsonString, _ := json.Marshal(m)
+		fmt.Println("\n" + string(jsonString))
 	},
 }
 
@@ -31,8 +35,9 @@ func Stop() {
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
-	if ec2Service.Status(svc, instanceID) == "Stopped" {
-		slackService.SendStop(slackIncomingHookURL)
+	var status = ec2Service.Status(svc, instanceID)
+	if status == Ec2StoppedStatus {
+		slackService.SendStatus("stopped", slackIncomingHookURL)
 		return
 	}
 	var oldVolumeID = ebsService.FetchVolumeID(svc, "plex")
@@ -41,6 +46,6 @@ func Stop() {
 	ebsService.Detach(svc, oldVolumeID)
 	ebsService.Delete(svc, oldVolumeID)
 	if slackIncomingHookURL != "" {
-		slackService.SendStop(slackIncomingHookURL)
+		slackService.SendStatus("stopped", slackIncomingHookURL)
 	}
 }

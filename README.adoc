@@ -10,13 +10,27 @@
 :toc-title:
 
 image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
+image:https://goreportcard.com/badge/github.com/gliderlabs/ssh["Go Report Card", link="https://goreportcard.com/report/github.com/gliderlabs/ssh"]
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture.
 
 toc::[]
 
-=== Architecture Diagram
+=== Architecture
+==== Architecture Diagram
+==== Components
+===== AWS
+====== API Geteway
+====== EBS
+====== EC2
+====== Glacier
+====== Lambda
+===== OSS
+====== Plex
+====== Tautulli
+====== Slack
+====== Webhooks
 
 === Pre-requisites
 ----
@@ -49,7 +63,8 @@ make install
 make deploy-lambdas
 ----
 
-=== Usage ```flixctl```
+=== Usage
+==== ```flixctl```
 ----
 $ flixctl --help
 To Control The Following flixctl Components:
@@ -73,8 +88,7 @@ Flags:
 
 Use "flixctl [command] --help" for more information about a command.
 ----
-
-==== Usage ```flixctl plex```
+==== ```flixctl plex```
 ----
 $ flixctl plex --help
 To Control Plex Media Center
@@ -92,8 +106,7 @@ Flags:
 
 Use "flixctl plex [command] --help" for more information about a command.
 ----
-
-==== Usage ```flixctl library```
+==== ```flixctl library```
 ----
 $ flixctl library --help
 To Control Media Library
@@ -111,8 +124,7 @@ Flags:
 
 Use "flixctl library [command] --help" for more information about a command.
 ----
-
-==== Usage ```flixctl torrent```
+==== ```flixctl torrent```
 ----
 $ flixctl torrent --help
 To Control Torrent Client
@@ -132,11 +144,26 @@ Use "flixctl torrent [command] --help" for more information about a command.
 ----
 
 === Examples
+==== ```flixctl```
+----
+flixctl version
+----
+==== ```flixctl plex```
 ----
 flixctl plex start
 flixctl plex stop
 flixctl plex status
+----
+==== ```flixctl torrent```
+----
 flixctl torrent status
 flixctl torrent search --keywords Trainspotting --minimum-quality 1080
 flixctl torrent download --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996BF88DC879BA1B1C0CB67&dn=T2+Trainspotting+2017+BDRip+1080p&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.ch%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.pirateparty.gr%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Feddie4.nl%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2710%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce"
+----
+==== ```flixctl library```
+----
+flixctl library jobs
+flixctl library archive
+flixctl library retrieve
+flixctl library initiate
 ----
