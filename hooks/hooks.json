@@ -133,27 +133,6 @@
         }
       }
     }
-  },
-  {
-    "id": "library-notification",
-    "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
-    "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing status command",
-    "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "status"
-      }
-    ],
-    "trigger-rule": {
-      "match": {
-        "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
-        "parameter": {
-          "source": "payload",
-          "name": "token"
-        }
-      }
-    }
+  }
   }
 ]

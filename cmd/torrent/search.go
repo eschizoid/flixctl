@@ -14,13 +14,15 @@ import (
 
 var SearchTorrentCmd = &cobra.Command{
 	Use:   "search",
-	Short: "To Search for Torrents",
+	Short: "To Search For Torrents",
 	Long:  "to search for torrents using the given keyword(s)",
 	Run: func(cmd *cobra.Command, args []string) {
 		envKeywords := os.Getenv("KEYWORDS")
-		if envKeywords != "" {
+		envDownloadDir := os.Getenv("DOWNLOAD_DIR")
+		if envKeywords != "" && envDownloadDir != "" {
 			// coming from web-hook
 			keywords = envKeywords
+			downloadDir = envDownloadDir
 		}
 		torrentSearch := torrentService.Search{
 			In: keywords,
@@ -45,8 +47,7 @@ var SearchTorrentCmd = &cobra.Command{
 		choose(&torrentSearch)
 		sortOut(&torrentSearch)
 		if slackIncomingHookURL != "" {
-			envDownloadDir := os.Getenv("DOWNLOAD_DIR")
-			slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL, envDownloadDir)
+			slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL, downloadDir)
 		}
 		out, err := json.Marshal(torrentSearch.Out)
 		if err != nil {

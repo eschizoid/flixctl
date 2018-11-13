@@ -10,6 +10,7 @@ import (
 
 	util "github.com/eschizoid/flixctl/slack"
 	"github.com/eschizoid/flixctl/torrent"
+	"github.com/hekmon/transmissionrpc"
 	"github.com/nlopes/slack"
 )
 
@@ -85,22 +86,11 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, dire
 	}
 }
 
-func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
-	var text string
-	if envTorrentName != "" {
-		// Coming from webhook
-		decodedTorrentName, err := base64.StdEncoding.DecodeString(envTorrentName)
-		if err != nil {
-			fmt.Printf("Could not decode torrent name: [%s]\n", err)
-		}
-		text = fmt.Sprintf("Starting to download *%s*!", string(decodedTorrentName))
-	} else {
-		text = fmt.Sprintf("Starting download!")
-	}
+func SendDownloadStart(torrentName string, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
 	attachments = append(attachments, slack.Attachment{
 		Color:      "#C40203",
-		Text:       text,
+		Text:       fmt.Sprintf("Starting to download *%s*!", torrentName),
 		MarkdownIn: []string{"text"},
 		Footer:     "Torrent Client",
 		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
@@ -115,16 +105,21 @@ func SendDownloadStart(envTorrentName string, slackIncomingHookURL string) {
 	}
 }
 
-func SendStatus(status string, slackIncomingHookURL string) {
+func SendStatus(torrents []transmissionrpc.Torrent, slackIncomingHookURL string) {
 	var attachments []slack.Attachment
-	attachments = append(attachments, slack.Attachment{
-		Color:      "#C40203",
-		Text:       "```" + fmt.Sprint(status) + "```",
-		MarkdownIn: []string{"text"},
-		Footer:     "Torrent Client",
-		FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
-		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
-	})
+	for _, torrentFile := range torrents {
+		attachments = append(attachments, slack.Attachment{
+			Color: "#C40203",
+			Text: fmt.Sprintf(`
+*Name*: %s
+*Percentage*: %f
+*ETA*: %d`, *torrentFile.Name, *torrentFile.PercentDone, torrentFile.Eta),
+			MarkdownIn: []string{"text"},
+			Footer:     "Torrent Client",
+			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
+			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
+		})
+	}
 	message := &slack.WebhookMessage{
 		Attachments: attachments,
 	}

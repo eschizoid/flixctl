@@ -27,20 +27,14 @@ func Chunk(fileName string) []string {
 		fmt.Printf("Part size: %d\n", partSize)
 		partBuffer := make([]byte, partSize)
 		_, err = file.Read(partBuffer)
-		if err != nil {
-			fmt.Println(err)
-		}
+		ShowError(err)
 		// write to disk
 		fileName := "part-" + strconv.FormatUint(i, 10)
 		_, err = os.Create(fileName)
-		if err != nil {
-			fmt.Println(err)
-		}
+		ShowError(err)
 		// write/save buffer to disk
 		err = ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-		if err != nil {
-			fmt.Println(err)
-		}
+		ShowError(err)
 		files = append(files, fileName)
 	}
 	return files
