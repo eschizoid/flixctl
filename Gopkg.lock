@@ -507,6 +507,22 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:9715d8b13bda6dada8327ad7d4791ec8d4c2be49a660c8a9293361f80daac913"
+  name = "github.com/hekmon/cunits"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3c45cb0124f153c1e8bbd2e965cf657c59331d49"
+  version = "v2.0.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:559994afcc1f274362debeb4cb990b2a2553e3bfaf477e7add9d975f49cd8ba6"
+  name = "github.com/hekmon/transmissionrpc"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5e0fdaaae2caa3f095dc45b44a487068cc668b5b"
+
+[[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -843,6 +859,7 @@
     "github.com/eschizoid/flixctl/torrent",
     "github.com/go-playground/form",
     "github.com/golangci/golangci-lint/cmd/golangci-lint",
+    "github.com/hekmon/transmissionrpc",
     "github.com/juliensalinas/torrengo/otts",
     "github.com/juliensalinas/torrengo/td",
     "github.com/juliensalinas/torrengo/tpb",

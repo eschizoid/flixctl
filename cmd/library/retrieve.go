@@ -14,8 +14,8 @@ const maxFileChunkSize = 1024 * 1024 * 4 // 4MB
 
 var RetrieveLibraryCmd = &cobra.Command{
 	Use:   "retrieve",
-	Short: "To Retrieve a File From Media Library",
-	Long:  "to retrieve a movie or show from media library.",
+	Short: "To Retrieve A Movie Or Show",
+	Long:  "to retrieve a movie or show from the media library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)

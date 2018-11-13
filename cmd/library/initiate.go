@@ -9,7 +9,7 @@ import (
 
 var InitiateLibraryCmd = &cobra.Command{
 	Use:   "initiate",
-	Short: "To Initiate a File Retrieval",
+	Short: "To Initiate A Movie Or Show Retrieval",
 	Long:  "to initiate the retrieval of a movie or show from media library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{

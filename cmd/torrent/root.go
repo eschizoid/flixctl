@@ -11,7 +11,7 @@ var RootTorrentCmd = &cobra.Command{
 	Short: "To Control Torrent Client",
 }
 
-var argMagnetLink string
+var magnetLink string
 var keywords string
 var quality string
 var slackIncomingHookURL string
@@ -25,7 +25,7 @@ var (
 			os.Getenv("DOWNLOAD_DIR"),
 			"set the torrent's download folder",
 		)
-		DownloadTorrentCmd.Flags().StringVarP(&argMagnetLink,
+		DownloadTorrentCmd.Flags().StringVarP(&magnetLink,
 			"magnet-link",
 			"m",
 			"",

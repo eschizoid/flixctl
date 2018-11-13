@@ -2,26 +2,24 @@ package torrent
 
 import (
 	"context"
-	"encoding/base64"
 	"fmt"
-	"os/exec"
+	"os"
 	"regexp"
+	"strings"
 	"time"
 
-	sess "github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ec2"
-	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
+	"github.com/hekmon/transmissionrpc"
 	"github.com/juliensalinas/torrengo/otts"
 	"github.com/juliensalinas/torrengo/td"
 	"github.com/juliensalinas/torrengo/tpb"
 )
 
 const (
-	ec2RunningStatus     = "Running"
-	transmissionHostPort = "marianoflix.duckdns.org:9091"
-	TorrentDownloadsKey  = "td"
-	ThePirateBayKey      = "tpb"
-	OttsKey              = "otts"
+	ec2RunningStatus    = "Running"
+	transmissionHost    = "marianoflix.duckdns.org"
+	TorrentDownloadsKey = "td"
+	ThePirateBayKey     = "tpb"
+	OttsKey             = "otts"
 )
 
 type Result struct {
@@ -60,18 +58,19 @@ var Sources = map[string]string{
 	OttsKey:             "1337x",
 }
 
-var AwsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
-	SharedConfigState: sess.SharedConfigEnable,
-}))
-
-var SVC = ec2.New(AwsSession, AwsSession.Config)
-
-var InstanceID = ec2Service.FetchInstanceID(SVC, "plex")
-
-var Regex = regexp.MustCompile("[[:^ascii:]]")
+var (
+	Regex           = regexp.MustCompile("[[:^ascii:]]")
+	transmission, _ = transmissionrpc.New(
+		transmissionHost,
+		strings.Split(os.Getenv("TR_AUTH"), ":")[0],
+		strings.Split(os.Getenv("TR_AUTH"), ":")[1],
+		&transmissionrpc.AdvancedConfig{
+			HTTPS: true,
+			Port:  443,
+		})
+)
 
 func SearchTorrents(search *Search) { //nolint:gocyclo
-
 	for _, source := range search.SourcesToLookup {
 		switch source {
 		case TorrentDownloadsKey:
@@ -149,7 +148,6 @@ func SearchTorrents(search *Search) { //nolint:gocyclo
 
 func Merge(search *Search) [3]error { //nolint:gocyclo
 	var tdSearchErr, tpbSearchErr, ottsSearchErr error
-
 	for _, source := range search.SourcesToLookup {
 		switch source {
 		case TorrentDownloadsKey:
@@ -179,56 +177,38 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 	return errors
 }
 
-func Status() string {
-	var torrentStatus string
-	ec2status := ec2Service.Status(SVC, InstanceID)
+func Status(ec2status string) []transmissionrpc.Torrent {
+	var torrents []transmissionrpc.Torrent
 	if ec2status == ec2RunningStatus {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "transmission-remote",
-			transmissionHostPort,
-			"--authenv",
-			"--torrent=active",
-			"--list")
-		out, err := cmd.CombinedOutput()
+		response, err := transmission.TorrentGetAll()
+		if err != nil {
+			panic(err)
+		}
+		for _, torrent := range response {
+			if torrent.Files[0].Name != "" {
+				torrents = append(torrents, *torrent)
+			}
+		}
 		if ctx.Err() == context.DeadlineExceeded {
-			torrentStatus = "Command timed out"
-			fmt.Printf("Could not list torrents being downloaded: [%s]\n", err)
-		} else {
-			torrentStatus = string(out)
+			fmt.Printf("Could not list torrents being downloaded")
 		}
-	} else {
-		torrentStatus = "Plex Stopped"
 	}
-	return torrentStatus
+	return torrents
 }
 
-func TriggerDownload(envMagnetLink string, argMagnetLink string, envDownloadDir string) {
-	if envMagnetLink == "" {
-		// coming from flixctl
-		downloadTorrent(argMagnetLink, envDownloadDir)
-	} else {
-		// coming from web-hook
-		decodedEnvMagnetLink, err := base64.StdEncoding.DecodeString(envMagnetLink)
+func TriggerDownload(magnetLink string, downloadDir string, ec2status string) *transmissionrpc.Torrent {
+	var err error
+	var torrent *transmissionrpc.Torrent
+	if ec2status == ec2RunningStatus {
+		torrent, err = transmission.TorrentAdd(&transmissionrpc.TorrentAddPayload{
+			DownloadDir: &downloadDir,
+			Filename:    &magnetLink,
+		})
 		if err != nil {
-			fmt.Printf("Could not decode the magnet link: [%s]\n", err)
-		}
-		downloadTorrent(string(decodedEnvMagnetLink), envDownloadDir)
-	}
-}
-
-func downloadTorrent(magnet string, downloadDir string) {
-	status := ec2Service.Status(SVC, InstanceID)
-	if status == ec2RunningStatus {
-		transmission := exec.Command("transmission-remote",
-			transmissionHostPort,
-			"--authenv",
-			"--add",
-			fmt.Sprintf("--download-dir=%s", downloadDir),
-			magnet)
-		err := transmission.Start()
-		if err != nil {
-			fmt.Println("Could not download torrent using the given magnet link")
+			fmt.Printf("Could not download torrent using the given magnet link: [%s]", err)
 		}
 	}
+	return torrent
 }

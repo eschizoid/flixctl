@@ -11,8 +11,8 @@ import (
 
 var ArchiveLibraryCmd = &cobra.Command{
 	Use:   "archive",
-	Short: "To Archive a File To Media Library",
-	Long:  "to archive a movie or show to media library.",
+	Short: "To Archive A Movie Or Show",
+	Long:  "to archive a movie or show to the media library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
