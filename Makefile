@@ -1,4 +1,5 @@
 # Go parameters
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
 GOCMD := go
 GOBUILD := $(GOCMD) build
 GODEP :=dep
@@ -31,7 +32,10 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 
-install: update-vendor
+install:
+ifeq ($(UPDATE_VENDOR), true)
+	@$(MAKE) -f $(THIS_FILE) update-vendor
+endif
 	$(GOINSTALL) $(LDFLAGS)
 
 uninstall: clean
@@ -42,11 +46,6 @@ fmt:
 
 simplify:
 	$(GOFMT) -s -l -w $(SRC)
-
-#check:
-#	@test -z $(shell gofmt -l main.go | tee /dev/stderr) || echo "[WARN] Fix formatting issues with 'make fmt'"
-#	@for d in $$(go list ./... | grep -v /vendor/); do golint $${d}; done
-#	@go tool vet ${SRC}
 
 run: install
 	@$(TARGET)
@@ -62,11 +61,11 @@ update:
 	$(GODEP) ensure -update
 
 update-vendor:
-	@cp -R aws/* vendor/github.com/eschizoid/flixctl/aws
-	@cp -R cmd/* vendor/github.com/eschizoid/flixctl/cmd
-	@cp -R slack/* vendor/github.com/eschizoid/flixctl/slack
-	@cp -R torrent/* vendor/github.com/eschizoid/flixctl/torrent
-	@cp -R worker/* vendor/github.com/eschizoid/flixctl/worker
+	@cp -R aws/ vendor/github.com/eschizoid/flixctl/aws
+	@cp -R cmd/ vendor/github.com/eschizoid/flixctl/cmd
+	@cp -R slack/ vendor/github.com/eschizoid/flixctl/slack
+	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
+	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
 
 build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router
 
