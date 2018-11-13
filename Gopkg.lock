@@ -47,7 +47,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:41164b3d6ade5f23f02a50be53e4bd1c86efed9f3123aac22fdb829c5bdccae6"
+  digest = "1:cab1be39346065b40986497e67c7925231e78cdcd2024c38a778bbde461629af"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -87,11 +87,11 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "cf00ea20983ce38df17ab0a0814463ab8838459f"
-  version = "v1.15.73"
+  revision = "47607acdb3657d60debbfa33f328dc9801fb3cfd"
+  version = "v1.15.74"
 
 [[projects]]
-  digest = "1:f953a7d9d52ea8ddcd113e4307e09dcdaaf6615d959699677770f3d3a9c91361"
+  digest = "1:2e970abde0004b69241e0eebe01eedcd1f1a36431123590a127037712a9b708c"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -109,7 +109,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "74aaa446e599ca086349e971398b019b5236ab3f"
+  revision = "3705c46e7b7a1c574036d5d76fbe3f99c83b5800"
   version = "1.0.0"
 
 [[projects]]
@@ -719,7 +719,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa"
+  revision = "3d3f9f413869b949e48070b5bc593aa22cc2b8f2"
 
 [[projects]]
   branch = "master"
@@ -762,7 +762,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:137de3c4232b899035cb5f19d4c3a92c95284b3876a24695616296d246f67db4"
+  digest = "1:3f26b616172cb133557cffe9288d36dcaded50acac3f85660911c03c5dff4584"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -778,7 +778,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "6d71ab8aade08605ffc36622332264e2f6991952"
+  revision = "a8570e12b66263a4d2bc406de590d7651e494615"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
