@@ -1,7 +1,9 @@
 package plex
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -15,8 +17,11 @@ var StatusPlexCmd = &cobra.Command{
 	Short: "To Get Plex Status",
 	Long:  "to get the status of the Plex Media Center.",
 	Run: func(cmd *cobra.Command, args []string) {
-		plexStatus := Status()
-		fmt.Println("EC2 current status: " + plexStatus)
+		status := Status()
+		m := make(map[string]interface{})
+		m["plex_status"] = status
+		jsonString, _ := json.Marshal(m)
+		fmt.Println(strings.ToLower(string(jsonString)))
 	},
 }
 
@@ -26,9 +31,9 @@ func Status() string {
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
-	plexStatus := ec2Service.Status(svc, instanceID)
+	status := ec2Service.Status(svc, instanceID)
 	if slackIncomingHookURL != "" {
-		slackService.SendStatus(plexStatus, slackIncomingHookURL)
+		slackService.SendStatus(status, slackIncomingHookURL)
 	}
-	return plexStatus
+	return status
 }

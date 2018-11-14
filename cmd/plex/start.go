@@ -1,6 +1,7 @@
 package plex
 
 import (
+	"encoding/json"
 	"fmt"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -21,7 +22,10 @@ var StartPlexCmd = &cobra.Command{
 		go Indicator(shutdownCh)
 		Start()
 		close(shutdownCh)
-		fmt.Println("\nPlex Running")
+		m := make(map[string]string)
+		m["plex_status"] = "started"
+		jsonString, _ := json.Marshal(m)
+		fmt.Println("\n" + string(jsonString))
 	},
 }
 
@@ -31,8 +35,9 @@ func Start() {
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
-	if ec2Service.Status(svc, instanceID) == "Running" {
-		slackService.SendStart(slackIncomingHookURL)
+	var status = ec2Service.Status(svc, instanceID)
+	if status == Ec2RunnningStatus {
+		slackService.SendStatus("running", slackIncomingHookURL)
 		return
 	}
 	ec2Service.Start(svc, instanceID)
@@ -42,6 +47,6 @@ func Start() {
 	ebsService.Attach(svc, instanceID, newVolumeID)
 	snapService.Delete(svc, oldSnapshotID)
 	if slackIncomingHookURL != "" {
-		slackService.SendStart(slackIncomingHookURL)
+		slackService.SendStatus("running", slackIncomingHookURL)
 	}
 }
