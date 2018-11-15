@@ -22,8 +22,6 @@ toc::[]
 === Components
 
 ==== Hardware (AWS)
-`flixctl` Leverage the following infrastructure:
-
 * https://aws.amazon.com/api-gateway[API Geteway]
 * https://aws.amazon.com/ebs[EBS]
 * https://aws.amazon.com/ec2[EC2]
@@ -31,8 +29,6 @@ toc::[]
 * https://aws.amazon.com/lambda[Lambda]
 
 ==== Software (OSS)
-`flixctl` Integrates with following components:
-
 * https://github.com/plexinc/plex-media-player[Plex]
 * https://github.com/Tautulli/Tautulli[Tautulli]
 * https://github.com/transmission/transmission[Transmission]
