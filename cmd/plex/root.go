@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	Ec2RunnningStatus = "Running"
-	Ec2StoppedStatus  = "Stopped"
+	Ec2RunningStatus = "Running"
+	Ec2StoppedStatus = "Stopped"
 )
 
 var RootPlexCmd = &cobra.Command{
@@ -18,6 +18,7 @@ var RootPlexCmd = &cobra.Command{
 	Short: "To Control Plex Media Center",
 }
 
+var slackNotification string
 var slackIncomingHookURL string
 
 var (
@@ -28,17 +29,35 @@ var (
 			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
+		StartPlexCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_PLEX_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
+		)
 		StopPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
 			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
+		StopPlexCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
+		)
 		StatusPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
 			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
 			"slack channel to notify of the plex event",
+		)
+		StatusPlexCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
 		)
 		RootPlexCmd.AddCommand(StartPlexCmd, StopPlexCmd, StatusPlexCmd)
 		return struct{}{}

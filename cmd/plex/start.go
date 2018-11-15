@@ -36,7 +36,7 @@ func Start() {
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
 	var status = ec2Service.Status(svc, instanceID)
-	if status == Ec2RunnningStatus {
+	if status == Ec2RunningStatus {
 		slackService.SendStatus("running", slackIncomingHookURL)
 		return
 	}
@@ -46,7 +46,5 @@ func Start() {
 	var newVolumeID = ebsService.FetchVolumeID(svc, "plex")
 	ebsService.Attach(svc, instanceID, newVolumeID)
 	snapService.Delete(svc, oldSnapshotID)
-	if slackIncomingHookURL != "" {
-		slackService.SendStatus("running", slackIncomingHookURL)
-	}
+	NotifySlack("running")
 }

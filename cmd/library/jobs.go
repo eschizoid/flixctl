@@ -1,6 +1,7 @@
 package library
 
 import (
+	"encoding/json"
 	"fmt"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -19,6 +20,7 @@ var JobsLibraryCmd = &cobra.Command{
 		}))
 		svc := glacier.New(awsSession)
 		jobList := glacierService.ListJobs(svc)
-		fmt.Println(jobList.String())
+		json, _ := json.Marshal(jobList)
+		fmt.Println(string(json))
 	},
 }

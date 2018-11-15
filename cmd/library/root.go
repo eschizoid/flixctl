@@ -23,7 +23,7 @@ var (
 			"file",
 			"f",
 			"",
-			"the location of the show or movie to archive",
+			"the location of the movie or show to archive",
 		)
 		InitiateLibraryCmd.Flags().StringVarP(&retrievalType,
 			"type",
@@ -37,17 +37,17 @@ var (
 			"",
 			"to archive id to retrieve",
 		)
-		RetrieveLibraryCmd.Flags().StringVarP(&fileName,
-			"file",
-			"f",
-			"",
-			"the location for the show or movie to retrieve",
-		)
 		RetrieveLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
 			"i",
 			"",
 			"the job id to start for retrieving a movie or a show",
+		)
+		RetrieveLibraryCmd.Flags().StringVarP(&fileName,
+			"file",
+			"f",
+			"",
+			"the location to retrieve the movie of the show",
 		)
 		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd)
 		return struct{}{}

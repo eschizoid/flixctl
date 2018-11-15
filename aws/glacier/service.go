@@ -18,13 +18,9 @@ const (
 
 func InitiateJob(svc *glacier.Glacier, retrievalType string, archiveID string) *glacier.InitiateJobOutput {
 	input := &glacier.InitiateJobInput{
-		AccountId: aws.String("-"),
-		JobParameters: &glacier.JobParameters{
-			Description: aws.String(fmt.Sprintf("%s-%d", retrievalType, getTimeStamp())),
-			Type:        aws.String(retrievalType),
-			ArchiveId:   aws.String(archiveID),
-		},
-		VaultName: aws.String("plex"),
+		AccountId:     aws.String("-"),
+		JobParameters: getInitiateJobInput(retrievalType, archiveID),
+		VaultName:     aws.String("plex"),
 	}
 	result, err := svc.InitiateJob(input)
 	if err != nil {
@@ -197,8 +193,8 @@ func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutpu
 	input := &glacier.GetJobOutputInput{
 		AccountId: aws.String("-"),
 		VaultName: aws.String("plex"),
-		Range:     aws.String(""),
-		JobId:     aws.String(jobID),
+		//Range:     aws.String(""),
+		JobId: aws.String(jobID),
 	}
 	result, err := svc.GetJobOutput(input)
 	if err != nil {
@@ -260,4 +256,20 @@ func getTimeStamp() int64 {
 		fmt.Println(err)
 	}
 	return time.Now().In(location).Unix()
+}
+
+func getInitiateJobInput(retrievalType string, archiveID string) *glacier.JobParameters {
+	if retrievalType == "catalogue" {
+		return &glacier.JobParameters{
+			Description: aws.String(fmt.Sprintf("%d-%s", getTimeStamp(), retrievalType)),
+			Type:        aws.String("inventory-retrieval"),
+		}
+	} else if retrievalType == "file" {
+		return &glacier.JobParameters{
+			Description: aws.String(fmt.Sprintf("%d-%s", getTimeStamp(), retrievalType)),
+			Type:        aws.String("archive-retrieval"),
+			ArchiveId:   aws.String(archiveID),
+		}
+	}
+	panic(fmt.Sprintf("Invalid retrieval type: [%s]", retrievalType))
 }

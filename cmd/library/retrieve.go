@@ -23,7 +23,7 @@ var RetrieveLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := glacier.New(awsSession)
-		getJobOutputOutput := glacierService.GetJobOutput(svc, "")
+		getJobOutputOutput := glacierService.GetJobOutput(svc, jobID)
 		defer getJobOutputOutput.Body.Close()
 		part, err := ioutil.ReadAll(io.LimitReader(getJobOutputOutput.Body, maxFileChunkSize))
 		if err != nil {

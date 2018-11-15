@@ -45,7 +45,5 @@ func Stop() {
 	ec2Service.Stop(svc, instanceID)
 	ebsService.Detach(svc, oldVolumeID)
 	ebsService.Delete(svc, oldVolumeID)
-	if slackIncomingHookURL != "" {
-		slackService.SendStatus("stopped", slackIncomingHookURL)
-	}
+	NotifySlack("stopped")
 }
