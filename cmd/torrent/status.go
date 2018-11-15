@@ -7,7 +7,7 @@ import (
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
-	plexTorrentService "github.com/eschizoid/flixctl/slack/plex"
+	slackPlexService "github.com/eschizoid/flixctl/slack/plex"
 	slackTorrentService "github.com/eschizoid/flixctl/slack/torrent"
 	"github.com/eschizoid/flixctl/torrent"
 	"github.com/spf13/cobra"
@@ -43,7 +43,7 @@ func Status() {
 		}
 		fmt.Println(torrentStatus)
 	} else {
-		plexTorrentService.SendStatus("stopped", slackIncomingHookURL)
+		slackPlexService.SendStatus("stopped", slackIncomingHookURL)
 		fmt.Println("Plex status stopped")
 	}
 }

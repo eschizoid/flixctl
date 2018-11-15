@@ -26,7 +26,8 @@ var ArchiveLibraryCmd = &cobra.Command{
 		uploadID := *initiateMultipartUploadOutput.UploadId
 		uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)
 		fmt.Println(uploadMultipartPartOutputs)
-		glacierService.CompleteMultipartUpload(svc, uploadID, fileName)
+		archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, fileName)
+		fmt.Println(archiveCreationOutput)
 		close(shutdownCh)
 	},
 }

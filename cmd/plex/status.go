@@ -8,7 +8,6 @@ import (
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
-	slackService "github.com/eschizoid/flixctl/slack/plex"
 	"github.com/spf13/cobra"
 )
 
@@ -32,8 +31,6 @@ func Status() string {
 	svc := ec2.New(awsSession, awsSession.Config)
 	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
 	status := ec2Service.Status(svc, instanceID)
-	if slackIncomingHookURL != "" {
-		slackService.SendStatus(status, slackIncomingHookURL)
-	}
+	NotifySlack(status)
 	return status
 }

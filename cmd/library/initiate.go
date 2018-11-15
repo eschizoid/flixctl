@@ -1,6 +1,9 @@
 package library
 
 import (
+	"encoding/json"
+	"fmt"
+
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
@@ -16,6 +19,8 @@ var InitiateLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := glacier.New(awsSession)
-		glacierService.InitiateJob(svc, retrievalType, archiveID)
+		initiateJobOutput := glacierService.InitiateJob(svc, retrievalType, archiveID)
+		json, _ := json.Marshal(initiateJobOutput)
+		fmt.Println(string(json))
 	},
 }

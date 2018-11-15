@@ -10,7 +10,7 @@
 :toc-title:
 
 image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
-image:https://goreportcard.com/badge/github.com/gliderlabs/ssh["Go Report Card", link="https://goreportcard.com/report/github.com/gliderlabs/ssh"]
+image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Card", link="https://goreportcard.com/report/github.com/eschizoid/flixctl"]
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture.
@@ -18,19 +18,26 @@ true MaaS (Movies as a Service) architecture.
 toc::[]
 
 === Architecture
-==== Architecture Diagram
-==== Components
-===== AWS
-====== API Geteway
-====== EBS
-====== EC2
-====== Glacier
-====== Lambda
-===== OSS
-====== Plex
-====== Tautulli
-====== Slack
-====== Webhooks
+
+=== Components
+
+==== Hardware (AWS)
+`flixctl` Leverage the following infrastructure:
+
+* https://aws.amazon.com/api-gateway[API Geteway]
+* https://aws.amazon.com/ebs[EBS]
+* https://aws.amazon.com/ec2[EC2]
+* https://aws.amazon.com/glacier[Glacier]
+* https://aws.amazon.com/lambda[Lambda]
+
+==== Software (OSS)
+`flixctl` Integrates with following components:
+
+* https://github.com/plexinc/plex-media-player[Plex]
+* https://github.com/Tautulli/Tautulli[Tautulli]
+* https://github.com/transmission/transmission[Transmission]
+* https://api.slack.com/slash-commands[Slack Slash Commands]
+* https://github.com/adnanh/webhook[Webhooks]
 
 === Pre-requisites
 ----
@@ -150,9 +157,9 @@ flixctl version
 ----
 ==== ```flixctl plex```
 ----
-flixctl plex start
-flixctl plex stop
-flixctl plex status
+flixctl plex start --slack-notification "true" --slack-notification-channel "monitoring"
+flixctl plex stop --slack-notification false
+flixctl plex status --slack-notification false
 ----
 ==== ```flixctl torrent```
 ----
@@ -163,7 +170,8 @@ flixctl torrent download --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996
 ==== ```flixctl library```
 ----
 flixctl library jobs
-flixctl library archive
-flixctl library retrieve
-flixctl library initiate
+flixctl library archive --file "movie.zip"
+flixctl library initiate --type catalogue
+lixctl library initiate --type file --archive-id "U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA"
+flixctl library retrieve --job "ZUjVmQsAa-w0hMCBVL0Yj2JWEqo4Dkx3Da8031oOtDkdAse-ncv_s8DPfEnbs2fe58ZY5FcfVGy8lekYCYbOOWhfikGX" --file "/tmp/movie.zip"
 ----

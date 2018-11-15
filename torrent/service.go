@@ -153,21 +153,21 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 		case TorrentDownloadsKey:
 			select {
 			case tdSearchErr = <-TdSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", Sources["td"])
+				fmt.Printf("An error occurred during search on %v\n", Sources["td"])
 			case tdTorList := <-TdTorListCh:
 				search.Out = append(search.Out, tdTorList...)
 			}
 		case ThePirateBayKey:
 			select {
 			case tpbSearchErr = <-TpbSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", Sources["tpb"])
+				fmt.Printf("An error occurred during search on %v\n", Sources["tpb"])
 			case tpbTorList := <-TpbTorListCh:
 				search.Out = append(search.Out, tpbTorList...)
 			}
 		case OttsKey:
 			select {
 			case ottsSearchErr = <-OttsSearchErrCh:
-				fmt.Printf("An error occured during search on %v\n", Sources["otts"])
+				fmt.Printf("An error occurred during search on %v\n", Sources["otts"])
 			case ottsTorList := <-OttsTorListCh:
 				search.Out = append(search.Out, ottsTorList...)
 			}
