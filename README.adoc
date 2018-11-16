@@ -10,7 +10,7 @@
 
 image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", link="https://travis-ci.com/eschizoid/flixctl"]
 image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Card", link="https://goreportcard.com/report/github.com/eschizoid/flixctl"]
-image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", https://godoc.org/github.com/mozillazg/go-unidecode]
+image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", https://godoc.org/github.com/eschizoid/flixctl]
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture.
