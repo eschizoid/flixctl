@@ -1,7 +1,8 @@
 package library
 
 import (
-	"io"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -9,8 +10,6 @@ import (
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	"github.com/spf13/cobra"
 )
-
-const maxFileChunkSize = 1024 * 1024 * 4 // 4MB
 
 var RetrieveLibraryCmd = &cobra.Command{
 	Use:   "retrieve",
@@ -25,14 +24,18 @@ var RetrieveLibraryCmd = &cobra.Command{
 		svc := glacier.New(awsSession)
 		getJobOutputOutput := glacierService.GetJobOutput(svc, jobID)
 		defer getJobOutputOutput.Body.Close()
-		part, err := ioutil.ReadAll(io.LimitReader(getJobOutputOutput.Body, maxFileChunkSize))
-		if err != nil {
-			panic(err)
-		}
+		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
+		ShowError(err)
 		err = ioutil.WriteFile(fileName, part, 0644)
-		if err != nil {
-			panic(err)
-		}
+		ShowError(err)
+		jsonString, _ := json.Marshal(getJobOutputOutput)
+		fmt.Println("\n" + string(jsonString))
 		close(shutdownCh)
 	},
+}
+
+func ShowError(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

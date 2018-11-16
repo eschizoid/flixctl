@@ -49,10 +49,10 @@ func InitiateJob(svc *glacier.Glacier, retrievalType string, archiveID string) *
 	return result
 }
 
-func InitiateMultipartUploadInput(svc *glacier.Glacier) *glacier.InitiateMultipartUploadOutput {
+func InitiateMultipartUploadInput(svc *glacier.Glacier, fileName string) *glacier.InitiateMultipartUploadOutput {
 	input := &glacier.InitiateMultipartUploadInput{
 		AccountId:          aws.String("-"),
-		ArchiveDescription: aws.String(strconv.FormatInt(getTimeStamp(), 10)),
+		ArchiveDescription: aws.String(fmt.Sprintf("%s-%s", GetStats(fileName).Name(), strconv.FormatInt(getTimeStamp(), 10))),
 		PartSize:           aws.String(strconv.Itoa(maxFileChunkSize)),
 		VaultName:          aws.String("plex"),
 	}
@@ -193,8 +193,7 @@ func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutpu
 	input := &glacier.GetJobOutputInput{
 		AccountId: aws.String("-"),
 		VaultName: aws.String("plex"),
-		//Range:     aws.String(""),
-		JobId: aws.String(jobID),
+		JobId:     aws.String(jobID),
 	}
 	result, err := svc.GetJobOutput(input)
 	if err != nil {
@@ -216,7 +215,6 @@ func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutpu
 		}
 		return nil
 	}
-	fmt.Println(result)
 	return result
 }
 
