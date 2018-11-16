@@ -21,7 +21,7 @@ var ArchiveLibraryCmd = &cobra.Command{
 		}))
 		fileChunks := glacierService.Chunk(fileName)
 		svc := glacier.New(awsSession)
-		initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc)
+		initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileName)
 		fmt.Println(initiateMultipartUploadOutput.String())
 		uploadID := *initiateMultipartUploadOutput.UploadId
 		uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)

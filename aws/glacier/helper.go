@@ -62,6 +62,15 @@ func ComputeTreeHash(fileName string) string {
 	return treeHash
 }
 
+func GetStats(fileName string) os.FileInfo {
+	file, err := os.Open(fileName)
+	ShowError(err)
+	defer file.Close()
+	stats, err := file.Stat()
+	ShowError(err)
+	return stats
+}
+
 func ShowError(err error) {
 	if err != nil {
 		fmt.Println(err)
