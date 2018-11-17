@@ -9,7 +9,7 @@ aws glacier list-jobs \
     | jq '.JobList[] | select(.ArchiveId != null) | .ArchiveId' -r \
     | while read id; \
         do aws glacier delete-archive \
-            --account-id - \
-            --vault-name plex \
-            --archive-id "${id}";
+            --account-id='-' \
+            --vault-name='plex' \
+            --archive-id=${id};
         done

@@ -24,23 +24,26 @@
 #   go-tests = true
 #   unused-packages = true
 
-required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 
 [[constraint]]
   branch = "master"
   name = "github.com/apex/invoke"
 
 [[constraint]]
+  name = "github.com/asdine/storm"
+  version = "2.1.2"
+
+[[constraint]]
   name = "github.com/aws/aws-lambda-go"
-  version = "1.6.0"
+  version = "1.7.0"
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.15.74"
+  version = "1.15.80"
 
 [[constraint]]
+  branch = "feature/library-slack-hooks"
   name = "github.com/eschizoid/flixctl"
-  version = "1.0.0"
 
 [[constraint]]
   name = "github.com/go-playground/form"
@@ -48,7 +51,19 @@ required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
 
 [[constraint]]
   branch = "master"
+  name = "github.com/hekmon/transmissionrpc"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/jrudio/go-plex-client"
+
+[[constraint]]
+  branch = "master"
   name = "github.com/juliensalinas/torrengo"
+
+[[constraint]]
+  name = "github.com/mholt/archiver"
+  version = "3.1.0"
 
 [[constraint]]
   name = "github.com/nlopes/slack"

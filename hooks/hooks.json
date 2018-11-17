@@ -133,6 +133,131 @@
         }
       }
     }
-  }
+  },
+  {
+    "id": "initiate-inventory",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing initiate catalogue job",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "initiate"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "t",
+        "envname": "INITIATE_TYPE"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "retrieve-inventory",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing retrieve catalogue job",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "retrieve"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "t",
+        "envname": "RETRIEVAL_TYPE"
+      },
+      {
+        "source": "url",
+        "name": "j",
+        "envname": "JOB_ID"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "retrieve-archive",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing retrieve file job",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "retrieve"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "t",
+        "envname": "RETRIEVAL_TYPE"
+      },
+      {
+        "source": "url",
+        "name": "j",
+        "envname": "JOB_ID"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "library-jobs",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing library jobs",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "jobs"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "f",
+        "envname": "FILTER"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
   }
 ]

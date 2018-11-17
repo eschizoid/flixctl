@@ -10048,7 +10048,7 @@ func (c *EC2) DescribeFleetsRequest(input *DescribeFleetsInput) (req *request.Re
 
 // DescribeFleets API operation for Amazon Elastic Compute Cloud.
 //
-// Describes one or more of your EC2 Fleet.
+// Describes one or more of your EC2 Fleets.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -20625,12 +20625,16 @@ func (c *EC2) ModifyVpcPeeringConnectionOptionsRequest(input *ModifyVpcPeeringCo
 //    * Enable/disable the ability to resolve public DNS hostnames to private
 //    IP addresses when queried from instances in the peer VPC.
 //
-// If the peered VPCs are in different accounts, each owner must initiate a
-// separate request to modify the peering connection options, depending on whether
-// their VPC was the requester or accepter for the VPC peering connection. If
-// the peered VPCs are in the same account, you can modify the requester and
-// accepter options in the same request. To confirm which VPC is the accepter
-// and requester for a VPC peering connection, use the DescribeVpcPeeringConnections
+// If the peered VPCs are in the same AWS account, you can enable DNS resolution
+// for queries from the local VPC. This ensures that queries from the local
+// VPC resolve to private IP addresses in the peer VPC. This option is not available
+// if the peered VPCs are in different AWS accounts or different regions. For
+// peered VPCs in different AWS accounts, each AWS account owner must initiate
+// a separate request to modify the peering connection options. For inter-region
+// peering connections, you must use the region for the requester VPC to modify
+// the requester VPC peering options and the region for the accepter VPC to
+// modify the accepter VPC peering options. To verify which VPCs are the accepter
+// and the requester for a VPC peering connection, use the DescribeVpcPeeringConnections
 // command.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -26351,6 +26355,9 @@ type AvailabilityZone struct {
 	// The state of the Availability Zone.
 	State *string `locationName:"zoneState" type:"string" enum:"AvailabilityZoneState"`
 
+	// The ID of the Availability Zone.
+	ZoneId *string `locationName:"zoneId" type:"string"`
+
 	// The name of the Availability Zone.
 	ZoneName *string `locationName:"zoneName" type:"string"`
 }
@@ -26380,6 +26387,12 @@ func (s *AvailabilityZone) SetRegionName(v string) *AvailabilityZone {
 // SetState sets the State field's value.
 func (s *AvailabilityZone) SetState(v string) *AvailabilityZone {
 	s.State = &v
+	return s
+}
+
+// SetZoneId sets the ZoneId field's value.
+func (s *AvailabilityZone) SetZoneId(v string) *AvailabilityZone {
+	s.ZoneId = &v
 	return s
 }
 
@@ -29634,6 +29647,62 @@ func (s *CreateEgressOnlyInternetGatewayOutput) SetEgressOnlyInternetGateway(v *
 	return s
 }
 
+// Describes the instances that could not be launched by the fleet.
+type CreateFleetError struct {
+	_ struct{} `type:"structure"`
+
+	// The error code that indicates why the instance could not be launched. For
+	// more information about error codes, see Error Codes (http://docs.aws.amazon.com/AWSEC2/latest/APIReference/errors-overview.html.html).
+	ErrorCode *string `locationName:"errorCode" type:"string"`
+
+	// The error message that describes why the instance could not be launched.
+	// For more information about error messages, see ee Error Codes (http://docs.aws.amazon.com/AWSEC2/latest/APIReference/errors-overview.html.html).
+	ErrorMessage *string `locationName:"errorMessage" type:"string"`
+
+	// The launch templates and overrides that were used for launching the instances.
+	// Any parameters that you specify in the Overrides override the same parameters
+	// in the launch template.
+	LaunchTemplateAndOverrides *LaunchTemplateAndOverridesResponse `locationName:"launchTemplateAndOverrides" type:"structure"`
+
+	// Indicates if the instance that could not be launched was a Spot Instance
+	// or On-Demand Instance.
+	Lifecycle *string `locationName:"lifecycle" type:"string" enum:"InstanceLifecycle"`
+}
+
+// String returns the string representation
+func (s CreateFleetError) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateFleetError) GoString() string {
+	return s.String()
+}
+
+// SetErrorCode sets the ErrorCode field's value.
+func (s *CreateFleetError) SetErrorCode(v string) *CreateFleetError {
+	s.ErrorCode = &v
+	return s
+}
+
+// SetErrorMessage sets the ErrorMessage field's value.
+func (s *CreateFleetError) SetErrorMessage(v string) *CreateFleetError {
+	s.ErrorMessage = &v
+	return s
+}
+
+// SetLaunchTemplateAndOverrides sets the LaunchTemplateAndOverrides field's value.
+func (s *CreateFleetError) SetLaunchTemplateAndOverrides(v *LaunchTemplateAndOverridesResponse) *CreateFleetError {
+	s.LaunchTemplateAndOverrides = v
+	return s
+}
+
+// SetLifecycle sets the Lifecycle field's value.
+func (s *CreateFleetError) SetLifecycle(v string) *CreateFleetError {
+	s.Lifecycle = &v
+	return s
+}
+
 type CreateFleetInput struct {
 	_ struct{} `type:"structure"`
 
@@ -29682,14 +29751,14 @@ type CreateFleetInput struct {
 	// expires.
 	TerminateInstancesWithExpiration *bool `type:"boolean"`
 
-	// The type of request. Indicates whether the EC2 Fleet only requests the target
-	// capacity, or also attempts to maintain it. If you request a certain target
-	// capacity, EC2 Fleet only places the required requests. It does not attempt
-	// to replenish instances if capacity is diminished, and does not submit requests
-	// in alternative capacity pools if capacity is unavailable. To maintain a certain
-	// target capacity, EC2 Fleet places the required requests to meet this target
-	// capacity. It also automatically replenishes any interrupted Spot Instances.
-	// Default: maintain.
+	// The type of the request. By default, the EC2 Fleet places an asynchronous
+	// request for your desired capacity, and maintains it by replenishing interrupted
+	// Spot Instances (maintain). A value of instant places a synchronous one-time
+	// request, and returns errors for any instances that could not be launched.
+	// A value of request places an asynchronous one-time request without maintaining
+	// capacity or submitting requests in alternative capacity pools if capacity
+	// is unavailable. For more information, see EC2 Fleet Request Types (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-fleet-configuration-strategies.html#ec2-fleet-request-type)
+	// in the Amazon Elastic Compute Cloud User Guide.
 	Type *string `type:"string" enum:"FleetType"`
 
 	// The start date and time of the request, in UTC format (for example, YYYY-MM-DDTHH:MM:SSZ).
@@ -29821,11 +29890,82 @@ func (s *CreateFleetInput) SetValidUntil(v time.Time) *CreateFleetInput {
 	return s
 }
 
+// Describes the instances that were launched by the fleet.
+type CreateFleetInstance struct {
+	_ struct{} `type:"structure"`
+
+	// The IDs of the instances.
+	InstanceIds []*string `locationName:"instanceIds" locationNameList:"item" type:"list"`
+
+	// The instance type.
+	InstanceType *string `locationName:"instanceType" type:"string" enum:"InstanceType"`
+
+	// The launch templates and overrides that were used for launching the instances.
+	// Any parameters that you specify in the Overrides override the same parameters
+	// in the launch template.
+	LaunchTemplateAndOverrides *LaunchTemplateAndOverridesResponse `locationName:"launchTemplateAndOverrides" type:"structure"`
+
+	// Indicates if the instance that was launched is a Spot Instance or On-Demand
+	// Instance.
+	Lifecycle *string `locationName:"lifecycle" type:"string" enum:"InstanceLifecycle"`
+
+	// The value is Windows for Windows instances; otherwise blank.
+	Platform *string `locationName:"platform" type:"string" enum:"PlatformValues"`
+}
+
+// String returns the string representation
+func (s CreateFleetInstance) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateFleetInstance) GoString() string {
+	return s.String()
+}
+
+// SetInstanceIds sets the InstanceIds field's value.
+func (s *CreateFleetInstance) SetInstanceIds(v []*string) *CreateFleetInstance {
+	s.InstanceIds = v
+	return s
+}
+
+// SetInstanceType sets the InstanceType field's value.
+func (s *CreateFleetInstance) SetInstanceType(v string) *CreateFleetInstance {
+	s.InstanceType = &v
+	return s
+}
+
+// SetLaunchTemplateAndOverrides sets the LaunchTemplateAndOverrides field's value.
+func (s *CreateFleetInstance) SetLaunchTemplateAndOverrides(v *LaunchTemplateAndOverridesResponse) *CreateFleetInstance {
+	s.LaunchTemplateAndOverrides = v
+	return s
+}
+
+// SetLifecycle sets the Lifecycle field's value.
+func (s *CreateFleetInstance) SetLifecycle(v string) *CreateFleetInstance {
+	s.Lifecycle = &v
+	return s
+}
+
+// SetPlatform sets the Platform field's value.
+func (s *CreateFleetInstance) SetPlatform(v string) *CreateFleetInstance {
+	s.Platform = &v
+	return s
+}
+
 type CreateFleetOutput struct {
 	_ struct{} `type:"structure"`
 
+	// Information about the instances that could not be launched by the fleet.
+	// Valid only when Type is set to instant.
+	Errors []*CreateFleetError `locationName:"errorSet" locationNameList:"item" type:"list"`
+
 	// The ID of the EC2 Fleet.
 	FleetId *string `locationName:"fleetId" type:"string"`
+
+	// Information about the instances that were launched by the fleet. Valid only
+	// when Type is set to instant.
+	Instances []*CreateFleetInstance `locationName:"fleetInstanceSet" locationNameList:"item" type:"list"`
 }
 
 // String returns the string representation
@@ -29838,9 +29978,21 @@ func (s CreateFleetOutput) GoString() string {
 	return s.String()
 }
 
+// SetErrors sets the Errors field's value.
+func (s *CreateFleetOutput) SetErrors(v []*CreateFleetError) *CreateFleetOutput {
+	s.Errors = v
+	return s
+}
+
 // SetFleetId sets the FleetId field's value.
 func (s *CreateFleetOutput) SetFleetId(v string) *CreateFleetOutput {
 	s.FleetId = &v
+	return s
+}
+
+// SetInstances sets the Instances field's value.
+func (s *CreateFleetOutput) SetInstances(v []*CreateFleetInstance) *CreateFleetOutput {
+	s.Instances = v
 	return s
 }
 
@@ -36084,7 +36236,6 @@ func (s DeregisterImageOutput) GoString() string {
 	return s.String()
 }
 
-// Contains the parameters for DescribeAccountAttributes.
 type DescribeAccountAttributesInput struct {
 	_ struct{} `type:"structure"`
 
@@ -36120,7 +36271,6 @@ func (s *DescribeAccountAttributesInput) SetDryRun(v bool) *DescribeAccountAttri
 	return s
 }
 
-// Contains the output of DescribeAccountAttributes.
 type DescribeAccountAttributesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -36314,7 +36464,6 @@ func (s *DescribeAggregateIdFormatOutput) SetUseLongIdsAggregated(v bool) *Descr
 	return s
 }
 
-// Contains the parameters for DescribeAvailabilityZones.
 type DescribeAvailabilityZonesInput struct {
 	_ struct{} `type:"structure"`
 
@@ -36334,8 +36483,13 @@ type DescribeAvailabilityZonesInput struct {
 	//    * state - The state of the Availability Zone (available | information
 	//    | impaired | unavailable).
 	//
+	//    * zone-id - The ID of the Availability Zone (for example, use1-az1).
+	//
 	//    * zone-name - The name of the Availability Zone (for example, us-east-1a).
 	Filters []*Filter `locationName:"Filter" locationNameList:"Filter" type:"list"`
+
+	// The IDs of one or more Availability Zones.
+	ZoneIds []*string `locationName:"ZoneId" locationNameList:"ZoneId" type:"list"`
 
 	// The names of one or more Availability Zones.
 	ZoneNames []*string `locationName:"ZoneName" locationNameList:"ZoneName" type:"list"`
@@ -36363,13 +36517,18 @@ func (s *DescribeAvailabilityZonesInput) SetFilters(v []*Filter) *DescribeAvaila
 	return s
 }
 
+// SetZoneIds sets the ZoneIds field's value.
+func (s *DescribeAvailabilityZonesInput) SetZoneIds(v []*string) *DescribeAvailabilityZonesInput {
+	s.ZoneIds = v
+	return s
+}
+
 // SetZoneNames sets the ZoneNames field's value.
 func (s *DescribeAvailabilityZonesInput) SetZoneNames(v []*string) *DescribeAvailabilityZonesInput {
 	s.ZoneNames = v
 	return s
 }
 
-// Contains the output of DescribeAvailabiltyZones.
 type DescribeAvailabilityZonesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -37297,6 +37456,62 @@ func (s *DescribeExportTasksOutput) SetExportTasks(v []*ExportTask) *DescribeExp
 	return s
 }
 
+// Describes the instances that could not be launched by the fleet.
+type DescribeFleetError struct {
+	_ struct{} `type:"structure"`
+
+	// The error code that indicates why the instance could not be launched. For
+	// more information about error codes, see Error Codes (http://docs.aws.amazon.com/AWSEC2/latest/APIReference/errors-overview.html.html).
+	ErrorCode *string `locationName:"errorCode" type:"string"`
+
+	// The error message that describes why the instance could not be launched.
+	// For more information about error messages, see ee Error Codes (http://docs.aws.amazon.com/AWSEC2/latest/APIReference/errors-overview.html.html).
+	ErrorMessage *string `locationName:"errorMessage" type:"string"`
+
+	// The launch templates and overrides that were used for launching the instances.
+	// Any parameters that you specify in the Overrides override the same parameters
+	// in the launch template.
+	LaunchTemplateAndOverrides *LaunchTemplateAndOverridesResponse `locationName:"launchTemplateAndOverrides" type:"structure"`
+
+	// Indicates if the instance that could not be launched was a Spot Instance
+	// or On-Demand Instance.
+	Lifecycle *string `locationName:"lifecycle" type:"string" enum:"InstanceLifecycle"`
+}
+
+// String returns the string representation
+func (s DescribeFleetError) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeFleetError) GoString() string {
+	return s.String()
+}
+
+// SetErrorCode sets the ErrorCode field's value.
+func (s *DescribeFleetError) SetErrorCode(v string) *DescribeFleetError {
+	s.ErrorCode = &v
+	return s
+}
+
+// SetErrorMessage sets the ErrorMessage field's value.
+func (s *DescribeFleetError) SetErrorMessage(v string) *DescribeFleetError {
+	s.ErrorMessage = &v
+	return s
+}
+
+// SetLaunchTemplateAndOverrides sets the LaunchTemplateAndOverrides field's value.
+func (s *DescribeFleetError) SetLaunchTemplateAndOverrides(v *LaunchTemplateAndOverridesResponse) *DescribeFleetError {
+	s.LaunchTemplateAndOverrides = v
+	return s
+}
+
+// SetLifecycle sets the Lifecycle field's value.
+func (s *DescribeFleetError) SetLifecycle(v string) *DescribeFleetError {
+	s.Lifecycle = &v
+	return s
+}
+
 type DescribeFleetHistoryInput struct {
 	_ struct{} `type:"structure"`
 
@@ -37599,7 +37814,7 @@ type DescribeFleetsInput struct {
 	//    * replace-unhealthy-instances - Indicates whether EC2 Fleet should replace
 	//    unhealthy instances (true | false).
 	//
-	//    * type - The type of request (request | maintain).
+	//    * type - The type of request (instant | request | maintain).
 	Filters []*Filter `locationName:"Filter" locationNameList:"Filter" type:"list"`
 
 	// The ID of the EC2 Fleets.
@@ -37651,6 +37866,69 @@ func (s *DescribeFleetsInput) SetMaxResults(v int64) *DescribeFleetsInput {
 // SetNextToken sets the NextToken field's value.
 func (s *DescribeFleetsInput) SetNextToken(v string) *DescribeFleetsInput {
 	s.NextToken = &v
+	return s
+}
+
+// Describes the instances that were launched by the fleet.
+type DescribeFleetsInstances struct {
+	_ struct{} `type:"structure"`
+
+	// The IDs of the instances.
+	InstanceIds []*string `locationName:"instanceIds" locationNameList:"item" type:"list"`
+
+	// The instance type.
+	InstanceType *string `locationName:"instanceType" type:"string" enum:"InstanceType"`
+
+	// The launch templates and overrides that were used for launching the instances.
+	// Any parameters that you specify in the Overrides override the same parameters
+	// in the launch template.
+	LaunchTemplateAndOverrides *LaunchTemplateAndOverridesResponse `locationName:"launchTemplateAndOverrides" type:"structure"`
+
+	// Indicates if the instance that was launched is a Spot Instance or On-Demand
+	// Instance.
+	Lifecycle *string `locationName:"lifecycle" type:"string" enum:"InstanceLifecycle"`
+
+	// The value is Windows for Windows instances; otherwise blank.
+	Platform *string `locationName:"platform" type:"string" enum:"PlatformValues"`
+}
+
+// String returns the string representation
+func (s DescribeFleetsInstances) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeFleetsInstances) GoString() string {
+	return s.String()
+}
+
+// SetInstanceIds sets the InstanceIds field's value.
+func (s *DescribeFleetsInstances) SetInstanceIds(v []*string) *DescribeFleetsInstances {
+	s.InstanceIds = v
+	return s
+}
+
+// SetInstanceType sets the InstanceType field's value.
+func (s *DescribeFleetsInstances) SetInstanceType(v string) *DescribeFleetsInstances {
+	s.InstanceType = &v
+	return s
+}
+
+// SetLaunchTemplateAndOverrides sets the LaunchTemplateAndOverrides field's value.
+func (s *DescribeFleetsInstances) SetLaunchTemplateAndOverrides(v *LaunchTemplateAndOverridesResponse) *DescribeFleetsInstances {
+	s.LaunchTemplateAndOverrides = v
+	return s
+}
+
+// SetLifecycle sets the Lifecycle field's value.
+func (s *DescribeFleetsInstances) SetLifecycle(v string) *DescribeFleetsInstances {
+	s.Lifecycle = &v
+	return s
+}
+
+// SetPlatform sets the Platform field's value.
+func (s *DescribeFleetsInstances) SetPlatform(v string) *DescribeFleetsInstances {
+	s.Platform = &v
 	return s
 }
 
@@ -38458,7 +38736,6 @@ func (s *DescribeIamInstanceProfileAssociationsOutput) SetNextToken(v string) *D
 	return s
 }
 
-// Contains the parameters for DescribeIdFormat.
 type DescribeIdFormatInput struct {
 	_ struct{} `type:"structure"`
 
@@ -38488,7 +38765,6 @@ func (s *DescribeIdFormatInput) SetResource(v string) *DescribeIdFormatInput {
 	return s
 }
 
-// Contains the output of DescribeIdFormat.
 type DescribeIdFormatOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -38512,7 +38788,6 @@ func (s *DescribeIdFormatOutput) SetStatuses(v []*IdFormat) *DescribeIdFormatOut
 	return s
 }
 
-// Contains the parameters for DescribeIdentityIdFormat.
 type DescribeIdentityIdFormatInput struct {
 	_ struct{} `type:"structure"`
 
@@ -38567,7 +38842,6 @@ func (s *DescribeIdentityIdFormatInput) SetResource(v string) *DescribeIdentityI
 	return s
 }
 
-// Contains the output of DescribeIdentityIdFormat.
 type DescribeIdentityIdFormatOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -40285,7 +40559,7 @@ type DescribeLaunchTemplatesInput struct {
 
 	// The maximum number of results to return in a single call. To retrieve the
 	// remaining results, make another call with the returned NextToken value. This
-	// value can be between 5 and 1000.
+	// value can be between 1 and 200.
 	MaxResults *int64 `type:"integer"`
 
 	// The token to request the next page of results.
@@ -41487,7 +41761,6 @@ func (s *DescribePublicIpv4PoolsOutput) SetPublicIpv4Pools(v []*PublicIpv4Pool) 
 	return s
 }
 
-// Contains the parameters for DescribeRegions.
 type DescribeRegionsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -41536,7 +41809,6 @@ func (s *DescribeRegionsInput) SetRegionNames(v []*string) *DescribeRegionsInput
 	return s
 }
 
-// Contains the output of DescribeRegions.
 type DescribeRegionsOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -48330,6 +48602,10 @@ type FleetData struct {
 	// The creation date and time of the EC2 Fleet.
 	CreateTime *time.Time `locationName:"createTime" type:"timestamp"`
 
+	// Information about the instances that could not be launched by the fleet.
+	// Valid only when Type is set to instant.
+	Errors []*DescribeFleetError `locationName:"errorSet" locationNameList:"item" type:"list"`
+
 	// Indicates whether running instances should be terminated if the target capacity
 	// of the EC2 Fleet is decreased below the current size of the EC2 Fleet.
 	ExcessCapacityTerminationPolicy *string `locationName:"excessCapacityTerminationPolicy" type:"string" enum:"FleetExcessCapacityTerminationPolicy"`
@@ -48347,6 +48623,10 @@ type FleetData struct {
 	// The number of units fulfilled by this request compared to the set target
 	// On-Demand capacity.
 	FulfilledOnDemandCapacity *float64 `locationName:"fulfilledOnDemandCapacity" type:"double"`
+
+	// Information about the instances that were launched by the fleet. Valid only
+	// when Type is set to instant.
+	Instances []*DescribeFleetsInstances `locationName:"fleetInstanceSet" locationNameList:"item" type:"list"`
 
 	// The launch template and overrides.
 	LaunchTemplateConfigs []*FleetLaunchTemplateConfig `locationName:"launchTemplateConfigs" locationNameList:"item" type:"list"`
@@ -48422,6 +48702,12 @@ func (s *FleetData) SetCreateTime(v time.Time) *FleetData {
 	return s
 }
 
+// SetErrors sets the Errors field's value.
+func (s *FleetData) SetErrors(v []*DescribeFleetError) *FleetData {
+	s.Errors = v
+	return s
+}
+
 // SetExcessCapacityTerminationPolicy sets the ExcessCapacityTerminationPolicy field's value.
 func (s *FleetData) SetExcessCapacityTerminationPolicy(v string) *FleetData {
 	s.ExcessCapacityTerminationPolicy = &v
@@ -48449,6 +48735,12 @@ func (s *FleetData) SetFulfilledCapacity(v float64) *FleetData {
 // SetFulfilledOnDemandCapacity sets the FulfilledOnDemandCapacity field's value.
 func (s *FleetData) SetFulfilledOnDemandCapacity(v float64) *FleetData {
 	s.FulfilledOnDemandCapacity = &v
+	return s
+}
+
+// SetInstances sets the Instances field's value.
+func (s *FleetData) SetInstances(v []*DescribeFleetsInstances) *FleetData {
+	s.Instances = v
 	return s
 }
 
@@ -48609,6 +48901,9 @@ type FleetLaunchTemplateOverrides struct {
 	// The maximum price per unit hour that you are willing to pay for a Spot Instance.
 	MaxPrice *string `locationName:"maxPrice" type:"string"`
 
+	// The location where the instance launched, if applicable.
+	Placement *PlacementResponse `locationName:"placement" type:"structure"`
+
 	// The priority for the launch template override. If AllocationStrategy is set
 	// to prioritized, EC2 Fleet uses priority to determine which launch template
 	// override to use first in fulfilling On-Demand capacity. The highest priority
@@ -48652,6 +48947,12 @@ func (s *FleetLaunchTemplateOverrides) SetMaxPrice(v string) *FleetLaunchTemplat
 	return s
 }
 
+// SetPlacement sets the Placement field's value.
+func (s *FleetLaunchTemplateOverrides) SetPlacement(v *PlacementResponse) *FleetLaunchTemplateOverrides {
+	s.Placement = v
+	return s
+}
+
 // SetPriority sets the Priority field's value.
 func (s *FleetLaunchTemplateOverrides) SetPriority(v float64) *FleetLaunchTemplateOverrides {
 	s.Priority = &v
@@ -48682,6 +48983,9 @@ type FleetLaunchTemplateOverridesRequest struct {
 
 	// The maximum price per unit hour that you are willing to pay for a Spot Instance.
 	MaxPrice *string `type:"string"`
+
+	// The location where the instance launched, if applicable.
+	Placement *Placement `type:"structure"`
 
 	// The priority for the launch template override. If AllocationStrategy is set
 	// to prioritized, EC2 Fleet uses priority to determine which launch template
@@ -48723,6 +49027,12 @@ func (s *FleetLaunchTemplateOverridesRequest) SetInstanceType(v string) *FleetLa
 // SetMaxPrice sets the MaxPrice field's value.
 func (s *FleetLaunchTemplateOverridesRequest) SetMaxPrice(v string) *FleetLaunchTemplateOverridesRequest {
 	s.MaxPrice = &v
+	return s
+}
+
+// SetPlacement sets the Placement field's value.
+func (s *FleetLaunchTemplateOverridesRequest) SetPlacement(v *Placement) *FleetLaunchTemplateOverridesRequest {
+	s.Placement = v
 	return s
 }
 
@@ -54359,6 +54669,40 @@ func (s *LaunchTemplate) SetTags(v []*Tag) *LaunchTemplate {
 	return s
 }
 
+// Describes a launch template and overrides.
+type LaunchTemplateAndOverridesResponse struct {
+	_ struct{} `type:"structure"`
+
+	// The launch template.
+	LaunchTemplateSpecification *FleetLaunchTemplateSpecification `locationName:"launchTemplateSpecification" type:"structure"`
+
+	// Any parameters that you specify override the same parameters in the launch
+	// template.
+	Overrides *FleetLaunchTemplateOverrides `locationName:"overrides" type:"structure"`
+}
+
+// String returns the string representation
+func (s LaunchTemplateAndOverridesResponse) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s LaunchTemplateAndOverridesResponse) GoString() string {
+	return s.String()
+}
+
+// SetLaunchTemplateSpecification sets the LaunchTemplateSpecification field's value.
+func (s *LaunchTemplateAndOverridesResponse) SetLaunchTemplateSpecification(v *FleetLaunchTemplateSpecification) *LaunchTemplateAndOverridesResponse {
+	s.LaunchTemplateSpecification = v
+	return s
+}
+
+// SetOverrides sets the Overrides field's value.
+func (s *LaunchTemplateAndOverridesResponse) SetOverrides(v *FleetLaunchTemplateOverrides) *LaunchTemplateAndOverridesResponse {
+	s.Overrides = v
+	return s
+}
+
 // Describes a block device mapping.
 type LaunchTemplateBlockDeviceMapping struct {
 	_ struct{} `type:"structure"`
@@ -56425,7 +56769,6 @@ func (s *ModifyHostsOutput) SetUnsuccessful(v []*UnsuccessfulItem) *ModifyHostsO
 	return s
 }
 
-// Contains the parameters of ModifyIdFormat.
 type ModifyIdFormatInput struct {
 	_ struct{} `type:"structure"`
 
@@ -56501,7 +56844,6 @@ func (s ModifyIdFormatOutput) GoString() string {
 	return s.String()
 }
 
-// Contains the parameters of ModifyIdentityIdFormat.
 type ModifyIdentityIdFormatInput struct {
 	_ struct{} `type:"structure"`
 
@@ -59932,6 +60274,14 @@ type OnDemandOptions struct {
 	// launching the highest priority first. If you do not specify a value, EC2
 	// Fleet defaults to lowest-price.
 	AllocationStrategy *string `locationName:"allocationStrategy" type:"string" enum:"FleetOnDemandAllocationStrategy"`
+
+	// The minimum target capacity for On-Demand Instances in the fleet. If the
+	// minimum target capacity is not reached, the fleet launches no instances.
+	MinTargetCapacity *int64 `locationName:"minTargetCapacity" type:"integer"`
+
+	// Indicates that the fleet uses a single instance type to launch all On-Demand
+	// Instances in the fleet.
+	SingleInstanceType *bool `locationName:"singleInstanceType" type:"boolean"`
 }
 
 // String returns the string representation
@@ -59950,6 +60300,18 @@ func (s *OnDemandOptions) SetAllocationStrategy(v string) *OnDemandOptions {
 	return s
 }
 
+// SetMinTargetCapacity sets the MinTargetCapacity field's value.
+func (s *OnDemandOptions) SetMinTargetCapacity(v int64) *OnDemandOptions {
+	s.MinTargetCapacity = &v
+	return s
+}
+
+// SetSingleInstanceType sets the SingleInstanceType field's value.
+func (s *OnDemandOptions) SetSingleInstanceType(v bool) *OnDemandOptions {
+	s.SingleInstanceType = &v
+	return s
+}
+
 // The allocation strategy of On-Demand Instances in an EC2 Fleet.
 type OnDemandOptionsRequest struct {
 	_ struct{} `type:"structure"`
@@ -59961,6 +60323,14 @@ type OnDemandOptionsRequest struct {
 	// launching the highest priority first. If you do not specify a value, EC2
 	// Fleet defaults to lowest-price.
 	AllocationStrategy *string `type:"string" enum:"FleetOnDemandAllocationStrategy"`
+
+	// The minimum target capacity for On-Demand Instances in the fleet. If the
+	// minimum target capacity is not reached, the fleet launches no instances.
+	MinTargetCapacity *int64 `type:"integer"`
+
+	// Indicates that the fleet uses a single instance type to launch all On-Demand
+	// Instances in the fleet.
+	SingleInstanceType *bool `type:"boolean"`
 }
 
 // String returns the string representation
@@ -59976,6 +60346,18 @@ func (s OnDemandOptionsRequest) GoString() string {
 // SetAllocationStrategy sets the AllocationStrategy field's value.
 func (s *OnDemandOptionsRequest) SetAllocationStrategy(v string) *OnDemandOptionsRequest {
 	s.AllocationStrategy = &v
+	return s
+}
+
+// SetMinTargetCapacity sets the MinTargetCapacity field's value.
+func (s *OnDemandOptionsRequest) SetMinTargetCapacity(v int64) *OnDemandOptionsRequest {
+	s.MinTargetCapacity = &v
+	return s
+}
+
+// SetSingleInstanceType sets the SingleInstanceType field's value.
+func (s *OnDemandOptionsRequest) SetSingleInstanceType(v bool) *OnDemandOptionsRequest {
+	s.SingleInstanceType = &v
 	return s
 }
 
@@ -60233,6 +60615,30 @@ func (s *PlacementGroup) SetState(v string) *PlacementGroup {
 // SetStrategy sets the Strategy field's value.
 func (s *PlacementGroup) SetStrategy(v string) *PlacementGroup {
 	s.Strategy = &v
+	return s
+}
+
+// Describes the placement of an instance.
+type PlacementResponse struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the placement group the instance is in.
+	GroupName *string `locationName:"groupName" type:"string"`
+}
+
+// String returns the string representation
+func (s PlacementResponse) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PlacementResponse) GoString() string {
+	return s.String()
+}
+
+// SetGroupName sets the GroupName field's value.
+func (s *PlacementResponse) SetGroupName(v string) *PlacementResponse {
+	s.GroupName = &v
 	return s
 }
 
@@ -69121,6 +69527,14 @@ type SpotOptions struct {
 	// the cheapest Spot pools and evenly allocates your target Spot capacity across
 	// the number of Spot pools that you specify.
 	InstancePoolsToUseCount *int64 `locationName:"instancePoolsToUseCount" type:"integer"`
+
+	// The minimum target capacity for Spot Instances in the fleet. If the minimum
+	// target capacity is not reached, the fleet launches no instances.
+	MinTargetCapacity *int64 `locationName:"minTargetCapacity" type:"integer"`
+
+	// Indicates that the fleet uses a single instance type to launch all Spot Instances
+	// in the fleet.
+	SingleInstanceType *bool `locationName:"singleInstanceType" type:"boolean"`
 }
 
 // String returns the string representation
@@ -69151,6 +69565,18 @@ func (s *SpotOptions) SetInstancePoolsToUseCount(v int64) *SpotOptions {
 	return s
 }
 
+// SetMinTargetCapacity sets the MinTargetCapacity field's value.
+func (s *SpotOptions) SetMinTargetCapacity(v int64) *SpotOptions {
+	s.MinTargetCapacity = &v
+	return s
+}
+
+// SetSingleInstanceType sets the SingleInstanceType field's value.
+func (s *SpotOptions) SetSingleInstanceType(v bool) *SpotOptions {
+	s.SingleInstanceType = &v
+	return s
+}
+
 // Describes the configuration of Spot Instances in an EC2 Fleet request.
 type SpotOptionsRequest struct {
 	_ struct{} `type:"structure"`
@@ -69167,6 +69593,14 @@ type SpotOptionsRequest struct {
 	// selects the cheapest Spot pools and evenly allocates your target Spot capacity
 	// across the number of Spot pools that you specify.
 	InstancePoolsToUseCount *int64 `type:"integer"`
+
+	// The minimum target capacity for Spot Instances in the fleet. If the minimum
+	// target capacity is not reached, the fleet launches no instances.
+	MinTargetCapacity *int64 `type:"integer"`
+
+	// Indicates that the fleet uses a single instance type to launch all Spot Instances
+	// in the fleet.
+	SingleInstanceType *bool `type:"boolean"`
 }
 
 // String returns the string representation
@@ -69194,6 +69628,18 @@ func (s *SpotOptionsRequest) SetInstanceInterruptionBehavior(v string) *SpotOpti
 // SetInstancePoolsToUseCount sets the InstancePoolsToUseCount field's value.
 func (s *SpotOptionsRequest) SetInstancePoolsToUseCount(v int64) *SpotOptionsRequest {
 	s.InstancePoolsToUseCount = &v
+	return s
+}
+
+// SetMinTargetCapacity sets the MinTargetCapacity field's value.
+func (s *SpotOptionsRequest) SetMinTargetCapacity(v int64) *SpotOptionsRequest {
+	s.MinTargetCapacity = &v
+	return s
+}
+
+// SetSingleInstanceType sets the SingleInstanceType field's value.
+func (s *SpotOptionsRequest) SetSingleInstanceType(v bool) *SpotOptionsRequest {
+	s.SingleInstanceType = &v
 	return s
 }
 
@@ -73564,6 +74010,9 @@ const (
 
 	// FleetTypeMaintain is a FleetType enum value
 	FleetTypeMaintain = "maintain"
+
+	// FleetTypeInstant is a FleetType enum value
+	FleetTypeInstant = "instant"
 )
 
 const (
@@ -73758,6 +74207,14 @@ const (
 
 	// InstanceInterruptionBehaviorTerminate is a InstanceInterruptionBehavior enum value
 	InstanceInterruptionBehaviorTerminate = "terminate"
+)
+
+const (
+	// InstanceLifecycleSpot is a InstanceLifecycle enum value
+	InstanceLifecycleSpot = "spot"
+
+	// InstanceLifecycleOnDemand is a InstanceLifecycle enum value
+	InstanceLifecycleOnDemand = "on-demand"
 )
 
 const (
@@ -74676,6 +75133,15 @@ const (
 	// ResourceTypeDhcpOptions is a ResourceType enum value
 	ResourceTypeDhcpOptions = "dhcp-options"
 
+	// ResourceTypeElasticIp is a ResourceType enum value
+	ResourceTypeElasticIp = "elastic-ip"
+
+	// ResourceTypeFleet is a ResourceType enum value
+	ResourceTypeFleet = "fleet"
+
+	// ResourceTypeFpgaImage is a ResourceType enum value
+	ResourceTypeFpgaImage = "fpga-image"
+
 	// ResourceTypeImage is a ResourceType enum value
 	ResourceTypeImage = "image"
 
@@ -74684,6 +75150,12 @@ const (
 
 	// ResourceTypeInternetGateway is a ResourceType enum value
 	ResourceTypeInternetGateway = "internet-gateway"
+
+	// ResourceTypeLaunchTemplate is a ResourceType enum value
+	ResourceTypeLaunchTemplate = "launch-template"
+
+	// ResourceTypeNatgateway is a ResourceType enum value
+	ResourceTypeNatgateway = "natgateway"
 
 	// ResourceTypeNetworkAcl is a ResourceType enum value
 	ResourceTypeNetworkAcl = "network-acl"
@@ -74697,6 +75169,9 @@ const (
 	// ResourceTypeRouteTable is a ResourceType enum value
 	ResourceTypeRouteTable = "route-table"
 
+	// ResourceTypeSecurityGroup is a ResourceType enum value
+	ResourceTypeSecurityGroup = "security-group"
+
 	// ResourceTypeSnapshot is a ResourceType enum value
 	ResourceTypeSnapshot = "snapshot"
 
@@ -74706,14 +75181,14 @@ const (
 	// ResourceTypeSubnet is a ResourceType enum value
 	ResourceTypeSubnet = "subnet"
 
-	// ResourceTypeSecurityGroup is a ResourceType enum value
-	ResourceTypeSecurityGroup = "security-group"
-
 	// ResourceTypeVolume is a ResourceType enum value
 	ResourceTypeVolume = "volume"
 
 	// ResourceTypeVpc is a ResourceType enum value
 	ResourceTypeVpc = "vpc"
+
+	// ResourceTypeVpcPeeringConnection is a ResourceType enum value
+	ResourceTypeVpcPeeringConnection = "vpc-peering-connection"
 
 	// ResourceTypeVpnConnection is a ResourceType enum value
 	ResourceTypeVpnConnection = "vpn-connection"
