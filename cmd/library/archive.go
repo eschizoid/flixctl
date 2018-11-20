@@ -19,15 +19,17 @@ var ArchiveLibraryCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
-		fileChunks := glacierService.Chunk(fileName)
+		zipFile := glacierService.Zip(fileName)
+		fileChunks := glacierService.Chunk(zipFile.Name())
 		svc := glacier.New(awsSession)
-		initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileName)
+		initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, zipFile.Name())
 		fmt.Println(initiateMultipartUploadOutput.String())
 		uploadID := *initiateMultipartUploadOutput.UploadId
 		uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)
 		fmt.Println(uploadMultipartPartOutputs)
-		archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, fileName)
+		archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, zipFile.Name())
 		fmt.Println(archiveCreationOutput)
+		glacierService.Cleanup(append(fileChunks, zipFile.Name()))
 		close(shutdownCh)
 	},
 }

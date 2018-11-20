@@ -58,11 +58,12 @@ lint:
 	$(GOLINT) -v --deadline=5m run --disable gochecknoglobals
 
 update:
-	$(GODEP) ensure -update
+	$(GODEP) ensure -update -v
 
 update-vendor:
 	@cp -R aws/ vendor/github.com/eschizoid/flixctl/aws
 	@cp -R cmd/ vendor/github.com/eschizoid/flixctl/cmd
+	@cp -R library/ vendor/github.com/eschizoid/flixctl/library
 	@cp -R slack/ vendor/github.com/eschizoid/flixctl/slack
 	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
@@ -81,7 +82,7 @@ build-lambda-torrent-router:
 	@cd $(shell pwd)/aws/lambda/torrent; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
-zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router
+zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router zip-lambda-library-retriever
 
 zip-lambda-plex-dispatcher:
 	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
@@ -95,7 +96,11 @@ zip-lambda-torrent-router:
 	@cd $(shell pwd)/aws/lambda/torrent; \
 	zip -X lambda.zip torrent
 
-deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
+zip-lambda-library-retriever:
+	@cd $(shell pwd)/aws/lambda/library; \
+	zip -X lambda.zip torrent
+
+deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router deploy-lambda-library-retriever
 
 deploy-lambda-plex-dispatcher:
 	@aws lambda update-function-code \
@@ -114,6 +119,12 @@ deploy-lambda-torrent-router:
 	--function-name torrent-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
+
+deploy-lambda-library-retriever:
+	@aws lambda update-function-code \
+	--function-name library-retiever \
+	--region $(AWS_REGION) \
+	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
 
 tag:
 	@git tag --force $(VERSION)

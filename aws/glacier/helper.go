@@ -1,6 +1,7 @@
 package glacier
 
 import (
+	"compress/flate"
 	"crypto/sha256"
 	"fmt"
 	"io"
@@ -10,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
+	"github.com/mholt/archiver"
 )
 
 func Chunk(fileName string) []string {
@@ -38,6 +40,13 @@ func Chunk(fileName string) []string {
 		files = append(files, fileName)
 	}
 	return files
+}
+
+func Cleanup(files []string) {
+	for _, fileChunk := range files {
+		err := os.Remove(fileChunk)
+		ShowError(err)
+	}
 }
 
 func ComputeTreeHash(fileName string) string {
@@ -69,6 +78,24 @@ func GetStats(fileName string) os.FileInfo {
 	stats, err := file.Stat()
 	ShowError(err)
 	return stats
+}
+
+func Zip(source string) *os.File {
+	z := archiver.Zip{
+		CompressionLevel:       flate.DefaultCompression,
+		MkdirAll:               true,
+		SelectiveCompression:   true,
+		ContinueOnError:        false,
+		OverwriteExisting:      false,
+		ImplicitTopLevelFolder: false,
+	}
+	file, err := ioutil.TempFile(os.TempDir(), "movie.*.zip")
+	ShowError(err)
+	defer os.Remove(file.Name())
+	fmt.Println(file.Name())
+	err = z.Archive([]string{source}, file.Name())
+	ShowError(err)
+	return file
 }
 
 func ShowError(err error) {

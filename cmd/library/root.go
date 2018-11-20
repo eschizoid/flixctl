@@ -2,6 +2,7 @@ package library
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -12,10 +13,12 @@ var RootLibraryCmd = &cobra.Command{
 	Short: "To Control Media Library",
 }
 
-var retrievalType string
 var fileName string
-var archiveID string
 var jobID string
+var retrievalType string
+var query string
+var slackIncomingHookURL string
+var slackNotification string
 
 var (
 	_ = func() struct{} {
@@ -25,17 +28,11 @@ var (
 			"",
 			"the location of the movie or show to archive",
 		)
-		InitiateLibraryCmd.Flags().StringVarP(&retrievalType,
-			"type",
-			"t",
+		FindLibraryCmd.Flags().StringVarP(&query,
+			"query",
+			"q",
 			"",
-			"to retrieve archived library catalogue or a list of archives(movie, show)",
-		)
-		InitiateLibraryCmd.Flags().StringVarP(&archiveID,
-			"archive-id",
-			"i",
-			"",
-			"to archive id to retrieve",
+			"name of the movie or show to try to find",
 		)
 		RetrieveLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
@@ -49,7 +46,25 @@ var (
 			"",
 			"the location to retrieve the movie of the show",
 		)
-		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd)
+		JobsLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
+			"slack-notification-channel",
+			"s",
+			os.Getenv("SLACK_LIBRARY_INCOMING_HOOK_URL"),
+			"slack channel to notify of the plex event",
+		)
+		JobsLibraryCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
+		)
+		JobsLibraryCmd.Flags().StringVarP(&retrievalType,
+			"type",
+			"t",
+			"",
+			"to retrieve archived catalogue or a list of archives(movie, show)",
+		)
+		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, FindLibraryCmd)
 		return struct{}{}
 	}()
 )

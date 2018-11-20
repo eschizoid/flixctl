@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -26,9 +27,18 @@ var RetrieveLibraryCmd = &cobra.Command{
 		defer getJobOutputOutput.Body.Close()
 		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
 		ShowError(err)
-		err = ioutil.WriteFile(fileName, part, 0644)
+		var file *os.File
+		if retrievalType == "InventoryRetrieval" {
+			file, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
+			ShowError(err)
+		} else if retrievalType == "ArchiveRetrieval" {
+			file, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
+			ShowError(err)
+		}
+		err = ioutil.WriteFile(file.Name(), part, 0644)
 		ShowError(err)
 		jsonString, _ := json.Marshal(getJobOutputOutput)
+		glacierService.Cleanup([]string{file.Name()})
 		fmt.Println("\n" + string(jsonString))
 		close(shutdownCh)
 	},

@@ -11,7 +11,7 @@ aws glacier list-multipart-uploads \
     | jq '.[].MultipartUploadId' -r \
     | while read id; \
         do aws glacier abort-multipart-upload \
-            --account-id - \
-            --vault-name plex \
-            --upload-id "${id}";
+            --account-id='-' \
+            --vault-name='plex' \
+            --upload-id=${id};
         done
