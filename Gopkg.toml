@@ -42,7 +42,7 @@
   version = "1.15.80"
 
 [[constraint]]
-  branch = "feature/library-slack-hooks"
+  branch = "master"
   name = "github.com/eschizoid/flixctl"
 
 [[constraint]]

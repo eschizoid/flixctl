@@ -113,7 +113,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  branch = "feature/library-slack-hooks"
+  branch = "master"
   digest = "1:7e75981e6ffcefe5ffbb460147020d2b4fdae3b888686c46c9a49c5d7066fe8a"
   name = "github.com/eschizoid/flixctl"
   packages = [
@@ -134,7 +134,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "6605d2d510d872a9ec52bf5f0454a4903bfa2382"
+  revision = "32d9aa5a1c9659d25a1f244e0e7247a8091cce31"
 
 [[projects]]
   digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
