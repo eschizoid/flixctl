@@ -86,7 +86,7 @@ func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNa
 	var results []glacier.UploadMultipartPartOutput
 	for i, name := range fileChunkNames {
 		file, err := os.Open(name)
-		ShowError(err)
+		showError(err)
 		fs, _ := file.Stat()
 		bytesRange := fmt.Sprintf("bytes %d-%d/*", i*maxFileChunkSize, (i*maxFileChunkSize)+(int(fs.Size())-1))
 		fmt.Println(bytesRange)

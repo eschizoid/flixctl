@@ -30,7 +30,7 @@ var JobsLibraryCmd = &cobra.Command{
 }
 
 func choose(jobDescriptions []*glacier.JobDescription, test func(string, string) bool) (filteredJobs []*glacier.JobDescription) {
-	filteredJobs = make([]*glacier.JobDescription, len(jobDescriptions)-1)
+	filteredJobs = make([]*glacier.JobDescription, len(jobDescriptions))
 	for _, job := range jobDescriptions {
 		if test(*job.StatusMessage, *job.Action) {
 			filteredJobs = append(filteredJobs, job)

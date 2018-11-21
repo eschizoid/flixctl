@@ -26,25 +26,32 @@ var RetrieveLibraryCmd = &cobra.Command{
 		getJobOutputOutput := glacierService.GetJobOutput(svc, jobID)
 		defer getJobOutputOutput.Body.Close()
 		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
-		ShowError(err)
-		var file *os.File
-		if retrievalType == "InventoryRetrieval" {
-			file, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
-			ShowError(err)
-		} else if retrievalType == "ArchiveRetrieval" {
-			file, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
-			ShowError(err)
-		}
-		err = ioutil.WriteFile(file.Name(), part, 0644)
-		ShowError(err)
+		showError(err)
+		var zipFileName = writeFile(part)
+		glacierService.Unzip(zipFileName)
+		glacierService.Cleanup([]string{zipFileName})
 		jsonString, _ := json.Marshal(getJobOutputOutput)
-		glacierService.Cleanup([]string{file.Name()})
 		fmt.Println("\n" + string(jsonString))
 		close(shutdownCh)
 	},
 }
 
-func ShowError(err error) {
+func writeFile(part []byte) string {
+	var err error
+	var zipFile *os.File
+	if retrievalType == "InventoryRetrieval" {
+		zipFile, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
+	} else if retrievalType == "ArchiveRetrieval" {
+		zipFile, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
+	}
+	showError(err)
+	zipFileName := zipFile.Name()
+	err = ioutil.WriteFile(zipFileName, part, 0644)
+	showError(err)
+	return zipFileName
+}
+
+func showError(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
