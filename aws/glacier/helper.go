@@ -17,7 +17,7 @@ import (
 func Chunk(fileName string) []string {
 	var files []string
 	file, err := os.Open(fileName)
-	ShowError(err)
+	showError(err)
 	defer file.Close()
 	fileInfo, _ := file.Stat()
 	var fileSize = fileInfo.Size()
@@ -29,14 +29,14 @@ func Chunk(fileName string) []string {
 		fmt.Printf("Part size: %d\n", partSize)
 		partBuffer := make([]byte, partSize)
 		_, err = file.Read(partBuffer)
-		ShowError(err)
+		showError(err)
 		// write to disk
-		fileName := "part-" + strconv.FormatUint(i, 10)
+		fileName := fmt.Sprintf("/tmp/part-%s", strconv.FormatUint(i, 10))
 		_, err = os.Create(fileName)
-		ShowError(err)
+		showError(err)
 		// write/save buffer to disk
 		err = ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-		ShowError(err)
+		showError(err)
 		files = append(files, fileName)
 	}
 	return files
@@ -45,13 +45,13 @@ func Chunk(fileName string) []string {
 func Cleanup(files []string) {
 	for _, fileChunk := range files {
 		err := os.Remove(fileChunk)
-		ShowError(err)
+		showError(err)
 	}
 }
 
 func ComputeTreeHash(fileName string) string {
 	file, err := os.Open(fileName)
-	ShowError(err)
+	showError(err)
 	defer file.Close()
 	buf := make([]byte, maxTreeHashChunkSize)
 	var hashes [][]byte
@@ -73,33 +73,44 @@ func ComputeTreeHash(fileName string) string {
 
 func GetStats(fileName string) os.FileInfo {
 	file, err := os.Open(fileName)
-	ShowError(err)
+	showError(err)
 	defer file.Close()
 	stats, err := file.Stat()
-	ShowError(err)
+	showError(err)
 	return stats
 }
 
-func Zip(source string) *os.File {
+func Unzip(source string) {
 	z := archiver.Zip{
 		CompressionLevel:       flate.DefaultCompression,
 		MkdirAll:               true,
 		SelectiveCompression:   true,
 		ContinueOnError:        false,
-		OverwriteExisting:      false,
+		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	file, err := ioutil.TempFile(os.TempDir(), "movie.*.zip")
-	ShowError(err)
-	defer os.Remove(file.Name())
-	fmt.Println(file.Name())
-	err = z.Archive([]string{source}, file.Name())
-	ShowError(err)
-	return file
+	err := z.Unarchive(source, "/tmp")
+	showError(err)
 }
 
-func ShowError(err error) {
+func Zip(source string) os.File {
+	z := archiver.Zip{
+		CompressionLevel:       flate.DefaultCompression,
+		MkdirAll:               true,
+		SelectiveCompression:   true,
+		ContinueOnError:        false,
+		OverwriteExisting:      true,
+		ImplicitTopLevelFolder: false,
+	}
+	file, err := ioutil.TempFile("/tmp", "movie.*.zip")
+	showError(err)
+	err = z.Archive([]string{source}, file.Name())
+	showError(err)
+	return *file
+}
+
+func showError(err error) {
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 }
