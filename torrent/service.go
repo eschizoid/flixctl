@@ -187,7 +187,7 @@ func Status(ec2status string) []transmissionrpc.Torrent {
 			panic(err)
 		}
 		for _, torrent := range response {
-			if torrent.Files[0].Name != "" {
+			if torrent.Files[0].Name != "" && *torrent.PercentDone < 1.00 {
 				torrents = append(torrents, *torrent)
 			}
 		}
