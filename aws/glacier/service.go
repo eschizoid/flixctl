@@ -89,7 +89,7 @@ func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNa
 		showError(err)
 		fs, _ := file.Stat()
 		bytesRange := fmt.Sprintf("bytes %d-%d/*", i*maxFileChunkSize, (i*maxFileChunkSize)+(int(fs.Size())-1))
-		fmt.Println(bytesRange)
+		fmt.Println("\n" + bytesRange)
 		input := &glacier.UploadMultipartPartInput{
 			AccountId: aws.String("-"),
 			Body:      file,
