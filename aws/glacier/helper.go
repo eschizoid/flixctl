@@ -31,13 +31,13 @@ func Chunk(fileName string) []string {
 		_, err = file.Read(partBuffer)
 		showError(err)
 		// write to disk
-		fileName := fmt.Sprintf("/tmp/part-%s", strconv.FormatUint(i, 10))
-		_, err = os.Create(fileName)
+		partFileName := fmt.Sprintf("/tmp/part-%s", strconv.FormatUint(i, 10))
+		_, err = os.Create(partFileName)
 		showError(err)
 		// write/save buffer to disk
-		err = ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+		err = ioutil.WriteFile(partFileName, partBuffer, os.ModeAppend)
 		showError(err)
-		files = append(files, fileName)
+		files = append(files, partFileName)
 	}
 	return files
 }

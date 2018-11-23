@@ -5,6 +5,11 @@
     "include-command-output-in-response": true
   },
   {
+    "id": "upgrade",
+    "execute-command": "/opt/webhook-linux-amd64/upgrade.sh",
+    "response-message": "Upgrading flixctl"
+  },
+  {
     "id": "movies-search",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",

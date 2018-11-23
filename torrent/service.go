@@ -201,7 +201,7 @@ func Status(ec2status string) []transmissionrpc.Torrent {
 func TriggerDownload(magnetLink string, downloadDir string, ec2status string) *transmissionrpc.Torrent {
 	var err error
 	var torrent *transmissionrpc.Torrent
-	if ec2status == ec2RunningStatus {
+	if strings.EqualFold(ec2status, ec2RunningStatus) {
 		torrent, err = transmission.TorrentAdd(&transmissionrpc.TorrentAddPayload{
 			DownloadDir: &downloadDir,
 			Filename:    &magnetLink,
