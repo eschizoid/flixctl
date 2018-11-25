@@ -863,6 +863,39 @@ func (p *Plex) GetLibraries() (LibrarySections, error) {
 	return result, nil
 }
 
+// GetLibraryContent retrieve the content inside a library
+func (p *Plex) GetLibraryContent(sectionKey string, filter string) (SearchResults, error) {
+	query := fmt.Sprintf("%s/library/sections/%s/all%s", p.URL, sectionKey, filter)
+
+	resp, err := p.get(query, defaultHeaders())
+
+	if err != nil {
+		return SearchResults{}, err
+	}
+
+	if resp.Status == ErrorInvalidToken {
+		return SearchResults{}, errors.New("invalid token")
+	}
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		return SearchResults{}, errors.New("You are not authorized to access that server")
+	}
+
+	if resp.StatusCode == http.StatusBadRequest {
+		return SearchResults{}, errors.New("There was an error in the request")
+	}
+
+	defer resp.Body.Close()
+
+	var results SearchResults
+
+	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
+		return SearchResults{}, err
+	}
+
+	return results, nil
+}
+
 // CreateLibrary will create a new library on your Plex server
 func (p *Plex) CreateLibrary(params CreateLibraryParams) error {
 	// all params are required

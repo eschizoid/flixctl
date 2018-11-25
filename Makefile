@@ -64,6 +64,7 @@ update-vendor:
 	@cp -R aws/ vendor/github.com/eschizoid/flixctl/aws
 	@cp -R cmd/ vendor/github.com/eschizoid/flixctl/cmd
 	@cp -R library/ vendor/github.com/eschizoid/flixctl/library
+	@cp -R models/ vendor/github.com/eschizoid/flixctl/models
 	@cp -R slack/ vendor/github.com/eschizoid/flixctl/slack
 	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker

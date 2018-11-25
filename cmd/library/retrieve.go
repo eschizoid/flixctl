@@ -14,7 +14,7 @@ import (
 
 var RetrieveLibraryCmd = &cobra.Command{
 	Use:   "retrieve",
-	Short: "To Retrieve A Movie Or Show",
+	Short: "To Retrieve Movie Or Show",
 	Long:  "to retrieve a movie or show from the media library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
@@ -26,7 +26,7 @@ var RetrieveLibraryCmd = &cobra.Command{
 		getJobOutputOutput := glacierService.GetJobOutput(svc, jobID)
 		defer getJobOutputOutput.Body.Close()
 		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
-		showError(err)
+		ShowError(err)
 		var zipFileName = writeFile(part)
 		glacierService.Unzip(zipFileName)
 		glacierService.Cleanup([]string{zipFileName})
@@ -44,15 +44,9 @@ func writeFile(part []byte) string {
 	} else if retrievalType == "ArchiveRetrieval" {
 		zipFile, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
 	}
-	showError(err)
+	ShowError(err)
 	zipFileName := zipFile.Name()
 	err = ioutil.WriteFile(zipFileName, part, 0644)
-	showError(err)
+	ShowError(err)
 	return zipFileName
-}
-
-func showError(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
 }

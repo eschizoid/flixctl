@@ -39,7 +39,7 @@
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.15.80"
+  version = "1.15.81"
 
 [[constraint]]
   branch = "master"

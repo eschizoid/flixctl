@@ -28,7 +28,7 @@ var (
 			"",
 			"the location of the movie or show to archive",
 		)
-		FindLibraryCmd.Flags().StringVarP(&query,
+		SyncLibraryCmd.Flags().StringVarP(&query,
 			"query",
 			"q",
 			"",
@@ -64,7 +64,7 @@ var (
 			"",
 			"to retrieve archived catalogue or a list of archives(movie, show)",
 		)
-		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, FindLibraryCmd)
+		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, SyncLibraryCmd)
 		return struct{}{}
 	}()
 )
@@ -79,5 +79,11 @@ func Indicator(shutdownCh <-chan struct{}) {
 		case <-shutdownCh:
 			return
 		}
+	}
+}
+
+func ShowError(err error) {
+	if err != nil {
+		fmt.Println(err)
 	}
 }

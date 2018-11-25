@@ -1,4 +1,4 @@
-CREATE VIEW  library AS
+-- CREATE VIEW  library AS
     SELECT metadata_items.title,
            metadata_items.title_sort,
            round(cast(media_parts.size as float) / 1024 / 1024 / 1024, 2) || ' Gb'             AS file_size,
@@ -38,8 +38,8 @@ CREATE VIEW  library AS
     ORDER BY metadata_items.title_sort,
              metadata_items.year;
 
--- DROP VIEW
-DROP VIEW LIBRARY;
-
--- SELECT VIEW
-SELECT * FROM LIBRARY;
+-- -- DROP VIEW
+-- DROP VIEW LIBRARY;
+--
+-- -- SELECT VIEW
+-- SELECT * FROM LIBRARY;

@@ -25,6 +25,7 @@ true MaaS (Movies as a Service) architecture.
 * https://aws.amazon.com/ec2[EC2]
 * https://aws.amazon.com/glacier[Glacier]
 * https://aws.amazon.com/lambda[Lambda]
+* https://aws.amazon.com/sns[SNS]
 
 ==== Software (OSS)
 * https://github.com/plexinc/plex-media-player[Plex]
@@ -115,10 +116,11 @@ Usage:
   flixctl library [command]
 
 Available Commands:
-  archive     To Archive a File To Media Library
-  initiate    To Initiate a File Retrieval
+  archive     To Archive Movie Or Show
+  initiate    To Initiate Catalogue Retrieval
   jobs        To List Media Library Jobs
-  retrieve    To Retrieve a File From Media Library
+  retrieve    To Retrieve Movie Or Show
+  sync        To Sync Plex DB
 
 Flags:
   -h, --help   help for library
