@@ -31,6 +31,8 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/dispatcher
 	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
+	@rm -rf $(shell pwd)/aws/lambda/library/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/library/library
 
 install:
 ifeq ($(UPDATE_VENDOR), true)
@@ -69,7 +71,7 @@ update-vendor:
 	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
 
-build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router
+build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router build-lambda-library-retriever
 
 build-lambda-plex-dispatcher:
 	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
@@ -81,6 +83,10 @@ build-lambda-plex-executor:
 
 build-lambda-torrent-router:
 	@cd $(shell pwd)/aws/lambda/torrent; \
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
+
+build-lambda-library-retriever:
+	@cd $(shell pwd)/aws/lambda/library; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router zip-lambda-library-retriever
@@ -99,9 +105,9 @@ zip-lambda-torrent-router:
 
 zip-lambda-library-retriever:
 	@cd $(shell pwd)/aws/lambda/library; \
-	zip -X lambda.zip torrent
+	zip -X lambda.zip library
 
-deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router deploy-lambda-library-retriever
+deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
 
 deploy-lambda-plex-dispatcher:
 	@aws lambda update-function-code \
