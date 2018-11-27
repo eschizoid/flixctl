@@ -1,10 +1,8 @@
 package torrent
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -20,18 +18,6 @@ var DownloadTorrentCmd = &cobra.Command{
 	Short: "To Download A Torrent",
 	Long:  "to download a torrent using Transmission client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		envMagnetLink := os.Getenv("MAGNET_LINK")
-		envDownloadDir := os.Getenv("DOWNLOAD_DIR")
-		if envDownloadDir != "" && envMagnetLink == "" {
-			// coming from web-hook
-			downloadDir = envDownloadDir
-			decodedEnvMagnetLink, err := base64.StdEncoding.DecodeString(envMagnetLink)
-			if err != nil {
-				fmt.Printf("Could not decode the magnet link: [%s]\n", err)
-				panic(err)
-			}
-			magnetLink = string(decodedEnvMagnetLink)
-		}
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
