@@ -19,7 +19,7 @@ case $# in
             /home/webhook/go/bin/flixctl torrent \
                 download \
                 --download-dir "${DOWNLOAD_DIR}" \
-                --magnet-link "${MAGNET_LINK}" \
+                --magnet-link "$(echo `echo  "${MAGNET_LINK}" | base64 --decode`)" \
                 --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          search)
