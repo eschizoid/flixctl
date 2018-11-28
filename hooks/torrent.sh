@@ -19,7 +19,8 @@ case $# in
             /home/webhook/go/bin/flixctl torrent \
                 download \
                 --download-dir "${DOWNLOAD_DIR}" \
-                --magnet-link "$(echo `echo  "${MAGNET_LINK}" | base64 --decode`)" \
+                --magnet-link "$(echo  "${MAGNET_LINK}" | base64 --decode)" \
+                --slack-notification "${SLACK_NOTIFICATION}" \
                 --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          search)
@@ -28,13 +29,15 @@ case $# in
                 --download-dir "${DOWNLOAD_DIR}" \
                 --keywords "${KEYWORDS}" \
                 --minimum-quality "1080" \
+                --slack-notification "${SLACK_NOTIFICATION}" \
                 --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          status)
             /home/webhook/go/bin/flixctl torrent \
                 status \
                 --slack-notification-channel \
-                "${SLACK_TORRENT_INCOMING_HOOK_URL}"
+                --slack-notification "${SLACK_NOTIFICATION}" \
+                --slack-notification-channel "${SLACK_TORRENT_INCOMING_HOOK_URL}"
             ;;
          *)
             echo "'$1' is not a valid torrent command."

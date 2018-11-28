@@ -29,8 +29,3 @@ linters-settings:
 
 linters:
   enable-all: true
-  disable:
-  - maligned
-  - prealloc
-  - gosec
-  - lll

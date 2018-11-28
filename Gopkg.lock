@@ -54,7 +54,7 @@
   version = "v1.7.0"
 
 [[projects]]
-  digest = "1:1e1d4c411af1eb4456076b54c7b2d42411a10eb7cc64cca2dc6ebf72f00c7aa7"
+  digest = "1:7ad27fe4a86f3c1e98c91644a1b770b55dfb39fe1e3cb46f2fa5e7855142ba40"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -94,8 +94,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "66af558c91f83a793b4a0101f70742062982f611"
-  version = "v1.15.81"
+  revision = "89734ade0df0a4a437cbf4aa9c14e17daf37c5ac"
+  version = "v1.15.86"
 
 [[projects]]
   branch = "master"
@@ -114,7 +114,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e846792d54a39f350145517512a30329b3593e70bb4929f87d6459b9b1661a29"
+  digest = "1:48f05a1c91184db2a4f3d7a8ceb488e5bd084612b692baadb31a90216658c3b8"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -135,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "247051bf66545b7428374ff3adf50960567d1807"
+  revision = "e40e2419039f0958acaad8c6ddcb80c68285c30e"
 
 [[projects]]
   digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
@@ -284,7 +284,8 @@
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
+  branch = "master"
+  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -296,7 +297,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
+  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
@@ -353,11 +354,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3f3a05ae0b95893d90b9b3b5afdb79a9b3d96e4e36e099d841ae602e4aca0da8"
+  digest = "1:38f553aff0273ad6f367cb0a0f8b6eecbaef8dc6cb8b50e57b6a81c1d5b1e332"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "3d3f9f413869b949e48070b5bc593aa22cc2b8f2"
+  revision = "eb0de9b17e854e9b1ccd9963efafc79862359959"
 
 [[projects]]
   branch = "master"
@@ -368,18 +369,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
+  revision = "fae4c4e3ad76c295c3d6d259f898136b4bf833a8"
 
 [[projects]]
   branch = "master"
-  digest = "1:f343f077a5b0bc3a3788b3a04e24dd417e3e25b2acb529c413e212d2c42416ef"
+  digest = "1:0c7cb58af944f9690af91474a75371eecfe54c1ce3771a8dc08924430ee785d3"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
+  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
@@ -431,6 +432,7 @@
     "github.com/mholt/archiver",
     "github.com/nlopes/slack",
     "github.com/spf13/cobra",
+    "go.etcd.io/bbolt",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

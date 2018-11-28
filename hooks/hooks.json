@@ -1,13 +1,25 @@
 [
   {
-    "id": "admin",
+    "id": "endpoints",
     "execute-command": "/opt/webhook-linux-amd64/admin.sh",
-    "include-command-output-in-response": true
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "endpoints"
+      }
+    ]
   },
   {
     "id": "upgrade",
-    "execute-command": "/opt/webhook-linux-amd64/upgrade.sh",
-    "response-message": "Upgrading flixctl"
+    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "response-message": "Upgrading flixctl",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "upgrade"
+      }
+    ]
   },
   {
     "id": "movies-search",
@@ -15,6 +27,11 @@
     "command-working-directory": "/home/webhook/go/bin",
     "response-message": "Executing search command",
     "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "notify",
+        "envname": "SLACK_NOTIFICATION"
+      },
       {
         "source": "payload",
         "name": "text",
@@ -51,6 +68,11 @@
     "pass-environment-to-command": [
       {
         "source": "payload",
+        "name": "notify",
+        "envname": "SLACK_NOTIFICATION"
+      },
+      {
+        "source": "payload",
         "name": "text",
         "envname": "KEYWORDS"
       },
@@ -85,17 +107,22 @@
     "pass-environment-to-command": [
       {
         "source": "url",
-        "name": "n",
+        "name": "notify",
+        "envname": "SLACK_NOTIFICATION"
+      },
+      {
+        "source": "url",
+        "name": "name",
         "envname": "TORRENT_NAME"
       },
       {
         "source": "url",
-        "name": "m",
+        "name": "magnet",
         "envname": "MAGNET_LINK"
       },
       {
         "source": "url",
-        "name": "d",
+        "name": "directory",
         "envname": "DOWNLOAD_DIR"
       }
     ],
@@ -111,8 +138,7 @@
         "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
         "parameter": {
           "source": "url",
-          "name": "t",
-          "envname": "QUERY"
+          "name": "token"
         }
       }
     }
@@ -122,6 +148,13 @@
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
     "response-message": "Executing status command",
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "notify",
+        "envname": "SLACK_NOTIFICATION"
+      }
+    ],
     "pass-arguments-to-command": [
       {
         "source": "string",

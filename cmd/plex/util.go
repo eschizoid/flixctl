@@ -7,8 +7,7 @@ import (
 )
 
 func NotifySlack(status string) {
-	notify, _ := strconv.ParseBool(slackNotification)
-	if notify {
+	if notify, _ := strconv.ParseBool(slackNotification); notify {
 		slackService.SendStatus(status, slackIncomingHookURL)
 	}
 }

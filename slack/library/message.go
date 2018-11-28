@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
 	util "github.com/eschizoid/flixctl/slack"
@@ -11,10 +12,10 @@ import (
 )
 
 func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL string) {
-	var attachments []slack.Attachment
+	var attachments = make([]slack.Attachment, len(jobDescriptions))
 	for _, jobDescription := range jobDescriptions {
 		var url string
-		if *jobDescription.Action == "InventoryRetrieval" {
+		if strings.EqualFold(*jobDescription.Action, "InventoryRetrieval") {
 			url = fmt.Sprintf("https://marianoflix.duckdns.org:9091/hooks/%s?t=%s&j%s", "retrieve-inventory", *jobDescription.Action, *jobDescription.JobId)
 		} else {
 			url = fmt.Sprintf("https://marianoflix.duckdns.org:9091/hooks/%s?t=%s&j%s", "retrieve-archive", *jobDescription.Action, *jobDescription.JobId)

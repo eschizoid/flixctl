@@ -14,8 +14,8 @@ import (
 
 var RetrieveLibraryCmd = &cobra.Command{
 	Use:   "retrieve",
-	Short: "To Retrieve Movie Or Show",
-	Long:  "to retrieve a movie or show from the media library.",
+	Short: "To Retrieve Movies Or Shows",
+	Long:  "to retrieve movies or shows from the library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)

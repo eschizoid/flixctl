@@ -8,7 +8,7 @@ GOLINT := golangci-lint
 GOFMT := gofmt
 SHELL := /bin/bash
 TARGET := $(shell echo $${PWD\#\#*/})
-VERSION := 1.0.0
+VERSION := 1.1.0
 BUILD := `git rev-parse --short HEAD`
 LDFLAGS=-ldflags "-X=main.VERSION=$(VERSION) -X=main.BUILD=$(BUILD)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
@@ -56,8 +56,8 @@ dep:
 	$(GODEP) check
 	$(GODEP) ensure -v
 
-lint:
-	$(GOLINT) -v --deadline=5m run --disable gochecknoglobals
+lint: fmt
+	$(GOLINT) -v --deadline=5m run --disable gochecknoglobals --disable lll
 
 update:
 	$(GODEP) ensure -update -v
@@ -71,7 +71,7 @@ update-vendor:
 	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
 
-build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router build-lambda-library-retriever
+build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-torrent-router build-lambda-library-router
 
 build-lambda-plex-dispatcher:
 	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
@@ -85,29 +85,33 @@ build-lambda-torrent-router:
 	@cd $(shell pwd)/aws/lambda/torrent; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
-build-lambda-library-retriever:
+build-lambda-library-router:
 	@cd $(shell pwd)/aws/lambda/library; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
-zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router zip-lambda-library-retriever
+zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router zip-lambda-library-router
 
 zip-lambda-plex-dispatcher:
-	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
-	zip -X lambda.zip dispatcher
+	zip -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
+	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher \
+	$(shell pwd)/database/storm/library.db
 
 zip-lambda-plex-executor:
-	@cd $(shell pwd)/aws/lambda/plex/executor; \
-	zip -X lambda.zip executor
+	zip -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
+	$(shell pwd)/aws/lambda/plex/executor/executor \
+	$(shell pwd)/database/storm/library.db
 
 zip-lambda-torrent-router:
-	@cd $(shell pwd)/aws/lambda/torrent; \
-	zip -X lambda.zip torrent
+	zip -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
+	$(shell pwd)/aws/lambda/torrent/torrent \
+	$(shell pwd)/database/storm/library.db
 
-zip-lambda-library-retriever:
-	@cd $(shell pwd)/aws/lambda/library; \
-	zip -X lambda.zip library
+zip-lambda-library-router:
+	zip -X $(shell pwd)/aws/lambda/library/lambda.zip \
+	$(shell pwd)/aws/lambda/library/library \
+	$(shell pwd)/database/storm/library.db
 
-deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router
+deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router deploy-lambda-library-router
 
 deploy-lambda-plex-dispatcher:
 	@aws lambda update-function-code \
@@ -127,9 +131,9 @@ deploy-lambda-torrent-router:
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
 
-deploy-lambda-library-retriever:
+deploy-lambda-library-router:
 	@aws lambda update-function-code \
-	--function-name library-retiever \
+	--function-name library-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
 

@@ -8,8 +8,7 @@ import (
 )
 
 func NotifySlack(jobDescriptions []*glacier.JobDescription) {
-	notify, _ := strconv.ParseBool(slackNotification)
-	if notify {
+	if notify, _ := strconv.ParseBool(slackNotification); notify {
 		slackService.SendJobs(jobDescriptions, slackIncomingHookURL)
 	}
 }

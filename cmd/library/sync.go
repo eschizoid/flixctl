@@ -1,23 +1,31 @@
 package library
 
 import (
-	"os"
+	"strings"
 
-	"github.com/eschizoid/flixctl/library"
+	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
+	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	libraryService "github.com/eschizoid/flixctl/library"
 	"github.com/spf13/cobra"
 )
 
 var SyncLibraryCmd = &cobra.Command{
 	Use:   "sync",
-	Short: "To Sync Plex DB",
-	Long:  "to sync plex db with internal flixctl db.",
+	Short: "To Sync Plex Watched Movies And Shows",
+	Long:  "to sync plex watched movies and shows with internal flixctl db.",
 	Run: func(cmd *cobra.Command, args []string) {
-		token := os.Getenv("PLEX_TOKEN")
-		movies := library.GetPlexMovies(token)
-		for _, movie := range movies.MediaContainer.Metadata {
-			err := libraryService.SaveMovie(movie)
-			ShowError(err)
+		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+			SharedConfigState: sess.SharedConfigEnable,
+		}))
+		svc := ec2.New(awsSession, awsSession.Config)
+		instanceID := ec2Service.FetchInstanceID(svc, "plex")
+		if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
+			movies, _ := libraryService.GetLivePlexMovies("?unwatched=1")
+			for _, movie := range movies {
+				err := libraryService.SavePlexMovie(movie)
+				ShowError(err)
+			}
 		}
 	},
 }
