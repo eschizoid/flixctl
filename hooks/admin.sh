@@ -14,7 +14,10 @@ case $# in
             ;;
          upgrade)
             rm -rf go/src/github.com/eschizoid/flixctl
-            go get -u github.com/eschizoid/flixctl
+            /usr/local/go/bin/go get -u github.com/eschizoid/flixctl
+            cd /home/webhook/go/src/github.com/eschizoid/flixctl
+            /bin/make install
+            /home/webhook/go/bin/flixctl version
             ;;
          *)
             echo "'$1' is not a valid admin command."

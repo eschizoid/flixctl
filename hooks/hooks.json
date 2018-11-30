@@ -13,7 +13,7 @@
   {
     "id": "upgrade",
     "execute-command": "/opt/webhook-linux-amd64/admin.sh",
-    "response-message": "Upgrading flixctl",
+    "include-command-output-in-response": true,
     "pass-arguments-to-command": [
       {
         "source": "string",
