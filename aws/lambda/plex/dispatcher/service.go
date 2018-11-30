@@ -44,7 +44,18 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if slash.Token != os.Getenv("SLACK_PLEX_TOKEN") {
 		return clientError(http.StatusForbidden)
 	}
-	invokeLambda(slash)
+	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	client := lambdaService.New(session, &aws.Config{Region: aws.String("us-east-1")})
+	switch slash.Text {
+	case "start":
+		invokeLambda(client, "start")
+	case "stop":
+		invokeLambda(client, "stop")
+	case "status":
+		invokeLambda(client, "status")
+	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-type": "application/json"},
@@ -52,27 +63,10 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	}, nil
 }
 
-func invokeLambda(slash *types.Slash) {
-	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
-		SharedConfigState: sess.SharedConfigEnable,
-	}))
-	client := lambdaService.New(session, &aws.Config{Region: aws.String("us-east-1")})
-	switch slash.Text {
-	case "start":
-		err := invoke.InvokeAsync(client, "plex-command-executor", types.Input{Command: "start"})
-		if err != nil {
-			fmt.Println("Error invoking λ:", err)
-		}
-	case "stop":
-		err := invoke.InvokeAsync(client, "plex-command-executor", types.Input{Command: "stop"})
-		if err != nil {
-			fmt.Println("Error invoking λ:", err)
-		}
-	case "status":
-		err := invoke.InvokeAsync(client, "plex-command-executor", types.Input{Command: "status"})
-		if err != nil {
-			fmt.Println("Error invoking λ:", err)
-		}
+func invokeLambda(client *lambdaService.Lambda, operation string) {
+	err := invoke.InvokeAsync(client, "plex-command-executor", types.Input{Command: operation})
+	if err != nil {
+		fmt.Println("Error invoking λ:", err)
 	}
 }
 

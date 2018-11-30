@@ -8,17 +8,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RootLibraryCmd = &cobra.Command{
-	Use:   "library",
-	Short: "To Control Media Library",
-}
+const ec2StatusRunning = "Running"
 
-var fileName string
-var jobID string
-var retrievalType string
-var query string
-var slackIncomingHookURL string
-var slackNotification string
+var (
+	RootLibraryCmd = &cobra.Command{
+		Use:   "library",
+		Short: "To Control Media Library",
+	}
+	fileName             string
+	jobID                string
+	retrievalType        string
+	query                string
+	slackIncomingHookURL string
+	slackNotification    string
+)
 
 var (
 	_ = func() struct{} {
@@ -64,7 +67,7 @@ var (
 			"",
 			"to retrieve archived catalogue or a list of archives(movie, show)",
 		)
-		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, SyncLibraryCmd)
+		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, SyncLibraryCmd, CatalogueLibraryCmd)
 		return struct{}{}
 	}()
 )

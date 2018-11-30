@@ -83,7 +83,7 @@ func InitiateMultipartUploadInput(svc *glacier.Glacier, fileName string) *glacie
 }
 
 func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNames []string) []glacier.UploadMultipartPartOutput {
-	var results []glacier.UploadMultipartPartOutput
+	var results = make([]glacier.UploadMultipartPartOutput, len(fileChunkNames))
 	for i, name := range fileChunkNames {
 		file, err := os.Open(name)
 		showError(err)

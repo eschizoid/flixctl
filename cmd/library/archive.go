@@ -7,13 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
+	"github.com/eschizoid/flixctl/models"
 	"github.com/spf13/cobra"
 )
 
 var ArchiveLibraryCmd = &cobra.Command{
 	Use:   "archive",
-	Short: "To Archive Movie Or Show",
-	Long:  "to archive a movie or show to the media library.",
+	Short: "To Archive Movies Or Shows",
+	Long:  "to archive movies or shows to the library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
@@ -31,7 +32,9 @@ var ArchiveLibraryCmd = &cobra.Command{
 		fmt.Println(uploadMultipartPartOutputs)
 		archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, zipFileName)
 		fmt.Println(archiveCreationOutput)
-		err := libraryService.SaveUpload(*archiveCreationOutput)
+		upload := new(models.Upload)
+		upload.ArchiveCreationOutput = archiveCreationOutput
+		err := libraryService.SaveGlacierMovie(*upload)
 		ShowError(err)
 		glacierService.Cleanup(append(fileChunks, zipFileName))
 		close(shutdownCh)

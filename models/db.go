@@ -1,12 +1,9 @@
 package models
 
 import (
-	"fmt"
-	"os"
 	"time"
 
 	"github.com/asdine/storm"
-	"github.com/aws/aws-sdk-go/service/glacier"
 	"github.com/jrudio/go-plex-client"
 	"go.etcd.io/bbolt"
 )
@@ -14,16 +11,24 @@ import (
 type Datastore interface {
 	AllMovies() ([]plex.Metadata, error)
 	SaveMovie(plex.Metadata) error
-	AllUpload() ([]glacier.ArchiveCreationOutput, error)
-	SaveUpload(glacier.ArchiveCreationOutput) error
+	AllUpload() ([]Upload, error)
+	SaveUpload(Upload) error
 }
 
 type DB struct {
 	*storm.DB
 }
 
-func NewDB(dataSourceName string) *DB {
-	pwd, _ := os.Getwd()
-	db, _ := storm.Open(fmt.Sprintf("%s/database/storm/library.db", pwd), storm.BoltOptions(0600, &bolt.Options{Timeout: 10 * time.Second}))
+func NewDB(dataSourceName string, buckets []string) *DB {
+	db, _ := storm.Open(dataSourceName, storm.BoltOptions(0600, &bolt.Options{Timeout: 10 * time.Second}))
+	db.Bolt.Update(func(tx *bolt.Tx) error { //nolint:errcheck
+		for _, value := range buckets {
+			_, err := tx.CreateBucketIfNotExists([]byte(value))
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	return &DB{db}
 }

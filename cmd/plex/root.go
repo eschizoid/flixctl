@@ -13,13 +13,14 @@ const (
 	Ec2StoppedStatus = "Stopped"
 )
 
-var RootPlexCmd = &cobra.Command{
-	Use:   "plex",
-	Short: "To Control Plex Media Center",
-}
-
-var slackNotification string
-var slackIncomingHookURL string
+var (
+	RootPlexCmd = &cobra.Command{
+		Use:   "plex",
+		Short: "To Control Plex Media Center",
+	}
+	slackNotification    string
+	slackIncomingHookURL string
+)
 
 var (
 	_ = func() struct{} {
@@ -32,7 +33,7 @@ var (
 		StartPlexCmd.Flags().StringVarP(&slackNotification,
 			"slack-notification",
 			"n",
-			os.Getenv("SLACK_PLEX_NOTIFICATION"),
+			os.Getenv("SLACK_NOTIFICATION"),
 			"if true, will try to notify to a slack channel",
 		)
 		StopPlexCmd.Flags().StringVarP(&slackIncomingHookURL,

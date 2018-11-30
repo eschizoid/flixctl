@@ -15,52 +15,17 @@ import (
 )
 
 const (
-	ec2RunningStatus    = "Running"
 	transmissionHost    = "marianoflix.duckdns.org"
 	TorrentDownloadsKey = "td"
 	ThePirateBayKey     = "tpb"
 	OttsKey             = "otts"
 )
 
-type Result struct {
-	FileURL    string
-	Magnet     string
-	DescURL    string
-	Name       string
-	Size       string
-	Quality    string
-	Seeders    int
-	Leechers   int
-	UploadDate string
-	Source     string
-	FilePath   string
-}
-
-type Search struct {
-	In              string
-	Out             []Result
-	SourcesToLookup []string
-}
-
-var Timeout = time.Duration(15000 * 1000 * 1000)
-
-var TdTorListCh = make(chan []Result)
-var TpbTorListCh = make(chan []Result)
-var OttsTorListCh = make(chan []Result)
-
-var TdSearchErrCh = make(chan error)
-var TpbSearchErrCh = make(chan error)
-var OttsSearchErrCh = make(chan error)
-
-var Sources = map[string]string{
-	TorrentDownloadsKey: "Torrent Downloads",
-	ThePirateBayKey:     "The Pirate Bay",
-	OttsKey:             "1337x",
-}
-
 var (
-	Regex           = regexp.MustCompile("[[:^ascii:]]")
-	transmission, _ = transmissionrpc.New(
+	Regex   = regexp.MustCompile("[[:^ascii:]]")
+	Timeout = time.Duration(15000 * 1000 * 1000)
+
+	Transmission, _ = transmissionrpc.New(
 		transmissionHost,
 		strings.Split(os.Getenv("TR_AUTH"), ":")[0],
 		strings.Split(os.Getenv("TR_AUTH"), ":")[1],
@@ -68,9 +33,22 @@ var (
 			HTTPS: true,
 			Port:  443,
 		})
+
+	Sources = map[string]string{
+		TorrentDownloadsKey: "Torrent Downloads",
+		ThePirateBayKey:     "The Pirate Bay",
+		OttsKey:             "1337x",
+	}
+
+	TdTorListCh     = make(chan []Result)
+	TpbTorListCh    = make(chan []Result)
+	OttsTorListCh   = make(chan []Result)
+	TdSearchErrCh   = make(chan error)
+	TpbSearchErrCh  = make(chan error)
+	OttsSearchErrCh = make(chan error)
 )
 
-func SearchTorrents(search *Search) { //nolint:gocyclo
+func SearchTorrents(search Search) { //nolint:gocyclo
 	for _, source := range search.SourcesToLookup {
 		switch source {
 		case TorrentDownloadsKey:
@@ -146,7 +124,7 @@ func SearchTorrents(search *Search) { //nolint:gocyclo
 	}
 }
 
-func Merge(search *Search) [3]error { //nolint:gocyclo
+func Merge(search Search) [3]error { //nolint:gocyclo
 	var tdSearchErr, tpbSearchErr, ottsSearchErr error
 	for _, source := range search.SourcesToLookup {
 		switch source {
@@ -177,38 +155,34 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 	return errors
 }
 
-func Status(ec2status string) []transmissionrpc.Torrent {
+func Status() []transmissionrpc.Torrent {
 	var torrents []transmissionrpc.Torrent
-	if ec2status == ec2RunningStatus {
-		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-		defer cancel()
-		response, err := transmission.TorrentGetAll()
-		if err != nil {
-			panic(err)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	response, err := Transmission.TorrentGetAll()
+	if err != nil {
+		panic(err)
+	}
+	for _, torrent := range response {
+		if torrent.Files[0].Name != "" && *torrent.PercentDone < 1.00 {
+			torrents = append(torrents, *torrent)
 		}
-		for _, torrent := range response {
-			if torrent.Files[0].Name != "" && *torrent.PercentDone < 1.00 {
-				torrents = append(torrents, *torrent)
-			}
-		}
-		if ctx.Err() == context.DeadlineExceeded {
-			fmt.Printf("Could not list torrents being downloaded")
-		}
+	}
+	if ctx.Err() == context.DeadlineExceeded {
+		fmt.Printf("Could not list torrents being downloaded")
 	}
 	return torrents
 }
 
-func TriggerDownload(magnetLink string, downloadDir string, ec2status string) *transmissionrpc.Torrent {
+func TriggerDownload(magnetLink string, downloadDir string) *transmissionrpc.Torrent {
 	var err error
 	var torrent *transmissionrpc.Torrent
-	if strings.EqualFold(ec2status, ec2RunningStatus) {
-		torrent, err = transmission.TorrentAdd(&transmissionrpc.TorrentAddPayload{
-			DownloadDir: &downloadDir,
-			Filename:    &magnetLink,
-		})
-		if err != nil {
-			fmt.Printf("Could not download torrent using the given magnet link: [%s]", err)
-		}
+	torrent, err = Transmission.TorrentAdd(&transmissionrpc.TorrentAddPayload{
+		DownloadDir: &downloadDir,
+		Filename:    &magnetLink,
+	})
+	if err != nil {
+		fmt.Printf("Could not download torrent using the given magnet link: [%s]", err)
 	}
 	return torrent
 }

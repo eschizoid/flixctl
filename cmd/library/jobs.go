@@ -12,8 +12,8 @@ import (
 
 var JobsLibraryCmd = &cobra.Command{
 	Use:   "jobs",
-	Short: "To List Media Library Jobs",
-	Long:  "to list media library jobs.",
+	Short: "To List Library Jobs",
+	Long:  "to list library jobs.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,

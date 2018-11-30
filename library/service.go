@@ -1,44 +1,87 @@
 package library
 
 import (
-	"github.com/aws/aws-sdk-go/service/glacier"
+	"os"
+
 	"github.com/eschizoid/flixctl/models"
 	"github.com/jrudio/go-plex-client"
+	"go.etcd.io/bbolt"
 )
 
-var db = models.NewDB("/tmp/library.db")
+var (
+	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads"})
+	PlexToken = os.Getenv("PLEX_TOKEN")
+)
 
-func GetPlexMovies(token string) (results plex.SearchResults) {
-	plexClient, err := plex.New("https://marianoflix.duckdns.org:32400", token)
-	if err != nil {
-		panic(err)
-	}
-	libraries, err := plexClient.GetLibraries()
-	if err != nil {
-		panic(err)
-	}
+func GetLivePlexMovies(filter string) ([]plex.Metadata, error) {
+	plexClient, err := plex.New("https://marianoflix.duckdns.org:32400", PlexToken)
+	showError(err)
+	var libraries plex.LibrarySections
+	libraries, err = plexClient.GetLibraries()
+	showError(err)
 	directories := libraries.MediaContainer.Directory
 	moviesDirectory := chooseMovies(directories, func(statusMessage string) bool { return statusMessage == "movie" })
-	movies, err := plexClient.GetLibraryContent(moviesDirectory[0].Key, "")
-	if err != nil {
-		panic(err)
+	searchResults, err := plexClient.GetLibraryContent(moviesDirectory[0].Key, filter)
+	showError(err)
+	movies := searchResults.MediaContainer.Metadata
+	return movies, err
+}
+
+func GetCachedPlexMovies() ([]plex.Metadata, error) {
+	var err error
+	var movies []plex.Metadata //nolint:prealloc
+	var movie plex.Metadata
+	keys := getAllKeys([]byte("plex_movies"))
+	for _, key := range keys {
+		err = DB.Get("plex_movies", string(key), &movie)
+		showError(err)
+		movies = append(movies, movie)
 	}
-	return movies
+	return movies, err
 }
 
-func SaveMovie(movie plex.Metadata) error {
-	err := db.SaveMovie(movie)
+func SavePlexMovie(movie plex.Metadata) error {
+	err := DB.SaveMovie(movie)
 	return err
 }
 
-func SaveUpload(archiveCreationOutput glacier.ArchiveCreationOutput) error {
-	err := db.SaveUpload(archiveCreationOutput)
+func GetGlacierMovies() ([]models.Upload, error) {
+	var err error
+	var uploads []models.Upload //nolint:prealloc
+	var upload models.Upload
+	keys := getAllKeys([]byte("glacier_uploads"))
+	for _, key := range keys {
+		err = DB.Get("glacier_uploads", string(key), &upload)
+		showError(err)
+		uploads = append(uploads, upload)
+	}
+	return uploads, err
+}
+
+func SaveGlacierMovie(upload models.Upload) error {
+	err := DB.SaveUpload(upload)
 	return err
 }
 
-func GetGlacierMovies() (directories []plex.Directory, err error) {
-	err = db.All(directories)
-	return directories, err
+func getAllKeys(bucket []byte) [][]byte {
+	var keys [][]byte
+	DB.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
+		b := tx.Bucket(bucket)
+		b.ForEach(func(k, v []byte) error { //nolint:errcheck
+			// Due to
+			// Byte slices returned from Bolt are only valid during a transaction. Once the transaction has been committed or rolled back then the memory they point to can be reused by a new page or can be unmapped from virtual memory and you'll see an unexpected fault address panic when accessing it.
+			// We copy the slice to retain it
+			dst := make([]byte, len(k))
+			copy(dst, k)
+			keys = append(keys, dst)
+			return nil
+		})
+		return nil
+	})
+	if len(keys) > 0 {
+		keys = keys[:len(keys)-1]
+	}
+	return keys
 }
 
 func chooseMovies(directories []plex.Directory, test func(string) bool) (movieDirectory []plex.Directory) {
@@ -48,4 +91,10 @@ func chooseMovies(directories []plex.Directory, test func(string) bool) (movieDi
 		}
 	}
 	return
+}
+
+func showError(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

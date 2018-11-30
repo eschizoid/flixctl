@@ -52,8 +52,9 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"token":     token,
 				"text":      slash.Text,
 				"directory": "/plex/movies",
+				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
+			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies search command"}`)
 		case "/shows-search":
 			token := os.Getenv("SLACK_SHOWS_SEARCH_TOKEN")
 			if slash.Token != token {
@@ -63,14 +64,16 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"token":     token,
 				"text":      slash.Text,
 				"directory": "/plex/shows",
+				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing search command"}`)
+			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing shows search command"}`)
 		case "/torrent-status":
 			if slash.Token != os.Getenv("SLACK_STATUS_TOKEN") {
 				return clientError(http.StatusForbidden)
 			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token": os.Getenv("SLACK_STATUS_TOKEN"),
+				"token":  os.Getenv("SLACK_STATUS_TOKEN"),
+				"notify": os.Getenv("SLACK_NOTIFICATION"),
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
 		}
