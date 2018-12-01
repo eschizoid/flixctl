@@ -44,23 +44,23 @@ uninstall: clean
 	@rm -f $$(which ${TARGET})
 
 fmt:
-	$(GOFMT) -l -w $(SRC)
+	@$(GOFMT) -l -w $(SRC)
 
 simplify:
-	$(GOFMT) -s -l -w $(SRC)
+	@$(GOFMT) -s -l -w $(SRC)
 
 run: install
 	@$(TARGET)
 
 dep:
-	$(GODEP) check
-	$(GODEP) ensure -v
+	@$(GODEP) check
+	@$(GODEP) ensure -v
 
-lint: fmt
-	$(GOLINT) -v --deadline=5m run --disable gochecknoglobals --disable lll
+lint: fmt simplify
+	@$(GOLINT) -v --deadline=5m run --disable gochecknoglobals --disable lll
 
 update:
-	$(GODEP) ensure -update -v
+	@$(GODEP) ensure -update -v
 
 update-vendor:
 	@cp -R aws/ vendor/github.com/eschizoid/flixctl/aws

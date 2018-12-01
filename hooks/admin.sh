@@ -13,10 +13,10 @@ case $# in
             echo "[${HOOKS}]"
             ;;
          upgrade)
-            rm -rf go/src/github.com/eschizoid/flixctl
+            rm -rf /home/webhook/go/src/github.com/eschizoid/flixctl
             /usr/local/go/bin/go get -u github.com/eschizoid/flixctl
             cd /home/webhook/go/src/github.com/eschizoid/flixctl
-            make install
+            /bin/make install
             /home/webhook/go/bin/flixctl version
             ;;
          *)
