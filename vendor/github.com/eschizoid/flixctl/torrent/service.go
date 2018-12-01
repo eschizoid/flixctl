@@ -48,7 +48,7 @@ var (
 	OttsSearchErrCh = make(chan error)
 )
 
-func SearchTorrents(search Search) { //nolint:gocyclo
+func SearchTorrents(search *Search) { //nolint:gocyclo
 	for _, source := range search.SourcesToLookup {
 		switch source {
 		case TorrentDownloadsKey:
@@ -124,7 +124,7 @@ func SearchTorrents(search Search) { //nolint:gocyclo
 	}
 }
 
-func Merge(search Search) [3]error { //nolint:gocyclo
+func Merge(search *Search) [3]error { //nolint:gocyclo
 	var tdSearchErr, tpbSearchErr, ottsSearchErr error
 	for _, source := range search.SourcesToLookup {
 		switch source {
