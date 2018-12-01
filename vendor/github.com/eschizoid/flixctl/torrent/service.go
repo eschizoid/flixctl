@@ -156,10 +156,10 @@ func Merge(search *Search) [3]error { //nolint:gocyclo
 }
 
 func Status() []transmissionrpc.Torrent {
-	var torrents []transmissionrpc.Torrent
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	response, err := Transmission.TorrentGetAll()
+	torrents := make([]transmissionrpc.Torrent, len(response))
 	if err != nil {
 		panic(err)
 	}
