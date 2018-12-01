@@ -134,7 +134,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "ccbadf54db7ec718beaf807802ac8dde86121127"
+  revision = "0e32bbd586704f30836a1d34518f55ace345adab"
   version = "1.1.0"
 
 [[projects]]
