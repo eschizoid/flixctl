@@ -16,7 +16,7 @@ case $# in
             rm -rf go/src/github.com/eschizoid/flixctl
             /usr/local/go/bin/go get -u github.com/eschizoid/flixctl
             cd /home/webhook/go/src/github.com/eschizoid/flixctl
-            /bin/make install
+            make install
             /home/webhook/go/bin/flixctl version
             ;;
          *)

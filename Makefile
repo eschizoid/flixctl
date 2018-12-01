@@ -38,7 +38,7 @@ install:
 ifeq ($(UPDATE_VENDOR), true)
 	@$(MAKE) -f $(THIS_FILE) update-vendor
 endif
-	$(GOINSTALL) $(LDFLAGS)
+	@$(GOINSTALL) $(LDFLAGS)
 
 uninstall: clean
 	@rm -f $$(which ${TARGET})
