@@ -134,7 +134,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "0e32bbd586704f30836a1d34518f55ace345adab"
+  revision = "afbbecc58c43ba577fa22df4180e6b123fc65323"
   version = "1.1.0"
 
 [[projects]]
@@ -284,7 +284,8 @@
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
+  branch = "master"
+  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -296,7 +297,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
+  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"

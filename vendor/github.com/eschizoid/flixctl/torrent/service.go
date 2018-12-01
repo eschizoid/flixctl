@@ -164,9 +164,9 @@ func Status() []transmissionrpc.Torrent {
 		panic(err)
 	}
 	for _, torrent := range response {
-		//if torrent.Files[0].Name != "" && *torrent.PercentDone < 1.00 {
-		torrents = append(torrents, *torrent)
-		//}
+		if torrent.Files[0].Name != "" && *torrent.PercentDone < 1.00 {
+			torrents = append(torrents, *torrent)
+		}
 	}
 	if ctx.Err() == context.DeadlineExceeded {
 		fmt.Printf("Could not list torrents being downloaded")
