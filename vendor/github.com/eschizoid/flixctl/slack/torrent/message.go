@@ -111,7 +111,7 @@ func SendStatus(torrents []transmissionrpc.Torrent, slackIncomingHookURL string)
 			Text: fmt.Sprintf(`
 *Name*: %s
 *Percentage*: %.2f%%
-*ETA*: %d`, *torrentFile.Name, *torrentFile.PercentDone*100, *torrentFile.Eta/3600),
+*ETA*: %d`, *torrentFile.Name, *torrentFile.PercentDone*100, *torrentFile.Eta),
 			MarkdownIn: []string{"text"},
 			Footer:     "Torrent Client",
 			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",
