@@ -92,22 +92,22 @@ build-lambda-library-router:
 zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-torrent-router zip-lambda-library-router
 
 zip-lambda-plex-dispatcher:
-	zip -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
+	zip -j -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
 	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher \
 	$(shell pwd)/database/storm/library.db
 
 zip-lambda-plex-executor:
-	zip -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
+	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
 	$(shell pwd)/aws/lambda/plex/executor/executor \
 	$(shell pwd)/database/storm/library.db
 
 zip-lambda-torrent-router:
-	zip -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
+	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
 	$(shell pwd)/aws/lambda/torrent/torrent \
 	$(shell pwd)/database/storm/library.db
 
 zip-lambda-library-router:
-	zip -X $(shell pwd)/aws/lambda/library/lambda.zip \
+	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
 	$(shell pwd)/aws/lambda/library/library \
 	$(shell pwd)/database/storm/library.db
 
