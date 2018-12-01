@@ -113,7 +113,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:39b26a50f29cd2d92d926f08e63fb35dc3e17253612a7b3ed3097cc837f01923"
+  digest = "1:d21823ed7df654198aef0dc6ef16d371defff5cefb5c99c043562c2b1ff75b6b"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -134,7 +134,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "4f81cc74f27ca7ecce44946c2fbd24d9798e01ad"
+  revision = "ccbadf54db7ec718beaf807802ac8dde86121127"
   version = "1.1.0"
 
 [[projects]]
@@ -284,8 +284,7 @@
   version = "v0.8.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -297,7 +296,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
+  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
