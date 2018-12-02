@@ -2,15 +2,7 @@ package models
 
 import (
 	"fmt"
-
-	"github.com/aws/aws-sdk-go/service/glacier"
-	"github.com/jrudio/go-plex-client"
 )
-
-type Upload struct {
-	Metadata              *plex.Metadata
-	ArchiveCreationOutput *glacier.ArchiveCreationOutput
-}
 
 func (db *DB) SaveUpload(upload Upload) error {
 	err := db.Set("glacier_uploads", upload.ArchiveCreationOutput, upload)

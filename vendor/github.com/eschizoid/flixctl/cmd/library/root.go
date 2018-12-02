@@ -18,25 +18,12 @@ var (
 	fileName             string
 	jobID                string
 	retrievalType        string
-	query                string
 	slackIncomingHookURL string
 	slackNotification    string
 )
 
 var (
 	_ = func() struct{} {
-		ArchiveLibraryCmd.Flags().StringVarP(&fileName,
-			"file",
-			"f",
-			"",
-			"the location of the movie or show to archive",
-		)
-		SyncLibraryCmd.Flags().StringVarP(&query,
-			"query",
-			"q",
-			"",
-			"name of the movie or show to try to find",
-		)
 		RetrieveLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
 			"i",
