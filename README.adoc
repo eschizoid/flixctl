@@ -156,10 +156,10 @@ flixctl version
 ----
 ==== ```flixctl plex```
 ----
-flixctl plex token
 flixctl plex start --slack-notification "true" --slack-notification-channel "monitoring"
-flixctl plex stop --slack-notification false
-flixctl plex status --slack-notification false
+flixctl plex status --slack-notification "false"
+flixctl plex stop --slack-notification "false"
+flixctl plex token
 ----
 ==== ```flixctl torrent```
 ----
@@ -169,10 +169,12 @@ flixctl torrent download --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996
 ----
 ==== ```flixctl library```
 ----
-flixctl library jobs
-flixctl library archive --file "movie.zip"
+flixctl library archive
+flixctl library catalogue
 flixctl library initiate --type "catalogue"
 flixctl library initiate --type "file" --archive-id "U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA"
+flixctl library jobs
 flixctl library retrieve --type "catalogue" --job-id "ZUjVmQsAa-w0hMCBVL0Yj2JWEqo4Dkx3Da8031oOtDkdAse-ncv_s8DPfEnbs2fe58ZY5FcfVGy8lekYCYbOOWhfikGX" --file "/tmp/catalogue-`date +%Y-%m-%d.%H:%M:%S`.json"
 flixctl library retrieve --type "file" --job-id "PzYtIWncgcWKITbJ1vF0EdGteJqFMKlTlSgEUy5UTXT5WKtPt_RJg2fFBZwmkgB1JzTWSOpW9zSmCWcVGh7hvGsJ_RAH" --file "/plex/movie/movie-`date +%Y-%m-%d.%H:%M:%S`.zip"
+flixctl library sync
 ----
