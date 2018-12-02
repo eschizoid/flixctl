@@ -51,5 +51,5 @@ func ArchiveMovie(metadata plex.Metadata) {
 	}
 	err := libraryService.SaveGlacierMovie(upload)
 	ShowError(err)
-	glacierService.Cleanup(append(fileChunks, zipFileName))
+	//glacierService.Cleanup(append(fileChunks, zipFileName))
 }
