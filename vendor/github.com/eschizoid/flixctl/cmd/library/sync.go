@@ -1,8 +1,6 @@
 package library
 
 import (
-	"encoding/json"
-	"fmt"
 	"strings"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -23,21 +21,11 @@ var SyncLibraryCmd = &cobra.Command{
 		svc := ec2.New(awsSession, awsSession.Config)
 		instanceID := ec2Service.FetchInstanceID(svc, "plex")
 		if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
-			SyncMovieLibrary(0)
-			SyncMovieLibrary(1)
-		} else {
-			m := make(map[string]string)
-			m["plex_status"] = "stopped"
-			jsonString, _ := json.Marshal(m)
-			fmt.Println("\n" + string(jsonString))
+			movies, _ := libraryService.GetLivePlexMovies("?unwatched=1")
+			for _, movie := range movies {
+				err := libraryService.SavePlexMovie(movie)
+				ShowError(err)
+			}
 		}
 	},
-}
-
-func SyncMovieLibrary(unwatched int) {
-	movies, _ := libraryService.GetLivePlexMovies(unwatched)
-	for _, movie := range movies {
-		err := libraryService.SavePlexMovie(movie)
-		ShowError(err)
-	}
 }

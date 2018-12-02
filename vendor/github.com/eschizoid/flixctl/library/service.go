@@ -1,7 +1,6 @@
 package library
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/eschizoid/flixctl/models"
@@ -14,47 +13,46 @@ var (
 	PlexToken = os.Getenv("PLEX_TOKEN")
 )
 
-func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
-	var plexClient *plex.Plex
-	plexClient, err = plex.New("https://marianoflix.duckdns.org:32400", PlexToken)
+func GetLivePlexMovies(filter string) ([]plex.Metadata, error) {
+	plexClient, err := plex.New("https://marianoflix.duckdns.org:32400", PlexToken)
 	showError(err)
 	var libraries plex.LibrarySections
 	libraries, err = plexClient.GetLibraries()
 	showError(err)
 	directories := libraries.MediaContainer.Directory
 	moviesDirectory := chooseMovies(directories, func(statusMessage string) bool { return statusMessage == "movie" })
-	searchResults, err := plexClient.GetLibraryContent(moviesDirectory[0].Key, fmt.Sprintf("?unwatched=%d", filter))
+	searchResults, err := plexClient.GetLibraryContent(moviesDirectory[0].Key, filter)
 	showError(err)
-	for _, metadata := range searchResults.MediaContainer.Metadata {
-		movie := models.Movie{
-			Metadata:  metadata,
-			Unwatched: filter,
-		}
-		movies = append(movies, movie)
-	}
+	movies := searchResults.MediaContainer.Metadata
 	return movies, err
 }
 
-func GetCachedPlexMovies() (movies []models.Movie, err error) {
+func GetCachedPlexMovies() ([]plex.Metadata, error) {
+	var err error
+	var movies []plex.Metadata //nolint:prealloc
+	var movie plex.Metadata
 	keys := getAllKeys([]byte("plex_movies"))
 	for _, key := range keys {
-		var movie models.Movie
 		err = DB.Get("plex_movies", string(key), &movie)
+		showError(err)
 		movies = append(movies, movie)
 	}
 	return movies, err
 }
 
-func SavePlexMovie(movie models.Movie) error {
+func SavePlexMovie(movie plex.Metadata) error {
 	err := DB.SaveMovie(movie)
 	return err
 }
 
-func GetGlacierMovies() (uploads []models.Upload, err error) {
+func GetGlacierMovies() ([]models.Upload, error) {
+	var err error
+	var uploads []models.Upload //nolint:prealloc
+	var upload models.Upload
 	keys := getAllKeys([]byte("glacier_uploads"))
 	for _, key := range keys {
-		var upload models.Upload
 		err = DB.Get("glacier_uploads", string(key), &upload)
+		showError(err)
 		uploads = append(uploads, upload)
 	}
 	return uploads, err
