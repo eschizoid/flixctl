@@ -14,7 +14,7 @@ go:
 
 before_install:
   - pip install --user awscli
-  - pip install pyOpenSSL==0.12
+  - sudo pip install pyOpenSSL==0.12
   - export PATH=$HOME/.local/bin:$PATH
   - export PATH=$HOME/gopath/bin:$PATH
 
