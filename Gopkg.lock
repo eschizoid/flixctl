@@ -41,7 +41,7 @@
   version = "v2.1.2"
 
 [[projects]]
-  digest = "1:a4fae639114a906f205a4cb858c670ca28784426c0e809d664de2babb13cb28c"
+  digest = "1:8b4d009bfb2d13472dad368bf7520c482dd7f8a190436da4e6d52111c0a2e697"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -50,11 +50,11 @@
     "lambdacontext",
   ]
   pruneopts = "UT"
-  revision = "fb8f88d824489a878aee1e0badde7d8e129f8767"
-  version = "v1.7.0"
+  revision = "9e3676ee8ca83aee500682f382e10b9d03660093"
+  version = "v1.8.0"
 
 [[projects]]
-  digest = "1:db70794a921eaa9e3fb3edadc5684d7023fe951c50d721a6e1d78530b8f4c8be"
+  digest = "1:d3baf1806ddde9e57f32670f1c3128f084ea19a2a526e134d32efba6b8bd5b67"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -66,6 +66,7 @@
     "aws/credentials",
     "aws/credentials/ec2rolecreds",
     "aws/credentials/endpointcreds",
+    "aws/credentials/processcreds",
     "aws/credentials/stscreds",
     "aws/csm",
     "aws/defaults",
@@ -94,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "ceab7b7ac6f535d1397f124620720b5145f1ad59"
-  version = "v1.15.88"
+  revision = "3991042237b45cf58c9d5f34295942d5533c28c6"
+  version = "v1.16.11"
 
 [[projects]]
   branch = "master"
@@ -113,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:8bf92b8f7e47bea7494e8515840842a9f4775be7f64bb64dbd2705e3fe714a5c"
+  digest = "1:8ab238dd135f848b4851821bba3c9d2247eff8907611b76db3f2b479599fb4a3"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -134,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "2d71d853c9d9df72198b13bf802d8112700091f0"
+  revision = "4e782d4a408ea2b5a619d84ae51785336d8802f2"
   version = "1.1.0"
 
 [[projects]]
@@ -179,11 +180,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f9180ad4b428527b568b4952f28e71b9c08f9b6c7a8477e77d091a2c7cf250f5"
+  digest = "1:82a6b908658f783ecaf9038f80bd97e8925dddd8c180034143bbd8a6d775ee0d"
   name = "github.com/hekmon/transmissionrpc"
   packages = ["."]
   pruneopts = "UT"
-  revision = "2ac137b04ce90c237cfbf9eccea078b91038480d"
+  revision = "652497ba4e634fad5f6f09e420ce021a6dbab9a0"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -194,11 +195,11 @@
   version = "v1.0"
 
 [[projects]]
-  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
+  digest = "1:bb81097a5b62634f3e9fec1014657855610c82d19b9a40c17612e32651e35dca"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
   pruneopts = "UT"
-  revision = "0b12d6b5"
+  revision = "c2b33e84"
 
 [[projects]]
   branch = "master"
@@ -238,12 +239,12 @@
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:8da4402cd8d8993b433aa138eaed252e2013668195a2ae6d87f61837ba489399"
+  digest = "1:67b3e2eb7a5bcfe8374b617315f1a8dfdff3c131a451eb2c01664790ef6dd4e6"
   name = "github.com/mholt/archiver"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e1ccfb528128bf4ff3bd906823ae2dcb708f79f5"
-  version = "v3.1.0"
+  revision = "d572b2e8b82726cee9476d1b9d63a7fe9b601ff1"
+  version = "v3.1.1"
 
 [[projects]]
   digest = "1:95d38d218bf2290987c6b0e885a9f0f2d3d3239235acaddca01c3fe36e5e5566"
@@ -358,7 +359,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "eb0de9b17e854e9b1ccd9963efafc79862359959"
+  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 
 [[projects]]
   branch = "master"
@@ -369,18 +370,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "351d144fa1fc0bd934e2408202be0c29f25e35a0"
+  revision = "927f97764cc334a6575f4b7a1584a147864d5723"
 
 [[projects]]
   branch = "master"
-  digest = "1:0c7cb58af944f9690af91474a75371eecfe54c1ce3771a8dc08924430ee785d3"
+  digest = "1:3d5e79e10549fd9119cbefd614b6d351ef5bd0be2f2b103a4199788e784cbc68"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
+  revision = "b4a75ba826a64a70990f11a225237acd6ef35c9f"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"

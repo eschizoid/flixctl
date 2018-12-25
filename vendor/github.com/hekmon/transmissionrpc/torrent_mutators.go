@@ -30,15 +30,6 @@ func (c *Client) TorrentSet(payload *TorrentSetPayload) (err error) {
 	return
 }
 
-const (
-	// SeedRatioModeGlobal represents the use of the global ratio for a torrent
-	SeedRatioModeGlobal = int64(0)
-	// SeedRatioModeCustom represents the use of a custom ratio for a torrent
-	SeedRatioModeCustom = int64(1)
-	// SeedRatioModeNoRatio represents the absence of ratio for a torrent
-	SeedRatioModeNoRatio = int64(2)
-)
-
 // TorrentSetPayload contains all the mutators appliable on one torrent.
 // https://github.com/transmission/transmission/blob/2.9x/extras/rpc-spec.txt#L111
 type TorrentSetPayload struct {
@@ -58,7 +49,7 @@ type TorrentSetPayload struct {
 	SeedIdleLimit       *time.Duration `json:"seedIdleLimit"`       // torrent-level number of minutes of seeding inactivity
 	SeedIdleMode        *int64         `json:"seedIdleMode"`        // which seeding inactivity to use
 	SeedRatioLimit      *float64       `json:"seedRatioLimit"`      // torrent-level seeding ratio
-	SeedRatioMode       *int64         `json:"seedRatioMode"`       // which ratio to use
+	SeedRatioMode       *SeedRatioMode `json:"seedRatioMode"`       // which ratio mode to use
 	TrackerAdd          []string       `json:"trackerAdd"`          // strings of announce URLs to add
 	TrackerRemove       []int64        `json:"trackerRemove"`       // ids of trackers to remove
 	TrackerReplace      []string       `json:"trackerReplace"`      // pairs of <trackerId/new announce URLs> (TODO: validate string value usable as is)
