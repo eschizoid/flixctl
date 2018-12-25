@@ -11,6 +11,17 @@
     ]
   },
   {
+    "id": "renew-ssl-certificates",
+    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "renew-ssl-certificates"
+      }
+    ]
+  },
+  {
     "id": "upgrade",
     "execute-command": "/opt/webhook-linux-amd64/admin.sh",
     "include-command-output-in-response": true,
