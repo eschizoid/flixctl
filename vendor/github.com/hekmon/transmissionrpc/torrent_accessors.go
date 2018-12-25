@@ -126,7 +126,7 @@ type Torrent struct {
 	PercentDone             *float64           `json:"percentDone"`
 	Pieces                  *string            `json:"pieces"` // https://github.com/transmission/transmission/blob/2.9x/extras/rpc-spec.txt#L279
 	PieceCount              *int64             `json:"pieceCount"`
-	PieceSize               *int64             `json:"pieceSize"`
+	PieceSize               *cunits.Bits       `json:"pieceSize"`
 	Priorities              []int64            `json:"priorities"` // https://github.com/transmission/transmission/blob/2.9x/extras/rpc-spec.txt#L285
 	QueuePosition           *int64             `json:"queuePosition"`
 	RateDownload            *int64             `json:"rateDownload"` // B/s
@@ -137,13 +137,13 @@ type Torrent struct {
 	SeedIdleLimit           *int64             `json:"seedIdleLimit"`
 	SeedIdleMode            *int64             `json:"seedIdleMode"`
 	SeedRatioLimit          *float64           `json:"seedRatioLimit"`
-	SeedRatioMode           *int64             `json:"seedRatioMode"`
-	SizeWhenDone            *int64             `json:"sizeWhenDone"`
+	SeedRatioMode           *SeedRatioMode     `json:"seedRatioMode"`
+	SizeWhenDone            *cunits.Bits       `json:"sizeWhenDone"`
 	StartDate               *time.Time         `json:"startDate"`
-	Status                  *int64             `json:"status"`
+	Status                  *TorrentStatus     `json:"status"`
 	Trackers                []*Tracker         `json:"trackers"`
 	TrackerStats            []*TrackerStats    `json:"trackerStats"`
-	TotalSize               *int64             `json:"totalSize"`
+	TotalSize               *cunits.Bits       `json:"totalSize"`
 	TorrentFile             *string            `json:"torrentFile"`
 	UploadedEver            *int64             `json:"uploadedEver"`
 	UploadLimit             *int64             `json:"uploadLimit"`
@@ -179,8 +179,11 @@ func (t *Torrent) UnmarshalJSON(data []byte) (err error) {
 		AddedDate      *int64  `json:"addedDate"`
 		DateCreated    *int64  `json:"dateCreated"`
 		DoneDate       *int64  `json:"doneDate"`
+		PieceSize      *int64  `json:"pieceSize"`
 		SecondsSeeding *int64  `json:"secondsSeeding"`
+		SizeWhenDone   *int64  `json:"sizeWhenDone"`
 		StartDate      *int64  `json:"startDate"`
+		TotalSize      *int64  `json:"totalSize"`
 		Wanted         []int64 `json:"wanted"` // boolean in number form
 		*RawTorrent
 	}{
@@ -207,13 +210,25 @@ func (t *Torrent) UnmarshalJSON(data []byte) (err error) {
 		dd := time.Unix(*tmp.DoneDate, 0)
 		t.DoneDate = &dd
 	}
+	if tmp.PieceSize != nil {
+		ps := cunits.ImportInByte(float64(*tmp.PieceSize))
+		t.PieceSize = &ps
+	}
 	if tmp.SecondsSeeding != nil {
 		dur := time.Duration(*tmp.SecondsSeeding) * time.Second
 		t.SecondsSeeding = &dur
 	}
+	if tmp.SizeWhenDone != nil {
+		swd := cunits.ImportInByte(float64(*tmp.SizeWhenDone))
+		t.SizeWhenDone = &swd
+	}
 	if tmp.StartDate != nil {
 		st := time.Unix(*tmp.StartDate, 0)
 		t.StartDate = &st
+	}
+	if tmp.TotalSize != nil {
+		ts := cunits.ImportInByte(float64(*tmp.TotalSize))
+		t.TotalSize = &ts
 	}
 	// Boolean slice in decimal form
 	if tmp.Wanted != nil {
@@ -340,6 +355,114 @@ type TorrentPeersFrom struct {
 	FromLTEP     int64 `json:"fromLtep"`
 	FromPEX      int64 `json:"fromPex"`
 	FromTracker  int64 `json:"fromTracker"`
+}
+
+// SeedRatioMode represents a torrent current seeding mode
+type SeedRatioMode int64
+
+const (
+	// SeedRatioModeGlobal represents the use of the global ratio for a torrent
+	SeedRatioModeGlobal SeedRatioMode = 0
+	// SeedRatioModeCustom represents the use of a custom ratio for a torrent
+	SeedRatioModeCustom SeedRatioMode = 1
+	// SeedRatioModeNoRatio represents the absence of ratio for a torrent
+	SeedRatioModeNoRatio SeedRatioMode = 2
+)
+
+func (srm SeedRatioMode) String() string {
+	switch srm {
+	case SeedRatioModeGlobal:
+		return "global"
+	case SeedRatioModeCustom:
+		return "custom"
+	case SeedRatioModeNoRatio:
+		return "no ratio"
+	default:
+		return "<unknown>"
+	}
+}
+
+// GoString implements the GoStringer interface from the stdlib fmt package
+func (srm SeedRatioMode) GoString() string {
+	switch srm {
+	case SeedRatioModeGlobal:
+		return fmt.Sprintf("global (%d)", srm)
+	case SeedRatioModeCustom:
+		return fmt.Sprintf("custom (%d)", srm)
+	case SeedRatioModeNoRatio:
+		return fmt.Sprintf("no ratio (%d)", srm)
+	default:
+		return fmt.Sprintf("<unknown> (%d)", srm)
+	}
+}
+
+// TorrentStatus binds torrent status to a status code
+type TorrentStatus int64
+
+const (
+	// TorrentStatusStopped represents a stopped torrent
+	TorrentStatusStopped TorrentStatus = 0
+	// TorrentStatusCheckWait represents a torrent queued for files checking
+	TorrentStatusCheckWait TorrentStatus = 1
+	// TorrentStatusCheck represents a torrent which files are currently checked
+	TorrentStatusCheck TorrentStatus = 2
+	// TorrentStatusDownloadWait represents a torrent queue to download
+	TorrentStatusDownloadWait TorrentStatus = 3
+	// TorrentStatusDownload represents a torrent currently downloading
+	TorrentStatusDownload TorrentStatus = 4
+	// TorrentStatusSeedWait represents a torrent queued to seed
+	TorrentStatusSeedWait TorrentStatus = 5
+	// TorrentStatusSeed represents a torrent currently seeding
+	TorrentStatusSeed TorrentStatus = 6
+	// TorrentStatusIsolated represents a torrent which can't find peers
+	TorrentStatusIsolated TorrentStatus = 7
+)
+
+func (status TorrentStatus) String() string {
+	switch status {
+	case TorrentStatusStopped:
+		return "stopped"
+	case TorrentStatusCheckWait:
+		return "waiting to check files"
+	case TorrentStatusCheck:
+		return "checking files"
+	case TorrentStatusDownloadWait:
+		return "waiting to download"
+	case TorrentStatusDownload:
+		return "downloading"
+	case TorrentStatusSeedWait:
+		return "waiting to seed"
+	case TorrentStatusSeed:
+		return "seeding"
+	case TorrentStatusIsolated:
+		return "can't find peers"
+	default:
+		return "<unknown>"
+	}
+}
+
+// GoString implements the GoStringer interface from the stdlib fmt package
+func (status TorrentStatus) GoString() string {
+	switch status {
+	case TorrentStatusStopped:
+		return fmt.Sprintf("stopped (%d)", status)
+	case TorrentStatusCheckWait:
+		return fmt.Sprintf("waiting to check files (%d)", status)
+	case TorrentStatusCheck:
+		return fmt.Sprintf("checking files (%d)", status)
+	case TorrentStatusDownloadWait:
+		return fmt.Sprintf("waiting to download (%d)", status)
+	case TorrentStatusDownload:
+		return fmt.Sprintf("downloading (%d)", status)
+	case TorrentStatusSeedWait:
+		return fmt.Sprintf("waiting to seed (%d)", status)
+	case TorrentStatusSeed:
+		return fmt.Sprintf("seeding (%d)", status)
+	case TorrentStatusIsolated:
+		return fmt.Sprintf("can't find peers (%d)", status)
+	default:
+		return fmt.Sprintf("<unknown> (%d)", status)
+	}
 }
 
 // Tracker represent the base data of a torrent's tracker.
