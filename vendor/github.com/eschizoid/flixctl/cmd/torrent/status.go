@@ -31,11 +31,11 @@ func Status() {
 	instanceID := ec2Service.FetchInstanceID(svc, "plex")
 	if ec2status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2status, Ec2RunningStatus) {
 		torrents := torrent.Status()
-		body, _ := json.Marshal(torrents)
-		fmt.Println(string(body))
 		if notify, _ := strconv.ParseBool(slackNotification); notify {
 			slackTorrentService.SendStatus(torrents, slackIncomingHookURL)
 		}
+		//body, _ := json.Marshal(torrents)
+		//fmt.Println(string(body))
 	} else {
 		m := make(map[string]string)
 		m["plex_status"] = strings.ToLower(Ec2StoppedStatus)
