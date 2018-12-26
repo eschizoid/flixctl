@@ -27,11 +27,11 @@ case $# in
                 --filter "${FILTER}"
             ;;
          retrieve)
-            if [[ "${RETRIEVAL_TYPE}" = "file" ]]; then
+            if [[ "${RETRIEVAL_TYPE}" = "FileRetrieval" ]]; then
                 /home/webhook/go/bin/flixctl library retrieve \
                     --job-id "${JOB_ID}" \
                     --file "/plex/movies/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
-            elif [[ "${RETRIEVAL_TYPE}" = "catalogue" ]]; then
+            elif [[ "${RETRIEVAL_TYPE}" = "InventoryRetrieval" ]]; then
                 /home/webhook/go/bin/flixctl library retrieve \
                     --job-id "${JOB_ID}" \
                     --file "/tmp/catalogue-$(date +%Y-%m-%d.%H:%M:%S).json"

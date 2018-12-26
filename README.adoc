@@ -1,8 +1,7 @@
 = flixctl
-=========
 :toc:
 :toc-placement: preamble
-:toclevels: 1
+:toclevels: 3
 :Some attr: Some value
 
 // Need some preamble to get TOC:

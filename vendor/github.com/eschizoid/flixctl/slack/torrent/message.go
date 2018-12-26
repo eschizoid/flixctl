@@ -108,7 +108,7 @@ func SendStatus(torrents []transmissionrpc.Torrent, slackIncomingHookURL string)
 	for _, torrentFile := range torrents {
 		var name = fmt.Sprintf("*Name*: %s", *torrentFile.Name)
 		var percentDone = fmt.Sprintf("*Percentage*: %.2f%%", *torrentFile.PercentDone*100)
-		var eta = fmt.Sprintf("*ETA*: %d", *torrentFile.Eta)
+		var eta = fmt.Sprintf("*ETA*: %.2f minutes", float64(*torrentFile.Eta/60))
 		attachments = append(attachments, slack.Attachment{
 			Color: "#C40203",
 			Text: fmt.Sprintf(`%s
