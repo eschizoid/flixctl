@@ -14,10 +14,6 @@ import (
 	"github.com/nlopes/slack"
 )
 
-const (
-	outgoingHookURL = "https://marianoflix.duckdns.org:9000/hooks/torrent-download"
-)
-
 func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, directoryDir string, notification bool) {
 	var attachments = make([]slack.Attachment, len(search.Out))
 	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
@@ -47,7 +43,7 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, dire
 		attachment := slack.Attachment{
 			Color: "#C40203",
 			Title: torrentResult.Name,
-			TitleLink: outgoingHookURL +
+			TitleLink: util.TorrentDownloadHookURL +
 				"?directory=" + directoryDir +
 				"&name=" + url.QueryEscape(encodedName) +
 				"&notify=" + strconv.FormatBool(notification) +

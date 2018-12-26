@@ -27,7 +27,7 @@ case $# in
                 --filter "${FILTER}"
             ;;
          retrieve)
-            if [[ "${RETRIEVAL_TYPE}" = "FileRetrieval" ]]; then
+            if [[ "${RETRIEVAL_TYPE}" = "ArchiveRetrieval" ]]; then
                 /home/webhook/go/bin/flixctl library retrieve \
                     --job-id "${JOB_ID}" \
                     --file "/plex/movies/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
