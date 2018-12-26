@@ -57,7 +57,10 @@ dep:
 	@$(GODEP) ensure -v
 
 lint: fmt simplify
-	@$(GOLINT) -v --deadline=5m run --disable gochecknoglobals --disable lll
+	@$(GOLINT) run -v \
+	--deadline=5m \
+	--disable gochecknoglobals \
+	--disable lll
 
 update:
 	@$(GODEP) ensure -update -v

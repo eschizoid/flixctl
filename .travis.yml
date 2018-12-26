@@ -8,7 +8,6 @@ language: go
 # updates. Any older versions be considered deprecated. Don't bother testing
 # with them.
 go:
-  - 1.10.x
   - 1.11.x
   - tip
 

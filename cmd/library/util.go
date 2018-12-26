@@ -7,7 +7,7 @@ import (
 	slackService "github.com/eschizoid/flixctl/slack/library"
 )
 
-func NotifySlack(jobDescriptions []*glacier.JobDescription) {
+func NotifySlack(jobDescriptions []glacier.JobDescription) {
 	if notify, _ := strconv.ParseBool(slackNotification); notify {
 		slackService.SendJobs(jobDescriptions, slackIncomingHookURL)
 	}
