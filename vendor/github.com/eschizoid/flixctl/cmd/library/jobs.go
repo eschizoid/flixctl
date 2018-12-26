@@ -20,8 +20,8 @@ var JobsLibraryCmd = &cobra.Command{
 		}))
 		svc := glacier.New(awsSession)
 		jobList := glacierService.ListJobs(svc)
-		filteredJobs := chooseSucceededJobs(jobList.JobList, func(statusMessage string, retrieval string) bool {
-			return statusMessage == "Succeeded" && retrieval == retrievalType
+		filteredJobs := chooseSucceededJobs(jobList.JobList, func(retrieval string) bool {
+			return retrieval == retrievalType
 		})
 		json, _ := json.Marshal(filteredJobs)
 		NotifySlack(filteredJobs)
@@ -29,10 +29,10 @@ var JobsLibraryCmd = &cobra.Command{
 	},
 }
 
-func chooseSucceededJobs(jobDescriptions []*glacier.JobDescription, test func(string, string) bool) (filteredJobs []*glacier.JobDescription) {
+func chooseSucceededJobs(jobDescriptions []*glacier.JobDescription, test func(string) bool) (filteredJobs []glacier.JobDescription) {
 	for _, job := range jobDescriptions {
-		if test(*job.StatusMessage, *job.Action) {
-			filteredJobs = append(filteredJobs, job)
+		if test(*job.Action) {
+			filteredJobs = append(filteredJobs, *job)
 		}
 	}
 	return
