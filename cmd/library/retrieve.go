@@ -27,9 +27,8 @@ var RetrieveLibraryCmd = &cobra.Command{
 		defer getJobOutputOutput.Body.Close()
 		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
 		ShowError(err)
-		var zipFileName = writeFile(part)
-		glacierService.Unzip(zipFileName)
-		glacierService.Cleanup([]string{zipFileName})
+		writeFile(part)
+		//glacierService.Cleanup([]string{fileName})
 		jsonString, _ := json.Marshal(getJobOutputOutput)
 		fmt.Println("\n" + string(jsonString))
 		close(shutdownCh)
@@ -38,15 +37,16 @@ var RetrieveLibraryCmd = &cobra.Command{
 
 func writeFile(part []byte) string {
 	var err error
-	var zipFile *os.File
+	var retrievedFile *os.File
 	if retrievalType == "InventoryRetrieval" {
-		zipFile, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
+		retrievedFile, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
 	} else if retrievalType == "ArchiveRetrieval" {
-		zipFile, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
+		retrievedFile, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
+		glacierService.Unzip(retrievedFile.Name())
 	}
 	ShowError(err)
-	zipFileName := zipFile.Name()
-	err = ioutil.WriteFile(zipFileName, part, 0644)
+	fileName := retrievedFile.Name()
+	err = ioutil.WriteFile(fileName, part, 0644)
 	ShowError(err)
-	return zipFileName
+	return fileName
 }

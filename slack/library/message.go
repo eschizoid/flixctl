@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -12,6 +13,7 @@ import (
 
 func SendJobs(jobDescriptions []glacier.JobDescription, slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, len(jobDescriptions))
+	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
 	for _, jobDescription := range jobDescriptions {
 		attachmentFieldJobType := slack.AttachmentField{
 			Title: "*Job Type*",
@@ -50,9 +52,12 @@ func SendJobs(jobDescriptions []glacier.JobDescription, slackIncomingHookURL str
 			MarkdownIn: []string{"text", "fields"},
 			Actions: []slack.AttachmentAction{
 				{
-					Type:  "button",
-					Text:  "Start",
-					URL:   fmt.Sprintf("https://marianoflix.duckdns.org:9091/hooks/retrieve-job?t=%s&i%s", *jobDescription.Action, *jobDescription.JobId),
+					Type: "button",
+					Text: "Start",
+					URL: util.RetrieveJobHookURL +
+						"?a=" + *jobDescription.Action +
+						"&i=" + *jobDescription.JobId +
+						"&token=" + token,
 					Style: "default",
 					Confirm: &slack.ConfirmationField{
 						Title:       "Are you sure you want to start the job retrieval?",
