@@ -15,8 +15,8 @@ import (
 	"github.com/go-playground/form"
 )
 
-const (
-	baseHookURL = "https://marianoflix.duckdns.org:9000/hooks"
+var (
+	baseHookURL = fmt.Sprintf("https://%s:9000/hooks", os.Getenv("FLIXCTL_HOST"))
 )
 
 func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

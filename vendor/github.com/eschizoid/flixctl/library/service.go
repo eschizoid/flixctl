@@ -16,14 +16,15 @@ var (
 
 func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	var plexClient *plex.Plex
-	plexClient, err = plex.New("https://marianoflix.duckdns.org:32400", PlexToken)
+
+	plexClient, err = plex.New(fmt.Sprintf("https://%s:32400/hooks", os.Getenv("FLIXCTL_HOST")), PlexToken)
 	showError(err)
 	var libraries plex.LibrarySections
 	libraries, err = plexClient.GetLibraries()
 	showError(err)
 	directories := libraries.MediaContainer.Directory
-	moviesDirectory := chooseMovies(directories, func(statusMessage string) bool { return statusMessage == "movie" })
-	searchResults, err := plexClient.GetLibraryContent(moviesDirectory[0].Key, fmt.Sprintf("?unwatched=%d", filter))
+	moviesDirectory := findMoviesDirectory(directories, func(directoryType string) bool { return directoryType == "movie" })
+	searchResults, err := plexClient.GetLibraryContent(moviesDirectory.Key, fmt.Sprintf("?unwatched=%d", filter))
 	showError(err)
 	for _, metadata := range searchResults.MediaContainer.Metadata {
 		movie := models.Movie{
@@ -84,7 +85,7 @@ func getAllKeys(bucket []byte) [][]byte {
 	var keys [][]byte
 	DB.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
 		b := tx.Bucket(bucket)
-		b.ForEach(func(k, v []byte) error { //nolint:errcheck
+		_ = b.ForEach(func(k, v []byte) error { //nolint:errcheck
 			// Due to
 			// Byte slices returned from Bolt are only valid during a transaction. Once the transaction has been committed or rolled back then the memory they point to can be reused by a new page or can be unmapped from virtual memory and you'll see an unexpected fault address panic when accessing it.
 			// We copy the slice to retain it
@@ -101,13 +102,14 @@ func getAllKeys(bucket []byte) [][]byte {
 	return keys
 }
 
-func chooseMovies(directories []plex.Directory, test func(string) bool) (movieDirectory []plex.Directory) {
+func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (movieDirectory plex.Directory) {
 	for _, directory := range directories {
 		if test(directory.Type) {
-			movieDirectory = append(movieDirectory, directory)
+			movieDirectory = directory
+			break
 		}
 	}
-	return
+	return movieDirectory
 }
 
 func showError(err error) {
