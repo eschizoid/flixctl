@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads"})
+	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads", "glacier_archives"})
 	PlexToken = os.Getenv("PLEX_TOKEN")
 )
 
@@ -58,6 +58,21 @@ func GetGlacierMovies() (uploads []models.Upload, err error) {
 		uploads = append(uploads, upload)
 	}
 	return uploads, err
+}
+
+func GetGlacierArchives() (archives []models.Archive, err error) {
+	keys := getAllKeys([]byte("glacier_archives"))
+	for _, key := range keys {
+		var archive models.Archive
+		err = DB.Get("glacier_archives", string(key), &archive)
+		archives = append(archives, archive)
+	}
+	return archives, err
+}
+
+func SaveGlacierArchive(archive models.Archive) error {
+	err := DB.SaveArchive(archive)
+	return err
 }
 
 func SaveGlacierMovie(upload models.Upload) error {

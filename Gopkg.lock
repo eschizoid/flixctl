@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:2166b65c5e288c802d3fd961bc8efaaca16e0d035e23d6f2859a84556e7eb65f"
+  digest = "1:fa040e34cd1963812fa582d0a2b503ea7f26dabf71e12af43488c07dbf531d6e"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -135,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "c7d84bfff926e9cbaa5567e95dc2bbbafe887c87"
+  revision = "5bff6ea8402d034f228a5bdc1639b20d2f573419"
   version = "1.1.0"
 
 [[projects]]
@@ -180,11 +180,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:82a6b908658f783ecaf9038f80bd97e8925dddd8c180034143bbd8a6d775ee0d"
+  digest = "1:57c5a0a6fe711cac273dd5e957c35a2510e44ec0ca7729ff80c2a21cd0b6799a"
   name = "github.com/hekmon/transmissionrpc"
   packages = ["."]
   pruneopts = "UT"
-  revision = "652497ba4e634fad5f6f09e420ce021a6dbab9a0"
+  revision = "e4e1c9a294266b5c48100d4bccb4cfa501321449"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -374,14 +374,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3d5e79e10549fd9119cbefd614b6d351ef5bd0be2f2b103a4199788e784cbc68"
+  digest = "1:10405139b45e3a97a3842c93984710e30466eb933545f219ad3f5e45246973b4"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "b4a75ba826a64a70990f11a225237acd6ef35c9f"
+  revision = "9a3f9b0469bbc6b8802087ae5c0af9f61502de01"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"

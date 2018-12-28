@@ -3,10 +3,12 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
+	slackService "github.com/eschizoid/flixctl/slack/library"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +26,9 @@ var JobsLibraryCmd = &cobra.Command{
 			return retrieval == retrievalType
 		})
 		json, _ := json.Marshal(filteredJobs)
-		NotifySlack(filteredJobs)
+		if notify, _ := strconv.ParseBool(slackNotification); notify {
+			slackService.SendJobs(filteredJobs, slackIncomingHookURL)
+		}
 		fmt.Println(string(json))
 	},
 }

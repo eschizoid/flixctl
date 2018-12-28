@@ -6,7 +6,7 @@ import (
 
 func (db *DB) SaveMovie(movie Movie) error {
 	err := db.Set("plex_movies", movie.Metadata.Title, movie)
-	fmt.Printf("'%s' movie saved\n", movie.Metadata.Title)
+	//fmt.Printf("'%s' movie saved\n", movie.Metadata.Title)
 	return err
 }
 

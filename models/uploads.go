@@ -5,8 +5,8 @@ import (
 )
 
 func (db *DB) SaveUpload(upload Upload) error {
-	err := db.Set("glacier_uploads", upload.ArchiveCreationOutput, upload)
-	fmt.Printf("glacier upload saved wiht id: %d", upload.ArchiveCreationOutput.ArchiveId)
+	err := db.Set("glacier_uploads", upload.ArchiveCreationOutput.ArchiveId, upload)
+	//fmt.Printf("glacier upload saved with id: %d", upload.ArchiveCreationOutput.ArchiveId)
 	return err
 }
 

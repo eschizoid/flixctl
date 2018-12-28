@@ -13,6 +13,8 @@ type Datastore interface {
 	SaveMovie(plex.Metadata) error
 	AllUpload() ([]Upload, error)
 	SaveUpload(Upload) error
+	AllArchives() ([]Archive, error)
+	SaveArchive(Archive) error
 }
 
 type DB struct {
