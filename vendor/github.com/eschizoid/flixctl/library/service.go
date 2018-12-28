@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads"})
+	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads", "glacier_archives"})
 	PlexToken = os.Getenv("PLEX_TOKEN")
 )
 
@@ -45,11 +45,6 @@ func GetCachedPlexMovies() (movies []models.Movie, err error) {
 	return movies, err
 }
 
-func SavePlexMovie(movie models.Movie) error {
-	err := DB.SaveMovie(movie)
-	return err
-}
-
 func GetGlacierMovies() (uploads []models.Upload, err error) {
 	keys := getAllKeys([]byte("glacier_uploads"))
 	for _, key := range keys {
@@ -60,8 +55,28 @@ func GetGlacierMovies() (uploads []models.Upload, err error) {
 	return uploads, err
 }
 
+func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
+	keys := getAllKeys([]byte("glacier_archives"))
+	for _, key := range keys {
+		var archive models.InventoryArchive
+		err = DB.Get("glacier_archives", string(key), &archive)
+		archives = append(archives, archive)
+	}
+	return archives, err
+}
+
+func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
+	err := DB.SaveInventoryArchive(archive)
+	return err
+}
+
 func SaveGlacierMovie(upload models.Upload) error {
 	err := DB.SaveUpload(upload)
+	return err
+}
+
+func SavePlexMovie(movie models.Movie) error {
+	err := DB.SavePlexMovie(movie)
 	return err
 }
 

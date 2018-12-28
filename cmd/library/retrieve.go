@@ -4,12 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
+	libraryService "github.com/eschizoid/flixctl/library"
+	"github.com/eschizoid/flixctl/models"
 	"github.com/spf13/cobra"
+)
+
+const (
+	GlacierInventoryRetrieval string = "InventoryRetrieval"
+	GlacierArchiveRetrieval   string = "ArchiveRetrieval"
 )
 
 var RetrieveLibraryCmd = &cobra.Command{
@@ -19,34 +25,61 @@ var RetrieveLibraryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
-		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
-			SharedConfigState: sess.SharedConfigEnable,
-		}))
-		svc := glacier.New(awsSession)
-		getJobOutputOutput := glacierService.GetJobOutput(svc, jobID)
-		defer getJobOutputOutput.Body.Close()
-		part, err := ioutil.ReadAll(getJobOutputOutput.Body)
-		ShowError(err)
-		writeFile(part)
-		//glacierService.Cleanup([]string{fileName})
-		jsonString, _ := json.Marshal(getJobOutputOutput)
-		fmt.Println("\n" + string(jsonString))
+		if retrievalType == GlacierInventoryRetrieval {
+			processInventoryRetrieval()
+		} else if retrievalType == GlacierArchiveRetrieval {
+			processArchiveRetrieval()
+		} else {
+			panic("Unknown glacier retrieval type")
+		}
 		close(shutdownCh)
 	},
 }
 
-func writeFile(part []byte) string {
-	var err error
-	var retrievedFile *os.File
-	if retrievalType == "InventoryRetrieval" {
-		retrievedFile, err = ioutil.TempFile(os.TempDir(), "inventory.*.json")
-	} else if retrievalType == "ArchiveRetrieval" {
-		retrievedFile, err = ioutil.TempFile(os.TempDir(), "movie.*.zip")
-		glacierService.Unzip(retrievedFile.Name())
+func processInventoryRetrieval() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	if jobID != "" {
+		svc := glacier.New(awsSession)
+		jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
+		defer jobOutputOutput.Body.Close()
+		response, err := ioutil.ReadAll(jobOutputOutput.Body)
+		ShowError(err)
+		var inventoryRetrieve = new(InventoryRetrieve)
+		err = json.Unmarshal(response, &inventoryRetrieve)
+		ShowError(err)
+		for _, archive := range inventoryRetrieve.ArchiveList {
+			err = libraryService.SaveGlacierInventoryArchive(archive)
+			ShowError(err)
+		}
 	}
+	glacierArchives, err := libraryService.GetGlacierInventoryArchives()
 	ShowError(err)
-	fileName := retrievedFile.Name()
-	err = ioutil.WriteFile(fileName, part, 0644)
+	jsonString, err := json.Marshal(glacierArchives)
 	ShowError(err)
-	return fileName
+	fmt.Println("\n" + string(jsonString))
+}
+
+func processArchiveRetrieval() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	svc := glacier.New(awsSession)
+	jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
+	defer jobOutputOutput.Body.Close()
+	var response, err = ioutil.ReadAll(jobOutputOutput.Body)
+	ShowError(err)
+	retrievedFile, err := ioutil.TempFile("/tmp", "movie.*.zip")
+	ShowError(err)
+	glacierService.Unzip(retrievedFile.Name())
+	err = ioutil.WriteFile(retrievedFile.Name(), response, 0644)
+	glacierService.Cleanup([]string{retrievedFile.Name()})
+	ShowError(err)
+}
+
+type InventoryRetrieve struct {
+	InventoryDate string                    `json:"InventoryDate"`
+	VaultARN      string                    `json:"VaultARN"`
+	ArchiveList   []models.InventoryArchive `json:"ArchiveList"`
 }

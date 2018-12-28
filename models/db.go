@@ -9,10 +9,12 @@ import (
 )
 
 type Datastore interface {
-	AllMovies() ([]plex.Metadata, error)
-	SaveMovie(plex.Metadata) error
-	AllUpload() ([]Upload, error)
+	AllPlexMovies() ([]plex.Metadata, error)
+	SavePlexMovie(plex.Metadata) error
+	AllUploads() ([]Upload, error)
 	SaveUpload(Upload) error
+	AllInventoryArchives() ([]InventoryArchive, error)
+	SaveInventoryArchive(InventoryArchive) error
 }
 
 type DB struct {
