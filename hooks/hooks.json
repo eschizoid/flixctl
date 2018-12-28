@@ -226,7 +226,7 @@
     "pass-environment-to-command": [
       {
         "source": "url",
-        "name": "t",
+        "name": "a",
         "envname": "RETRIEVAL_TYPE"
       },
       {
@@ -240,7 +240,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
