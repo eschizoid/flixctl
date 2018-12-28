@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	TorrentDownloadHookURL = fmt.Sprintf("%s/%s", os.Getenv("HOOKS_URL"), "torrent-download")
-	RetrieveJobHookURL     = fmt.Sprintf("%s/%s", os.Getenv("HOOKS_URL"), "retrieve-job")
+	TorrentDownloadHookURL = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "torrent-download")
+	RetrieveJobHookURL     = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "retrieve-job")
 )
 
 func GetTimeStamp() int64 {

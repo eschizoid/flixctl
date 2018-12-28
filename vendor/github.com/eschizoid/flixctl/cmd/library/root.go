@@ -36,6 +36,12 @@ var (
 			"",
 			"the location to retrieve the movie of the show",
 		)
+		RetrieveLibraryCmd.Flags().StringVarP(&retrievalType,
+			"type",
+			"t",
+			"",
+			"to retrieve archived catalogue or a list of archives(movie, show)",
+		)
 		JobsLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",

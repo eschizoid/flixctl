@@ -3,10 +3,9 @@ set -e
 set -x
 set -o pipefail
 
-aws glacier list-jobs \
-    --account-id - \
-    --vault-name plex \
-    | jq '.JobList[] | select(.ArchiveId != null) | .ArchiveId' -r \
+flixctl library retrieve \
+    --type "InventoryRetrieval" \
+    | jq '.[].ArchiveID' -r \
     | while read id; \
         do aws glacier delete-archive \
             --account-id='-' \

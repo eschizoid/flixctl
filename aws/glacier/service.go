@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/glacier"
+	"github.com/jrudio/go-plex-client"
 )
 
 const (
@@ -52,10 +53,10 @@ func InitiateInventoryJob(svc *glacier.Glacier) *glacier.InitiateJobOutput {
 	return result
 }
 
-func InitiateMultipartUploadInput(svc *glacier.Glacier, fileName string) *glacier.InitiateMultipartUploadOutput {
+func InitiateMultipartUploadInput(svc *glacier.Glacier, metadata plex.Metadata) *glacier.InitiateMultipartUploadOutput {
 	input := &glacier.InitiateMultipartUploadInput{
 		AccountId:          aws.String("-"),
-		ArchiveDescription: aws.String(fmt.Sprintf("%s-%s", GetStats(fileName).Name(), strconv.FormatInt(getTimeStamp(), 10))),
+		ArchiveDescription: aws.String(metadata.Title),
 		PartSize:           aws.String(strconv.Itoa(maxFileChunkSize)),
 		VaultName:          aws.String("plex"),
 	}
