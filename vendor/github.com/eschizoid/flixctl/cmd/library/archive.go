@@ -38,7 +38,7 @@ func ArchiveMovie(metadata plex.Metadata) {
 	zipFileName := zipFile.Name()
 	fileChunks := glacierService.Chunk(zipFileName)
 	svc := glacier.New(awsSession)
-	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, zipFileName)
+	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, metadata)
 	fmt.Println(initiateMultipartUploadOutput.String())
 	uploadID := *initiateMultipartUploadOutput.UploadId
 	uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)

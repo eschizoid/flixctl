@@ -15,7 +15,6 @@ import (
 )
 
 const (
-	transmissionHost    = "marianoflix.duckdns.org"
 	TorrentDownloadsKey = "td"
 	ThePirateBayKey     = "tpb"
 	OttsKey             = "otts"
@@ -26,7 +25,7 @@ var (
 	Timeout = time.Duration(15000 * 1000 * 1000)
 
 	Transmission, _ = transmissionrpc.New(
-		transmissionHost,
+		os.Getenv("FLIXCTL_HOST"),
 		strings.Split(os.Getenv("TR_AUTH"), ":")[0],
 		strings.Split(os.Getenv("TR_AUTH"), ":")[1],
 		&transmissionrpc.AdvancedConfig{

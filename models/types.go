@@ -19,3 +19,11 @@ type Show struct {
 	Metadata  plex.Metadata
 	Unwatched int
 }
+
+type InventoryArchive struct {
+	ArchiveDescription string
+	ArchiveID          string
+	CreationDate       string
+	SHA256TreeHash     string
+	Size               int
+}

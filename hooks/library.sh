@@ -30,11 +30,12 @@ case $# in
             if [[ "${RETRIEVAL_TYPE}" = "ArchiveRetrieval" ]]; then
                 /home/webhook/go/bin/flixctl library retrieve \
                     --job-id "${JOB_ID}" \
-                    --file "/plex/movies/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
+                    --file "/plex/movies/movie-$(date +%Y-%m-%d.%H:%M:%S).zip" \
+                    --type "${RETRIEVAL_TYPE}"
             elif [[ "${RETRIEVAL_TYPE}" = "InventoryRetrieval" ]]; then
                 /home/webhook/go/bin/flixctl library retrieve \
                     --job-id "${JOB_ID}" \
-                    --file "/tmp/catalogue-$(date +%Y-%m-%d.%H:%M:%S).json"
+                    --type "${RETRIEVAL_TYPE}"
             else
                 "Unknown parameter"
             fi
