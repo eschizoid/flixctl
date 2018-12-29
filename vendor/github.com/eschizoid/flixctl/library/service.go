@@ -16,8 +16,7 @@ var (
 
 func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	var plexClient *plex.Plex
-
-	plexClient, err = plex.New(fmt.Sprintf("https://%s:32400/hooks", os.Getenv("FLIXCTL_HOST")), PlexToken)
+	plexClient, err = plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), PlexToken)
 	showError(err)
 	var libraries plex.LibrarySections
 	libraries, err = plexClient.GetLibraries()
