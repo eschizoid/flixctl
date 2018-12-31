@@ -23,14 +23,14 @@ var ArchiveLibraryCmd = &cobra.Command{
 		for _, movie := range movies {
 			if movie.Unwatched == 0 {
 				fmt.Println(movie.Metadata.Media[0].Part[0].File)
-				//ArchiveMovie(movie)
+				Archive(movie.Metadata)
 			}
 		}
 		close(shutdownCh)
 	},
 }
 
-func ArchiveMovie(metadata plex.Metadata) {
+func Archive(metadata plex.Metadata) {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))

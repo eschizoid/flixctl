@@ -6,7 +6,6 @@ import (
 
 	"github.com/eschizoid/flixctl/models"
 	"github.com/jrudio/go-plex-client"
-	"go.etcd.io/bbolt"
 )
 
 var (
@@ -35,34 +34,20 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	return movies, err
 }
 
-func GetCachedPlexMovies() (movies []models.Movie, err error) {
-	keys := getAllKeys([]byte("plex_movies"))
-	for _, key := range keys {
-		var movie models.Movie
-		err = DB.Get("plex_movies", string(key), &movie)
-		movies = append(movies, movie)
-	}
-	return movies, err
+func GetCachedPlexMovies() ([]models.Movie, error) {
+	return DB.AllPlexMovies()
 }
 
 func GetGlacierMovies() (uploads []models.Upload, err error) {
-	keys := getAllKeys([]byte("glacier_uploads"))
-	for _, key := range keys {
-		var upload models.Upload
-		err = DB.Get("glacier_uploads", string(key), &upload)
-		uploads = append(uploads, upload)
-	}
-	return uploads, err
+	return DB.AllUploads()
 }
 
 func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
-	keys := getAllKeys([]byte("glacier_archives"))
-	for _, key := range keys {
-		var archive models.InventoryArchive
-		err = DB.Get("glacier_archives", string(key), &archive)
-		archives = append(archives, archive)
-	}
-	return archives, err
+	return DB.AllInventoryArchives()
+}
+
+func FindGlacierMovie(title string) (archives models.Upload, err error) {
+	return DB.FindUploadByID(title)
 }
 
 func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
@@ -78,27 +63,6 @@ func SaveGlacierMovie(upload models.Upload) error {
 func SavePlexMovie(movie models.Movie) error {
 	err := DB.SavePlexMovie(movie)
 	return err
-}
-
-func getAllKeys(bucket []byte) [][]byte {
-	var keys [][]byte
-	DB.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
-		b := tx.Bucket(bucket)
-		_ = b.ForEach(func(k, v []byte) error { //nolint:errcheck
-			// Due to
-			// Byte slices returned from Bolt are only valid during a transaction. Once the transaction has been committed or rolled back then the memory they point to can be reused by a new page or can be unmapped from virtual memory and you'll see an unexpected fault address panic when accessing it.
-			// We copy the slice to retain it
-			dst := make([]byte, len(k))
-			copy(dst, k)
-			keys = append(keys, dst)
-			return nil
-		})
-		return nil
-	})
-	if len(keys) > 0 {
-		keys = keys[:len(keys)-1]
-	}
-	return keys
 }
 
 func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (movieDirectory plex.Directory) {
