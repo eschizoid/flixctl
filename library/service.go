@@ -9,8 +9,14 @@ import (
 	"go.etcd.io/bbolt"
 )
 
+const (
+	inventoryArchivesBucketName = "glacier_archives"
+	plexMoviesBucketName        = "plex_movies"
+	uploadsBucketName           = "glacier_uploads"
+)
+
 var (
-	DB        = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{"plex_movies", "glacier_uploads", "glacier_archives"})
+	Database  = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{plexMoviesBucketName, uploadsBucketName, inventoryArchivesBucketName})
 	PlexToken = os.Getenv("PLEX_TOKEN")
 )
 
@@ -35,54 +41,53 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	return movies, err
 }
 
-func GetCachedPlexMovies() (movies []models.Movie, err error) {
-	keys := getAllKeys([]byte("plex_movies"))
-	for _, key := range keys {
-		var movie models.Movie
-		err = DB.Get("plex_movies", string(key), &movie)
-		movies = append(movies, movie)
-	}
-	return movies, err
+func GetCachedPlexMovies() ([]models.Movie, error) {
+	keys := getAllKeys([]byte(plexMoviesBucketName))
+	return Database.AllPlexMovies(keys)
 }
 
 func GetGlacierMovies() (uploads []models.Upload, err error) {
-	keys := getAllKeys([]byte("glacier_uploads"))
-	for _, key := range keys {
-		var upload models.Upload
-		err = DB.Get("glacier_uploads", string(key), &upload)
-		uploads = append(uploads, upload)
-	}
-	return uploads, err
+	keys := getAllKeys([]byte(uploadsBucketName))
+	return Database.AllUploads(keys)
 }
 
 func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
-	keys := getAllKeys([]byte("glacier_archives"))
-	for _, key := range keys {
-		var archive models.InventoryArchive
-		err = DB.Get("glacier_archives", string(key), &archive)
-		archives = append(archives, archive)
-	}
-	return archives, err
+	keys := getAllKeys([]byte(inventoryArchivesBucketName))
+	return Database.AllInventoryArchives(keys)
+}
+
+func FindGlacierMovie(title string) (archives models.Upload, err error) {
+	return Database.FindUploadByID(title)
 }
 
 func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
-	err := DB.SaveInventoryArchive(archive)
+	err := Database.SaveInventoryArchive(archive)
 	return err
 }
 
 func SaveGlacierMovie(upload models.Upload) error {
-	err := DB.SaveUpload(upload)
+	err := Database.SaveUpload(upload)
 	return err
 }
 
 func SavePlexMovie(movie models.Movie) error {
-	err := DB.SavePlexMovie(movie)
+	err := Database.SavePlexMovie(movie)
 	return err
+}
+
+func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (movieDirectory plex.Directory) {
+	for _, directory := range directories {
+		if test(directory.Type) {
+			movieDirectory = directory
+			break
+		}
+	}
+	return movieDirectory
 }
 
 func getAllKeys(bucket []byte) [][]byte {
 	var keys [][]byte
-	DB.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
+	Database.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
 		b := tx.Bucket(bucket)
 		_ = b.ForEach(func(k, v []byte) error { //nolint:errcheck
 			// Due to
@@ -99,16 +104,6 @@ func getAllKeys(bucket []byte) [][]byte {
 		keys = keys[:len(keys)-1]
 	}
 	return keys
-}
-
-func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (movieDirectory plex.Directory) {
-	for _, directory := range directories {
-		if test(directory.Type) {
-			movieDirectory = directory
-			break
-		}
-	}
-	return movieDirectory
 }
 
 func showError(err error) {

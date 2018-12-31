@@ -18,12 +18,14 @@ case $# in
             for channel in monitoring; do
                 /bin/slack-cleaner --perform \
                     --quiet \
+                    --rate 1 \
                     --token "${SLACK_LEGACY_TOKEN}" \
                     --message \
                     --group ${channel} \
                     --bot
                 /bin/slack-cleaner --perform \
                     --quiet \
+                    --rate 1 \
                     --token "${SLACK_LEGACY_TOKEN}" \
                     --message \
                     --group ${channel} \
@@ -32,12 +34,14 @@ case $# in
             for channel in new-releases requests travis; do
                 /bin/slack-cleaner --perform \
                     --quiet \
+                    --rate 1 \
                     --token "${SLACK_LEGACY_TOKEN}" \
                     --message \
                     --channel ${channel} \
                     --bot
                 /bin/slack-cleaner --perform \
                     --quiet \
+                    --rate 1 \
                     --token "${SLACK_LEGACY_TOKEN}" \
                     --message \
                     --channel ${channel} \

@@ -27,10 +27,14 @@ true MaaS (Movies as a Service) architecture.
 * https://aws.amazon.com/sns[SNS]
 
 ==== Software (OSS)
+* https://github.com/Jackett/Jackett[Jackett]
+* https://github.com/tidusjar/Ombi[Ombi]
 * https://github.com/plexinc/plex-media-player[Plex]
+* https://github.com/Radarr/Radarr[Radarr]
 * https://github.com/Tautulli/Tautulli[Tautulli]
 * https://github.com/transmission/transmission[Transmission]
 * https://api.slack.com/slash-commands[Slack Slash Commands]
+* https://github.com/Sonarr/Sonarr[Sonarr]
 * https://github.com/adnanh/webhook[Webhooks]
 
 === Pre-requisites
@@ -71,7 +75,6 @@ $ flixctl --help
 To Control The Following flixctl Components:
   * Library
   * Plex
-  * Tautulli
   * Torrent
 
 Usage:

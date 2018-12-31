@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -104,7 +105,8 @@ func Zip(source string) os.File {
 	}
 	file, err := ioutil.TempFile("/tmp", "movie.*.zip")
 	showError(err)
-	err = z.Archive([]string{source}, file.Name())
+	sourceFolder, err := filepath.Abs(filepath.Dir(source))
+	err = z.Archive([]string{sourceFolder}, file.Name())
 	showError(err)
 	return *file
 }
