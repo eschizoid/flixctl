@@ -105,7 +105,9 @@ func Zip(source string) os.File {
 	}
 	file, err := ioutil.TempFile("/tmp", "movie.*.zip")
 	showError(err)
-	sourceFolder, err := filepath.Abs(filepath.Dir(source))
+	var sourceFolder string
+	sourceFolder, err = filepath.Abs(filepath.Dir(source))
+	showError(err)
 	err = z.Archive([]string{sourceFolder}, file.Name())
 	showError(err)
 	return *file
