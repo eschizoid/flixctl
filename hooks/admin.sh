@@ -2,7 +2,7 @@
 
 case $# in
    0)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-ssl-certificates|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
       exit 1
       ;;
    1)
@@ -49,7 +49,7 @@ case $# in
             done
             echo "{\"slack_purged\": \"true\"}"
             ;;
-         renew-ssl-certificates)
+         renew-certs)
             openssl pkcs12 -export \
                 -password env:PLEX_PASSWORD \
                 -out /var/lib/plexmediaserver/ssl/marianoflix.duckdns.org.pfx \
@@ -69,13 +69,13 @@ case $# in
             ;;
          *)
             echo "'$1' is not a valid admin command."
-            echo "Usage: $0 {endpoints|metrics|purge-slack|renew-ssl-certificates|upgrade}"
+            echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-ssl-certificates|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
       exit 3
       ;;
 esac

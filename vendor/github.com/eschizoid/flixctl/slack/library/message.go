@@ -11,7 +11,7 @@ import (
 	"github.com/nlopes/slack"
 )
 
-func SendJobs(jobDescriptions []glacier.JobDescription, slackIncomingHookURL string) {
+func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, len(jobDescriptions))
 	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
 	for _, jobDescription := range jobDescriptions {
@@ -54,9 +54,9 @@ func SendJobs(jobDescriptions []glacier.JobDescription, slackIncomingHookURL str
 				{
 					Type: "button",
 					Text: "Start",
-					URL: util.RetrieveJobHookURL +
-						"?a=" + *jobDescription.Action +
+					URL: util.LibraryInventoryHookURL +
 						"&i=" + *jobDescription.JobId +
+						"&s=" + "true" +
 						"&token=" + token,
 					Style: "default",
 					Confirm: &slack.ConfirmationField{

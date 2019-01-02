@@ -22,21 +22,26 @@ var JobsLibraryCmd = &cobra.Command{
 		}))
 		svc := glacier.New(awsSession)
 		jobList := glacierService.ListJobs(svc)
-		filteredJobs := chooseSucceededJobs(jobList.JobList, func(retrieval string) bool {
-			return retrieval == retrievalType
-		})
-		json, _ := json.Marshal(filteredJobs)
+		var jobs []*glacier.JobDescription
+		if jobFilter == "all" {
+			jobs = jobList.JobList
+		} else if jobFilter == "ArchiveRetrieval" || jobFilter == "InventoryRetrieval" {
+			jobs = filterJobs(jobList.JobList, func(filter string) bool {
+				return filter == jobFilter
+			})
+		}
+		json, _ := json.Marshal(jobs)
 		if notify, _ := strconv.ParseBool(slackNotification); notify {
-			slackService.SendJobs(filteredJobs, slackIncomingHookURL)
+			slackService.SendJobs(jobs, slackIncomingHookURL)
 		}
 		fmt.Println(string(json))
 	},
 }
 
-func chooseSucceededJobs(jobDescriptions []*glacier.JobDescription, test func(string) bool) (filteredJobs []glacier.JobDescription) {
+func filterJobs(jobDescriptions []*glacier.JobDescription, test func(string) bool) (filteredJobs []*glacier.JobDescription) {
 	for _, job := range jobDescriptions {
 		if test(*job.Action) {
-			filteredJobs = append(filteredJobs, *job)
+			filteredJobs = append(filteredJobs, job)
 		}
 	}
 	return
