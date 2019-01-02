@@ -32,7 +32,7 @@ func Chunk(fileName string) []string {
 		_, err = file.Read(partBuffer)
 		showError(err)
 		// write to disk
-		partFileName := fmt.Sprintf("/tmp/part-%s", strconv.FormatUint(i, 10))
+		partFileName := fmt.Sprintf("/plex/glacier/part-%s", strconv.FormatUint(i, 10))
 		_, err = os.Create(partFileName)
 		showError(err)
 		// write/save buffer to disk
@@ -90,7 +90,7 @@ func Unzip(source string) {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	err := z.Unarchive(source, "/tmp")
+	err := z.Unarchive(source, "/plex/glacier")
 	showError(err)
 }
 
@@ -103,7 +103,7 @@ func Zip(source string) os.File {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	file, err := ioutil.TempFile("/tmp", "movie.*.zip")
+	file, err := ioutil.TempFile("/plex/glacier", "movie.*.zip")
 	showError(err)
 	var sourceFolder string
 	sourceFolder, err = filepath.Abs(filepath.Dir(source))

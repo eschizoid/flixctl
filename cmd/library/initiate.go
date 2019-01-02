@@ -12,8 +12,8 @@ import (
 
 var InitiateLibraryCmd = &cobra.Command{
 	Use:   "initiate",
-	Short: "To Initiate Library Catalogue Retrieval",
-	Long:  "to initiate library catalogue retrieval.",
+	Short: "To Initiate Library Inventory Retrieval",
+	Long:  "to initiate library inventory retrieval.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,

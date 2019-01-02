@@ -15,32 +15,32 @@ var (
 		Use:   "library",
 		Short: "To Control Media Library",
 	}
-	fileName             string
 	jobID                string
-	retrievalType        string
+	jobFilter            string
 	slackIncomingHookURL string
 	slackNotification    string
+	enableLibrarySync    string
 )
 
 var (
 	_ = func() struct{} {
-		RetrieveLibraryCmd.Flags().StringVarP(&jobID,
+		DownloadLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
 			"i",
 			"",
-			"the job id to start for retrieving a movie or a show",
+			"the job id for retrieving glacier archive inventory",
 		)
-		RetrieveLibraryCmd.Flags().StringVarP(&fileName,
-			"file",
-			"f",
+		InventoryLibraryCmd.Flags().StringVarP(&enableLibrarySync,
+			"enable-sync",
+			"s",
 			"",
-			"the location to retrieve the movie of the show",
+			"optional argument to sync glacier archive inventory with internal library",
 		)
-		RetrieveLibraryCmd.Flags().StringVarP(&retrievalType,
-			"type",
-			"t",
+		InventoryLibraryCmd.Flags().StringVarP(&jobID,
+			"job-id",
+			"i",
 			"",
-			"to retrieve archived catalogue or a list of archives(movie, show)",
+			"the optional job id for retrieving glacier archive inventory",
 		)
 		JobsLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
@@ -54,13 +54,14 @@ var (
 			os.Getenv("SLACK_NOTIFICATION"),
 			"if true, will try to notify to a slack channel",
 		)
-		JobsLibraryCmd.Flags().StringVarP(&retrievalType,
-			"type",
-			"t",
+		JobsLibraryCmd.Flags().StringVarP(&jobFilter,
+			"filter",
+			"f",
 			"",
-			"to retrieve archived catalogue or a list of archives(movie, show)",
+			"to filter the list of jobs.",
 		)
-		RootLibraryCmd.AddCommand(ArchiveLibraryCmd, InitiateLibraryCmd, RetrieveLibraryCmd, JobsLibraryCmd, SyncLibraryCmd, CatalogueLibraryCmd)
+		RootLibraryCmd.AddCommand(UploadLibraryCmd, InitiateLibraryCmd, DownloadLibraryCmd, InventoryLibraryCmd,
+			JobsLibraryCmd, SyncLibraryCmd, CatalogueLibraryCmd)
 		return struct{}{}
 	}()
 )
