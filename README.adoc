@@ -120,12 +120,13 @@ Usage:
   flixctl library [command]
 
 Available Commands:
-  archive     To Archive Movies Or Shows
-  catalogue   To Get Movies And Shows Catalogue
-  initiate    To Initiate Library Catalogue Retrieval
+  catalogue   To Show Plex And Library Catalogue
+  download    To Download Movies Or Shows
+  initiate    To Initiate Library Inventory Retrieval
+  inventory   To Show Library Inventory
   jobs        To List Library Jobs
-  retrieve    To Retrieve Movies Or Shows
   sync        To Sync Plex Watched Movies And Shows
+  upload      To Upload Movies Or Shows
 
 Flags:
   -h, --help   help for library
