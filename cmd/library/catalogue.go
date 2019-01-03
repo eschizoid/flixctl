@@ -15,8 +15,8 @@ import (
 
 var CatalogueLibraryCmd = &cobra.Command{
 	Use:   "catalogue",
-	Short: "To Get Movies And Shows Catalogue",
-	Long:  "to get movies and shows catalogue from plex and library.",
+	Short: "To Show Plex And Library Catalogue",
+	Long:  "to show plex and library catalogue.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,

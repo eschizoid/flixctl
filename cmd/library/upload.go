@@ -2,6 +2,7 @@ package library
 
 import (
 	"fmt"
+	"path/filepath"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -12,10 +13,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var ArchiveLibraryCmd = &cobra.Command{
-	Use:   "archive",
-	Short: "To Archive Movies Or Shows",
-	Long:  "to archive movies or shows to the library.",
+var UploadLibraryCmd = &cobra.Command{
+	Use:   "upload",
+	Short: "To Upload Movies Or Shows",
+	Long:  "to upload movies or shows to the library.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
@@ -23,22 +24,24 @@ var ArchiveLibraryCmd = &cobra.Command{
 		for _, movie := range movies {
 			if movie.Unwatched == 0 {
 				fmt.Println(movie.Metadata.Media[0].Part[0].File)
-				//ArchiveMovie(movie)
+				//Archive(movie.Metadata)
 			}
 		}
 		close(shutdownCh)
 	},
 }
 
-func ArchiveMovie(metadata plex.Metadata) {
+func Archive(metadata plex.Metadata) {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	zipFile := glacierService.Zip(metadata.Media[0].Part[0].File)
+	sourceFolder, err := filepath.Abs(filepath.Dir(metadata.Media[0].Part[0].File))
+	ShowError(err)
+	zipFile := glacierService.Zip(sourceFolder)
 	zipFileName := zipFile.Name()
 	fileChunks := glacierService.Chunk(zipFileName)
 	svc := glacier.New(awsSession)
-	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, zipFileName)
+	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, metadata)
 	fmt.Println(initiateMultipartUploadOutput.String())
 	uploadID := *initiateMultipartUploadOutput.UploadId
 	uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)
@@ -49,7 +52,7 @@ func ArchiveMovie(metadata plex.Metadata) {
 		ArchiveCreationOutput: *archiveCreationOutput,
 		Metadata:              metadata,
 	}
-	err := libraryService.SaveGlacierMovie(upload)
+	err = libraryService.SaveGlacierMovie(upload)
 	ShowError(err)
 	//glacierService.Cleanup(append(fileChunks, zipFileName))
 }

@@ -9,9 +9,12 @@ import (
 )
 
 type Datastore interface {
-	AllMovies() ([]plex.Metadata, error)
-	SaveMovie(plex.Metadata) error
-	AllUpload() ([]Upload, error)
+	AllInventoryArchives([]string) ([]InventoryArchive, error)
+	AllPlexMovies([]string) ([]plex.Metadata, error)
+	AllUploads([]string) ([]Upload, error)
+	FindUploadByID(string) (Upload, error)
+	SaveInventoryArchive(InventoryArchive) error
+	SavePlexMovie(plex.Metadata) error
 	SaveUpload(Upload) error
 }
 
@@ -21,7 +24,7 @@ type DB struct {
 
 func NewDB(dataSourceName string, buckets []string) *DB {
 	db, _ := storm.Open(dataSourceName, storm.BoltOptions(0600, &bolt.Options{Timeout: 10 * time.Second}))
-	db.Bolt.Update(func(tx *bolt.Tx) error { //nolint:errcheck
+	_ = db.Bolt.Update(func(tx *bolt.Tx) error { //nolint:errcheck
 		for _, value := range buckets {
 			_, err := tx.CreateBucketIfNotExists([]byte(value))
 			if err != nil {
