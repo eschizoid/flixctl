@@ -53,6 +53,7 @@ func CleanupFiles(filesCreated []string, sourceFolder string) {
 	}
 	if sourceFolder != "" {
 		dir, err := ioutil.ReadDir(sourceFolder)
+		showError(err)
 		for _, d := range dir {
 			err = os.RemoveAll(path.Join([]string{sourceFolder, d.Name()}...))
 			showError(err)
