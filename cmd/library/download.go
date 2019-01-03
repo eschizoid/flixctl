@@ -2,6 +2,7 @@ package library
 
 import (
 	"io/ioutil"
+	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -24,11 +25,11 @@ var DownloadLibraryCmd = &cobra.Command{
 		defer jobOutputOutput.Body.Close()
 		var response, err = ioutil.ReadAll(jobOutputOutput.Body)
 		ShowError(err)
-		retrievedFile, err := ioutil.TempFile("/plex/glacier", "movie.*.zip")
+		retrievedFile, err := ioutil.TempFile(os.Getenv("PLEX_GLACIER_DIRECTORY"), "movie.*.zip")
 		ShowError(err)
 		glacierService.Unzip(retrievedFile.Name())
 		err = ioutil.WriteFile(retrievedFile.Name(), response, 0644)
-		glacierService.Cleanup([]string{retrievedFile.Name()})
+		glacierService.CleanupFiles([]string{retrievedFile.Name()}, "")
 		ShowError(err)
 		close(shutdownCh)
 	},

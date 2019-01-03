@@ -3,6 +3,7 @@ package plex
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -46,5 +47,7 @@ func Start() {
 	var newVolumeID = ebsService.FetchVolumeID(svc, "plex")
 	ebsService.Attach(svc, instanceID, newVolumeID)
 	snapService.Delete(svc, oldSnapshotID)
-	NotifySlack("running")
+	if notify, _ := strconv.ParseBool(slackNotification); notify {
+		slackService.SendStatus("running", slackIncomingHookURL)
+	}
 }

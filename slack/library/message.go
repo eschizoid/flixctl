@@ -55,7 +55,7 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 					Type: "button",
 					Text: "Start",
 					URL: util.LibraryInventoryHookURL +
-						"&i=" + *jobDescription.JobId +
+						"?i=" + *jobDescription.JobId +
 						"&s=" + "true" +
 						"&token=" + token,
 					Style: "default",

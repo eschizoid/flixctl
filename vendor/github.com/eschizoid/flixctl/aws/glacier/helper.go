@@ -8,12 +8,15 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
 	"github.com/mholt/archiver"
 )
+
+var plexGlacierDirectory = os.Getenv("PLEX_GLACIER_DIRECTORY")
 
 func Chunk(fileName string) []string {
 	var files []string
@@ -32,7 +35,7 @@ func Chunk(fileName string) []string {
 		_, err = file.Read(partBuffer)
 		showError(err)
 		// write to disk
-		partFileName := fmt.Sprintf("/plex/glacier/part-%s", strconv.FormatUint(i, 10))
+		partFileName := fmt.Sprintf("%s/part-%s", plexGlacierDirectory, strconv.FormatUint(i, 10))
 		_, err = os.Create(partFileName)
 		showError(err)
 		// write/save buffer to disk
@@ -43,9 +46,18 @@ func Chunk(fileName string) []string {
 	return files
 }
 
-func Cleanup(files []string) {
-	for _, fileChunk := range files {
-		err := os.Remove(fileChunk)
+func CleanupFiles(filesCreated []string, sourceFolder string) {
+	for _, fileCreated := range filesCreated {
+		err := os.Remove(fileCreated)
+		showError(err)
+	}
+	if sourceFolder != "" {
+		dir, err := ioutil.ReadDir(sourceFolder)
+		for _, d := range dir {
+			err = os.RemoveAll(path.Join([]string{sourceFolder, d.Name()}...))
+			showError(err)
+		}
+		err = os.Remove(sourceFolder)
 		showError(err)
 	}
 }
@@ -90,7 +102,7 @@ func Unzip(source string) {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	err := z.Unarchive(source, "/plex/glacier")
+	err := z.Unarchive(source, plexGlacierDirectory)
 	showError(err)
 }
 
@@ -103,7 +115,7 @@ func Zip(source string) os.File {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	file, err := ioutil.TempFile("/plex/glacier", "movie.*.zip")
+	file, err := ioutil.TempFile(plexGlacierDirectory, "movie.*.zip")
 	showError(err)
 	var sourceFolder string
 	sourceFolder, err = filepath.Abs(filepath.Dir(source))

@@ -20,6 +20,7 @@ var (
 	slackIncomingHookURL string
 	slackNotification    string
 	enableLibrarySync    string
+	sourceFile           string
 )
 
 var (
@@ -59,6 +60,12 @@ var (
 			"f",
 			"",
 			"to filter the list of jobs.",
+		)
+		UploadLibraryCmd.Flags().StringVarP(&sourceFile,
+			"source-file",
+			"f",
+			"",
+			"the source file to upload to the library.",
 		)
 		RootLibraryCmd.AddCommand(UploadLibraryCmd, InitiateLibraryCmd, DownloadLibraryCmd, InventoryLibraryCmd,
 			JobsLibraryCmd, SyncLibraryCmd, CatalogueLibraryCmd)

@@ -41,6 +41,11 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	return movies, err
 }
 
+func DeleteteGlacierInventoryArchives() (err error) {
+	keys := getAllKeys([]byte(inventoryArchivesBucketName))
+	return Database.DeleteAllInventoryArchives(keys)
+}
+
 func GetCachedPlexMovies() ([]models.Movie, error) {
 	keys := getAllKeys([]byte(plexMoviesBucketName))
 	return Database.AllPlexMovies(keys)

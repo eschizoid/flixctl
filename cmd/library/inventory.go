@@ -24,6 +24,8 @@ var InventoryLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		if sync, _ := strconv.ParseBool(enableLibrarySync); sync {
+			err := libraryService.DeleteteGlacierInventoryArchives()
+			ShowError(err)
 			svc := glacier.New(awsSession)
 			jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
 			defer jobOutputOutput.Body.Close()
@@ -41,7 +43,7 @@ var InventoryLibraryCmd = &cobra.Command{
 		ShowError(err)
 		jsonString, err := json.Marshal(glacierArchives)
 		ShowError(err)
-		fmt.Println("\n" + string(jsonString))
+		fmt.Println(string(jsonString))
 		close(shutdownCh)
 	},
 }

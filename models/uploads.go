@@ -14,12 +14,10 @@ const uploadsBucketName = "glacier_uploads"
 
 func (db *DB) SaveUpload(upload Upload) error {
 	err := db.Set(uploadsBucketName, upload.Metadata.Title, upload)
-	//fmt.Printf("glacier upload saved with id: %d", upload.ArchiveCreationOutput.ArchiveId)
 	return err
 }
 
 func (db *DB) AllUploads(keys [][]byte) (uploads []Upload, err error) {
-	//fmt.Println("Fetching uploads")
 	for _, key := range keys {
 		var upload Upload
 		err = db.Get(uploadsBucketName, string(key), &upload)
