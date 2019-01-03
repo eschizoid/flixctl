@@ -21,38 +21,52 @@ var UploadLibraryCmd = &cobra.Command{
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
 		movies, _ := libraryService.GetCachedPlexMovies()
+		var upload models.Upload
 		for _, movie := range movies {
 			if movie.Unwatched == 0 {
-				fmt.Println(movie.Metadata.Media[0].Part[0].File)
-				//Archive(movie.Metadata)
+				if sourceFile == "" {
+					sourceFolder, err := filepath.Abs(filepath.Dir(movie.Metadata.Media[0].Part[0].File))
+					ShowError(err)
+					archiveCreationOutput := Archive(movie.Metadata.Title, sourceFolder)
+					upload = models.Upload{
+						ArchiveCreationOutput: *archiveCreationOutput,
+						Metadata:              movie.Metadata,
+					}
+				} else {
+					sourceFolder, err := filepath.Abs(filepath.Dir(sourceFile))
+					ShowError(err)
+					archiveCreationOutput := Archive(sourceFile, sourceFolder)
+					upload = models.Upload{
+						ArchiveCreationOutput: *archiveCreationOutput,
+						Metadata: plex.Metadata{
+							Title: sourceFile,
+						},
+					}
+				}
+				err := libraryService.SaveGlacierMovie(upload)
+				ShowError(err)
+				break
 			}
 		}
 		close(shutdownCh)
 	},
 }
 
-func Archive(metadata plex.Metadata) {
+func Archive(fileDescription string, sourceFolder string) *glacier.ArchiveCreationOutput {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	sourceFolder, err := filepath.Abs(filepath.Dir(metadata.Media[0].Part[0].File))
-	ShowError(err)
 	zipFile := glacierService.Zip(sourceFolder)
 	zipFileName := zipFile.Name()
 	fileChunks := glacierService.Chunk(zipFileName)
 	svc := glacier.New(awsSession)
-	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, metadata)
+	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileDescription)
 	fmt.Println(initiateMultipartUploadOutput.String())
 	uploadID := *initiateMultipartUploadOutput.UploadId
 	uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)
 	fmt.Println(uploadMultipartPartOutputs)
 	archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, zipFileName)
 	fmt.Println(archiveCreationOutput)
-	upload := models.Upload{
-		ArchiveCreationOutput: *archiveCreationOutput,
-		Metadata:              metadata,
-	}
-	err = libraryService.SaveGlacierMovie(upload)
-	ShowError(err)
-	//glacierService.Cleanup(append(fileChunks, zipFileName))
+	glacierService.CleanupFiles(append(fileChunks, zipFileName), sourceFolder)
+	return archiveCreationOutput
 }

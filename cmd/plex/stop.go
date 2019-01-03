@@ -3,6 +3,7 @@ package plex
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -45,5 +46,7 @@ func Stop() {
 	ec2Service.Stop(svc, instanceID)
 	ebsService.Detach(svc, oldVolumeID)
 	ebsService.Delete(svc, oldVolumeID)
-	NotifySlack("stopped")
+	if notify, _ := strconv.ParseBool(slackNotification); notify {
+		slackService.SendStatus("stopped", slackIncomingHookURL)
+	}
 }

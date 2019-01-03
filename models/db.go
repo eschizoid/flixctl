@@ -9,9 +9,10 @@ import (
 )
 
 type Datastore interface {
-	AllInventoryArchives([]string) ([]InventoryArchive, error)
-	AllPlexMovies([]string) ([]plex.Metadata, error)
-	AllUploads([]string) ([]Upload, error)
+	AllInventoryArchives([][]byte) ([]InventoryArchive, error)
+	AllPlexMovies([][]byte) ([]plex.Metadata, error)
+	AllUploads([][]byte) ([]Upload, error)
+	DeleteAllInventoryArchives([][]byte) error
 	FindUploadByID(string) (Upload, error)
 	SaveInventoryArchive(InventoryArchive) error
 	SavePlexMovie(plex.Metadata) error
