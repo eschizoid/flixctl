@@ -54,7 +54,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:d3baf1806ddde9e57f32670f1c3128f084ea19a2a526e134d32efba6b8bd5b67"
+  digest = "1:822295641bfeeb67f20de39a22a44a2cb7781c04d4af9123bd58aa73bd3945e5"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -95,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "3991042237b45cf58c9d5f34295942d5533c28c6"
-  version = "v1.16.11"
+  revision = "1fae280bf2fb990480b751e0ba0d2428548c98b6"
+  version = "v1.16.12"
 
 [[projects]]
   branch = "master"
@@ -114,8 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  branch = "milestone/1.2.0"
-  digest = "1:f7cee272ce79ab32f9169a9d82c58da463177f373fd3b5a8bd862abe3ff091ab"
+  digest = "1:fa040e34cd1963812fa582d0a2b503ea7f26dabf71e12af43488c07dbf531d6e"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -136,7 +135,8 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "b570096b3f00deabd5e849b76920b561d8593581"
+  revision = "5bff6ea8402d034f228a5bdc1639b20d2f573419"
+  version = "1.2.0"
 
 [[projects]]
   digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
@@ -285,8 +285,7 @@
   version = "v0.8.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -298,7 +297,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
+  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
@@ -359,7 +358,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
+  revision = "8d7daa0c54b357f3071e11eaef7efc4e19a417e2"
 
 [[projects]]
   branch = "master"
@@ -374,14 +373,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:10405139b45e3a97a3842c93984710e30466eb933545f219ad3f5e45246973b4"
+  digest = "1:191cccd950a4aeadb60306062f2bdc2f924d750d0156ec6c691b17211bfd7349"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "9a3f9b0469bbc6b8802087ae5c0af9f61502de01"
+  revision = "82a175fd1598e8a172e58ebdf5ed262bb29129e5"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
