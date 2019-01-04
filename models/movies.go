@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/jrudio/go-plex-client"
+	"github.com/jrudio/go-plex-client" //nolint:goimports
 )
 
 type Movie struct {

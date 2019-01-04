@@ -9,7 +9,7 @@ import (
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
 	"github.com/eschizoid/flixctl/models"
-	"github.com/jrudio/go-plex-client"
+	"github.com/jrudio/go-plex-client" //nolint:goimports
 	"github.com/spf13/cobra"
 )
 

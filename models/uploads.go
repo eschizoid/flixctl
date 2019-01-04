@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/aws/aws-sdk-go/service/glacier"
-	"github.com/jrudio/go-plex-client"
+	"github.com/jrudio/go-plex-client" //nolint:goimports
 )
 
 type Upload struct {

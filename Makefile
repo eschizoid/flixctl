@@ -56,7 +56,7 @@ dep:
 	@$(GODEP) check
 	@$(GODEP) ensure -v
 
-lint: fmt simplify
+lint:
 	@$(GOLINT) run -v \
 	--deadline=5m \
 	--disable gochecknoglobals \
@@ -97,22 +97,22 @@ zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor z
 zip-lambda-plex-dispatcher:
 	zip -j -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
 	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher \
-	$(shell pwd)/database/storm/library.db
+	$(shell pwd)/infrastructure/database/storm/library.db
 
 zip-lambda-plex-executor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
 	$(shell pwd)/aws/lambda/plex/executor/executor \
-	$(shell pwd)/database/storm/library.db
+	$(shell pwd)/infrastructure/database/storm/library.db
 
 zip-lambda-torrent-router:
 	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
 	$(shell pwd)/aws/lambda/torrent/torrent \
-	$(shell pwd)/database/storm/library.db
+	$(shell pwd)/infrastructure/database/storm/library.db
 
 zip-lambda-library-router:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
 	$(shell pwd)/aws/lambda/library/library \
-	$(shell pwd)/database/storm/library.db
+	$(shell pwd)/infrastructure/database/storm/library.db
 
 deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-torrent-router deploy-lambda-library-router
 
