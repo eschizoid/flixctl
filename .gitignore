@@ -29,6 +29,7 @@ flixctl
 /aws/lambda/plex/executor/lambda.zip
 /aws/lambda/torrent/lambda.zip
 /aws/lambda/library/lambda.zip
+/infrastructure/systemd/env
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

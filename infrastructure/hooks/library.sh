@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+#set -x
 set -o pipefail
 
 set +u
@@ -30,11 +30,16 @@ case $# in
          inventory)
             /home/webhook/go/bin/flixctl library inventory \
                 --enable-sync "${ENABLE_LIBRARY_SYNC}" \
-                --job-id "${JOB_ID}"
+                --job-id "${JOB_ID}" \
+                --slack-notification true \
+                --slack-notification "${SLACK_NOTIFICATION}" \
+                --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
             ;;
          jobs)
             /home/webhook/go/bin/flixctl library jobs \
-                --filter "${FILTER}"
+                --filter "${FILTER}" \
+                --slack-notification "${SLACK_NOTIFICATION}" \
+                --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
             ;;
          *)
             echo "'$1' is not a valid library command."

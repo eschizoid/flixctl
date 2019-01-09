@@ -249,7 +249,7 @@
     "id": "library-inventory",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library inventory command",
+    "include-command-output-in-response": true,
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -264,7 +264,7 @@
       },
       {
         "source": "url",
-        "name": "s",
+        "name": "e",
         "envname": "ENABLE_LIBRARY_SYNC"
       }
     ],

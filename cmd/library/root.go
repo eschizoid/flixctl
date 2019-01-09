@@ -33,7 +33,7 @@ var (
 		)
 		InventoryLibraryCmd.Flags().StringVarP(&enableLibrarySync,
 			"enable-sync",
-			"s",
+			"e",
 			"",
 			"optional argument to sync glacier archive inventory with internal library",
 		)
@@ -42,6 +42,18 @@ var (
 			"i",
 			"",
 			"the optional job id for retrieving glacier archive inventory",
+		)
+		InventoryLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
+			"slack-notification-channel",
+			"s",
+			os.Getenv("SLACK_LIBRARY_INCOMING_HOOK_URL"),
+			"slack channel to notify of the plex event",
+		)
+		InventoryLibraryCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
 		)
 		JobsLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
