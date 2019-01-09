@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
+	slackService "github.com/eschizoid/flixctl/slack/library"
 	"github.com/spf13/cobra"
 )
 
@@ -43,6 +44,9 @@ var InventoryLibraryCmd = &cobra.Command{
 		ShowError(err)
 		jsonString, err := json.Marshal(glacierArchives)
 		ShowError(err)
+		if notify, _ := strconv.ParseBool(slackNotification); notify {
+			slackService.SendInventory(glacierArchives, slackIncomingHookURL)
+		}
 		fmt.Println(string(jsonString))
 		close(shutdownCh)
 	},

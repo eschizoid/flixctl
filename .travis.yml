@@ -1,6 +1,6 @@
 # This is a weird way of telling Travis to use the fast container-based test
 # runner instead of the slow VM-based runner.
-sudo: false
+sudo: required
 
 language: go
 
@@ -12,8 +12,9 @@ go:
   - tip
 
 before_install:
-  - pip install --user awscli
-  - sudo pip install pyOpenSSL==0.12
+  - sudo apt-get install python-dev libffi-dev libssl-dev
+  - pip install --user --trusted-host pypi.python.org awscli
+  - pip install --user --upgrade --trusted-host pypi.python.org ndg-httpsclient
   - export PATH=$HOME/.local/bin:$PATH
   - export PATH=$HOME/gopath/bin:$PATH
 
@@ -46,6 +47,7 @@ git:
 
 deploy:
   provider: releases
+  name: 1.2.0
   api_key:
     secure: nWxL7c8HGEfdx3cLSl7PwxBsMB1YDrxVyvChiP/5rJ4dUFf6FsPPVYBVCnSeZmP8aHvgaYZiRu0RpyH/vnelGBJSusV+30ElTHYMHoh4KkTT7AcQ+fiDbRr9H0KpIRiSeTvqwjHR4FUZnVQ/UhGKvEL8CXP+hiUDJLeO3smGzFKgl5nEUCmkN3ks7FfG16gTROX8MqG1b6q6SVDg51zh/67iUygGvQwJsg7phOaYqkWeqtkRwarH8aYgwv4pLFWhIcbTwFOSfC79WyXb8M0FnsIjYW3fAli6Bz9mFhkVNa6NFkWrzdWlWgLVpAyEytGqU49Cqnjerp0usTDx1BEaBae9gJr07P1kZmATvAb6IVNpzGUj7ldoI+YyuDPqZBtyJHus79i0U6VHTsYaw3xocjZqUXwT00ER8JGQR4vXmPWOG8zOHDcUvIgu42ZTYGJlmpWt7kPGLwpfXGubPt3bJe07254yPwlQpFNpjpmo+hpeYaR/4/5PfDt/3ramaAHbebtCjI/ov03cRwZrcNABW3eQYOGgWhhaTom/qD3jZCgp7CbNaYEI8yf2L3RrnkcDUlSd5G4CrMreDn89boPEMcZrboIAwga0W9m7sqhOrXPc1dW3Yg8KBmfH8zLc6qtP9zrvfpjcJ2M4yKiXbi5nga2N93Uv3U5D78G09gSbdU0=
   file: flixctl

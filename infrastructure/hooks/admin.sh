@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+#set -x
+set -o pipefail
+
+set +u
+source /home/webhook/.bashrc
+set -u
+
 case $# in
    0)
       echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
