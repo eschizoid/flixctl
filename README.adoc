@@ -28,6 +28,7 @@ true MaaS (Movies as a Service) architecture.
 
 ==== Software (OSS)
 * https://github.com/Jackett/Jackett[Jackett]
+* https://github.com/nzbget[NZBGet]
 * https://github.com/tidusjar/Ombi[Ombi]
 * https://github.com/plexinc/plex-media-player[Plex]
 * https://github.com/Radarr/Radarr[Radarr]

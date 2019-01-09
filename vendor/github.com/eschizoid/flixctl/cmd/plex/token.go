@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jrudio/go-plex-client"
+	"github.com/jrudio/go-plex-client" //nolint:goimports
 	"github.com/spf13/cobra"
 )
 
