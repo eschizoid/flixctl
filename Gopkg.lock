@@ -19,11 +19,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:efcd30f654ea9ce296e01a42c72a2c18c14f3cb6db5f4b177b1e5eb27a6754b0"
+  digest = "1:0838b7b97323a5ff376ad36248d303d9fadcbe158d5f46b6d78356bc5727dc1e"
   name = "github.com/apex/invoke"
   packages = ["."]
   pruneopts = "UT"
-  revision = "1d3d334929c27a83ab601819d839b649d0d010fc"
+  revision = "c1020a6385cea74c80ff3ef223bfe498e1a0e213"
 
 [[projects]]
   digest = "1:97f8392a94d45a67691bfc224ee4365a83864467ca5a04bd5017be293e1b4391"
@@ -54,7 +54,7 @@
   version = "v1.8.1"
 
 [[projects]]
-  digest = "1:538e9206972f57c72a8ef72f0d679ece568a2f557deb3de7c20e4e46189146ab"
+  digest = "1:e5b22208cb4d4e13a60d9c8530a982af09a688b65a2e7c2fab5fc9636eee76cc"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -95,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "62936e15518acb527a1a9cb4a39d96d94d0fd9a2"
-  version = "v1.16.15"
+  revision = "1f8a24693bc965514ee0d7aadbabe0ceed184a88"
+  version = "v1.16.16"
 
 [[projects]]
   branch = "master"
@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:233488848c799a293043cea3d9f39d16344de3bbbf9ce41a45dd37f0c3c62bcb"
+  digest = "1:7c694ad0486066ed916a29ef5849f6ac598fa6616c7f1ff0a66e60d1e5acdd69"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -135,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "bf745db77bf9024442558e59b6660d339ba9f903"
+  revision = "79327c95cd7b5bf1d42a51a66660cd3b8f3b5c83"
   version = "1.2.0"
 
 [[projects]]
@@ -370,18 +370,18 @@
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "395948e2f546cb82afa9e1f6d1a6e87849b9af1d"
+  revision = "be1c187aa6c66b9daa1d9461c228d17e9dd2cab7"
 
 [[projects]]
   branch = "master"
-  digest = "1:12ef3ef293a3a3930a82e5f38a3c45a1b03a9ed72dedc192d90e89d59b1f13a5"
+  digest = "1:5ee4df7ab18e945607ac822de8d10b180baea263b5e8676a1041727543b9c1e4"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "7fbe1cd0fcc20051e1fcb87fbabec4a1bacaaeba"
+  revision = "48ac38b7c8cbedd50b1613c0fccacfc7d88dfcdf"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
