@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
+	"github.com/eschizoid/flixctl/models"
 	slackService "github.com/eschizoid/flixctl/slack/library"
 	"github.com/spf13/cobra"
 )
@@ -50,4 +51,10 @@ var InventoryLibraryCmd = &cobra.Command{
 		fmt.Println(string(jsonString))
 		close(shutdownCh)
 	},
+}
+
+type InventoryRetrieve struct {
+	InventoryDate string                    `json:"InventoryDate"`
+	VaultARN      string                    `json:"VaultARN"`
+	ArchiveList   []models.InventoryArchive `json:"ArchiveList"`
 }

@@ -2,12 +2,10 @@ package library
 
 import (
 	"io/ioutil"
-	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
-	"github.com/eschizoid/flixctl/models"
 	"github.com/spf13/cobra"
 )
 
@@ -25,18 +23,10 @@ var DownloadLibraryCmd = &cobra.Command{
 		defer jobOutputOutput.Body.Close()
 		var response, err = ioutil.ReadAll(jobOutputOutput.Body)
 		ShowError(err)
-		retrievedFile, err := ioutil.TempFile(os.Getenv("PLEX_GLACIER_DIRECTORY"), "movie.*.zip")
-		ShowError(err)
-		glacierService.Unzip(retrievedFile.Name())
-		err = ioutil.WriteFile(retrievedFile.Name(), response, 0644)
-		glacierService.CleanupFiles([]string{retrievedFile.Name()}, "")
+		err = ioutil.WriteFile(targetFile, response, 0644)
+		glacierService.Unzip(targetFile)
+		//glacierService.CleanupFiles([]string{targetFile}, "")
 		ShowError(err)
 		close(shutdownCh)
 	},
-}
-
-type InventoryRetrieve struct {
-	InventoryDate string                    `json:"InventoryDate"`
-	VaultARN      string                    `json:"VaultARN"`
-	ArchiveList   []models.InventoryArchive `json:"ArchiveList"`
 }

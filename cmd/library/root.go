@@ -15,12 +15,14 @@ var (
 		Use:   "library",
 		Short: "To Control Media Library",
 	}
+	archiveID            string
 	jobID                string
 	jobFilter            string
 	slackIncomingHookURL string
 	slackNotification    string
 	enableLibrarySync    string
 	sourceFile           string
+	targetFile           string
 )
 
 var (
@@ -29,7 +31,19 @@ var (
 			"job-id",
 			"i",
 			"",
-			"the job id for retrieving glacier archive inventory",
+			"the optional job id for retrieving glacier archive",
+		)
+		DownloadLibraryCmd.Flags().StringVarP(&targetFile,
+			"target-file",
+			"f",
+			"",
+			"where to download the file",
+		)
+		InitiateLibraryCmd.Flags().StringVarP(&archiveID,
+			"archive-id",
+			"i",
+			"",
+			"if provided, will attempt an archive retrieval instead of an inventory retrieval",
 		)
 		InventoryLibraryCmd.Flags().StringVarP(&enableLibrarySync,
 			"enable-sync",

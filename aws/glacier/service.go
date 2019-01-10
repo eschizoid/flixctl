@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -12,18 +11,18 @@ import (
 )
 
 const (
-	maxFileChunkSize     = 1024 * 1024 * 4 // 4MB
-	maxTreeHashChunkSize = 1024 * 1024     // 1MB
+	maxFileChunkSize      = 1024 * 1024 * 4 // 4MB
+	maxTreeHashChunkSize  = 1024 * 1024     // 1MB
+	inventoryRetrievalJob = "inventory-retrieval"
+	archiveRetrievalJob   = "archive-retrieval"
 )
 
-func InitiateInventoryJob(svc *glacier.Glacier) *glacier.InitiateJobOutput {
+func InitiateJob(svc *glacier.Glacier, archiveID string) *glacier.InitiateJobOutput {
+	jobParameters := getJobParameters(archiveID)
 	input := &glacier.InitiateJobInput{
-		AccountId: aws.String("-"),
-		JobParameters: &glacier.JobParameters{
-			Description: aws.String(fmt.Sprintf("%d-%s", getTimeStamp(), "catalogue")),
-			Type:        aws.String("inventory-retrieval"),
-		},
-		VaultName: aws.String("plex"),
+		AccountId:     aws.String("-"),
+		JobParameters: jobParameters,
+		VaultName:     aws.String("plex"),
 	}
 	result, err := svc.InitiateJob(input)
 	if err != nil {
@@ -39,6 +38,35 @@ func InitiateInventoryJob(svc *glacier.Glacier) *glacier.InitiateJobOutput {
 				fmt.Println(glacier.ErrCodeMissingParameterValueException, aerr.Error())
 			case glacier.ErrCodeInsufficientCapacityException:
 				fmt.Println(glacier.ErrCodeInsufficientCapacityException, aerr.Error())
+			case glacier.ErrCodeServiceUnavailableException:
+				fmt.Println(glacier.ErrCodeServiceUnavailableException, aerr.Error())
+			default:
+				fmt.Println(aerr.Error())
+			}
+		} else {
+			fmt.Println(err.Error())
+		}
+		return nil
+	}
+	return result
+}
+
+func DescribeJob(svc *glacier.Glacier, jobID string) *glacier.JobDescription {
+	input := &glacier.DescribeJobInput{
+		AccountId: aws.String("-"),
+		JobId:     aws.String(jobID),
+		VaultName: aws.String("plex"),
+	}
+	result, err := svc.DescribeJob(input)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case glacier.ErrCodeResourceNotFoundException:
+				fmt.Println(glacier.ErrCodeResourceNotFoundException, aerr.Error())
+			case glacier.ErrCodeInvalidParameterValueException:
+				fmt.Println(glacier.ErrCodeInvalidParameterValueException, aerr.Error())
+			case glacier.ErrCodeMissingParameterValueException:
+				fmt.Println(glacier.ErrCodeMissingParameterValueException, aerr.Error())
 			case glacier.ErrCodeServiceUnavailableException:
 				fmt.Println(glacier.ErrCodeServiceUnavailableException, aerr.Error())
 			default:
@@ -100,7 +128,7 @@ func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNa
 		}
 		result, err := svc.UploadMultipartPart(input)
 		if err != nil {
-			AbortMultipartUpload(svc, uploadID)
+			abortMultipartUpload(svc, uploadID)
 			if aerr, ok := err.(awserr.Error); ok {
 				switch aerr.Code() {
 				case glacier.ErrCodeResourceNotFoundException:
@@ -142,7 +170,7 @@ func CompleteMultipartUpload(svc *glacier.Glacier, uploadID string, fileName str
 	}
 	result, err := svc.CompleteMultipartUpload(input)
 	if err != nil {
-		AbortMultipartUpload(svc, uploadID)
+		abortMultipartUpload(svc, uploadID)
 		if aerr, ok := err.(awserr.Error); ok {
 			switch aerr.Code() {
 			case glacier.ErrCodeResourceNotFoundException:
@@ -221,7 +249,7 @@ func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutpu
 	return result
 }
 
-func AbortMultipartUpload(svc *glacier.Glacier, uploadID string) {
+func abortMultipartUpload(svc *glacier.Glacier, uploadID string) {
 	input := &glacier.AbortMultipartUploadInput{
 		AccountId: aws.String("-"),
 		UploadId:  aws.String(uploadID),
@@ -251,10 +279,18 @@ func AbortMultipartUpload(svc *glacier.Glacier, uploadID string) {
 	fmt.Println(result)
 }
 
-func getTimeStamp() int64 {
-	location, err := time.LoadLocation("America/Chicago")
-	if err != nil {
-		fmt.Println(err)
+func getJobParameters(archiveID string) *glacier.JobParameters {
+	var jobParameters *glacier.JobParameters
+	if archiveID == "" {
+		jobParameters = &glacier.JobParameters{
+			Type: aws.String(inventoryRetrievalJob),
+		}
+	} else {
+		jobParameters = &glacier.JobParameters{
+			ArchiveId: aws.String(archiveID),
+			Tier:      aws.String("Expedited"),
+			Type:      aws.String(archiveRetrievalJob),
+		}
 	}
-	return time.Now().In(location).Unix()
+	return jobParameters
 }
