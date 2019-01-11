@@ -67,7 +67,7 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 			},
 		})
 	}
-	if len(attachments) == 0 {
+	if len(jobDescriptions) == 0 {
 		attachments = append(attachments, slack.Attachment{
 			Color:      "#C97D27",
 			Text:       "*No Library Jobs Found*",
@@ -130,7 +130,7 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 			},
 		})
 	}
-	if len(attachments) == 0 {
+	if len(archives) == 0 {
 		attachments = append(attachments, slack.Attachment{
 			Color:      "#C97D27",
 			Text:       "*No Library Inventory Found*",

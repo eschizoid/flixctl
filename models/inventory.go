@@ -17,9 +17,11 @@ func (db *DB) SaveInventoryArchive(inventoryArchive InventoryArchive) error {
 
 func (db *DB) AllInventoryArchives(keys [][]byte) (inventoryArchives []InventoryArchive, err error) {
 	for _, key := range keys {
-		var inventoryArchive InventoryArchive
-		err = db.Get(inventoryArchivesBucketName, string(key), &inventoryArchive)
-		inventoryArchives = append(inventoryArchives, inventoryArchive)
+		if stringKey := string(key); stringKey != StormMetadataKey {
+			var inventoryArchive InventoryArchive
+			err = db.Get(inventoryArchivesBucketName, stringKey, &inventoryArchive)
+			inventoryArchives = append(inventoryArchives, inventoryArchive)
+		}
 	}
 	return inventoryArchives, err
 }

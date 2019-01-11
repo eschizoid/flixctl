@@ -148,7 +148,7 @@ Usage:
 Available Commands:
   catalogue   To Show Plex And Library Catalogue
   download    To Download Movies Or Shows
-  initiate    To Initiate Library Inventory Retrieval
+  initiate    To Initiate Library Jobs
   inventory   To Show Library Inventory
   jobs        To List Library Jobs
   sync        To Sync Plex Watched Movies And Shows
@@ -185,25 +185,57 @@ flixctl version
 ----
 ==== ```flixctl plex```
 ----
-flixctl plex start --slack-notification "true" --slack-notification-channel "monitoring"
-flixctl plex status --slack-notification "false"
-flixctl plex stop --slack-notification "false"
+$ flixctl plex start \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl plex status \
+    --slack-notification "false"
+    --slack-notification-channel "monitoring"
+
+$ flixctl plex stop \
+    --slack-notification "false" \
+    --slack-notification-channel "monitoring"
+
 flixctl plex token
 ----
 ==== ```flixctl torrent```
 ----
-flixctl torrent status
-flixctl torrent search --keywords Trainspotting --minimum-quality 1080
-flixctl torrent download --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996BF88DC879BA1B1C0CB67&dn=T2+Trainspotting+2017+BDRip+1080p&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.ch%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.pirateparty.gr%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Feddie4.nl%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2710%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce"
+$ flixctl torrent download \
+    --magnet-link "magnet:?xt=urn:btih:80707BDD08084AFD5996BF88DC879BA1B1C0CB67&dn=T2+Trainspotting+2017+BDRip+1080p&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.ch%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.pirateparty.gr%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Feddie4.nl%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2710%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710%2Fannounce"
+
+$ flixctl torrent search \
+    --keywords Trainspotting \
+    --minimum-quality 1080 \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl torrent status \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
 ----
 ==== ```flixctl library```
 ----
-flixctl library archive
-flixctl library catalogue
-flixctl library initiate --type "catalogue"
-flixctl library initiate --type "file" --archive-id "U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA"
-flixctl library jobs
-flixctl library retrieve --type "catalogue" --job-id "ZUjVmQsAa-w0hMCBVL0Yj2JWEqo4Dkx3Da8031oOtDkdAse-ncv_s8DPfEnbs2fe58ZY5FcfVGy8lekYCYbOOWhfikGX" --file "/tmp/catalogue-`date +%Y-%m-%d.%H:%M:%S`.json"
-flixctl library retrieve --type "file" --job-id "PzYtIWncgcWKITbJ1vF0EdGteJqFMKlTlSgEUy5UTXT5WKtPt_RJg2fFBZwmkgB1JzTWSOpW9zSmCWcVGh7hvGsJ_RAH" --file "/plex/movie/movie-`date +%Y-%m-%d.%H:%M:%S`.zip"
-flixctl library sync
+$ flixctl library catalogue
+
+$ flixctl library initiate
+
+$ flixctl library initiate \
+    --archive-id U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA \
+    --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl library jobs \
+    --filter all
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl library sync \
+    --enable-sync true \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl library upload \
+    --source-file /plex/movies/test-movie/movie.txt
 ----
