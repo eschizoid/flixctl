@@ -49,6 +49,7 @@ brew install dep
 |Environment Variable Name|Description
 
 |BOLT_DATABASE|
+|ENABLE_LIBRARY_SYNC|
 |HOOKS_URL|
 |FLIXCTL_HOST|
 |PLEX_PASSWORD|

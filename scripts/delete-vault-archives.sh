@@ -3,9 +3,10 @@ set -e
 set -x
 set -o pipefail
 
-flixctl library retrieve \
-    --type "InventoryRetrieval" \
+flixctl library inventory \
+    --slack-notification false \
     | jq '.[].ArchiveID' -r \
+    | awk 'NF' \
     | while read id; \
         do aws glacier delete-archive \
             --account-id='-' \

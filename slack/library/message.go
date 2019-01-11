@@ -27,11 +27,6 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 			Value: *jobDescription.Action,
 			Short: true,
 		}
-		attachmentFieldJobDescription := slack.AttachmentField{
-			Title: "*Job Description*",
-			Value: *jobDescription.JobDescription,
-			Short: true,
-		}
 		attachmentFieldCreatedAt := slack.AttachmentField{
 			Title: "*Creation Date*",
 			Value: *jobDescription.CreationDate,
@@ -51,7 +46,6 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 			Color: "#C97D27",
 			Fields: []slack.AttachmentField{
 				attachmentFieldJobType,
-				attachmentFieldJobDescription,
 				attachmentFieldCreatedAt,
 				attachmentFieldStatusCode,
 				attachmentFieldCompleted,

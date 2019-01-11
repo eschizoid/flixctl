@@ -19,10 +19,10 @@ case $# in
             /home/webhook/go/bin/flixctl library archive \
                 --file "${FILE}"
             ;;
-         donwload)
+         download)
             /home/webhook/go/bin/flixctl library download \
-                --archive-id "${ARCHIVE_ID}" \
-                --file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
+                --job-id "${JOB_ID}" \
+                --target-file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
          initiate)
             /home/webhook/go/bin/flixctl library initiate
@@ -31,7 +31,6 @@ case $# in
             /home/webhook/go/bin/flixctl library inventory \
                 --enable-sync "${ENABLE_LIBRARY_SYNC}" \
                 --job-id "${JOB_ID}" \
-                --slack-notification true \
                 --slack-notification "${SLACK_NOTIFICATION}" \
                 --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
             ;;
