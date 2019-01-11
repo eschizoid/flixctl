@@ -209,7 +209,7 @@
       {
         "source": "url",
         "name": "i",
-        "envname": "ARCHIVE_ID"
+        "envname": "JOB_ID"
       }
     ],
     "trigger-rule": {
@@ -217,7 +217,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
