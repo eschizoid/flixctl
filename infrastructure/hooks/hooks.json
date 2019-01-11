@@ -209,7 +209,7 @@
       {
         "source": "url",
         "name": "i",
-        "envname": "JOB_ID"
+        "envname": "ARCHIVE_ID"
       }
     ],
     "trigger-rule": {

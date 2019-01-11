@@ -21,8 +21,8 @@ case $# in
             ;;
          donwload)
             /home/webhook/go/bin/flixctl library download \
-                --job-id "${JOB_ID}" \
-                --file "/plex/movies/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
+                --archive-id "${ARCHIVE_ID}" \
+                --file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
          initiate)
             /home/webhook/go/bin/flixctl library initiate

@@ -12,14 +12,14 @@ import (
 
 var InitiateLibraryCmd = &cobra.Command{
 	Use:   "initiate",
-	Short: "To Initiate Library Inventory Retrieval",
-	Long:  "to initiate library inventory retrieval.",
+	Short: "To Initiate Library Jobs",
+	Long:  "to initiate library inventory retrieval or archive retrieval.",
 	Run: func(cmd *cobra.Command, args []string) {
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := glacier.New(awsSession)
-		initiateJobOutput := glacierService.InitiateInventoryJob(svc)
+		initiateJobOutput := glacierService.InitiateJob(svc, archiveID)
 		json, _ := json.Marshal(initiateJobOutput)
 		fmt.Println(string(json))
 	},

@@ -16,7 +16,10 @@ import (
 	"github.com/mholt/archiver"
 )
 
-var plexGlacierDirectory = os.Getenv("PLEX_GLACIER_DIRECTORY")
+const (
+	glacierUploadDirectory   = "/plex/glacier/uploads"
+	glacierDownloadDirectory = "/plex/glacier/downloads"
+)
 
 func Chunk(fileName string) []string {
 	var files []string
@@ -35,7 +38,7 @@ func Chunk(fileName string) []string {
 		_, err = file.Read(partBuffer)
 		showError(err)
 		// write to disk
-		partFileName := fmt.Sprintf("%s/part-%s", plexGlacierDirectory, strconv.FormatUint(i, 10))
+		partFileName := fmt.Sprintf("%s/part-%s", glacierUploadDirectory, strconv.FormatUint(i, 10))
 		_, err = os.Create(partFileName)
 		showError(err)
 		// write/save buffer to disk
@@ -103,7 +106,7 @@ func Unzip(source string) {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	err := z.Unarchive(source, plexGlacierDirectory)
+	err := z.Unarchive(source, glacierDownloadDirectory)
 	showError(err)
 }
 
@@ -116,7 +119,7 @@ func Zip(source string) os.File {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	file, err := ioutil.TempFile(plexGlacierDirectory, "movie.*.zip")
+	file, err := ioutil.TempFile(glacierUploadDirectory, "movie.*.zip")
 	showError(err)
 	var sourceFolder string
 	sourceFolder, err = filepath.Abs(filepath.Dir(source))

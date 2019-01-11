@@ -16,6 +16,12 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 	var attachments = make([]slack.Attachment, len(jobDescriptions))
 	token := os.Getenv("SLACK_STATUS_TOKEN")
 	for _, jobDescription := range jobDescriptions {
+		var url string
+		if action := *jobDescription.Action; action == "InventoryRetrieval" {
+			url = util.LibraryInventoryHookURL + "?i=" + *jobDescription.JobId + "&e=" + "true" + "&token=" + token
+		} else {
+			url = util.LibraryDownloadHookURL + "?i=" + *jobDescription.JobId + "&token=" + token
+		}
 		attachmentFieldJobType := slack.AttachmentField{
 			Title: "*Job Type*",
 			Value: *jobDescription.Action,
@@ -53,15 +59,12 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 			MarkdownIn: []string{"text", "fields"},
 			Actions: []slack.AttachmentAction{
 				{
-					Type: "button",
-					Text: "Start",
-					URL: util.LibraryInventoryHookURL +
-						"?i=" + *jobDescription.JobId +
-						"&e=" + "true" +
-						"&token=" + token,
+					Type:  "button",
+					Text:  "Download",
+					URL:   url,
 					Style: "default",
 					Confirm: &slack.ConfirmationField{
-						Title:       "Are you sure you want to start the job retrieval?",
+						Title:       "Are you sure you want to start the job?",
 						Text:        "Is the job completed?",
 						OkText:      "Yes",
 						DismissText: "No",
@@ -94,12 +97,12 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 	token := os.Getenv("SLACK_STATUS_TOKEN")
 	for _, archive := range archives {
 		attachmentArchiveID := slack.AttachmentField{
-			Title: "*Id*",
+			Title: "*Archive Id*",
 			Value: archive.ArchiveID,
 			Short: true,
 		}
 		attachmentTitle := slack.AttachmentField{
-			Title: "*Title*",
+			Title: "*Archive Description*",
 			Value: archive.ArchiveDescription,
 			Short: true,
 		}
@@ -119,13 +122,13 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 			Actions: []slack.AttachmentAction{
 				{
 					Type: "button",
-					Text: "Download",
+					Text: "Start",
 					URL: util.LibraryInventoryHookURL +
 						"?i=" + archive.ArchiveID +
 						"&token=" + token,
-					Style: "default",
+					Style: "primary",
 					Confirm: &slack.ConfirmationField{
-						Title:       "Are you sure you want to download the file?",
+						Title:       "Are you sure you want to start the job?",
 						OkText:      "Yes",
 						DismissText: "No",
 					},
