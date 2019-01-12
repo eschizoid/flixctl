@@ -23,12 +23,19 @@ var JobsLibraryCmd = &cobra.Command{
 		svc := glacier.New(awsSession)
 		jobList := glacierService.ListJobs(svc)
 		var jobs []*glacier.JobDescription
-		if jobFilter == "all" {
+		switch jobFilter {
+		case "all": //nolint:goconst
 			jobs = jobList.JobList
-		} else if jobFilter == "ArchiveRetrieval" || jobFilter == "InventoryRetrieval" {
+		case "archive-retrieval":
 			jobs = filterJobs(jobList.JobList, func(filter string) bool {
-				return filter == jobFilter
+				return filter == "ArchiveRetrieval"
 			})
+		case "inventory-retrieval":
+			jobs = filterJobs(jobList.JobList, func(filter string) bool {
+				return filter == "InventoryRetrieval"
+			})
+		default:
+			jobs = jobList.JobList
 		}
 		json, _ := json.Marshal(jobs)
 		if notify, _ := strconv.ParseBool(slackNotification); notify {

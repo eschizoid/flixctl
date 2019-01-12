@@ -25,7 +25,7 @@ var DownloadLibraryCmd = &cobra.Command{
 		ShowError(err)
 		err = ioutil.WriteFile(targetFile, response, 0644)
 		glacierService.Unzip(targetFile)
-		//glacierService.CleanupFiles([]string{targetFile}, "")
+		glacierService.CleanupFiles([]string{targetFile}, "")
 		ShowError(err)
 		close(shutdownCh)
 	},

@@ -234,6 +234,13 @@
         "name": "initiate"
       }
     ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "i",
+        "envname": "ARCHIVE_ID"
+      }
+    ],
     "trigger-rule": {
       "match": {
         "type": "value",
