@@ -19,9 +19,11 @@ func (db *DB) SaveUpload(upload Upload) error {
 
 func (db *DB) AllUploads(keys [][]byte) (uploads []Upload, err error) {
 	for _, key := range keys {
-		var upload Upload
-		err = db.Get(uploadsBucketName, string(key), &upload)
-		uploads = append(uploads, upload)
+		if stringKey := string(key); stringKey != StormMetadataKey {
+			var upload Upload
+			err = db.Get(uploadsBucketName, stringKey, &upload)
+			uploads = append(uploads, upload)
+		}
 	}
 	return uploads, err
 }

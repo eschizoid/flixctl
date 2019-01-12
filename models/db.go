@@ -8,6 +8,8 @@ import (
 	"go.etcd.io/bbolt"
 )
 
+const StormMetadataKey = "__storm_metadata"
+
 type Datastore interface {
 	AllInventoryArchives([][]byte) ([]InventoryArchive, error)
 	AllPlexMovies([][]byte) ([]plex.Metadata, error)

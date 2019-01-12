@@ -10,15 +10,11 @@ set -u
 
 case $# in
    0)
-      echo "Usage: $0 {archive|download|initiate|inventory|jobs}"
+      echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
       exit 1
       ;;
    1)
       case $1 in
-         archive)
-            /home/webhook/go/bin/flixctl library archive \
-                --file "${FILE}"
-            ;;
          download)
             /home/webhook/go/bin/flixctl library download \
                 --job-id "${JOB_ID}" \
@@ -40,15 +36,19 @@ case $# in
                 --slack-notification "${SLACK_NOTIFICATION}" \
                 --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
             ;;
+         upload)
+            /home/webhook/go/bin/flixctl library upload \
+                --file "${FILE}"
+            ;;
          *)
             echo "'$1' is not a valid library command."
-            echo "Usage: $0 {archive|download|initiate|inventory|jobs}"
+            echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {archive|download|initiate|inventory|jobs}"
+      echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
       exit 3
       ;;
 esac

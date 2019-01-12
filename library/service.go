@@ -105,9 +105,6 @@ func getAllKeys(bucket []byte) [][]byte {
 		})
 		return nil
 	})
-	if len(keys) > 0 {
-		keys = keys[:len(keys)-1]
-	}
 	return keys
 }
 
