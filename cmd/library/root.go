@@ -9,21 +9,23 @@ import (
 )
 
 const ec2StatusRunning = "Running"
+const ec2StatusStopped = "Stopped"
 
 var (
 	RootLibraryCmd = &cobra.Command{
 		Use:   "library",
 		Short: "To Control Media Library",
 	}
-	archiveFilter        string
-	archiveID            string
-	jobID                string
-	jobFilter            string
-	slackIncomingHookURL string
-	slackNotification    string
-	enableLibrarySync    string
-	sourceFile           string
-	targetFile           string
+	archiveFilter           string
+	archiveID               string
+	jobID                   string
+	jobFilter               string
+	slackIncomingHookURL    string
+	slackNotification       string
+	enableLibrarySync       string
+	sourceFile              string
+	targetFile              string
+	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (

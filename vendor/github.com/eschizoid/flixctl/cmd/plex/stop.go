@@ -35,14 +35,14 @@ func Stop() {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
-	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	var instanceID = ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	var status = ec2Service.Status(svc, instanceID)
 	if status == Ec2StoppedStatus {
 		slackService.SendStatus("stopped", slackIncomingHookURL)
 		return
 	}
-	var oldVolumeID = ebsService.FetchVolumeID(svc, "plex")
-	snapService.Create(svc, oldVolumeID, "plex")
+	var oldVolumeID = ebsService.FetchVolumeID(svc, awsResourceTagNameValue)
+	snapService.Create(svc, oldVolumeID, awsResourceTagNameValue)
 	ec2Service.Stop(svc, instanceID)
 	ebsService.Detach(svc, oldVolumeID)
 	ebsService.Delete(svc, oldVolumeID)

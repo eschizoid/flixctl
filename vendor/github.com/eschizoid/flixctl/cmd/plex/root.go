@@ -18,8 +18,9 @@ var (
 		Use:   "plex",
 		Short: "To Control Plex Media Center",
 	}
-	slackNotification    string
-	slackIncomingHookURL string
+	slackNotification       string
+	slackIncomingHookURL    string
+	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (

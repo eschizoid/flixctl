@@ -16,12 +16,13 @@ var (
 		Use:   "torrent",
 		Short: "To Control Torrent Client",
 	}
-	slackNotification    string
-	magnetLink           string
-	keywords             string
-	quality              string
-	slackIncomingHookURL string
-	downloadDir          string
+	slackNotification       string
+	magnetLink              string
+	keywords                string
+	quality                 string
+	slackIncomingHookURL    string
+	downloadDir             string
+	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (

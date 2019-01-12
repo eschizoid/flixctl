@@ -21,13 +21,13 @@ var SyncLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := ec2.New(awsSession, awsSession.Config)
-		instanceID := ec2Service.FetchInstanceID(svc, "plex")
+		instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 		if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
 			SyncMovieLibrary(0)
 			SyncMovieLibrary(1)
 		} else {
 			m := make(map[string]string)
-			m["plex_status"] = "stopped"
+			m["plex_status"] = strings.ToLower(ec2StatusStopped)
 			jsonString, _ := json.Marshal(m)
 			fmt.Println("\n" + string(jsonString))
 		}

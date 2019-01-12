@@ -28,7 +28,7 @@ func Status() {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
-	instanceID := ec2Service.FetchInstanceID(svc, "plex")
+	instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	if ec2status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2status, Ec2RunningStatus) {
 		torrents := torrent.Status()
 		body, _ := json.Marshal(torrents)

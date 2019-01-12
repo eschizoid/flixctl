@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:c2d8599ecbe9f7841fa7bd711ca3e4d00e709d1491497e5e749ef152bc1a58f7"
+  digest = "1:42256e3b97cb071fc5926ce9fe3ed8d7599752c62ee5d6de7fe87187092086d1"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -135,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "d968da089de3ed28a54bbefb81d7cbff6370914c"
+  revision = "5c5095b7aa0af3176c3c9621f41b081aa59068a5"
   version = "1.2.0"
 
 [[projects]]
