@@ -33,6 +33,17 @@
     ]
   },
   {
+    "id": "restart",
+    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "restart"
+      }
+    ]
+  },
+  {
     "id": "upgrade",
     "execute-command": "/opt/webhook-linux-amd64/admin.sh",
     "include-command-output-in-response": true,
@@ -189,6 +200,35 @@
         "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
         "parameter": {
           "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "library-delete",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing library delete command",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "delete"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "i",
+        "envname": "ARCHIVE_ID"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "url",
           "name": "token"
         }
       }

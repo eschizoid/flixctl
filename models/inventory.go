@@ -26,9 +26,16 @@ func (db *DB) AllInventoryArchives(keys [][]byte) (inventoryArchives []Inventory
 	return inventoryArchives, err
 }
 
+func (db *DB) DeleteInventoryArchive(key string) (err error) {
+	err = db.Delete(inventoryArchivesBucketName, key)
+	return err
+}
+
 func (db *DB) DeleteAllInventoryArchives(keys [][]byte) (err error) {
 	for _, key := range keys {
-		err = db.Delete(inventoryArchivesBucketName, string(key))
+		if stringKey := string(key); stringKey != StormMetadataKey {
+			err = db.Delete(inventoryArchivesBucketName, stringKey)
+		}
 	}
 	return err
 }

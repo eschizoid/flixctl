@@ -93,7 +93,11 @@ var (
 			os.Getenv("SLACK_NOTIFICATION"),
 			"if true, will try to notify to a slack channel",
 		)
-		RootTorrentCmd.AddCommand(SearchTorrentCmd, DownloadTorrentCmd, StatusTorrentCmd)
+		RootTorrentCmd.AddCommand(
+			DownloadTorrentCmd,
+			SearchTorrentCmd,
+			StatusTorrentCmd,
+		)
 		return struct{}{}
 	}()
 )
