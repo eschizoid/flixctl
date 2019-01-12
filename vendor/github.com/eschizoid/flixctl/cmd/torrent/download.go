@@ -23,7 +23,7 @@ var DownloadTorrentCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := ec2.New(awsSession, awsSession.Config)
-		instanceID := ec2Service.FetchInstanceID(svc, "plex")
+		instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 		if ec2status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2status, Ec2RunningStatus) {
 			torrent := torrentService.TriggerDownload(magnetLink, downloadDir)
 			body, _ := json.Marshal(torrent)

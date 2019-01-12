@@ -48,6 +48,7 @@ brew install dep
 |===
 |Environment Variable Name|Description
 
+|AWS_RESOURCE_TAG_NAME_VALUE|
 |BOLT_DATABASE|
 |ENABLE_LIBRARY_SYNC|
 |HOOKS_URL|

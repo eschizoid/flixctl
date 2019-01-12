@@ -31,7 +31,7 @@ func Status() string {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
-	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	var instanceID = ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	status := ec2Service.Status(svc, instanceID)
 	if notify, _ := strconv.ParseBool(slackNotification); notify {
 		slackService.SendStatus(status, slackIncomingHookURL)

@@ -17,12 +17,14 @@ const (
 	archiveRetrievalJob   = "archive-retrieval"
 )
 
+var awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
+
 func InitiateJob(svc *glacier.Glacier, archiveID string) *glacier.InitiateJobOutput {
 	jobParameters := getJobParameters(archiveID)
 	input := &glacier.InitiateJobInput{
 		AccountId:     aws.String("-"),
 		JobParameters: jobParameters,
-		VaultName:     aws.String("plex"),
+		VaultName:     aws.String(awsResourceTagNameValue),
 	}
 	result, err := svc.InitiateJob(input)
 	if err != nil {
@@ -51,41 +53,12 @@ func InitiateJob(svc *glacier.Glacier, archiveID string) *glacier.InitiateJobOut
 	return result
 }
 
-func DescribeJob(svc *glacier.Glacier, jobID string) *glacier.JobDescription {
-	input := &glacier.DescribeJobInput{
-		AccountId: aws.String("-"),
-		JobId:     aws.String(jobID),
-		VaultName: aws.String("plex"),
-	}
-	result, err := svc.DescribeJob(input)
-	if err != nil {
-		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			case glacier.ErrCodeResourceNotFoundException:
-				fmt.Println(glacier.ErrCodeResourceNotFoundException, aerr.Error())
-			case glacier.ErrCodeInvalidParameterValueException:
-				fmt.Println(glacier.ErrCodeInvalidParameterValueException, aerr.Error())
-			case glacier.ErrCodeMissingParameterValueException:
-				fmt.Println(glacier.ErrCodeMissingParameterValueException, aerr.Error())
-			case glacier.ErrCodeServiceUnavailableException:
-				fmt.Println(glacier.ErrCodeServiceUnavailableException, aerr.Error())
-			default:
-				fmt.Println(aerr.Error())
-			}
-		} else {
-			fmt.Println(err.Error())
-		}
-		return nil
-	}
-	return result
-}
-
 func InitiateMultipartUploadInput(svc *glacier.Glacier, fileDescription string) *glacier.InitiateMultipartUploadOutput {
 	input := &glacier.InitiateMultipartUploadInput{
 		AccountId:          aws.String("-"),
 		ArchiveDescription: aws.String(fileDescription),
 		PartSize:           aws.String(strconv.Itoa(maxFileChunkSize)),
-		VaultName:          aws.String("plex"),
+		VaultName:          aws.String(awsResourceTagNameValue),
 	}
 	result, err := svc.InitiateMultipartUpload(input)
 	if err != nil {
@@ -124,7 +97,7 @@ func UploadMultipartPartInput(svc *glacier.Glacier, uploadID string, fileChunkNa
 			Checksum:  aws.String(ComputeTreeHash(name)),
 			Range:     aws.String(bytesRange),
 			UploadId:  aws.String(uploadID),
-			VaultName: aws.String("plex"),
+			VaultName: aws.String(awsResourceTagNameValue),
 		}
 		result, err := svc.UploadMultipartPart(input)
 		if err != nil {
@@ -166,7 +139,7 @@ func CompleteMultipartUpload(svc *glacier.Glacier, uploadID string, fileName str
 		ArchiveSize: aws.String(strconv.FormatInt(stats.Size(), 10)),
 		Checksum:    aws.String(ComputeTreeHash(fileName)),
 		UploadId:    aws.String(uploadID),
-		VaultName:   aws.String("plex"),
+		VaultName:   aws.String(awsResourceTagNameValue),
 	}
 	result, err := svc.CompleteMultipartUpload(input)
 	if err != nil {
@@ -195,7 +168,7 @@ func CompleteMultipartUpload(svc *glacier.Glacier, uploadID string, fileName str
 func ListJobs(svc *glacier.Glacier) *glacier.ListJobsOutput {
 	input := &glacier.ListJobsInput{
 		AccountId: aws.String("-"),
-		VaultName: aws.String("plex"),
+		VaultName: aws.String(awsResourceTagNameValue),
 	}
 	result, err := svc.ListJobs(input)
 	if err != nil {
@@ -223,7 +196,7 @@ func ListJobs(svc *glacier.Glacier) *glacier.ListJobsOutput {
 func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutput {
 	input := &glacier.GetJobOutputInput{
 		AccountId: aws.String("-"),
-		VaultName: aws.String("plex"),
+		VaultName: aws.String(awsResourceTagNameValue),
 		JobId:     aws.String(jobID),
 	}
 	result, err := svc.GetJobOutput(input)
@@ -253,7 +226,7 @@ func abortMultipartUpload(svc *glacier.Glacier, uploadID string) {
 	input := &glacier.AbortMultipartUploadInput{
 		AccountId: aws.String("-"),
 		UploadId:  aws.String(uploadID),
-		VaultName: aws.String("plex"),
+		VaultName: aws.String(awsResourceTagNameValue),
 	}
 
 	result, err := svc.AbortMultipartUpload(input)

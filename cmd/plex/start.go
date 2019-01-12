@@ -35,16 +35,16 @@ func Start() {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	svc := ec2.New(awsSession, awsSession.Config)
-	var instanceID = ec2Service.FetchInstanceID(svc, "plex")
+	var instanceID = ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	var status = ec2Service.Status(svc, instanceID)
 	if status == Ec2RunningStatus {
 		slackService.SendStatus("running", slackIncomingHookURL)
 		return
 	}
 	ec2Service.Start(svc, instanceID)
-	var oldSnapshotID = snapService.FetchSnapshotID(svc, "plex")
-	ebsService.Create(svc, oldSnapshotID, "plex")
-	var newVolumeID = ebsService.FetchVolumeID(svc, "plex")
+	var oldSnapshotID = snapService.FetchSnapshotID(svc, awsResourceTagNameValue)
+	ebsService.Create(svc, oldSnapshotID, awsResourceTagNameValue)
+	var newVolumeID = ebsService.FetchVolumeID(svc, awsResourceTagNameValue)
 	ebsService.Attach(svc, instanceID, newVolumeID)
 	snapService.Delete(svc, oldSnapshotID)
 	if notify, _ := strconv.ParseBool(slackNotification); notify {
