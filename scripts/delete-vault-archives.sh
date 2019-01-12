@@ -8,8 +8,6 @@ flixctl library inventory \
     | jq '.[].ArchiveID' -r \
     | awk 'NF' \
     | while read id; \
-        do aws glacier delete-archive \
-            --account-id='-' \
-            --vault-name='plex' \
-            --archive-id=${id};
+        do flixctl library delete \
+            --archive-id ${id};
         done

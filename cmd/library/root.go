@@ -36,6 +36,12 @@ var (
 			"",
 			"the optional filter to apply when retrieving the catalogue",
 		)
+		DeleteArchiveLibraryCmd.Flags().StringVarP(&archiveID,
+			"archive-id",
+			"i",
+			"",
+			"the id of the archive to be deleted",
+		)
 		DownloadLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
 			"i",
@@ -102,8 +108,17 @@ var (
 			"",
 			"the source file to upload to the library.",
 		)
-		RootLibraryCmd.AddCommand(UploadLibraryCmd, InitiateLibraryCmd, DownloadLibraryCmd, InventoryLibraryCmd,
-			JobsLibraryCmd, SyncLibraryCmd, CatalogueLibraryCmd)
+		RootLibraryCmd.AddCommand(
+			DeleteArchiveLibraryCmd,
+			DownloadLibraryCmd,
+			CatalogueLibraryCmd,
+			InitiateLibraryCmd,
+			InventoryLibraryCmd,
+			JobsLibraryCmd,
+			SyncLibraryCmd,
+			UploadLibraryCmd,
+		)
+
 		return struct{}{}
 	}()
 )

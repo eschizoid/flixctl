@@ -61,7 +61,12 @@ var (
 			os.Getenv("SLACK_NOTIFICATION"),
 			"if true, will try to notify to a slack channel",
 		)
-		RootPlexCmd.AddCommand(StartPlexCmd, StopPlexCmd, StatusPlexCmd, TokenPlexCmd)
+		RootPlexCmd.AddCommand(
+			StartPlexCmd,
+			StatusPlexCmd,
+			StopPlexCmd,
+			TokenPlexCmd,
+		)
 		return struct{}{}
 	}()
 )
