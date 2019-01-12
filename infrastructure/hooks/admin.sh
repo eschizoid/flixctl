@@ -16,7 +16,7 @@ case $# in
    1)
       case $1 in
          endpoints)
-            HOOKS="$(cat /opt/webhook-linux-amd64/hooks.json | grep -o 'id.*' | cut -f2- -d:)"
+            HOOKS="$(cat /opt/webhook-linux-amd64/hooks.json | grep -o 'id.*' | cut -f2- -d: | sort)"
             HOOKS="$(echo ${HOOKS::-1})"
             echo "[${HOOKS}]"
             ;;

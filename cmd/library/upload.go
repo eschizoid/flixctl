@@ -67,6 +67,6 @@ func Archive(fileDescription string, sourceFolder string) *glacier.ArchiveCreati
 	fmt.Println(uploadMultipartPartOutputs)
 	archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, zipFileName)
 	fmt.Println(archiveCreationOutput)
-	glacierService.CleanupFiles(append(fileChunks, zipFileName), sourceFolder)
+	//glacierService.CleanupFiles(append(fileChunks, zipFileName), sourceFolder)
 	return archiveCreationOutput
 }

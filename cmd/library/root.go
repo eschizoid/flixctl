@@ -15,6 +15,7 @@ var (
 		Use:   "library",
 		Short: "To Control Media Library",
 	}
+	archiveFilter        string
 	archiveID            string
 	jobID                string
 	jobFilter            string
@@ -27,6 +28,12 @@ var (
 
 var (
 	_ = func() struct{} {
+		CatalogueLibraryCmd.Flags().StringVarP(&archiveFilter,
+			"filter",
+			"f",
+			"",
+			"the optional filter to apply when retrieving the catalogue",
+		)
 		DownloadLibraryCmd.Flags().StringVarP(&jobID,
 			"job-id",
 			"i",

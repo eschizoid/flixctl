@@ -191,13 +191,12 @@ $ flixctl plex start \
 
 $ flixctl plex status \
     --slack-notification "false"
-    --slack-notification-channel "monitoring"
 
 $ flixctl plex stop \
-    --slack-notification "false" \
+    --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
-flixctl plex token
+$ flixctl plex token
 ----
 ==== ```flixctl torrent```
 ----
@@ -216,7 +215,23 @@ $ flixctl torrent status \
 ----
 ==== ```flixctl library```
 ----
-$ flixctl library catalogue
+$ flixctl library catalogue \
+    --filter <all|archived|live|unwatched|watched>
+
+$ flixctl library download \
+    --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \
+    --target-file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
+
+$ flixctl library inventory \
+    --enable-sync "true" \
+    --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
+
+$ flixctl library inventory \
+    --enable-sync "false" \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
 
 $ flixctl library initiate
 
@@ -227,15 +242,14 @@ $ flixctl library initiate \
     --slack-notification-channel "monitoring"
 
 $ flixctl library jobs \
-    --filter all
+    --filter <all|archive-retrieval|inventory-retrieval> \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
 $ flixctl library sync \
-    --enable-sync true \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
 $ flixctl library upload \
-    --source-file /plex/movies/test-movie/movie.txt
+    --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
 ----

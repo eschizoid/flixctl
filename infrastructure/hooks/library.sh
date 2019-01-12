@@ -21,7 +21,8 @@ case $# in
                 --target-file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
          initiate)
-            /home/webhook/go/bin/flixctl library initiate
+            /home/webhook/go/bin/flixctl library initiate \
+                --archive-id "${ARCHIVE_ID}"
             ;;
          inventory)
             /home/webhook/go/bin/flixctl library inventory \
