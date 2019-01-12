@@ -90,14 +90,14 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 	var attachments = make([]slack.Attachment, len(archives))
 	token := os.Getenv("SLACK_STATUS_TOKEN")
 	for _, archive := range archives {
-		attachmentArchiveID := slack.AttachmentField{
-			Title: "*Archive Id*",
-			Value: archive.ArchiveID,
-			Short: true,
-		}
 		attachmentTitle := slack.AttachmentField{
 			Title: "*Archive Description*",
 			Value: archive.ArchiveDescription,
+			Short: true,
+		}
+		attachmentSize := slack.AttachmentField{
+			Title: "*Size*",
+			Value: strconv.Itoa(archive.Size),
 			Short: true,
 		}
 		attachmentUploadDate := slack.AttachmentField{
@@ -108,8 +108,8 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 		attachments = append(attachments, slack.Attachment{
 			Color: "#C97D27",
 			Fields: []slack.AttachmentField{
-				attachmentArchiveID,
 				attachmentTitle,
+				attachmentSize,
 				attachmentUploadDate,
 			},
 			MarkdownIn: []string{"text", "fields"},
@@ -117,10 +117,10 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 				{
 					Type: "button",
 					Text: "Start",
+					Style: "default",
 					URL: util.LibraryInventoryHookURL +
 						"?i=" + archive.ArchiveID +
 						"&token=" + token,
-					Style: "primary",
 					Confirm: &slack.ConfirmationField{
 						Title:       "Are you sure you want to start the job?",
 						OkText:      "Yes",
