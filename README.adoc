@@ -12,7 +12,8 @@ image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Car
 image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="https://godoc.org/github.com/eschizoid/flixctl"]
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
-true MaaS (Movies as a Service) architecture.
+true MaaS (Movies as a Service) architecture. All flixctl commands try to be as simple as possible so they can be
+abstracted using Slack API.
 
 === Architecture
 
@@ -26,7 +27,7 @@ true MaaS (Movies as a Service) architecture.
 * https://aws.amazon.com/lambda[Lambda]
 * https://aws.amazon.com/sns[SNS]
 
-==== Software (OSS)
+==== Software
 * https://github.com/Jackett/Jackett[Jackett]
 * https://github.com/nzbget[NZBGet]
 * https://github.com/tidusjar/Ombi[Ombi]
@@ -37,13 +38,23 @@ true MaaS (Movies as a Service) architecture.
 * https://api.slack.com/slash-commands[Slack Slash Commands]
 * https://github.com/Sonarr/Sonarr[Sonarr]
 * https://github.com/adnanh/webhook[Webhooks]
+* https://www.duckdns.org/[Duck DNS]
+* https://letsencrypt.org/[Let's Encrypt]
 
 === Pre-requisites
+==== Hardware
+* EC2 Instance
+* EBS Volume
+* Glacier Vault
+* S3 Bucket
+
+==== Software
 ----
 brew install go
 brew install dep
 ----
 
+==== Environment
 [%header,cols=2*]
 |===
 |Environment Variable Name|Description
@@ -148,6 +159,7 @@ Usage:
 
 Available Commands:
   catalogue   To Show Plex And Library Catalogue
+  delete      To Delete Archives From Library
   download    To Download Movies Or Shows
   initiate    To Initiate Library Jobs
   inventory   To Show Library Inventory
@@ -182,7 +194,7 @@ Use "flixctl torrent [command] --help" for more information about a command.
 === Examples
 ==== ```flixctl```
 ----
-flixctl version
+$ flixctl version
 ----
 ==== ```flixctl plex```
 ----
@@ -218,6 +230,9 @@ $ flixctl torrent status \
 ----
 $ flixctl library catalogue \
     --filter <all|archived|live|unwatched|watched>
+
+$ flixctl library delete \
+    --archive-id U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA
 
 $ flixctl library download \
     --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \

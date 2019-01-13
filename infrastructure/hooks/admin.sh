@@ -10,7 +10,7 @@ set -u
 
 case $# in
    0)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
       exit 1
       ;;
    1)
@@ -67,6 +67,19 @@ case $# in
             /opt/dehydrated/dehydrated -c -o /opt/ssl
             echo "{\"certificates_updated\": \"true\"}"
             ;;
+         restart)
+            for plex_service in plexmediaservice \
+                tautulli \
+                ombi \
+                sonarr \
+                radarr \
+                jackett \
+                nzbget \
+                transmission; do
+                systemtctl service restart ${plex_service}
+            done
+            echo "{\"services_restarted\": \"true\"}"
+            ;;
          upgrade)
             rm -rf /home/webhook/go/src/github.com/eschizoid/flixctl
             /usr/local/go/bin/go get -u github.com/eschizoid/flixctl
@@ -77,13 +90,13 @@ case $# in
             ;;
          *)
             echo "'$1' is not a valid admin command."
-            echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
+            echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
       exit 3
       ;;
 esac

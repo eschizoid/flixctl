@@ -10,11 +10,15 @@ set -u
 
 case $# in
    0)
-      echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
+      echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
       exit 1
       ;;
    1)
       case $1 in
+         delete)
+            /home/webhook/go/bin/flixctl library delete \
+                --archive-id "${ARCHIVE_ID}"
+            ;;
          download)
             /home/webhook/go/bin/flixctl library download \
                 --job-id "${JOB_ID}" \
@@ -43,13 +47,13 @@ case $# in
             ;;
          *)
             echo "'$1' is not a valid library command."
-            echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
+            echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {download|initiate|inventory|jobs|upload}"
+      echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
       exit 3
       ;;
 esac

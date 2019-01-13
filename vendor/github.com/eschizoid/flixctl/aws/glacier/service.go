@@ -53,6 +53,36 @@ func InitiateJob(svc *glacier.Glacier, archiveID string) *glacier.InitiateJobOut
 	return result
 }
 
+func DeleteArchive(svc *glacier.Glacier, archiveID string) *glacier.DeleteArchiveOutput { //nolint:dupl
+	input := &glacier.DeleteArchiveInput{
+		AccountId: aws.String("-"),
+		ArchiveId: aws.String(archiveID),
+		VaultName: aws.String(awsResourceTagNameValue),
+	}
+
+	result, err := svc.DeleteArchive(input)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case glacier.ErrCodeResourceNotFoundException:
+				fmt.Println(glacier.ErrCodeResourceNotFoundException, aerr.Error())
+			case glacier.ErrCodeInvalidParameterValueException:
+				fmt.Println(glacier.ErrCodeInvalidParameterValueException, aerr.Error())
+			case glacier.ErrCodeMissingParameterValueException:
+				fmt.Println(glacier.ErrCodeMissingParameterValueException, aerr.Error())
+			case glacier.ErrCodeServiceUnavailableException:
+				fmt.Println(glacier.ErrCodeServiceUnavailableException, aerr.Error())
+			default:
+				fmt.Println(aerr.Error())
+			}
+		} else {
+			fmt.Println(err.Error())
+		}
+		return nil
+	}
+	return result
+}
+
 func InitiateMultipartUploadInput(svc *glacier.Glacier, fileDescription string) *glacier.InitiateMultipartUploadOutput {
 	input := &glacier.InitiateMultipartUploadInput{
 		AccountId:          aws.String("-"),
@@ -193,7 +223,7 @@ func ListJobs(svc *glacier.Glacier) *glacier.ListJobsOutput {
 	return result
 }
 
-func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutput {
+func GetJobOutput(svc *glacier.Glacier, jobID string) *glacier.GetJobOutputOutput { //nolint:dupl
 	input := &glacier.GetJobOutputInput{
 		AccountId: aws.String("-"),
 		VaultName: aws.String(awsResourceTagNameValue),
