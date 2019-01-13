@@ -18,6 +18,7 @@ var (
 	}
 	archiveFilter           string
 	archiveID               string
+	enableBatchUpload       string
 	jobID                   string
 	jobFilter               string
 	slackIncomingHookURL    string
@@ -25,7 +26,7 @@ var (
 	enableLibrarySync       string
 	sourceFile              string
 	targetFile              string
-	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
+	awsResourceTagNameValue  = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (
@@ -101,6 +102,12 @@ var (
 			"f",
 			"",
 			"to filter the list of jobs.",
+		)
+		UploadLibraryCmd.Flags().StringVarP(&enableBatchUpload,
+			"enable-batch-mode",
+			"b",
+			"",
+			"optional argument to upload all the watched movies and shows.",
 		)
 		UploadLibraryCmd.Flags().StringVarP(&sourceFile,
 			"source-file",

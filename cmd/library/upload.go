@@ -3,6 +3,7 @@ package library
 import (
 	"fmt"
 	"path/filepath"
+	"strconv"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -22,9 +23,9 @@ var UploadLibraryCmd = &cobra.Command{
 		go Indicator(shutdownCh)
 		movies, _ := libraryService.GetCachedPlexMovies()
 		var upload models.Upload
-		for _, movie := range movies {
-			if movie.Unwatched == 0 {
-				if sourceFile == "" {
+		if batchMode, _ := strconv.ParseBool(enableBatchUpload); batchMode {
+			for _, movie := range movies {
+				if movie.Unwatched == 0 {
 					sourceFolder, err := filepath.Abs(filepath.Dir(movie.Metadata.Media[0].Part[0].File))
 					ShowError(err)
 					archiveCreationOutput := Archive(movie.Metadata.Title, sourceFolder)
@@ -32,21 +33,22 @@ var UploadLibraryCmd = &cobra.Command{
 						ArchiveCreationOutput: *archiveCreationOutput,
 						Metadata:              movie.Metadata,
 					}
-				} else {
-					sourceFolder, err := filepath.Abs(filepath.Dir(sourceFile))
-					ShowError(err)
-					archiveCreationOutput := Archive(sourceFile, sourceFolder)
-					upload = models.Upload{
-						ArchiveCreationOutput: *archiveCreationOutput,
-						Metadata: plex.Metadata{
-							Title: sourceFile,
-						},
-					}
 				}
 				err := libraryService.SaveGlacierMovie(upload)
 				ShowError(err)
-				break
 			}
+		} else {
+			sourceFolder, err := filepath.Abs(filepath.Dir(sourceFile))
+			ShowError(err)
+			archiveCreationOutput := Archive(sourceFile, sourceFolder)
+			upload = models.Upload{
+				ArchiveCreationOutput: *archiveCreationOutput,
+				Metadata: plex.Metadata{
+					Title: sourceFile,
+				},
+			}
+			err = libraryService.SaveGlacierMovie(upload)
+			ShowError(err)
 		}
 		close(shutdownCh)
 	},

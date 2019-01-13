@@ -76,7 +76,7 @@ case $# in
                 jackett \
                 nzbget \
                 transmission; do
-                systemtctl service restart ${plex_service}
+                sudo systemtctl service restart ${plex_service}
             done
             echo "{\"services_restarted\": \"true\"}"
             ;;
