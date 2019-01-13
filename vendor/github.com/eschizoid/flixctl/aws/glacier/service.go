@@ -59,7 +59,6 @@ func DeleteArchive(svc *glacier.Glacier, archiveID string) *glacier.DeleteArchiv
 		ArchiveId: aws.String(archiveID),
 		VaultName: aws.String(awsResourceTagNameValue),
 	}
-
 	result, err := svc.DeleteArchive(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {

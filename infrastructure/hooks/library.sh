@@ -43,7 +43,8 @@ case $# in
             ;;
          upload)
             /home/webhook/go/bin/flixctl library upload \
-                --file "${FILE}"
+                --batch-mode "false" \
+                --source-file "${SOURCE_FILE}"
             ;;
          *)
             echo "'$1' is not a valid library command."
