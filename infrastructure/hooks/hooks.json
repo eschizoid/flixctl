@@ -355,4 +355,33 @@
       }
     }
   }
+  {
+    "id": "library-upload",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing library upload command",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "upload"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "f",
+        "envname": "SOURCE_FILE"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "parameter": {
+          "source": "payload",
+          "name": "token"
+        }
+      }
+    }
+  }
 ]

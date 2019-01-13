@@ -13,7 +13,7 @@ image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="h
 
 Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
 true MaaS (Movies as a Service) architecture. All flixctl commands try to be as simple as possible so they can be
-abstracted using Slack API.
+abstracted using Slack API's.
 
 === Architecture
 
@@ -28,6 +28,9 @@ abstracted using Slack API.
 * https://aws.amazon.com/sns[SNS]
 
 ==== Software
+* https://letsencrypt.org/[Let's Encrypt]
+* https://www.duckdns.org/[Duck DNS]
+* https://github.com/lukas2511/dehydrated[Dehydrated]
 * https://github.com/Jackett/Jackett[Jackett]
 * https://github.com/nzbget[NZBGet]
 * https://github.com/tidusjar/Ombi[Ombi]
@@ -38,8 +41,6 @@ abstracted using Slack API.
 * https://api.slack.com/slash-commands[Slack Slash Commands]
 * https://github.com/Sonarr/Sonarr[Sonarr]
 * https://github.com/adnanh/webhook[Webhooks]
-* https://www.duckdns.org/[Duck DNS]
-* https://letsencrypt.org/[Let's Encrypt]
 
 === Pre-requisites
 ==== Hardware
@@ -266,6 +267,10 @@ $ flixctl library sync \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
+$ /home/webhook/go/bin/flixctl library upload \
+    --batch-mode "true"
+
 $ flixctl library upload \
+    --batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
 ----
