@@ -68,7 +68,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			var watchedMovies []models.Movie
 			plexMovies, err := libraryService.GetCachedPlexMovies()
 			ShowError(err)
-			watchedMovies = chooseMovies(plexMovies, func(unwatched int) bool {
+			watchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 0
 			})
 			json, _ := json.Marshal(watchedMovies)
@@ -77,7 +77,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			var unwatchedMovies []models.Movie
 			plexMovies, err := libraryService.GetCachedPlexMovies()
 			ShowError(err)
-			unwatchedMovies = chooseMovies(plexMovies, func(unwatched int) bool {
+			unwatchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 1
 			})
 			json, _ := json.Marshal(unwatchedMovies)
@@ -91,7 +91,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 	},
 }
 
-func chooseMovies(movies []models.Movie, test func(int) bool) (unwatchedMovies []models.Movie) {
+func filterMovies(movies []models.Movie, test func(int) bool) (unwatchedMovies []models.Movie) {
 	for _, movie := range movies {
 		if test(movie.Unwatched) {
 			unwatchedMovies = append(unwatchedMovies, movie)

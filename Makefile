@@ -13,6 +13,33 @@ BUILD := `git rev-parse --short HEAD`
 LDFLAGS=-ldflags "-X=main.VERSION=$(VERSION) -X=main.BUILD=$(BUILD)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
+define environment
+{"Variables":{
+"AWS_RESOURCE_TAG_NAME_VALUE":"$(AWS_RESOURCE_TAG_NAME_VALUE)",
+"BOLT_DATABASE":"$(BOLT_DATABASE)",
+"ENABLE_LIBRARY_SYNC":"$(ENABLE_LIBRARY_SYNC)",
+"FLIXCTL_HOST":"$(FLIXCTL_HOST)",
+"HOOKS_URL":"$(HOOKS_URL)",
+"PLEX_PASSWORD":"$(PLEX_PASSWORD)",
+"PLEX_TOKEN":"$(PLEX_TOKEN)",
+"PLEX_USER":"$(PLEX_USER)",
+"SLACK_LEGACY_TOKEN":"$(SLACK_LEGACY_TOKEN)",
+"SLACK_LIBRARY_INCOMING_HOOK_URL":"$(SLACK_LIBRARY_INCOMING_HOOK_URL)",
+"SLACK_MOVIES_SEARCH_TOKEN":"$(SLACK_MOVIES_SEARCH_TOKEN)",
+"SLACK_NOTIFICATION":"$(SLACK_NOTIFICATION)",
+"SLACK_PLEX_INCOMING_HOOK_URL":"$(SLACK_PLEX_INCOMING_HOOK_URL)",
+"SLACK_PLEX_TOKEN":"$(SLACK_PLEX_TOKEN)",
+"SLACK_SHOWS_SEARCH_TOKEN":"$(SLACK_SHOWS_SEARCH_TOKEN)",
+"SLACK_STATUS_TOKEN":"$(SLACK_STATUS_TOKEN)",
+"SLACK_TAUTULLI_INCOMING_HOOK_URL":"$(SLACK_TAUTULLI_INCOMING_HOOK_URL)",
+"SLACK_TORRENT_INCOMING_HOOK_URL":"$(SLACK_TORRENT_INCOMING_HOOK_URL)",
+"TAUTULI_API_KEY":"$(TAUTULI_API_KEY)",
+"TR_AUTH":"$(TR_AUTH)",
+"UPDATE_VENDOR":"$(UPDATE_VENDOR)"
+}}
+endef
+export environment
+
 .DEFAULT_GOAL: $(TARGET)
 
 all: lint install
@@ -33,6 +60,9 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 	@rm -rf $(shell pwd)/aws/lambda/library/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/library/library
+
+env:
+	@echo "$$environment"
 
 install:
 ifeq ($(UPDATE_VENDOR), true)
@@ -121,24 +151,40 @@ deploy-lambda-plex-dispatcher:
 	--function-name plex \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name plex \
+	--region $(AWS_REGION) \
+	--environment "$$environment"
 
 deploy-lambda-plex-executor:
 	@aws lambda update-function-code \
 	--function-name plex-command-executor \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name plex-command-executor \
+	--region $(AWS_REGION) \
+	--environment "$$environment"
 
 deploy-lambda-torrent-router:
 	@aws lambda update-function-code \
 	--function-name torrent-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name torrent-router \
+	--region $(AWS_REGION) \
+	--environment "$$environment"
 
 deploy-lambda-library-router:
 	@aws lambda update-function-code \
 	--function-name library-router \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name library-router \
+	--region $(AWS_REGION) \
+	--environment "$$environment"
 
 tag:
 	@git tag --force $(VERSION)
