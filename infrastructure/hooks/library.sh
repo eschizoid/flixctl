@@ -43,7 +43,7 @@ case $# in
             ;;
          upload)
             /home/webhook/go/bin/flixctl library upload \
-                --batch-mode "false" \
+                --enable-batch-mode "false" \
                 --source-file "${SOURCE_FILE}"
             ;;
          *)
