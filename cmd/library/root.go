@@ -26,7 +26,7 @@ var (
 	enableLibrarySync       string
 	sourceFile              string
 	targetFile              string
-	awsResourceTagNameValue  = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
+	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (

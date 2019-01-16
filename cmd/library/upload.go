@@ -58,8 +58,7 @@ func Archive(fileDescription string, sourceFolder string) *glacier.ArchiveCreati
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
-	zipFile := glacierService.Zip(sourceFolder)
-	zipFileName := zipFile.Name()
+	zipFileName := glacierService.Zip(sourceFolder)
 	fileChunks := glacierService.Chunk(zipFileName)
 	svc := glacier.New(awsSession)
 	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileDescription)

@@ -110,7 +110,7 @@ func Unzip(source string) {
 	showError(err)
 }
 
-func Zip(source string) os.File {
+func Zip(source string) string {
 	z := archiver.Zip{
 		CompressionLevel:       flate.DefaultCompression,
 		MkdirAll:               true,
@@ -119,14 +119,12 @@ func Zip(source string) os.File {
 		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
-	file, err := ioutil.TempFile(glacierUploadDirectory, "movie.*.zip")
+	zipName := fmt.Sprintf("%s/%s", glacierUploadDirectory, "movie.zip")
+	sourceFolder, err := filepath.Abs(filepath.Dir(source))
 	showError(err)
-	var sourceFolder string
-	sourceFolder, err = filepath.Abs(filepath.Dir(source))
+	err = z.Archive([]string{sourceFolder}, zipName)
 	showError(err)
-	err = z.Archive([]string{sourceFolder}, file.Name())
-	showError(err)
-	return *file
+	return zipName
 }
 
 func showError(err error) {
