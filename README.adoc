@@ -268,9 +268,9 @@ $ flixctl library sync \
     --slack-notification-channel "monitoring"
 
 $ /home/webhook/go/bin/flixctl library upload \
-    --batch-mode "true"
+    --enable-batch-mode "true"
 
 $ flixctl library upload \
-    --batch-mode "false" \
+    --enable-batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
 ----
