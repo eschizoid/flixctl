@@ -9,7 +9,6 @@ import (
 	"math"
 	"os"
 	"path"
-	"path/filepath"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -120,9 +119,7 @@ func Zip(source string) string {
 		ImplicitTopLevelFolder: false,
 	}
 	zipName := fmt.Sprintf("%s/%s", glacierUploadDirectory, "movie.zip")
-	sourceFolder, err := filepath.Abs(filepath.Dir(source))
-	showError(err)
-	err = z.Archive([]string{sourceFolder}, zipName)
+	err := z.Archive([]string{source}, zipName)
 	showError(err)
 	return zipName
 }

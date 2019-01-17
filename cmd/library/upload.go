@@ -54,14 +54,14 @@ var UploadLibraryCmd = &cobra.Command{
 	},
 }
 
-func Archive(fileDescription string, sourceFolder string) *glacier.ArchiveCreationOutput {
+func Archive(fileName string, sourceFolder string) *glacier.ArchiveCreationOutput {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	zipFileName := glacierService.Zip(sourceFolder)
 	fileChunks := glacierService.Chunk(zipFileName)
 	svc := glacier.New(awsSession)
-	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileDescription)
+	initiateMultipartUploadOutput := glacierService.InitiateMultipartUploadInput(svc, fileName)
 	fmt.Println(initiateMultipartUploadOutput.String())
 	uploadID := *initiateMultipartUploadOutput.UploadId
 	uploadMultipartPartOutputs := glacierService.UploadMultipartPartInput(svc, uploadID, fileChunks)
