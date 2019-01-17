@@ -24,6 +24,13 @@ var UploadLibraryCmd = &cobra.Command{
 		movies, _ := libraryService.GetCachedPlexMovies()
 		var upload models.Upload
 		if batchMode, _ := strconv.ParseBool(enableBatchUpload); batchMode {
+			if maxUploadItems != "" {
+				index, err := strconv.Atoi(maxUploadItems)
+				ShowError(err)
+				if index <= len(movies) {
+					movies = movies[:index]
+				}
+			}
 			for _, movie := range movies {
 				if movie.Unwatched == 0 {
 					sourceFolder, err := filepath.Abs(filepath.Dir(movie.Metadata.Media[0].Part[0].File))
@@ -68,6 +75,6 @@ func Archive(fileName string, sourceFolder string) *glacier.ArchiveCreationOutpu
 	fmt.Println(uploadMultipartPartOutputs)
 	archiveCreationOutput := glacierService.CompleteMultipartUpload(svc, uploadID, zipFileName)
 	fmt.Println(archiveCreationOutput)
-	//glacierService.CleanupFiles(append(fileChunks, zipFileName), sourceFolder)
+	glacierService.CleanupFiles(append(fileChunks, zipFileName), sourceFolder)
 	return archiveCreationOutput
 }

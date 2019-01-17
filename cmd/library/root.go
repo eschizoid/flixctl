@@ -21,6 +21,7 @@ var (
 	enableBatchUpload       string
 	jobID                   string
 	jobFilter               string
+	maxUploadItems          string
 	slackIncomingHookURL    string
 	slackNotification       string
 	enableLibrarySync       string
@@ -108,6 +109,12 @@ var (
 			"b",
 			"",
 			"optional argument to upload all the watched movies and shows.",
+		)
+		UploadLibraryCmd.Flags().StringVarP(&maxUploadItems,
+			"max-upload-items",
+			"m",
+			"",
+			"optional max number of items to upload when bach mode was enabled.",
 		)
 		UploadLibraryCmd.Flags().StringVarP(&sourceFile,
 			"source-file",

@@ -241,6 +241,7 @@ $ flixctl library download \
 
 $ flixctl library inventory \
     --enable-sync "true" \
+    --max-upload-items "2" \
     --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
