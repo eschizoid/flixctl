@@ -255,7 +255,6 @@ $ flixctl library initiate
 
 $ flixctl library initiate \
     --archive-id U1IDD8GVNYGhtnbtjfr7_oV-h9hNqcjAkR1RfCdBrL8uoQdlViB0TtGUvnWrKkLM8nlf7LEZTV_X8CuXVoMKtnEBOBELgmmuQDIZkSA9xU-mlWJMSxf_132VcP4RTXNxZ7MdmTdNGA \
-    --job-id RP5RUuUyX0PxGlbipyeUr-pjPB74lYqOqXT6mA6sjrDU3y2Y7-ggAgQepNKeuULMpw8RIhNo6U60bTIONhxVI9dg61az \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 

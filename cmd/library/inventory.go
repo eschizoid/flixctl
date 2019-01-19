@@ -26,19 +26,23 @@ var InventoryLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		if sync, _ := strconv.ParseBool(enableLibrarySync); sync {
-			err := libraryService.DeleteteGlacierInventoryArchives()
-			ShowError(err)
-			svc := glacier.New(awsSession)
-			jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
-			defer jobOutputOutput.Body.Close()
-			response, err := ioutil.ReadAll(jobOutputOutput.Body)
-			ShowError(err)
-			var inventoryRetrieve = new(InventoryRetrieve)
-			err = json.Unmarshal(response, &inventoryRetrieve)
-			ShowError(err)
-			for _, archive := range inventoryRetrieve.ArchiveList {
-				err = libraryService.SaveGlacierInventoryArchive(archive)
+			if jobID != "" {
+				err := libraryService.DeleteteGlacierInventoryArchives()
 				ShowError(err)
+				svc := glacier.New(awsSession)
+				jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
+				defer jobOutputOutput.Body.Close()
+				response, err := ioutil.ReadAll(jobOutputOutput.Body)
+				ShowError(err)
+				var inventoryRetrieve = new(InventoryRetrieve)
+				err = json.Unmarshal(response, &inventoryRetrieve)
+				ShowError(err)
+				for _, archive := range inventoryRetrieve.ArchiveList {
+					err = libraryService.SaveGlacierInventoryArchive(archive)
+					ShowError(err)
+				}
+			} else {
+				panic("job-id parameter should be provided")
 			}
 		}
 		glacierArchives, err := libraryService.GetGlacierInventoryArchives()
