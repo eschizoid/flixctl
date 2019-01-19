@@ -290,7 +290,6 @@ func getJobParameters(archiveID string) *glacier.JobParameters {
 	} else {
 		jobParameters = &glacier.JobParameters{
 			ArchiveId: aws.String(archiveID),
-			Tier:      aws.String("Expedited"),
 			Type:      aws.String(archiveRetrievalJob),
 		}
 	}

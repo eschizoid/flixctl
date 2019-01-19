@@ -54,7 +54,7 @@
   version = "v1.8.1"
 
 [[projects]]
-  digest = "1:a663b74e862946691207d1d8647069721fd8eeb1624ac9eaa2112db19f3ba583"
+  digest = "1:bd5285d9c715549b12732c1cd0b6313c0641468927f46c334c11ab2b0e6f11ce"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -95,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "3afa899153ab972b5e6bf2552721b677e3fdaeb5"
-  version = "v1.16.20"
+  revision = "a2484497433aa110263c045df2f1d49336b38cfd"
+  version = "v1.16.22"
 
 [[projects]]
   branch = "master"
@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:3ca9bccee25e432debe06d1b7be2c8165262d4ae403c81daee12688785b7f87a"
+  digest = "1:a087369bdc93f79d1b0efe6e60ebc7447b946b78c41607dfc4e417edf1d546c9"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -135,7 +135,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "04a6a8278c627767d5f3791552609ccc628213a8"
+  revision = "b4c00214fd0575829cffa23ae4c5c035e4c7efa0"
   version = "1.2.0"
 
 [[projects]]
