@@ -286,8 +286,8 @@
         "type": "value",
         "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
         "parameter": {
-          "source": "payload",
-          "name": "url"
+          "source": "url",
+          "name": "token"
         }
       }
     }
@@ -354,7 +354,7 @@
         }
       }
     }
-  }
+  },
   {
     "id": "library-upload",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
