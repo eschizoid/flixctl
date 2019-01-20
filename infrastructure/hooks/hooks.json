@@ -339,8 +339,8 @@
     ],
     "pass-environment-to-command": [
       {
-        "source": "url",
-        "name": "f",
+        "source": "payload",
+        "name": "filter",
         "envname": "FILTER"
       }
     ],
