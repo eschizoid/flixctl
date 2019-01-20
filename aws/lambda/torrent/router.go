@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -30,9 +31,7 @@ func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 
 func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var message string
-	plexStatus := plex.Status()
-	// Send request to webhooks
-	if plexStatus == "Running" {
+	if plexStatus := plex.Status(); strings.EqualFold(plexStatus, "Running") {
 		values, err := url.ParseQuery(request.Body)
 		if err != nil {
 			return clientError(http.StatusBadRequest)
@@ -78,7 +77,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
 		}
 	} else {
-		message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Make sure Plex it's running"}`)
+		message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Make sure Plex is running"}`)
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
@@ -94,7 +93,7 @@ func postToWebhooks(url string, message map[string]interface{}) {
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(byteMessage))
 	if err != nil {
-		fmt.Printf("Error While sending post to webhooks: [%s]\n", err)
+		fmt.Printf("Error while sending post to webhooks: [%s]\n", err)
 	}
 	var result map[string]interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result)

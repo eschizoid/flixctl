@@ -11,9 +11,13 @@ image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", 
 image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Card", link="https://goreportcard.com/report/github.com/eschizoid/flixctl"]
 image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="https://godoc.org/github.com/eschizoid/flixctl"]
 
-Inspired by `kubectl`, `flixctl` aims to provide a programmatic way for controlling the infrastructure necessary for a
-true MaaS (Movies as a Service) architecture. All flixctl commands try to be as simple as possible so they can be
-abstracted using Slack API's.
+Flixctl provides an easy way to provision a Plex installation on the cloud and control some of the most popular components
+that users normally bundle up with Plex such as torrent (transmission) and nzb clients (nzbget), movies and shows requests
+(ombi), and monitoring utilities (tautulli) just to mention a few.
+
+Inspired by `kubectl`, `flixctl` aims to provide a CLI for controlling the infrastructure necessary for a true MaaS (Movies
+as a Service) architecture. All flixctl commands were conceived with the idea to be later abstracted using Slack Slash
+API, making the full CLI available from any Slack workspace wishing to install it.
 
 === Architecture
 
