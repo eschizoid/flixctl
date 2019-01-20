@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/eschizoid/flixctl/cmd/library"
+	"github.com/eschizoid/flixctl/cmd/nzb"
+	"github.com/eschizoid/flixctl/cmd/ombi"
 	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/eschizoid/flixctl/cmd/torrent"
 	"github.com/spf13/cobra"
@@ -15,9 +17,10 @@ var FlixctlCmd = &cobra.Command{
 	Use: "flixctl",
 	Long: `To Control The Following flixctl Components:
   * Library
+  * NZB Client
+  * Ombi
   * Plex
-  * Tautulli
-  * Torrent`,
+  * Torrent Client`,
 }
 
 var (
@@ -41,7 +44,14 @@ var VersionCmd = &cobra.Command{
 
 var (
 	_ = func() struct{} {
-		FlixctlCmd.AddCommand(VersionCmd, plex.RootPlexCmd, torrent.RootTorrentCmd, library.RootLibraryCmd)
+		FlixctlCmd.AddCommand(
+			VersionCmd,
+			library.RootLibraryCmd,
+			nzb.RootNzbCmd,
+			ombi.RootOmbiCmd,
+			plex.RootPlexCmd,
+			torrent.RootTorrentCmd,
+		)
 		return struct{}{}
 	}()
 )

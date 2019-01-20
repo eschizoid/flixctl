@@ -113,8 +113,10 @@ make deploy-lambdas
 $ flixctl --help
 To Control The Following flixctl Components:
   * Library
+  * NZB Client
+  * Ombi
   * Plex
-  * Torrent
+  * Torrent Client
 
 Usage:
   flixctl [command]
@@ -122,6 +124,8 @@ Usage:
 Available Commands:
   help        Help about any command
   library     To Control Media Library
+  nzb         To Control Nzb Client
+  ombi        To Control Ombi
   plex        To Control Plex Media Center
   torrent     To Control Torrent Client
   version     To Get flixctl Version
@@ -190,6 +194,38 @@ Flags:
   -h, --help   help for torrent
 
 Use "flixctl torrent [command] --help" for more information about a command.
+----
+==== ```flixctl ombi```
+----
+$ flixctl ombi --help
+To Control Ombi
+
+Usage:
+  flixctl ombi [command]
+
+Available Commands:
+  request     To Request Movies or Shows
+
+Flags:
+  -h, --help   help for ombi
+
+Use "flixctl ombi [command] --help" for more information about a command.
+----
+==== ```flixctl nzb```
+----
+$ flixctl nzb --help
+To Control Nzb Client
+
+Usage:
+  flixctl nzb [command]
+
+Available Commands:
+  status      To Show Nzb Status
+
+Flags:
+  -h, --help   help for nzb
+
+Use "flixctl nzb [command] --help" for more information about a command.
 ----
 
 === Examples
@@ -273,4 +309,12 @@ $ /home/webhook/go/bin/flixctl library upload \
 $ flixctl library upload \
     --enable-batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
+----
+==== ```flixctl ombi```
+----
+$ flixctl ombi --help
+----
+==== ```flixctl nzb```
+----
+$ flixctl nzb --help
 ----

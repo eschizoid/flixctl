@@ -22,7 +22,7 @@ case $# in
          download)
             /home/webhook/go/bin/flixctl library download \
                 --job-id "${JOB_ID}" \
-                --target-file "/plex/movies/glacier/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
+                --target-file "/plex/glacier/downloads/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
          initiate)
             /home/webhook/go/bin/flixctl library initiate \
