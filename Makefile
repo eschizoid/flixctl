@@ -8,7 +8,7 @@ GOLINT := golangci-lint
 GOFMT := gofmt
 SHELL := /bin/bash
 TARGET := $(shell echo $${PWD\#\#*/})
-VERSION := 1.2.0
+VERSION := 1.3.0
 BUILD := `git rev-parse --short HEAD`
 LDFLAGS=-ldflags "-X=main.VERSION=$(VERSION) -X=main.BUILD=$(BUILD)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")

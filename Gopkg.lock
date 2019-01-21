@@ -18,12 +18,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
   digest = "1:0838b7b97323a5ff376ad36248d303d9fadcbe158d5f46b6d78356bc5727dc1e"
   name = "github.com/apex/invoke"
   packages = ["."]
   pruneopts = "UT"
   revision = "c1020a6385cea74c80ff3ef223bfe498e1a0e213"
+  version = "v2.0.1"
 
 [[projects]]
   digest = "1:97f8392a94d45a67691bfc224ee4365a83864467ca5a04bd5017be293e1b4391"
@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:0b15641db1c0286d88a87d5d3377837141322f4971c62c10c8eda26e1ee02b1f"
+  digest = "1:f76131a95e5dd186eb61cb1e38982d6c0b082e5bfb4f64cb69753adc3212588a"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -124,6 +124,8 @@
     "aws/snapshot",
     "cmd",
     "cmd/library",
+    "cmd/nzb",
+    "cmd/ombi",
     "cmd/plex",
     "cmd/torrent",
     "library",
@@ -135,8 +137,8 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "8a7d0678d98f2ccb4848cd896ba9952528587789"
-  version = "1.2.0"
+  revision = "e896e855c212d36f775f2d0a65a370c733c97e60"
+  version = "1.3.0"
 
 [[projects]]
   digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
@@ -228,7 +230,7 @@
     "tpb",
   ]
   pruneopts = "UT"
-  revision = "5d595cc9d4200f9aeea69c32d83882d05332a539"
+  revision = "2f4198405099f266e9c39bcbebddf62349eaeeff"
 
 [[projects]]
   digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
@@ -285,8 +287,7 @@
   version = "v0.8.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -298,7 +299,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
+  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
@@ -374,14 +375,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:43cde116ff48f299eddb7e6515677e6d0a2c915854bb05a333877f07c3bb3033"
+  digest = "1:72f402ba458cb14ed7964c8b9a38d992f27834b3cf3479f3b08ea9e5334811b3"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "11f53e03133963fb11ae0588e08b5e0b85be8be5"
+  revision = "770c60269bf0ef965e9e7ac8bedcb6bca2a1cefd"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
@@ -415,6 +416,8 @@
     "github.com/eschizoid/flixctl/aws/snapshot",
     "github.com/eschizoid/flixctl/cmd",
     "github.com/eschizoid/flixctl/cmd/library",
+    "github.com/eschizoid/flixctl/cmd/nzb",
+    "github.com/eschizoid/flixctl/cmd/ombi",
     "github.com/eschizoid/flixctl/cmd/plex",
     "github.com/eschizoid/flixctl/cmd/torrent",
     "github.com/eschizoid/flixctl/library",
