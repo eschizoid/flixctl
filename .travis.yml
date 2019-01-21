@@ -1,12 +1,7 @@
-# This is a weird way of telling Travis to use the fast container-based test
-# runner instead of the slow VM-based runner.
 sudo: required
 
 language: go
 
-# Only the last two Go releases are supported by the Go team with security
-# updates. Any older versions be considered deprecated. Don't bother testing
-# with them.
 go:
   - 1.11.x
   - tip
@@ -18,8 +13,6 @@ before_install:
   - export PATH=$HOME/.local/bin:$PATH
   - export PATH=$HOME/gopath/bin:$PATH
 
-# Skip the install step. Don't `go get` dependencies. Only build with the code
-# in vendor/
 install: true
 
 notifications:
@@ -28,9 +21,6 @@ notifications:
 before_script:
   - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin v1.12.5
 
-# script always runs to completion (set +e). If we have linter issues AND a
-# failing test, we want to see both. Configure golangci-lint with a
-# .golangci.yml file at the top level of your repo.
 script:
   - make lint
   - make build
@@ -47,13 +37,18 @@ git:
 
 deploy:
   provider: releases
-  name: 1.2.0
+  overwrite: true
+  skip_cleanup: true
+  target_commitish: $TRAVIS_COMMIT
+  tag_name: $TRAVIS_TAG
+  name: $TRAVIS_TAG
+  body: Automated release from Travis CI
+  draft: true
+  file: flixctl
   api_key:
     secure: nWxL7c8HGEfdx3cLSl7PwxBsMB1YDrxVyvChiP/5rJ4dUFf6FsPPVYBVCnSeZmP8aHvgaYZiRu0RpyH/vnelGBJSusV+30ElTHYMHoh4KkTT7AcQ+fiDbRr9H0KpIRiSeTvqwjHR4FUZnVQ/UhGKvEL8CXP+hiUDJLeO3smGzFKgl5nEUCmkN3ks7FfG16gTROX8MqG1b6q6SVDg51zh/67iUygGvQwJsg7phOaYqkWeqtkRwarH8aYgwv4pLFWhIcbTwFOSfC79WyXb8M0FnsIjYW3fAli6Bz9mFhkVNa6NFkWrzdWlWgLVpAyEytGqU49Cqnjerp0usTDx1BEaBae9gJr07P1kZmATvAb6IVNpzGUj7ldoI+YyuDPqZBtyJHus79i0U6VHTsYaw3xocjZqUXwT00ER8JGQR4vXmPWOG8zOHDcUvIgu42ZTYGJlmpWt7kPGLwpfXGubPt3bJe07254yPwlQpFNpjpmo+hpeYaR/4/5PfDt/3ramaAHbebtCjI/ov03cRwZrcNABW3eQYOGgWhhaTom/qD3jZCgp7CbNaYEI8yf2L3RrnkcDUlSd5G4CrMreDn89boPEMcZrboIAwga0W9m7sqhOrXPc1dW3Yg8KBmfH8zLc6qtP9zrvfpjcJ2M4yKiXbi5nga2N93Uv3U5D78G09gSbdU0=
-  file: flixctl
-  skip_cleanup: true
   on:
-    branch: master
+    tags: true
 
 after_success:
   - test $TRAVIS_BRANCH = "master" &&
