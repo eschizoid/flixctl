@@ -1,4 +1,4 @@
-package lambda
+package slack
 
 type Input struct {
 	Command string `json:"command"`

@@ -163,7 +163,7 @@ func Status() []transmissionrpc.Torrent {
 		panic(err)
 	}
 	for _, torrent := range response {
-		if torrent.Files[0].Name != "" {
+		if files := torrent.Files; len(files) > 0 && files[0].Name != "" {
 			torrents = append(torrents, *torrent)
 		}
 	}
