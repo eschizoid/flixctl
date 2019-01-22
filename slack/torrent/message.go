@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"os"
 	"strconv"
 
 	util "github.com/eschizoid/flixctl/slack"
@@ -16,7 +15,7 @@ import (
 
 func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, directoryDir string, notification bool) {
 	var attachments = make([]slack.Attachment, len(search.Out))
-	token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
+	token := util.SigningSecret
 	for _, torrentResult := range search.Out {
 		encodedMagnetLink := base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet))
 		encodedName := base64.StdEncoding.EncodeToString([]byte(torrentResult.Name))

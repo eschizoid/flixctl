@@ -33,13 +33,13 @@ case $# in
                 --enable-sync "${ENABLE_LIBRARY_SYNC}" \
                 --job-id "${JOB_ID}" \
                 --slack-notification "${SLACK_NOTIFICATION}" \
-                --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
+                --slack-notification-channel "${SLACK_REQUESTS_HOOK_URL}"
             ;;
          jobs)
             /home/webhook/go/bin/flixctl library jobs \
                 --filter "${FILTER}" \
                 --slack-notification "${SLACK_NOTIFICATION}" \
-                --slack-notification-channel "${SLACK_LIBRARY_INCOMING_HOOK_URL}"
+                --slack-notification-channel "${SLACK_REQUESTS_HOOK_URL}"
             ;;
          upload)
             /home/webhook/go/bin/flixctl library upload \

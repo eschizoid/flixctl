@@ -42,7 +42,7 @@ var (
 		DownloadTorrentCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_TORRENT_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the torrent event",
 		)
 		DownloadTorrentCmd.Flags().StringVarP(&slackNotification,
@@ -72,7 +72,7 @@ var (
 		SearchTorrentCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_TORRENT_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the torrent event",
 		)
 		SearchTorrentCmd.Flags().StringVarP(&slackNotification,
@@ -84,7 +84,7 @@ var (
 		StatusTorrentCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_TORRENT_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the torrent event",
 		)
 		StatusTorrentCmd.Flags().StringVarP(&slackNotification,

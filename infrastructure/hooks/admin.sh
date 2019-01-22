@@ -68,13 +68,14 @@ case $# in
             echo "{\"certificates_updated\": \"true\"}"
             ;;
          restart)
-            for plex_service in plexmediaserver \
-                tautulli \
-                ombi \
-                sonarr \
-                radarr \
-                jackett \
+            for plex_service in jackett \
                 nzbget \
+                ombi \
+                plexmediaserver \
+                radarr \
+                sonarr \
+                s3fuse \
+                tautulli \
                 transmission-daemon; do
                 sudo systemctl restart ${plex_service}
             done

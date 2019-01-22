@@ -12,6 +12,7 @@ var (
 	LibraryInventoryHookURL = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-inventory")
 	LibraryDownloadHookURL  = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-download")
 	LibraryDeleteHookURL    = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-delete")
+	SigningSecret           = os.Getenv("SLACK_SIGNING_SECRET")
 )
 
 func GetTimeStamp() int64 {

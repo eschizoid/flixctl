@@ -46,20 +46,28 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		}
 		switch slashCommand := slash.Command; slashCommand {
 		case "/library-jobs":
-			token := os.Getenv("SLACK_STATUS_TOKEN")
-			if slash.Token != token {
-				return clientError(http.StatusForbidden)
-			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  token,
+				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies jobs command"}`)
 		case "/library-initiate":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies initiate command"}`)
 		case "/torrent-catalogue":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing catalogue command"}`)
 		case "/torrent-download":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing download command"}`)
 		case "/torrent-upload":
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing upload command"}`)

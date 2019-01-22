@@ -9,10 +9,11 @@ import (
 	"github.com/nlopes/slack"
 )
 
+var SigningSecret = os.Getenv("SLACK_SIGNING_SECRET")
+
 func VerifySlackRequest(request events.APIGatewayProxyRequest) bool {
-	signingSecret := os.Getenv("SLACK_SIGNING_SECRET")
 	headers := http.Header(request.MultiValueHeaders)
-	secretsVerifier, err := slack.NewSecretsVerifier(headers, signingSecret)
+	secretsVerifier, err := slack.NewSecretsVerifier(headers, SigningSecret)
 	if err != nil {
 		panic(err)
 	}

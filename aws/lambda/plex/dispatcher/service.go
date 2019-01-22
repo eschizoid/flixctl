@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 
 	"github.com/apex/invoke"
@@ -13,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	lambdaService "github.com/aws/aws-sdk-go/service/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/slack"
 	"github.com/go-playground/form"
 )
 
@@ -33,7 +32,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if err != nil {
 		return clientError(http.StatusBadRequest)
 	}
-	slash := new(types.Slash)
+	slash := new(slack.Slash)
 	err = form.NewDecoder().Decode(slash, values)
 	if err != nil {
 		return clientError(http.StatusUnprocessableEntity)
@@ -41,7 +40,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if !CommandRegexp.MatchString(slash.Text) || slash.Text == "" {
 		return clientError(http.StatusBadRequest)
 	}
-	if slash.Token != os.Getenv("SLACK_PLEX_TOKEN") {
+	if !slack.VerifySlackRequest(request) {
 		return clientError(http.StatusForbidden)
 	}
 	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
@@ -64,7 +63,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 }
 
 func invokeLambda(client *lambdaService.Lambda, operation string) {
-	err := invoke.InvokeAsync(client, "plex-command-executor", types.Input{Command: operation})
+	err := invoke.InvokeAsync(client, "plex-command-executor", slack.Input{Command: operation})
 	if err != nil {
 		fmt.Println("Error invoking λ:", err)
 	}
