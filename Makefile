@@ -8,7 +8,7 @@ GOLINT := golangci-lint
 GOFMT := gofmt
 SHELL := /bin/bash
 TARGET := $(shell echo $${PWD\#\#*/})
-VERSION := 1.2.0
+VERSION := 1.3.0
 BUILD := `git rev-parse --short HEAD`
 LDFLAGS=-ldflags "-X=main.VERSION=$(VERSION) -X=main.BUILD=$(BUILD)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
@@ -30,6 +30,7 @@ define environment
     "SLACK_NOTIFICATION": "$(SLACK_NOTIFICATION)",
     "SLACK_PLEX_INCOMING_HOOK_URL": "$(SLACK_PLEX_INCOMING_HOOK_URL)",
     "SLACK_PLEX_TOKEN": "$(SLACK_PLEX_TOKEN)",
+    "SLACK_SIGNING_SECRET": "$(SLACK_SIGNING_SECRET)",
     "SLACK_SHOWS_SEARCH_TOKEN": "$(SLACK_SHOWS_SEARCH_TOKEN)",
     "SLACK_STATUS_TOKEN": "$(SLACK_STATUS_TOKEN)",
     "SLACK_TAUTULLI_INCOMING_HOOK_URL": "$(SLACK_TAUTULLI_INCOMING_HOOK_URL)",

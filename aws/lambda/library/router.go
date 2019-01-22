@@ -11,7 +11,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/slack"
 	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/go-playground/form"
 )
@@ -29,17 +29,20 @@ func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 	}
 }
 
-func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) { //nolint:gocyclo
 	var message string
 	if plexStatus := plex.Status(); strings.EqualFold(plexStatus, "Running") {
 		values, err := url.ParseQuery(request.Body)
 		if err != nil {
 			return clientError(http.StatusBadRequest)
 		}
-		slash := new(types.Slash)
+		slash := new(slack.Slash)
 		err = form.NewDecoder().Decode(slash, values)
 		if err != nil {
 			return clientError(http.StatusUnprocessableEntity)
+		}
+		if !slack.VerifySlackRequest(request) {
+			return clientError(http.StatusForbidden)
 		}
 		switch slashCommand := slash.Command; slashCommand {
 		case "/library-jobs":
