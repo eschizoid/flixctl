@@ -52,7 +52,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"directory": "/plex/movies",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies search command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies search command"}`)
 		case "/shows-search":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token":     slack.SigningSecret,
@@ -60,16 +60,16 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"directory": "/plex/shows",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing shows search command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing shows search command"}`)
 		case "/torrent-status":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token":  slack.SigningSecret,
 				"notify": os.Getenv("SLACK_NOTIFICATION"),
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing status command"}`)
 		}
 	} else {
-		message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Make sure Plex is running"}`)
+		message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Make sure Plex is running"}`)
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
