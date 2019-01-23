@@ -77,7 +77,7 @@ var (
 		InventoryLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_LIBRARY_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_REQUESTS_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
 		InventoryLibraryCmd.Flags().StringVarP(&slackNotification,
@@ -89,7 +89,7 @@ var (
 		JobsLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_LIBRARY_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_REQUESTS_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
 		JobsLibraryCmd.Flags().StringVarP(&slackNotification,

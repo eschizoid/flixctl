@@ -85,7 +85,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "payload",
           "name": "token"
@@ -124,7 +124,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_SHOWS_SEARCH_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "payload",
           "name": "token"
@@ -168,7 +168,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_MOVIES_SEARCH_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "url",
           "name": "token"
@@ -197,7 +197,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "payload",
           "name": "token"
@@ -226,7 +226,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "url",
           "name": "token"
@@ -255,7 +255,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "url",
           "name": "token"
@@ -284,7 +284,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "url",
           "name": "token"
@@ -318,7 +318,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "url",
           "name": "token"
@@ -347,7 +347,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "payload",
           "name": "token"
@@ -376,7 +376,7 @@
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv "SLACK_STATUS_TOKEN"}}",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
           "source": "payload",
           "name": "token"

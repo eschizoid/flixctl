@@ -3,7 +3,6 @@ package library
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -14,7 +13,7 @@ import (
 
 func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, len(jobDescriptions))
-	token := os.Getenv("SLACK_STATUS_TOKEN")
+	token := util.SigningSecret
 	for _, jobDescription := range jobDescriptions {
 		var url string
 		if action := *jobDescription.Action; action == "InventoryRetrieval" {
@@ -88,7 +87,7 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 
 func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, len(archives))
-	token := os.Getenv("SLACK_STATUS_TOKEN")
+	token := util.SigningSecret
 	for _, archive := range archives {
 		attachmentTitle := slack.AttachmentField{
 			Title: "*Archive Description*",

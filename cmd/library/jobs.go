@@ -26,11 +26,11 @@ var JobsLibraryCmd = &cobra.Command{
 		switch jobFilter {
 		case "all": //nolint:goconst
 			jobs = jobList.JobList
-		case "archive-retrieval":
+		case "archive":
 			jobs = filterJobs(jobList.JobList, func(filter string) bool {
 				return filter == "ArchiveRetrieval"
 			})
-		case "inventory-retrieval":
+		case "inventory":
 			jobs = filterJobs(jobList.JobList, func(filter string) bool {
 				return filter == "InventoryRetrieval"
 			})

@@ -12,12 +12,12 @@ image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Car
 image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="https://godoc.org/github.com/eschizoid/flixctl"]
 
 Flixctl provides an easy way to provision a Plex installation on the cloud and control some of the most popular components
-that users normally bundle up with Plex such as torrent (transmission) and nzb clients (nzbget), movies and shows requests
+that users normally bundle up with Plex, such as torrent (transmission) and nzb clients (nzbget), movies and shows requests
 (ombi), and monitoring utilities (tautulli) just to mention a few.
 
-Inspired by `kubectl`, `flixctl` aims to provide a CLI for controlling the infrastructure necessary for a true MaaS (Movies
-as a Service) architecture. All flixctl commands were conceived with the idea to be later abstracted using Slack Slash
-API, making the full CLI available from any Slack workspace wishing to install it.
+Inspired by `kubectl`, `flixctl` aims to provide a simple CLI for controlling the infrastructure necessary for a true
+MaaS (Movies as a Service) architecture. All flixctl commands were conceived with the idea to be later abstracted using
+Slack Slash API, making the full CLI available from any Slack workspace wishing to install it.
 
 === Architecture
 
@@ -73,14 +73,11 @@ brew install dep
 |PLEX_TOKEN|
 |PLEX_USER|
 |SLACK_LEGACY_TOKEN|
-|SLACK_LIBRARY_INCOMING_HOOK_URL|
-|SLACK_MOVIES_SEARCH_TOKEN|
-|SLACK_PLEX_INCOMING_HOOK_URL|
-|SLACK_PLEX_TOKEN|
-|SLACK_SHOWS_SEARCH_TOKEN|
-|SLACK_TAUTULLI_INCOMING_HOOK_URL|
-|SLACK_TORRENT_INCOMING_HOOK_URL|
-|SLACK_STATUS_TOKEN|
+|SLACK_MONITORING_HOOK_URL|
+|SLACK_NEW_RELEASES_HOOK_URL|
+|SLACK_NOTIFICATION|
+|SLACK_REQUESTS_HOOK_URL|
+|SLACK_SIGNING_SECRET|
 |TAUTULI_API_KEY|
 |TR_AUTH|
 |UPDATE_VENDOR|
@@ -299,7 +296,7 @@ $ flixctl library initiate \
     --slack-notification-channel "monitoring"
 
 $ flixctl library jobs \
-    --filter <all|archive-retrieval|inventory-retrieval> \
+    --filter <all|archive|inventory> \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 

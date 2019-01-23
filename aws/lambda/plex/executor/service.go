@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/slack"
 	"github.com/eschizoid/flixctl/cmd/plex"
 )
 
 func executePlexCommand(evt json.RawMessage) {
-	var input types.Input
+	var input slack.Input
 	if err := json.Unmarshal(evt, &input); err != nil {
 		panic(err)
 	}

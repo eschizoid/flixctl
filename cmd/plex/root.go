@@ -28,7 +28,7 @@ var (
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
 		StartPlexCmd.Flags().StringVarP(&slackNotification,
@@ -40,7 +40,7 @@ var (
 		StopPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
 		StopPlexCmd.Flags().StringVarP(&slackNotification,
@@ -52,7 +52,7 @@ var (
 		StatusPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
-			os.Getenv("SLACK_PLEX_INCOMING_HOOK_URL"),
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify of the plex event",
 		)
 		StatusPlexCmd.Flags().StringVarP(&slackNotification,

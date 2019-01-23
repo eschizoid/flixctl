@@ -11,7 +11,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/slack"
 	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/go-playground/form"
 )
@@ -29,34 +29,45 @@ func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 	}
 }
 
-func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) { //nolint:gocyclo
 	var message string
 	if plexStatus := plex.Status(); strings.EqualFold(plexStatus, "Running") {
 		values, err := url.ParseQuery(request.Body)
 		if err != nil {
 			return clientError(http.StatusBadRequest)
 		}
-		slash := new(types.Slash)
+		slash := new(slack.Slash)
 		err = form.NewDecoder().Decode(slash, values)
 		if err != nil {
 			return clientError(http.StatusUnprocessableEntity)
 		}
+		if !slack.VerifySlackRequest(request) {
+			return clientError(http.StatusForbidden)
+		}
 		switch slashCommand := slash.Command; slashCommand {
 		case "/library-jobs":
-			token := os.Getenv("SLACK_STATUS_TOKEN")
-			if slash.Token != token {
-				return clientError(http.StatusForbidden)
-			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  token,
+				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies jobs command"}`)
 		case "/library-initiate":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies initiate command"}`)
 		case "/torrent-catalogue":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing catalogue command"}`)
 		case "/torrent-download":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
+				"token":  slack.SigningSecret,
+				"filter": slash.Text,
+			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing download command"}`)
 		case "/torrent-upload":
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing upload command"}`)

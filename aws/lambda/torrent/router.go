@@ -11,7 +11,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	types "github.com/eschizoid/flixctl/aws/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/slack"
 	"github.com/eschizoid/flixctl/cmd/plex"
 	"github.com/go-playground/form"
 )
@@ -36,42 +36,34 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		if err != nil {
 			return clientError(http.StatusBadRequest)
 		}
-		slash := new(types.Slash)
+		slash := new(slack.Slash)
 		err = form.NewDecoder().Decode(slash, values)
 		if err != nil {
 			return clientError(http.StatusUnprocessableEntity)
 		}
+		if !slack.VerifySlackRequest(request) {
+			return clientError(http.StatusForbidden)
+		}
 		switch slashCommand := slash.Command; slashCommand {
 		case "/movies-search":
-			token := os.Getenv("SLACK_MOVIES_SEARCH_TOKEN")
-			if slash.Token != token {
-				return clientError(http.StatusForbidden)
-			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":     token,
+				"token":     slack.SigningSecret,
 				"text":      slash.Text,
 				"directory": "/plex/movies",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies search command"}`)
 		case "/shows-search":
-			token := os.Getenv("SLACK_SHOWS_SEARCH_TOKEN")
-			if slash.Token != token {
-				return clientError(http.StatusForbidden)
-			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":     token,
+				"token":     slack.SigningSecret,
 				"text":      slash.Text,
 				"directory": "/plex/shows",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing shows search command"}`)
 		case "/torrent-status":
-			if slash.Token != os.Getenv("SLACK_STATUS_TOKEN") {
-				return clientError(http.StatusForbidden)
-			}
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  os.Getenv("SLACK_STATUS_TOKEN"),
+				"token":  slack.SigningSecret,
 				"notify": os.Getenv("SLACK_NOTIFICATION"),
 			})
 			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing status command"}`)
