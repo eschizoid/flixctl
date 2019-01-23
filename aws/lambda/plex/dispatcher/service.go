@@ -58,7 +58,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-type": "application/json"},
-		Body:       fmt.Sprintf(`{"response_type": "in_channel", "text":"Executing %s command"}`, slash.Text),
+		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing %s command"}`, slash.Text),
 	}, nil
 }
 

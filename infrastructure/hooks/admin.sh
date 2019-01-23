@@ -74,7 +74,7 @@ case $# in
                 plexmediaserver \
                 radarr \
                 sonarr \
-                s3fuse \
+                s3fs \
                 tautulli \
                 transmission-daemon; do
                 sudo systemctl restart ${plex_service}

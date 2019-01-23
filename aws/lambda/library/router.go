@@ -50,30 +50,29 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies jobs command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies jobs command"}`)
 		case "/library-initiate":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token":  slack.SigningSecret,
-				"filter": slash.Text,
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing movies initiate command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies initiate command"}`)
 		case "/torrent-catalogue":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing catalogue command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing catalogue command"}`)
 		case "/torrent-download":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing download command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing download command"}`)
 		case "/torrent-upload":
-			message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Executing upload command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing upload command"}`)
 		}
 	} else {
-		message = fmt.Sprintf(`{"response_type":"in_channel", "text":"Make sure Plex is running"}`)
+		message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Make sure Plex is running"}`)
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
