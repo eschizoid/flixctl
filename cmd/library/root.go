@@ -101,7 +101,7 @@ var (
 		JobsLibraryCmd.Flags().StringVarP(&jobFilter,
 			"filter",
 			"f",
-			"",
+			os.Getenv("FILTER"),
 			"to filter the list of jobs.",
 		)
 		UploadLibraryCmd.Flags().StringVarP(&enableBatchUpload,

@@ -58,7 +58,7 @@
     "id": "movies-search",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing search command",
+    "response-message": "{\"message\": \"Executing movies search command\"}",
     "pass-environment-to-command": [
       {
         "source": "payload",
@@ -97,7 +97,7 @@
     "id": "shows-search",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing search command",
+    "response-message": "{\"message\": \"Executing shows search command\"}",
     "pass-environment-to-command": [
       {
         "source": "payload",
@@ -136,7 +136,7 @@
     "id": "torrent-download",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing download command",
+    "response-message": "{\"message\": \"Executing torrent download command\"}",
     "pass-environment-to-command": [
       {
         "source": "url",
@@ -180,7 +180,7 @@
     "id": "torrent-status",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing status command",
+    "response-message": "{\"message\": \"Executing torrent status command\"}",
     "pass-environment-to-command": [
       {
         "source": "payload",
@@ -209,7 +209,7 @@
     "id": "library-delete",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library delete command",
+    "response-message": "{\"message\": \"Executing library delete command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -238,7 +238,7 @@
     "id": "library-download",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library download command",
+    "response-message": "{\"message\": \"Executing library download command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -267,7 +267,7 @@
     "id": "library-initiate",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library initiate command",
+    "response-message": "{\"message\": \"Executing library initiate command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -289,7 +289,7 @@
     "id": "library-initiate-archive",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library initiate command",
+    "response-message": "{\"message\": \"Executing library initiate archive command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -352,7 +352,7 @@
     "id": "library-jobs",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library jobs command",
+    "response-message": "{\"message\": \"Executing library jobs command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
@@ -381,7 +381,7 @@
     "id": "library-upload",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "Executing library upload command",
+    "response-message": "{\"message\": \"Executing library upload command\"}",
     "pass-arguments-to-command": [
       {
         "source": "string",
