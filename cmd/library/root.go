@@ -32,6 +32,18 @@ var (
 
 var (
 	_ = func() struct{} {
+		CatalogueLibraryCmd.Flags().StringVarP(&slackIncomingHookURL,
+			"slack-notification-channel",
+			"s",
+			os.Getenv("SLACK_REQUESTS_HOOK_URL"),
+			"slack channel to notify",
+		)
+		CatalogueLibraryCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
+		)
 		CatalogueLibraryCmd.Flags().StringVarP(&archiveFilter,
 			"filter",
 			"f",
@@ -78,7 +90,7 @@ var (
 			"slack-notification-channel",
 			"s",
 			os.Getenv("SLACK_REQUESTS_HOOK_URL"),
-			"slack channel to notify of the plex event",
+			"slack channel to notify",
 		)
 		InventoryLibraryCmd.Flags().StringVarP(&slackNotification,
 			"slack-notification",
@@ -90,7 +102,7 @@ var (
 			"slack-notification-channel",
 			"s",
 			os.Getenv("SLACK_REQUESTS_HOOK_URL"),
-			"slack channel to notify of the plex event",
+			"slack channel to notify",
 		)
 		JobsLibraryCmd.Flags().StringVarP(&slackNotification,
 			"slack-notification",
@@ -101,7 +113,7 @@ var (
 		JobsLibraryCmd.Flags().StringVarP(&jobFilter,
 			"filter",
 			"f",
-			os.Getenv("FILTER"),
+			"",
 			"to filter the list of jobs.",
 		)
 		UploadLibraryCmd.Flags().StringVarP(&enableBatchUpload,

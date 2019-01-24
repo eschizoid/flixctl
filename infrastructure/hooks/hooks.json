@@ -206,6 +206,35 @@
     }
   },
   {
+    "id": "library-catalogue",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "{\"message\": \"Executing library catalogue command\"}",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "catalogue"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "payload",
+        "name": "filter",
+        "envname": "FILTER"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
+        "parameter": {
+          "source": "url",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
     "id": "library-delete",
     "execute-command": "/opt/webhook-linux-amd64/library.sh",
     "command-working-directory": "/home/webhook/go/bin",
