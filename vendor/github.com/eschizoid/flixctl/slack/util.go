@@ -7,12 +7,12 @@ import (
 )
 
 var (
-	TorrentDownloadHookURL  = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "torrent-download")
-	LibraryInitiateHookURL  = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-initiate")
-	LibraryInventoryHookURL = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-inventory")
-	LibraryDownloadHookURL  = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-download")
-	LibraryDeleteHookURL    = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-delete")
-	SigningSecret           = os.Getenv("SLACK_SIGNING_SECRET")
+	TorrentDownloadHookURL        = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "torrent-download")
+	LibraryInitiateArchiveHookURL = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-initiate-archive")
+	LibraryInventoryHookURL       = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-inventory")
+	LibraryDownloadHookURL        = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-download")
+	LibraryDeleteHookURL          = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-delete")
+	SigningSecret                 = os.Getenv("SLACK_SIGNING_SECRET")
 )
 
 func GetTimeStamp() int64 {

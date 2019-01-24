@@ -47,7 +47,6 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		switch slashCommand := slash.Command; slashCommand {
 		case "/movies-search":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":     slack.SigningSecret,
 				"text":      slash.Text,
 				"directory": "/plex/movies",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
@@ -55,7 +54,6 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies search command"}`)
 		case "/shows-search":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":     slack.SigningSecret,
 				"text":      slash.Text,
 				"directory": "/plex/shows",
 				"notify":    os.Getenv("SLACK_NOTIFICATION"),
@@ -63,7 +61,6 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing shows search command"}`)
 		case "/torrent-status":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  slack.SigningSecret,
 				"notify": os.Getenv("SLACK_NOTIFICATION"),
 			})
 			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing status command"}`)
@@ -83,7 +80,7 @@ func postToWebhooks(url string, message map[string]interface{}) {
 	if err != nil {
 		fmt.Printf("Unable to parse the request: [%s]\n", err)
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(byteMessage))
+	resp, err := http.Post(url+fmt.Sprintf("?token=%s", slack.SigningSecret), "application/json", bytes.NewBuffer(byteMessage))
 	if err != nil {
 		fmt.Printf("Error while sending post to webhooks: [%s]\n", err)
 	}
