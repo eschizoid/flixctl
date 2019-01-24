@@ -87,7 +87,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
@@ -126,7 +126,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
@@ -199,7 +199,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
@@ -272,6 +272,28 @@
       {
         "source": "string",
         "name": "initiate"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
+        "parameter": {
+          "source": "url",
+          "name": "token"
+        }
+      }
+    }
+  },
+  {
+    "id": "library-initiate-archive",
+    "execute-command": "/opt/webhook-linux-amd64/library.sh",
+    "command-working-directory": "/home/webhook/go/bin",
+    "response-message": "Executing library initiate command",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "initiate-archive"
       }
     ],
     "pass-environment-to-command": [
@@ -349,7 +371,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }
@@ -378,7 +400,7 @@
         "type": "value",
         "value": "{{getenv "SLACK_SIGNING_SECRET"}}",
         "parameter": {
-          "source": "payload",
+          "source": "url",
           "name": "token"
         }
       }

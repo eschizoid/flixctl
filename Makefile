@@ -151,7 +151,7 @@ deploy-lambda-plex-dispatcher:
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name plex \
-	--function-name dispatcher \
+	--handler dispatcher \
 	--region $(AWS_REGION) \
 	--environment "$$environment"
 
@@ -173,8 +173,8 @@ deploy-lambda-torrent-router:
 	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name torrent-router \
-	--region $(AWS_REGION) \
 	--handler torrent \
+	--region $(AWS_REGION) \
 	--environment "$$environment"
 
 deploy-lambda-library-router:
@@ -184,8 +184,8 @@ deploy-lambda-library-router:
 	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name library-router \
-	--region $(AWS_REGION) \
 	--handler library \
+	--region $(AWS_REGION) \
 	--environment "$$environment"
 
 tag:

@@ -10,7 +10,7 @@ set -u
 
 case $# in
    0)
-      echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
+      echo "Usage: $0 {delete|download|initiate|initiate-archive|inventory|jobs|upload}"
       exit 1
       ;;
    1)
@@ -24,13 +24,13 @@ case $# in
                 --job-id "${JOB_ID}" \
                 --target-file "/plex/glacier/downloads/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
+
          initiate)
-            if [[ -z "${ARCHIVE_ID}" ]]; then
-                /home/webhook/go/bin/flixctl library initiate
-            else
-                /home/webhook/go/bin/flixctl library initiate \
-                --archive-id "${ARCHIVE_ID}"
-            fi
+            /home/webhook/go/bin/flixctl library initiate
+            ;;
+         initiate-archive)
+            /home/webhook/go/bin/flixctl library initiate \
+            --archive-id "${ARCHIVE_ID}"
             ;;
          inventory)
             /home/webhook/go/bin/flixctl library inventory \
@@ -52,13 +52,13 @@ case $# in
             ;;
          *)
             echo "'$1' is not a valid library command."
-            echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
+            echo "Usage: $0 {delete|download|initiate|initiate-archive|inventory|jobs|upload}"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {delete|download|initiate|inventory|jobs|upload}"
+      echo "Usage: $0 {delete|download|initiate|initiate-archive|inventory|jobs|upload}"
       exit 3
       ;;
 esac

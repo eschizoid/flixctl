@@ -117,7 +117,7 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 					Type:  "button",
 					Text:  "Start",
 					Style: "default",
-					URL: util.LibraryInitiateHookURL +
+					URL: util.LibraryInitiateArchiveHookURL +
 						"?i=" + archive.ArchiveID +
 						"&token=" + token,
 					Confirm: &slack.ConfirmationField{

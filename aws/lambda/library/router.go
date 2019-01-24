@@ -47,29 +47,17 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		switch slashCommand := slash.Command; slashCommand {
 		case "/library-jobs":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
-			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies jobs command"}`)
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing library jobs command"}`)
 		case "/library-initiate":
+			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{})
+			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing library initiate command"}`)
+		case "/library-catalogue":
 			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  slack.SigningSecret,
-			})
-			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing movies initiate command"}`)
-		case "/torrent-catalogue":
-			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  slack.SigningSecret,
 				"filter": slash.Text,
 			})
 			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing catalogue command"}`)
-		case "/torrent-download":
-			postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
-				"token":  slack.SigningSecret,
-				"filter": slash.Text,
-			})
-			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing download command"}`)
-		case "/torrent-upload":
-			message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing upload command"}`)
 		}
 	} else {
 		message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Make sure Plex is running"}`)
@@ -86,7 +74,7 @@ func postToWebhooks(url string, message map[string]interface{}) {
 	if err != nil {
 		fmt.Printf("Unable to parse the request: [%s]\n", err)
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(byteMessage))
+	resp, err := http.Post(url+fmt.Sprintf("?token=%s", slack.SigningSecret), "application/json", bytes.NewBuffer(byteMessage))
 	if err != nil {
 		fmt.Printf("Error while sending post to webhooks: [%s]\n", err)
 	}
