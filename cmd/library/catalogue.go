@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -10,6 +11,7 @@ import (
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	libraryService "github.com/eschizoid/flixctl/library"
 	"github.com/eschizoid/flixctl/models"
+	slackService "github.com/eschizoid/flixctl/slack/library"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +34,11 @@ var CatalogueLibraryCmd = &cobra.Command{
 				}
 				libraryMovies = append(libraryMovies, glacierMovie)
 			}
-			json, _ := json.Marshal(append(cachedMovies, libraryMovies...))
+			allMovies := append(cachedMovies, libraryMovies...)
+			if notify, _ := strconv.ParseBool(slackNotification); notify {
+				slackService.SendCatalogue(allMovies, slackIncomingHookURL)
+			}
+			json, _ := json.Marshal(allMovies)
 			fmt.Println(string(json))
 		case "archived":
 			var archivedMovies []models.Movie
@@ -45,6 +51,9 @@ var CatalogueLibraryCmd = &cobra.Command{
 				}
 				archivedMovies = append(archivedMovies, glacierMovie)
 			}
+			if notify, _ := strconv.ParseBool(slackNotification); notify {
+				slackService.SendCatalogue(archivedMovies, slackIncomingHookURL)
+			}
 			json, _ := json.Marshal(archivedMovies)
 			fmt.Println(string(json))
 		case "live":
@@ -56,6 +65,9 @@ var CatalogueLibraryCmd = &cobra.Command{
 			if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
 				liveMovies, err := libraryService.GetLivePlexMovies(1)
 				ShowError(err)
+				if notify, _ := strconv.ParseBool(slackNotification); notify {
+					slackService.SendCatalogue(liveMovies, slackIncomingHookURL)
+				}
 				json, _ := json.Marshal(liveMovies)
 				fmt.Println(string(json))
 			} else {
@@ -71,6 +83,9 @@ var CatalogueLibraryCmd = &cobra.Command{
 			watchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 0
 			})
+			if notify, _ := strconv.ParseBool(slackNotification); notify {
+				slackService.SendCatalogue(watchedMovies, slackIncomingHookURL)
+			}
 			json, _ := json.Marshal(watchedMovies)
 			fmt.Println(string(json))
 		case "unwatched":
@@ -80,11 +95,17 @@ var CatalogueLibraryCmd = &cobra.Command{
 			unwatchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 1
 			})
+			if notify, _ := strconv.ParseBool(slackNotification); notify {
+				slackService.SendCatalogue(unwatchedMovies, slackIncomingHookURL)
+			}
 			json, _ := json.Marshal(unwatchedMovies)
 			fmt.Println(string(json))
 		default:
 			plexMovies, err := libraryService.GetCachedPlexMovies()
 			ShowError(err)
+			if notify, _ := strconv.ParseBool(slackNotification); notify {
+				slackService.SendCatalogue(plexMovies, slackIncomingHookURL)
+			}
 			json, _ := json.Marshal(plexMovies)
 			fmt.Println(string(json))
 		}
