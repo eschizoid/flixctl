@@ -155,6 +155,7 @@ deploy-lambda-plex-dispatcher:
 	--region $(AWS_REGION) \
 	--timeout 900 \
 	--memory-size 128 \
+	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-plex-executor:
@@ -168,6 +169,7 @@ deploy-lambda-plex-executor:
 	--region $(AWS_REGION) \
 	--timeout 900 \
 	--memory-size 128 \
+	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-torrent-router:
@@ -181,6 +183,7 @@ deploy-lambda-torrent-router:
 	--region $(AWS_REGION) \
 	--timeout 900 \
 	--memory-size 128 \
+	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-library-router:
@@ -194,6 +197,7 @@ deploy-lambda-library-router:
 	--region $(AWS_REGION) \
 	--timeout 900 \
 	--memory-size 128 \
+	--runtime go1.x \
 	--environment "$$environment"
 
 tag:
