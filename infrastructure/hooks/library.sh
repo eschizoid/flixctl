@@ -31,7 +31,9 @@ case $# in
                 --target-file "/plex/glacier/downloads/movie-$(date +%Y-%m-%d.%H:%M:%S).zip"
             ;;
          initiate)
-            /home/webhook/go/bin/flixctl library initiate
+            /home/webhook/go/bin/flixctl library initiate \
+                --slack-notification "${SLACK_NOTIFICATION}" \
+                --slack-notification-channel "${SLACK_REQUESTS_HOOK_URL}"
             ;;
          initiate-archive)
             /home/webhook/go/bin/flixctl library initiate \

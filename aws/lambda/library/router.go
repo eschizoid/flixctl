@@ -55,7 +55,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		postToWebhooks(baseHookURL+slash.Command, map[string]interface{}{
 			"filter": slash.Text,
 		})
-		message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing catalogue command"}`)
+		message = fmt.Sprintf(`{"response_type":"ephemeral", "text":"Executing library catalogue command"}`)
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,

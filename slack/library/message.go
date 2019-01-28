@@ -147,3 +147,11 @@ func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL stri
 		fmt.Printf("Error while sending library inventory: [%s]\n", err)
 	}
 }
+
+func SendCatalogue(archives []models.Movie, slackIncomingHookURL string) {
+
+}
+
+func SendInitiatedJobNotification(job *glacier.InitiateJobOutput, slackIncomingHookURL string) {
+
+}
