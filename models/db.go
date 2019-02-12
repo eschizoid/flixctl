@@ -5,7 +5,7 @@ import (
 
 	"github.com/asdine/storm"
 	"github.com/jrudio/go-plex-client" //nolint:goimports
-	"go.etcd.io/bbolt"
+	bolt "go.etcd.io/bbolt"
 )
 
 const StormMetadataKey = "__storm_metadata"

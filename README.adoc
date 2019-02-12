@@ -83,27 +83,28 @@ brew install dep
 |UPDATE_VENDOR|
 |===
 
-=== Dependencies
+=== Useful commands
+==== Dependencies
 ----
 make dep
 ----
 
-=== Lints
+==== Lints
 ----
 make lint
 ----
 
-=== Build (CLI and λ's)
+==== Build (CLI and λ's)
 ----
 make build
 ----
 
-=== Install flixctl
+==== Install flixctl
 ----
 make install
 ----
 
-=== Deploy λ's
+==== Deploy λ's
 ----
 make deploy-lambdas
 ----

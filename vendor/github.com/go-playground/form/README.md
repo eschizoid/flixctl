@@ -1,6 +1,6 @@
 Package form
 ============
-<img align="right" src="https://raw.githubusercontent.com/go-playground/form/master/logo.jpg">![Project status](https://img.shields.io/badge/version-3.1.3-green.svg)
+<img align="right" src="https://raw.githubusercontent.com/go-playground/form/master/logo.jpg">![Project status](https://img.shields.io/badge/version-3.1.4-green.svg)
 [![Build Status](https://semaphoreci.com/api/v1/joeybloggs/form/branches/master/badge.svg)](https://semaphoreci.com/joeybloggs/form)
 [![Coverage Status](https://coveralls.io/repos/github/go-playground/form/badge.svg?branch=master)](https://coveralls.io/github/go-playground/form?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-playground/form)](https://goreportcard.com/report/github.com/go-playground/form)
@@ -317,7 +317,7 @@ Complimentary Software
 Here is a list of software that compliments using this library post decoding.
 
 * [Validator](https://github.com/go-playground/validator) - Go Struct and Field validation, including Cross Field, Cross Struct, Map, Slice and Array diving.
-* [Conform](https://github.com/leebenson/conform) - Trims, sanitizes & scrubs data based on struct tags.
+* [mold](https://github.com/go-playground/mold) - Is a general library to help modify or set data within data structures and other objects.
 
 Package Versioning
 ----------

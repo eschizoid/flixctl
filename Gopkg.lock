@@ -41,7 +41,7 @@
   version = "v2.1.2"
 
 [[projects]]
-  digest = "1:3c1b2a3b4f61355c883f878b5754bc27c0d159151cf84fbe21913756d74f539c"
+  digest = "1:afb77c095b4e0ba815f114f7e7ef99ffb52a62414a5f86c2ad97371bdcf245de"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -50,11 +50,11 @@
     "lambdacontext",
   ]
   pruneopts = "UT"
-  revision = "928161204cad89472f9e6b5dd49ce16bc91230de"
-  version = "v1.8.1"
+  revision = "527f5d301d2993af078be6d0b63372786b3fc18f"
+  version = "v1.8.2"
 
 [[projects]]
-  digest = "1:3e8dd04389ac32368178790e1a518338e89f1ce5b0bfd43a91b1ee9fdcbcebac"
+  digest = "1:294e184b2d2a5e4f9bdccf054d1014cc80e03e36dcb1a906b0907ffb7f2c0313"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -95,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "c1afd6c3340feedd0a2c1cd929dcb291d4bd09ba"
-  version = "v1.16.23"
+  revision = "503020bbd95ec9f25b061a83aa62567bc43e6d96"
+  version = "v1.16.32"
 
 [[projects]]
   branch = "master"
@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:be2fa4be421ec09730f8f4ff6b3d60ad9e3aecddf7c1d7fe975eb3ae9b1de439"
+  digest = "1:085ab8d218366aa008b209a5997258d51ac037081fb7f9d8da9e0fa453eba6f6"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -137,16 +137,16 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "7efc8be53f20687bd42db4555f383e3b3b14d4ab"
+  revision = "4d9e364485859330b526d787eded63d65a9c7e6a"
   version = "1.3.0"
 
 [[projects]]
-  digest = "1:8039a6237bf71c598b91387304fd8bd270248d7274fe1105783535945196ac14"
+  digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
   name = "github.com/go-playground/form"
   packages = ["."]
   pruneopts = "UT"
-  revision = "572fa772c66ec5e3606a1a548406e10fb62de317"
-  version = "v3.1.3"
+  revision = "c78c4d65be236fc54add020b980125b40aeb6386"
+  version = "v3.1.4"
 
 [[projects]]
   branch = "master"
@@ -182,11 +182,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:57c5a0a6fe711cac273dd5e957c35a2510e44ec0ca7729ff80c2a21cd0b6799a"
+  digest = "1:ecde78f3d3bfb976082aa96b1eeea0764a44bfe295b5bad82bc1377da45be37f"
   name = "github.com/hekmon/transmissionrpc"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e4e1c9a294266b5c48100d4bccb4cfa501321449"
+  revision = "7676caffba20863657fda40f9c34cedbc3d34bd3"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -268,15 +268,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:e39a5ee8fcbec487f8fc68863ef95f2b025e0739b0e4aa55558a2b4cf8f0ecf0"
+  digest = "1:c7a5e79396b6eb570159df7a1d487ce5775bf43b7907976fbef6de544ea160ad"
   name = "github.com/pierrec/lz4"
   packages = [
     ".",
     "internal/xxh32",
   ]
   pruneopts = "UT"
-  revision = "635575b42742856941dbc767b44905bb9ba083f6"
-  version = "v2.0.7"
+  revision = "473cd7ce01a1113208073166464b98819526150e"
+  version = "v2.0.8"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -287,8 +287,7 @@
   version = "v0.8.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dbfe572cc258e5bcf54cb650a06d90edd0da04e42ca1ed909cc1d49f00011c63"
+  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
   name = "github.com/robertkrimen/otto"
   packages = [
     ".",
@@ -300,7 +299,7 @@
     "token",
   ]
   pruneopts = "UT"
-  revision = "15f95af6e78dcd2030d8195a138bd88d4f403546"
+  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
@@ -348,42 +347,42 @@
   revision = "48954b6210f8d154cb5f8484d3a3e1f83489309e"
 
 [[projects]]
-  digest = "1:c28625428387b63dd7154eb857f51e700465cfbf7c06f619e71f2da33cefe47e"
+  digest = "1:5f7414cf41466d4b4dd7ec52b2cd3e481e08cfd11e7e24fef730c0e483e88bb1"
   name = "go.etcd.io/bbolt"
   packages = ["."]
   pruneopts = "UT"
-  revision = "583e8937c61f1af6513608ccc75c97b6abdf4ff9"
-  version = "v1.3.0"
+  revision = "63597a96ec0ad9e6d43c3fc81e809909e0237461"
+  version = "v1.3.2"
 
 [[projects]]
   branch = "master"
-  digest = "1:38f553aff0273ad6f367cb0a0f8b6eecbaef8dc6cb8b50e57b6a81c1d5b1e332"
+  digest = "1:fde12c4da6237363bf36b81b59aa36a43d28061167ec4acb0d41fc49464e28b9"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "64072686203f69e3fd20143576b27200f18ab0fa"
+  revision = "74369b46fc6756741c016591724fd1cb8e26845f"
 
 [[projects]]
   branch = "master"
-  digest = "1:1a1ecfa7b54ca3f7a0115ab5c578d7d6a5d8b605839c549e80260468c42f8be7"
+  digest = "1:1235bd185006c1bbdc4292ec1942974469ba1a37ab6bbb73850d75b2bd952efc"
   name = "golang.org/x/net"
   packages = [
     "html",
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "ed066c81e75eba56dd9bd2139ade88125b855585"
+  revision = "65e2d4e15006aab9813ff8769e768bbf4bb667a0"
 
 [[projects]]
   branch = "master"
-  digest = "1:9d6fee48d0bab077ed9cc08f69e902615f02b3e30f945334bdf902abb9e2af7c"
+  digest = "1:8975c6b66d95adc1cd08820aba7ad6b60b165725a401c4177c0eaa866170bb10"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "054c452bb702e465e95ce8e7a3d9a6cf0cd1188d"
+  revision = "3b5209105503162ded1863c307ac66fec31120dd"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"

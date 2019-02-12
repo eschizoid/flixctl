@@ -6,7 +6,7 @@ import (
 
 	"github.com/eschizoid/flixctl/models"
 	"github.com/jrudio/go-plex-client" //nolint:goimports
-	"go.etcd.io/bbolt"
+	bolt "go.etcd.io/bbolt"
 )
 
 const (
