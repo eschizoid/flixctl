@@ -43,7 +43,7 @@ deploy:
   tag_name: $TRAVIS_TAG
   name: $TRAVIS_TAG
   body: Automated release from Travis CI
-  draft: true
+  draft: false
   file: flixctl
   api_key:
     secure: ipGWBWypEB9kr64IuU/H1bk+6JAWd+WMpEUgheH+XAFoMe+PWs8Vze0eW7QqNYn3QhTveafSEO5Glm8UxEkbXIyTkEaqfdEUsRONv7o7Y/7EBT8wUo2M4YzR0rFK1DV9F6FJWiLc8J4KYdXAiKCmeFFQbY2R2Qfc0a0YNbM5A82EoNaJO09oJGmxUprmH9W7oiA9d2Y0FEICsYwf2PddUjkeHrHVFpKwCY4Kj13gs0UmdivxGHYJ9QVqCFWElTDtWQNzt76YuUTSvUWHtzrg3IkZBZ64BdDvdCFCITj+4vL7Jy2uWanq4/nSDzXiVcK6k+IAt39CtRxFoxdgP2lCkK73OgmK35m4b3iOKpQHIvDibnRBHq/2erSEJRe3Nu5YpL9VuaQaoessF11K2P/tUQIp4TCBS6PIY6fox5IAfZkm7OlaAYsZi+KFANoZ8YGv/09jzq5BfjdBnoyydtXVlGWErdMTOsxWyLu1hjXR+SL3d2LM91ZnqJyXVL1zS7bl8616Q2L5JY4uab6Td0iyduzN+/nUS4uVkpggUTo15hiFsgtzvHnr3TNTRLYkeyxSsdRNDkQ1rt7jGqcnyRNu7/6+jg+povY3if+X97QXvDgySdszQazISX8cbrqkdtAYrzQ7eImINbRmHIyzxZA4aDlF0swLMd+RZwPKJbcLVyo=
@@ -53,4 +53,5 @@ deploy:
 after_success:
   - test $TRAVIS_BRANCH = "master" &&
     test $TRAVIS_PULL_REQUEST = "false" &&
-    make deploy-lambdas
+    make deploy-lambdas &&
+    make tag

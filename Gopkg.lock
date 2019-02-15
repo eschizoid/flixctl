@@ -54,7 +54,7 @@
   version = "v1.8.2"
 
 [[projects]]
-  digest = "1:294e184b2d2a5e4f9bdccf054d1014cc80e03e36dcb1a906b0907ffb7f2c0313"
+  digest = "1:9a5c5d916a76df6edc27d3795f4f6cb0aea8d702040aa2dc54672205e521f763"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -95,8 +95,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "503020bbd95ec9f25b061a83aa62567bc43e6d96"
-  version = "v1.16.32"
+  revision = "4e2e7c3c80cfb77d22990cadb2c17096d2614938"
+  version = "v1.16.35"
 
 [[projects]]
   branch = "master"
@@ -114,7 +114,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:085ab8d218366aa008b209a5997258d51ac037081fb7f9d8da9e0fa453eba6f6"
+  digest = "1:24b5c43ffa2edf2d34a3200f22cc5279ddc4de164835ebe6dd4ffb1bca2806dd"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -137,7 +137,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "4d9e364485859330b526d787eded63d65a9c7e6a"
+  revision = "c74e2a15eee408d81d6fb6318cc9c48e960b132f"
   version = "1.3.0"
 
 [[projects]]
@@ -213,15 +213,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1c77e06f7a9638f3511e6224c182fb32c197c295699cc2ff82b0671e7e2959fa"
-  name = "github.com/juliensalinas/go-cloudflare-scraper"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "07e77f4d72248913bc73750de3b99c8055eba77e"
-
-[[projects]]
-  branch = "master"
-  digest = "1:96cd06e2841855d2d3a79119297100d0e97be7538c945d7fc229c1d2a24abc60"
+  digest = "1:39cb6cced5f0e9b373d26bd77c179b253051bd5b72f364af15a6a7caeb244524"
   name = "github.com/juliensalinas/torrengo"
   packages = [
     "core",
@@ -230,7 +222,7 @@
     "tpb",
   ]
   pruneopts = "UT"
-  revision = "2f4198405099f266e9c39bcbebddf62349eaeeff"
+  revision = "0464f8be5b21d776ce531a2dc0c27107e2c6d9b8"
 
 [[projects]]
   digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
@@ -285,21 +277,6 @@
   pruneopts = "UT"
   revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
   version = "v0.8.1"
-
-[[projects]]
-  digest = "1:a88ca2249fa57a40a2d7d8ae8322c843d63b7a3b39f90bdcd9d7c5a07fdc2d7c"
-  name = "github.com/robertkrimen/otto"
-  packages = [
-    ".",
-    "ast",
-    "dbg",
-    "file",
-    "parser",
-    "registry",
-    "token",
-  ]
-  pruneopts = "UT"
-  revision = "49fee9c1c0db1c366003ede4cc665f9924a97521"
 
 [[projects]]
   digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
@@ -364,36 +341,50 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1235bd185006c1bbdc4292ec1942974469ba1a37ab6bbb73850d75b2bd952efc"
+  digest = "1:31ddc22fd96d06b999d0e639ff93b8829fc274cd518d6c439bba4b5890112229"
   name = "golang.org/x/net"
   packages = [
     "html",
     "html/atom",
+    "idna",
+    "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "65e2d4e15006aab9813ff8769e768bbf4bb667a0"
+  revision = "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898"
 
 [[projects]]
   branch = "master"
-  digest = "1:8975c6b66d95adc1cd08820aba7ad6b60b165725a401c4177c0eaa866170bb10"
+  digest = "1:0d703f14f9bbbe1070ff0ce86d749dcbc9d68fb0ae554252c09bd4bb37a072e7"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "3b5209105503162ded1863c307ac66fec31120dd"
+  revision = "d0b11bdaac8adb652bff00e49bcacf992835621a"
 
 [[projects]]
-  digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
-  name = "gopkg.in/sourcemap.v1"
+  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
+  name = "golang.org/x/text"
   packages = [
-    ".",
-    "base64vlq",
+    "collate",
+    "collate/build",
+    "internal/colltab",
+    "internal/gen",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "language",
+    "secure/bidirule",
+    "transform",
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable",
   ]
   pruneopts = "UT"
-  revision = "6e83acea0053641eff084973fee085f0c193c61a"
-  version = "v1.0.5"
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
 
 [solve-meta]
   analyzer-name = "dep"
