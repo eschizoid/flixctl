@@ -60,14 +60,16 @@ case $# in
             openssl pkcs12 -export \
                 -password env:PLEX_PASSWORD \
                 -out /var/lib/plexmediaserver/ssl/marianoflix.duckdns.org.pfx \
-                -inkey /opt/webhook-linux-amd64/privkey.pem \
-                -in /opt/webhook-linux-amd64/cert.pem \
-                -certfile /opt/webhook-linux-amd64/fullchain.pem
+                -inkey /opt/ssl/marianoflix.duckdns.org/privkey.pem \
+                -in /opt/ssl/marianoflix.duckdns.org/cert.pem \
+                -certfile /opt/ssl/marianoflix.duckdns.org/fullchain.pem
+            sudo chown plex:plex /var/lib/plexmediaserver/ssl/marianoflix.duckdns.org.pfx
             /opt/dehydrated/dehydrated -c -o /opt/ssl
             echo "{\"certificates_updated\": \"true\"}"
             ;;
          restart)
-            for plex_service in jackett \
+            for plex_service in httpd \
+                jackett \
                 nzbget \
                 ombi \
                 plexmediaserver \
