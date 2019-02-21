@@ -1,7 +1,8 @@
 package library
 
 import (
-	"io/ioutil"
+	"io"
+	"os"
 
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -19,11 +20,13 @@ var DownloadLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svc := glacier.New(awsSession)
-		jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
-		defer jobOutputOutput.Body.Close()
-		var response, err = ioutil.ReadAll(jobOutputOutput.Body)
+		from := glacierService.GetJobOutput(svc, jobID).Body
+		defer from.Close()
+		to, err := os.OpenFile(targetFile, os.O_RDWR|os.O_CREATE, 0666)
 		ShowError(err)
-		err = ioutil.WriteFile(targetFile, response, 0644)
+		defer to.Close()
+		_, err = io.Copy(to, from)
+		ShowError(err)
 		glacierService.Unzip(targetFile)
 		glacierService.CleanupFiles([]string{targetFile}, "")
 		ShowError(err)
