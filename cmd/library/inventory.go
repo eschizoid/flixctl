@@ -25,25 +25,23 @@ var InventoryLibraryCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
-		if sync, _ := strconv.ParseBool(enableLibrarySync); sync {
-			if jobID != "" {
-				err := libraryService.DeleteteGlacierInventoryArchives()
+		if sync, _ := strconv.ParseBool(enableLibrarySync); sync && jobID != "" {
+			err := libraryService.DeleteteGlacierInventoryArchives()
+			ShowError(err)
+			svc := glacier.New(awsSession)
+			jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
+			defer jobOutputOutput.Body.Close()
+			response, err := ioutil.ReadAll(jobOutputOutput.Body)
+			ShowError(err)
+			var inventoryRetrieve = new(InventoryRetrieve)
+			err = json.Unmarshal(response, &inventoryRetrieve)
+			ShowError(err)
+			for _, archive := range inventoryRetrieve.ArchiveList {
+				err = libraryService.SaveGlacierInventoryArchive(archive)
 				ShowError(err)
-				svc := glacier.New(awsSession)
-				jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
-				defer jobOutputOutput.Body.Close()
-				response, err := ioutil.ReadAll(jobOutputOutput.Body)
-				ShowError(err)
-				var inventoryRetrieve = new(InventoryRetrieve)
-				err = json.Unmarshal(response, &inventoryRetrieve)
-				ShowError(err)
-				for _, archive := range inventoryRetrieve.ArchiveList {
-					err = libraryService.SaveGlacierInventoryArchive(archive)
-					ShowError(err)
-				}
-			} else {
-				panic("job-id parameter should be provided")
 			}
+		} else {
+			panic("job-id parameter should be provided")
 		}
 		glacierArchives, err := libraryService.GetGlacierInventoryArchives()
 		ShowError(err)
