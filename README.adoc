@@ -83,6 +83,9 @@ brew install dep
 |UPDATE_VENDOR|
 |===
 
+==== Installing it as a Slack app
+In order to install Plexflix in your Slack workspace, go https://marianoflix.duckdns.org/auth[here]
+
 === Useful commands
 ==== Dependencies
 ----
