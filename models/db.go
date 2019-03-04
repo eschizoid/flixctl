@@ -17,6 +17,7 @@ type Datastore interface {
 	DeleteAllInventoryArchives([][]byte) error
 	FindUploadByID(string) (Upload, error)
 	SaveInventoryArchive(InventoryArchive) error
+	SaveOauthToken(string, string) error
 	SavePlexMovie(plex.Metadata) error
 	SaveUpload(Upload) error
 }
