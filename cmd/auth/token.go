@@ -16,7 +16,7 @@ var TokenCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if resp, err := slack.GetOAuthResponse(slackClientID, slackClientSecret, slackCode, slackRedirectURI, true); err != nil {
 			m := make(map[string]string)
-			m["token_saved_successfully"] = "false"
+			m["slack_oauth_token_saved"] = "false"
 			jsonString, _ := json.Marshal(m)
 			fmt.Println("\n" + string(jsonString))
 		} else {
@@ -24,7 +24,7 @@ var TokenCmd = &cobra.Command{
 				ShowError(err)
 			}
 			m := make(map[string]string)
-			m["token_saved_successfully"] = "true"
+			m["slack_oauth_token_saved"] = "true"
 			jsonString, _ := json.Marshal(m)
 			fmt.Println("\n" + string(jsonString))
 		}

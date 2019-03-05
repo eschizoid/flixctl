@@ -21,8 +21,8 @@ var (
 var (
 	_ = func() struct{} {
 		TokenCmd.Flags().StringVarP(&slackClientID,
-			"slackClientId",
-			"c",
+			"slack-client-id",
+			"i",
 			os.Getenv("SLACK_CLIENT_ID"),
 			"slack client id",
 		)
@@ -34,7 +34,7 @@ var (
 		)
 		TokenCmd.Flags().StringVarP(&slackCode,
 			"slack-code",
-			"o",
+			"c",
 			os.Getenv("SLACK_CODE"),
 			"slack code",
 		)

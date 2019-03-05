@@ -83,7 +83,7 @@ brew install dep
 |UPDATE_VENDOR|
 |===
 
-==== Installing it as a Slack app
+=== Installing it as a Slack app
 To install the CLI into your Slack workspace, start the oauth flow https://marianoflix.duckdns.org/auth[here].
 
 === Useful commands

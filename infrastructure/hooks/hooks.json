@@ -434,7 +434,7 @@
         }
       }
     }
-  }
+  },
   {
     "id": "auth",
     "execute-command": "/opt/webhook-linux-amd64/admin.sh",
