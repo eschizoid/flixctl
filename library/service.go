@@ -16,7 +16,6 @@ const (
 )
 
 var (
-	Database  = models.NewDB(os.Getenv("BOLT_DATABASE"), []string{plexMoviesBucketName, uploadsBucketName, inventoryArchivesBucketName})
 	PlexToken = os.Getenv("PLEX_TOKEN")
 )
 
@@ -43,44 +42,44 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 
 func DeleteteGlacierInventoryArchives() (err error) {
 	keys := getAllKeys([]byte(inventoryArchivesBucketName))
-	return Database.DeleteAllInventoryArchives(keys)
+	return models.Database.DeleteAllInventoryArchives(keys)
 }
 
 func DeleteteGlacierInventoryArchive(key string) (err error) {
-	return Database.DeleteInventoryArchive(key)
+	return  models.Database.DeleteInventoryArchive(key)
 }
 
 func GetCachedPlexMovies() ([]models.Movie, error) {
 	keys := getAllKeys([]byte(plexMoviesBucketName))
-	return Database.AllPlexMovies(keys)
+	return  models.Database.AllPlexMovies(keys)
 }
 
 func GetGlacierMovies() (uploads []models.Upload, err error) {
 	keys := getAllKeys([]byte(uploadsBucketName))
-	return Database.AllUploads(keys)
+	return  models.Database.AllUploads(keys)
 }
 
 func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
 	keys := getAllKeys([]byte(inventoryArchivesBucketName))
-	return Database.AllInventoryArchives(keys)
+	return  models.Database.AllInventoryArchives(keys)
 }
 
 func FindGlacierMovie(title string) (archives models.Upload, err error) {
-	return Database.FindUploadByID(title)
+	return  models.Database.FindUploadByID(title)
 }
 
 func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
-	err := Database.SaveInventoryArchive(archive)
+	err :=  models.Database.SaveInventoryArchive(archive)
 	return err
 }
 
 func SaveGlacierMovie(upload models.Upload) error {
-	err := Database.SaveUpload(upload)
+	err :=  models.Database.SaveUpload(upload)
 	return err
 }
 
 func SavePlexMovie(movie models.Movie) error {
-	err := Database.SavePlexMovie(movie)
+	err := models.Database.SavePlexMovie(movie)
 	return err
 }
 
@@ -96,7 +95,7 @@ func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (
 
 func getAllKeys(bucket []byte) [][]byte {
 	var keys [][]byte
-	Database.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
+	models.Database.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
 		b := tx.Bucket(bucket)
 		_ = b.ForEach(func(k, v []byte) error { //nolint:errcheck
 			// Due to

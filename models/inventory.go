@@ -8,8 +8,6 @@ type InventoryArchive struct {
 	Size               int
 }
 
-const inventoryArchivesBucketName = "glacier_archives"
-
 func (db *DB) SaveInventoryArchive(inventoryArchive InventoryArchive) error {
 	err := db.Set(inventoryArchivesBucketName, inventoryArchive.ArchiveID, inventoryArchive)
 	return err
@@ -17,7 +15,7 @@ func (db *DB) SaveInventoryArchive(inventoryArchive InventoryArchive) error {
 
 func (db *DB) AllInventoryArchives(keys [][]byte) (inventoryArchives []InventoryArchive, err error) {
 	for _, key := range keys {
-		if stringKey := string(key); stringKey != StormMetadataKey {
+		if stringKey := string(key); stringKey != stormMetadataKey {
 			var inventoryArchive InventoryArchive
 			err = db.Get(inventoryArchivesBucketName, stringKey, &inventoryArchive)
 			inventoryArchives = append(inventoryArchives, inventoryArchive)
@@ -33,7 +31,7 @@ func (db *DB) DeleteInventoryArchive(key string) (err error) {
 
 func (db *DB) DeleteAllInventoryArchives(keys [][]byte) (err error) {
 	for _, key := range keys {
-		if stringKey := string(key); stringKey != StormMetadataKey {
+		if stringKey := string(key); stringKey != stormMetadataKey {
 			err = db.Delete(inventoryArchivesBucketName, stringKey)
 		}
 	}

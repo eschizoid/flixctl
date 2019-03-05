@@ -10,8 +10,6 @@ type Upload struct {
 	ArchiveCreationOutput glacier.ArchiveCreationOutput
 }
 
-const uploadsBucketName = "glacier_uploads"
-
 func (db *DB) SaveUpload(upload Upload) error {
 	err := db.Set(uploadsBucketName, upload.Metadata.Title, upload)
 	return err
@@ -19,7 +17,7 @@ func (db *DB) SaveUpload(upload Upload) error {
 
 func (db *DB) AllUploads(keys [][]byte) (uploads []Upload, err error) {
 	for _, key := range keys {
-		if stringKey := string(key); stringKey != StormMetadataKey {
+		if stringKey := string(key); stringKey != stormMetadataKey {
 			var upload Upload
 			err = db.Get(uploadsBucketName, stringKey, &upload)
 			uploads = append(uploads, upload)

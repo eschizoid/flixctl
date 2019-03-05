@@ -9,8 +9,6 @@ type Movie struct {
 	Unwatched int
 }
 
-const plexMoviesBucketName = "plex_movies"
-
 func (db *DB) SavePlexMovie(movie Movie) error {
 	err := db.Set(plexMoviesBucketName, movie.Metadata.Title, movie)
 	return err
@@ -18,7 +16,7 @@ func (db *DB) SavePlexMovie(movie Movie) error {
 
 func (db *DB) AllPlexMovies(keys [][]byte) (movies []Movie, err error) {
 	for _, key := range keys {
-		if stringKey := string(key); stringKey != StormMetadataKey {
+		if stringKey := string(key); stringKey != stormMetadataKey {
 			var movie Movie
 			err = db.Get(plexMoviesBucketName, stringKey, &movie)
 			movies = append(movies, movie)
