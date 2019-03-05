@@ -11,7 +11,7 @@ import (
 
 var TokenCmd = &cobra.Command{
 	Use:   "token",
-	Short: "To Get an Oauth Token",
+	Short: "To Get An Oauth Token",
 	Long:  "to get an oauth token for a given client id",
 	Run: func(cmd *cobra.Command, args []string) {
 		if resp, err := slack.GetOAuthResponse(slackClientID, slackClientSecret, slackCode, slackRedirectURI, true); err != nil {
