@@ -5,6 +5,6 @@ import (
 )
 
 func SaveToken(clientID string, token string) error {
-	err :=  models.Database.SaveOauthToken(clientID, token)
+	err := models.Database.SaveOauthToken(clientID, token)
 	return err
 }

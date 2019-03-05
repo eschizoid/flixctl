@@ -10,7 +10,7 @@ import (
 var (
 	OauthSlackRootCmd = &cobra.Command{
 		Use:   "auth",
-		Short: "To Start Oauth Flow With Slack",
+		Short: "To Integrate With Slack Oauth",
 	}
 	slackClientID     string
 	slackClientSecret string

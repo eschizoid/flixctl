@@ -30,7 +30,7 @@ type Datastore interface {
 }
 
 var (
-	Database  = NewDB(os.Getenv("BOLT_DATABASE"))
+	Database = NewDB(os.Getenv("BOLT_DATABASE"))
 )
 
 type DB struct {

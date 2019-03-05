@@ -46,35 +46,35 @@ func DeleteteGlacierInventoryArchives() (err error) {
 }
 
 func DeleteteGlacierInventoryArchive(key string) (err error) {
-	return  models.Database.DeleteInventoryArchive(key)
+	return models.Database.DeleteInventoryArchive(key)
 }
 
 func GetCachedPlexMovies() ([]models.Movie, error) {
 	keys := getAllKeys([]byte(plexMoviesBucketName))
-	return  models.Database.AllPlexMovies(keys)
+	return models.Database.AllPlexMovies(keys)
 }
 
 func GetGlacierMovies() (uploads []models.Upload, err error) {
 	keys := getAllKeys([]byte(uploadsBucketName))
-	return  models.Database.AllUploads(keys)
+	return models.Database.AllUploads(keys)
 }
 
 func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
 	keys := getAllKeys([]byte(inventoryArchivesBucketName))
-	return  models.Database.AllInventoryArchives(keys)
+	return models.Database.AllInventoryArchives(keys)
 }
 
 func FindGlacierMovie(title string) (archives models.Upload, err error) {
-	return  models.Database.FindUploadByID(title)
+	return models.Database.FindUploadByID(title)
 }
 
 func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
-	err :=  models.Database.SaveInventoryArchive(archive)
+	err := models.Database.SaveInventoryArchive(archive)
 	return err
 }
 
 func SaveGlacierMovie(upload models.Upload) error {
-	err :=  models.Database.SaveUpload(upload)
+	err := models.Database.SaveUpload(upload)
 	return err
 }
 
