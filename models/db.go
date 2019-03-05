@@ -1,6 +1,7 @@
 package models
 
 import (
+	"os"
 	"time"
 
 	"github.com/asdine/storm"
@@ -8,7 +9,13 @@ import (
 	bolt "go.etcd.io/bbolt"
 )
 
-const StormMetadataKey = "__storm_metadata"
+const (
+	inventoryArchivesBucketName = "glacier_archives"
+	plexMoviesBucketName        = "plex_movies"
+	uploadsBucketName           = "glacier_uploads"
+	oauthTokenBucketName        = "oauth_tokens" //nolint:gosec
+	stormMetadataKey            = "__storm_metadata"
+)
 
 type Datastore interface {
 	AllInventoryArchives([][]byte) ([]InventoryArchive, error)
@@ -22,11 +29,16 @@ type Datastore interface {
 	SaveUpload(Upload) error
 }
 
+var (
+	Database  = NewDB(os.Getenv("BOLT_DATABASE"))
+)
+
 type DB struct {
 	*storm.DB
 }
 
-func NewDB(dataSourceName string, buckets []string) *DB {
+func NewDB(dataSourceName string) *DB {
+	buckets := []string{plexMoviesBucketName, uploadsBucketName, inventoryArchivesBucketName, oauthTokenBucketName}
 	db, _ := storm.Open(dataSourceName, storm.BoltOptions(0600, &bolt.Options{Timeout: 10 * time.Second}))
 	_ = db.Bolt.Update(func(tx *bolt.Tx) error { //nolint:errcheck
 		for _, value := range buckets {
