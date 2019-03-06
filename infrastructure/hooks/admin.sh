@@ -20,7 +20,7 @@ case $# in
                 --slack-client-id="${SLACK_CLIENT_ID}" \
                 --slack-client-secret="${SLACK_CLIENT_SECRET}" \
                 --slack-code="${SLACK_CODE}" \
-                --slack-code="${SLACK_REDIRECT_URI}" \
+                --slack-redrect-uri="${SLACK_REDIRECT_URI}"
             ;;
          endpoints)
             HOOKS="$(cat /opt/webhook-linux-amd64/hooks.json | grep -o 'id.*' | cut -f2- -d: | sort)"
