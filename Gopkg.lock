@@ -115,7 +115,7 @@
   revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
-  digest = "1:78699c1a7d3ea72c21060abbf76307864a8527ce1ef0545466466f257b975b8a"
+  digest = "1:aa4b2f307965aab3468b2463486f33cccc6b817b435185da80062a1570934fe8"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -140,7 +140,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "5eeb29dccff86d8f496ad7549fee9af0d08ef2df"
+  revision = "22bd828bfbab87816c05ab940221b4051b0ad338"
   version = "1.3.0"
 
 [[projects]]
@@ -357,14 +357,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:656fbe057a9902db8ea93e55e317f5be272f8901be139b003509e338ce58d1a7"
+  digest = "1:1be6480d6816d23e125645a42e38c9a2637a460d8470f432be6ffc02306c5488"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "a98ae47d97a5abb3a3e9045da36315f9f8312970"
+  revision = "3e9a981b8ddba4cb37815d4ebf2171df73c5255b"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
