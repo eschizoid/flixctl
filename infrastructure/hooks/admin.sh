@@ -14,14 +14,6 @@ case $# in
       ;;
    1)
       case $1 in
-         auth)
-            /home/webhook/go/bin/flixctl auth \
-                --token \
-                --slack-client-id="${SLACK_CLIENT_ID}" \
-                --slack-client-secret="${SLACK_CLIENT_SECRET}" \
-                --slack-code="${SLACK_CODE}" \
-                --slack-redrect-uri="${SLACK_REDIRECT_URI}"
-            ;;
          endpoints)
             HOOKS="$(cat /opt/webhook-linux-amd64/hooks.json | grep -o 'id.*' | cut -f2- -d: | sort)"
             HOOKS="$(echo ${HOOKS::-1})"

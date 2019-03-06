@@ -437,13 +437,13 @@
   },
   {
     "id": "auth",
-    "execute-command": "/opt/webhook-linux-amd64/admin.sh",
+    "execute-command": "/opt/webhook-linux-amd64/auth.sh",
     "include-command-output-in-response": true,
     "command-working-directory": "/home/webhook/go/bin",
     "pass-arguments-to-command": [
       {
         "source": "string",
-        "name": "auth"
+        "name": "token"
       }
     ],
     "pass-environment-to-command": [
