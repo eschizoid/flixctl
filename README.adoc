@@ -72,6 +72,9 @@ brew install dep
 |PLEX_PASSWORD|
 |PLEX_TOKEN|
 |PLEX_USER|
+|SLACK_CLIENT ID|
+|SLACK_CLIENT_SECRET|
+|SLACK_REDIRECT_URI|
 |SLACK_LEGACY_TOKEN|
 |SLACK_MONITORING_HOOK_URL|
 |SLACK_NEW_RELEASES_HOOK_URL|
@@ -237,6 +240,14 @@ Use "flixctl nzb [command] --help" for more information about a command.
 ==== ```flixctl```
 ----
 $ flixctl version
+----
+==== ```flixctl auth```
+----
+$ flixctl auth token \
+    --slack-client-id xxxxxxxxxxxx.xxxxxxxxxxxx \
+    --slack-client-secret xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+    --slack-code code \
+    --slack-redrect-uri https://redirect-uri.com
 ----
 ==== ```flixctl plex```
 ----
