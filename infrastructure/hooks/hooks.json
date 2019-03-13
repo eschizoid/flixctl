@@ -136,7 +136,7 @@
     "id": "torrent-download",
     "execute-command": "/opt/webhook-linux-amd64/torrent.sh",
     "command-working-directory": "/home/webhook/go/bin",
-    "response-message": "{\"message\": \"Executing torrent download command\"}",
+    "response-message": "{\"message\": \"Executing torrent download command, check Transmission or NZBGet web interfaces\"}",
     "pass-environment-to-command": [
       {
         "source": "url",

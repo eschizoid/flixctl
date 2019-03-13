@@ -55,7 +55,7 @@
   version = "v1.9.0"
 
 [[projects]]
-  digest = "1:b013511d86010e69c7ef5bc6202a6ceb107b4c314adb12f414c765cc71724a4d"
+  digest = "1:6d485d6f3e2d6c3ce15d6b6c1502bb8389b306e52744d47960ce48c18796f4a8"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -96,12 +96,11 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "754d07f5dfb0a42be29df8da4a5428a321377cb3"
-  version = "v1.17.11"
+  revision = "80f3b4ca3bb7db4e4f6084e92073cb91534d5d1a"
+  version = "v1.18.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:988cfde37f089c50ba1ac8a1032c3f81d2ac0359e1872093b946a30139665eb6"
+  digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
   name = "github.com/dsnet/compress"
   packages = [
     ".",
@@ -112,7 +111,8 @@
     "internal/prefix",
   ]
   pruneopts = "UT"
-  revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
+  revision = "da652975a8eea9fa0735aba8056747a751db0bd3"
+  version = "v0.0.1"
 
 [[projects]]
   digest = "1:aa4b2f307965aab3468b2463486f33cccc6b817b435185da80062a1570934fe8"
@@ -140,7 +140,7 @@
     "torrent",
   ]
   pruneopts = "UT"
-  revision = "22bd828bfbab87816c05ab940221b4051b0ad338"
+  revision = "b52b7c681402bec4158e9046bb23602e47def61f"
   version = "1.3.0"
 
 [[projects]]
@@ -282,12 +282,12 @@
   version = "v0.8.1"
 
 [[projects]]
-  digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
+  digest = "1:e4c72127d910a96daf869a44f3dd563b86dbe6931a172863a0e99c5ff04b59e4"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e1e72e9de974bd926e5c56f83753fba2df402ce5"
-  version = "v1.3.0"
+  revision = "dae0fa8d5b0c810a8ab733fbd5510c7cae84eca4"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
@@ -340,7 +340,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "8dd112bcdc25174059e45e07517d9fc663123347"
+  revision = "a1f597ede03a7bef967a422b5b3a5bd08805a01e"
 
 [[projects]]
   branch = "master"
@@ -353,18 +353,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "16b79f2e4e95ea23b2bf9903c9809ff7b013ce85"
+  revision = "5c2c250b6a70e39b74bb544433a348a892b10530"
 
 [[projects]]
   branch = "master"
-  digest = "1:1be6480d6816d23e125645a42e38c9a2637a460d8470f432be6ffc02306c5488"
+  digest = "1:944736317d4f2fb1c1015ef9ca05fd9313b4e19f1128901cc678f636435fa9b0"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "3e9a981b8ddba4cb37815d4ebf2171df73c5255b"
+  revision = "fead79001313d15903fb4605b4a1b781532cd93e"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
