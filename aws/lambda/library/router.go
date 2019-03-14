@@ -71,7 +71,7 @@ func postToWebhooks(url string, message map[string]interface{}) {
 	}
 	fullURL := url + fmt.Sprintf("?token=%s", slack.SigningSecret)
 	fmt.Printf("Full url: %s", fullURL)
-	resp, err := http.Post(fullURL, "application/json", bytes.NewBuffer(byteMessage))
+	resp, err := http.Post(fullURL, "application/json", bytes.NewBuffer(byteMessage)) //nolint:gosec
 	if err != nil {
 		fmt.Printf("Error while sending post to webhooks: [%s]\n", err)
 	}

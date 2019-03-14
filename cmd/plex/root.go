@@ -18,6 +18,7 @@ var (
 		Use:   "plex",
 		Short: "To Control Plex Media Center",
 	}
+	//maxInactiveTime         string
 	slackNotification       string
 	slackIncomingHookURL    string
 	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
@@ -81,5 +82,11 @@ func Indicator(shutdownCh <-chan struct{}) {
 		case <-shutdownCh:
 			return
 		}
+	}
+}
+
+func ShowError(err error) {
+	if err != nil {
+		fmt.Println(err)
 	}
 }

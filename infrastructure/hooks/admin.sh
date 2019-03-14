@@ -9,7 +9,7 @@ set -u
 
 case $# in
    0)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|maybe-shutdown|renew-certs|restart|upgrade"
       exit 1
       ;;
    1)
@@ -18,6 +18,10 @@ case $# in
             HOOKS="$(cat /opt/webhook-linux-amd64/hooks.json | grep -o 'id.*' | cut -f2- -d: | sort)"
             HOOKS="$(echo ${HOOKS::-1})"
             echo "[${HOOKS}]"
+            ;;
+         maybe-shutdown)
+            /home/webhook/go/bin/flixctl plex monitor \
+                --max-inactive-time 30
             ;;
          metrics)
             ;;
@@ -93,13 +97,13 @@ case $# in
             ;;
          *)
             echo "'$1' is not a valid admin command."
-            echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
+            echo "Usage: $0 {endpoints|metrics|purge-slack|maybe-shutdown|renew-certs|restart|upgrade"
             exit 2
             ;;
       esac
       ;;
    *)
-      echo "Usage: $0 {endpoints|metrics|purge-slack|renew-certs|restart|upgrade}"
+      echo "Usage: $0 {endpoints|metrics|purge-slack|maybe-shutdown|renew-certs|restart|upgrade"
       exit 3
       ;;
 esac

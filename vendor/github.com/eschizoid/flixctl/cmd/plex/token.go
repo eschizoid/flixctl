@@ -22,9 +22,3 @@ var TokenPlexCmd = &cobra.Command{
 		fmt.Println(string(jsonString))
 	},
 }
-
-func ShowError(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
-}

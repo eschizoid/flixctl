@@ -91,7 +91,8 @@ lint: fmt simplify
 	@$(GOLINT) run -v \
 	--deadline=5m \
 	--disable gochecknoglobals \
-	--disable lll
+	--disable lll \
+	--max-same-issues 100
 
 update:
 	@$(GODEP) ensure -update -v
