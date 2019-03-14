@@ -67,6 +67,7 @@ var (
 			StatusPlexCmd,
 			StopPlexCmd,
 			TokenPlexCmd,
+			MonitorPlexCmd,
 		)
 		return struct{}{}
 	}()
