@@ -21,10 +21,12 @@
 /Godeps/
 /aws/lambda/plex/executor/executor
 /aws/lambda/plex/dispatcher/dispatcher
+/aws/lambda/plex/monitor
 /aws/lambda/torrent/torrent
 /aws/lambda/library/library
 /aws/lambda/plex/dispatcher/lambda.zip
 /aws/lambda/plex/executor/lambda.zip
+/aws/lambda/plex/monitor/lambda.zip
 /aws/lambda/torrent/lambda.zip
 /aws/lambda/library/lambda.zip
 /infrastructure/systemd/env
