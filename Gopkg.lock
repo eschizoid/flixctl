@@ -55,7 +55,7 @@
   version = "v1.9.0"
 
 [[projects]]
-  digest = "1:6d485d6f3e2d6c3ce15d6b6c1502bb8389b306e52744d47960ce48c18796f4a8"
+  digest = "1:bcde83f26f82de398c6e7116cd507adb00a672acb7e33a320adf652c12afafd1"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -96,8 +96,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "80f3b4ca3bb7db4e4f6084e92073cb91534d5d1a"
-  version = "v1.18.1"
+  revision = "b0b23985ea7533af9f94731b2c1030a1e46e6500"
+  version = "v1.18.2"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -115,7 +115,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:aa4b2f307965aab3468b2463486f33cccc6b817b435185da80062a1570934fe8"
+  digest = "1:0a3e710b466add11b963736822f557c35d41a66abfcdefea2f515fd854b66a20"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -138,9 +138,10 @@
     "slack/plex",
     "slack/torrent",
     "torrent",
+    "worker",
   ]
   pruneopts = "UT"
-  revision = "b52b7c681402bec4158e9046bb23602e47def61f"
+  revision = "de8ff97b3cb06b05abc9c43e548da641afab366b"
   version = "1.3.0"
 
 [[projects]]
@@ -423,6 +424,7 @@
     "github.com/eschizoid/flixctl/slack/plex",
     "github.com/eschizoid/flixctl/slack/torrent",
     "github.com/eschizoid/flixctl/torrent",
+    "github.com/eschizoid/flixctl/worker",
     "github.com/go-playground/form",
     "github.com/hekmon/transmissionrpc",
     "github.com/jrudio/go-plex-client",

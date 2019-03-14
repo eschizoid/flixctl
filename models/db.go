@@ -12,6 +12,7 @@ import (
 const (
 	inventoryArchivesBucketName = "glacier_archives"
 	plexMoviesBucketName        = "plex_movies"
+	plexSessionsBucketName      = "plex_sessions"
 	uploadsBucketName           = "glacier_uploads"
 	oauthTokenBucketName        = "oauth_tokens" //nolint:gosec
 	stormMetadataKey            = "__storm_metadata"
@@ -26,7 +27,8 @@ type Datastore interface {
 	SaveInventoryArchive(InventoryArchive) error
 	SaveOauthToken(string, string) error
 	SavePlexMovie(plex.Metadata) error
-	SaveUpload(Upload) error
+	SaveLastActiveSession(time.Time) error
+	GetLastActiveSession(Upload) error
 }
 
 var (
@@ -38,7 +40,7 @@ type DB struct {
 }
 
 func NewDB(dataSourceName string) *DB {
-	buckets := []string{plexMoviesBucketName, uploadsBucketName, inventoryArchivesBucketName, oauthTokenBucketName}
+	buckets := []string{plexMoviesBucketName, uploadsBucketName, inventoryArchivesBucketName, oauthTokenBucketName, plexSessionsBucketName}
 	db, _ := storm.Open(dataSourceName, storm.BoltOptions(0600, &bolt.Options{Timeout: 10 * time.Second}))
 	_ = db.Bolt.Update(func(tx *bolt.Tx) error { //nolint:errcheck
 		for _, value := range buckets {
