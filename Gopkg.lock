@@ -115,7 +115,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:0a3e710b466add11b963736822f557c35d41a66abfcdefea2f515fd854b66a20"
+  digest = "1:aff1117b53316c732736f1dec3a61334ecad0acf985d8a1b6e3c82d7bc7b1d1e"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -138,10 +138,9 @@
     "slack/plex",
     "slack/torrent",
     "torrent",
-    "worker",
   ]
   pruneopts = "UT"
-  revision = "de8ff97b3cb06b05abc9c43e548da641afab366b"
+  revision = "ae418d3614b254170554ba19b4256c17724ec852"
   version = "1.3.0"
 
 [[projects]]
@@ -354,7 +353,7 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "5c2c250b6a70e39b74bb544433a348a892b10530"
+  revision = "9f648a60d9775ef5c977e7669d1673a7a67bef33"
 
 [[projects]]
   branch = "master"
@@ -424,7 +423,6 @@
     "github.com/eschizoid/flixctl/slack/plex",
     "github.com/eschizoid/flixctl/slack/torrent",
     "github.com/eschizoid/flixctl/torrent",
-    "github.com/eschizoid/flixctl/worker",
     "github.com/go-playground/form",
     "github.com/hekmon/transmissionrpc",
     "github.com/jrudio/go-plex-client",

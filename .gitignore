@@ -17,10 +17,8 @@
 
 ### Go Patch ###
 /pkg/
-/pkg/
 /src/
 /Godeps/
-flixctl
 /aws/lambda/plex/executor/executor
 /aws/lambda/plex/dispatcher/dispatcher
 /aws/lambda/torrent/torrent
