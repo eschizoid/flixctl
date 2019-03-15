@@ -28,7 +28,7 @@ type Datastore interface {
 	SaveOauthToken(string, string) error
 	SavePlexMovie(plex.Metadata) error
 	SaveLastActiveSession(time.Time) error
-	GetLastActiveSession(Upload) error
+	GetLastActiveSession() error
 }
 
 var (

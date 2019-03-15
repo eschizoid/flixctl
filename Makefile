@@ -53,10 +53,12 @@ build: clean $(TARGET) build-lambdas
 
 clean:
 	@rm -f $(TARGET)
-	@rm -rf $(shell pwd)/aws/lambda/plex/executor/executor
 	@rm -rf $(shell pwd)/aws/lambda/plex/executor/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/plex/executor/executor
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/dispatcher
+	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/monitor
 	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 	@rm -rf $(shell pwd)/aws/lambda/library/lambda.zip

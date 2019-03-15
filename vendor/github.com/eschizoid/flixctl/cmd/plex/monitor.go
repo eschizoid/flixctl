@@ -36,18 +36,20 @@ func Monitor() {
 		m["last_activity"] = fmt.Sprintf("%d/%d/%d %d:%d", now.Month(), now.Day(), now.Year(), now.Hour(), now.Minute())
 	} else {
 		var lastActiveTime time.Time
-		lastActiveTime, err = models.Database.GetLastActiveSession()
-		ShowError(err)
-		duration := time.Since(lastActiveTime).Minutes()
+		lastActiveTime, _ = models.Database.GetLastActiveSession()
+		duration := time.Since(lastActiveTime)
 		inactiveTime, _ := strconv.Atoi(maxInactiveTime)
-		if int(duration) >= inactiveTime {
-			m["plex_status"] = "stopping"
-			m["last_activity"] = lastActiveTime
-			asyncShutdown()
+		if int(duration.Minutes()) >= inactiveTime {
+			if lastActiveTime.IsZero() {
+				m["plex_status"] = "stopped"
+			} else {
+				m["plex_status"] = "stopping"
+				asyncShutdown()
+			}
 		} else {
 			m["plex_status"] = "running"
-			m["last_activity"] = fmt.Sprintf("%d/%d/%d %d:%d", lastActiveTime.Month(), lastActiveTime.Day(), lastActiveTime.Year(), lastActiveTime.Hour(), lastActiveTime.Minute())
 		}
+		m["last_activity"] = fmt.Sprintf("%d/%d/%d %d:%d", lastActiveTime.Month(), lastActiveTime.Day(), lastActiveTime.Year(), lastActiveTime.Hour(), lastActiveTime.Minute())
 	}
 	jsonString, _ := json.Marshal(m)
 	fmt.Println(string(jsonString))

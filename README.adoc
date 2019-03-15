@@ -262,6 +262,9 @@ $ flixctl plex stop \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
+$ flixctl plex monitor \
+    --max-inactive-time 30
+
 $ flixctl plex token
 ----
 ==== ```flixctl torrent```
@@ -319,7 +322,7 @@ $ flixctl library sync \
     --slack-notification "true" \
     --slack-notification-channel "monitoring"
 
-$ /home/webhook/go/bin/flixctl library upload \
+$ flixctl library upload \
     --enable-batch-mode "true"
 
 $ flixctl library upload \
