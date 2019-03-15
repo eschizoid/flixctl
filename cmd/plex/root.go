@@ -21,7 +21,7 @@ var (
 	maxInactiveTime         string
 	slackNotification       string
 	slackIncomingHookURL    string
-	awsResourceTagNameValue  = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
+	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
 )
 
 var (
@@ -30,7 +30,7 @@ var (
 			"max-inactive-time",
 			"m",
 			"30",
-			"max inactive time before shutting down plex",
+			"max inactive minutes before shutting down plex",
 		)
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
