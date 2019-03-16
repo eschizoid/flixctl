@@ -144,7 +144,7 @@ zip-lambda-plex-executor:
 
 zip-lambda-plex-monitor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/monitor/lambda.zip \
-	$(shell pwd)/aws/lambda/plex/executor/monitor \
+	$(shell pwd)/aws/lambda/plex/monitor/monitor \
 	$(shell pwd)/infrastructure/database/storm/library.db
 
 zip-lambda-torrent-router:
@@ -189,11 +189,11 @@ deploy-lambda-plex-executor:
 
 deploy-lambda-plex-monitor:
 	@aws lambda update-function-code \
-	--function-name plex-command-executor \
+	--function-name plex-monitor \
 	--region $(AWS_REGION) \
 	--zip-file fileb://$(shell pwd)/aws/lambda/plex/monitor/lambda.zip
 	@aws lambda update-function-configuration \
-	--function-name plex-command-executor \
+	--function-name plex-monitor \
 	--handler monitor \
 	--region $(AWS_REGION) \
 	--timeout 900 \

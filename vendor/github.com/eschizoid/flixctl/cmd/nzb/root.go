@@ -7,7 +7,7 @@ import (
 var (
 	RootNzbCmd = &cobra.Command{
 		Use:   "nzb",
-		Short: "To Control Nzb Client",
+		Short: "To Control NZB Client",
 	}
 )
 

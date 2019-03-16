@@ -6,7 +6,7 @@ import (
 
 var StatusNzbCmd = &cobra.Command{
 	Use:   "status",
-	Short: "To Show Nzb Status",
+	Short: "To Show NZB Status",
 	Long:  "to show the status of the nzb files being downloaded.",
 	Run: func(cmd *cobra.Command, args []string) {
 	},
