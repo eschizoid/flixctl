@@ -41,7 +41,7 @@ func Monitor() {
 		inactiveTime, _ := strconv.Atoi(maxInactiveTime)
 		if int(duration.Minutes()) >= inactiveTime {
 			if lastActiveTime.IsZero() {
-				m["plex_status"] = "stopped"
+				m["plex_status"] = "stopped" //nolint:goconst
 			} else {
 				m["plex_status"] = "stopping"
 				asyncShutdown()

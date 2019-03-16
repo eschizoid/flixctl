@@ -235,6 +235,54 @@ Flags:
 
 Use "flixctl nzb [command] --help" for more information about a command.
 ----
+==== ```flixctl auth```
+----
+$ flixctl auth --help
+To Start Oauth Flow With Slack
+
+Usage:
+  flixctl auth [command]
+
+Available Commands:
+  token       To Get An Oauth Token
+
+Flags:
+  -h, --help   help for auth
+
+Use "flixctl auth [command] --help" for more information about a command.
+----
+==== ```flixctl ombi```
+----
+$ flixctl ombi --help                                                                                                                                                                        ✘ 130 master ✭ ✱
+To Control Ombi
+
+Usage:
+  flixctl ombi [command]
+
+Available Commands:
+  request     To Request Movies or Shows
+
+Flags:
+  -h, --help   help for ombi
+
+Use "flixctl ombi [command] --help" for more information about a command.
+----
+==== ```flixctl nzb```
+----
+$ flixctl nzb --help
+To Control NZB Client
+
+Usage:
+  flixctl nzb [command]
+
+Available Commands:
+  status      To Show NZB Status
+
+Flags:
+  -h, --help   help for nzb
+
+Use "flixctl nzb [command] --help" for more information about a command.
+----
 
 === Examples
 ==== ```flixctl```
@@ -328,28 +376,3 @@ $ flixctl library upload \
 $ flixctl library upload \
     --enable-batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
-----
-==== ```flixctl ombi```
-----
-$ flixctl ombi --help
-----
-==== ```flixctl nzb```
-----
-$ flixctl nzb --help
-----
-==== ```flixctl auth```
-----
-$ flixctl auth --help
-To Start Oauth Flow With Slack
-
-Usage:
-  flixctl auth [command]
-
-Available Commands:
-  token       To Get An Oauth Token
-
-Flags:
-  -h, --help   help for auth
-
-Use "flixctl auth [command] --help" for more information about a command.
-----
