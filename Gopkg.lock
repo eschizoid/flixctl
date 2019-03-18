@@ -26,21 +26,6 @@
   version = "v2.0.1"
 
 [[projects]]
-  digest = "1:d635f8be9fe9ac939f30036fd21e5647705f194cea7ae694027ab6855e0bc8f1"
-  name = "github.com/asdine/storm"
-  packages = [
-    ".",
-    "codec",
-    "codec/json",
-    "index",
-    "internal",
-    "q",
-  ]
-  pruneopts = "UT"
-  revision = "fe89819f6282b0b611a547efaf78edcd2d5bc148"
-  version = "v2.2.0"
-
-[[projects]]
   digest = "1:f39fff1c04503565e175cb045fd0c1b917abccdae0be8900388363b2a5e0a10b"
   name = "github.com/aws/aws-lambda-go"
   packages = [
@@ -118,7 +103,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:939f1b3021803a1d8e13df4480f7e7e8b17038c984aa32b3e7db3210ffb5baf2"
+  digest = "1:f1894a51b4a016f33a0a91349c45eb29f85bfd89754e9092c614541f7cdc8a6c"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -144,8 +129,8 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "a10c8ec349648b9d0f4156212b8b3b7ed7790340"
-  version = "1.3.0"
+  revision = "7964522c8962bffd68245cfde27f404de111bbee"
+  version = "2.0.0"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -331,14 +316,6 @@
   revision = "48954b6210f8d154cb5f8484d3a3e1f83489309e"
 
 [[projects]]
-  digest = "1:5f7414cf41466d4b4dd7ec52b2cd3e481e08cfd11e7e24fef730c0e483e88bb1"
-  name = "go.etcd.io/bbolt"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "63597a96ec0ad9e6d43c3fc81e809909e0237461"
-  version = "v1.3.2"
-
-[[projects]]
   branch = "master"
   digest = "1:058e9504b9a79bfe86092974d05bb3298d2aa0c312d266d43148de289a5065d9"
   name = "golang.org/x/crypto"
@@ -357,7 +334,7 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "9f648a60d9775ef5c977e7669d1673a7a67bef33"
+  revision = "d196dffd7c2beec1957382065df08bcc353b9706"
 
 [[projects]]
   branch = "master"
