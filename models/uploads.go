@@ -48,7 +48,7 @@ func FindUploadByID(title string, svc *dynamodb.DynamoDB) (Upload, error) {
 	var queryInput = &dynamodb.QueryInput{
 		TableName: aws.String(plexSessionsTableName),
 		KeyConditions: map[string]*dynamodb.Condition{
-			"id": {
+			"title": {
 				ComparisonOperator: aws.String("EQ"),
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{

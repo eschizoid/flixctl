@@ -48,7 +48,7 @@ func DeleteInventoryArchive(key string, svc *dynamodb.DynamoDB) (err error) {
 	result, _ := svc.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(inventoryArchivesTableName),
 		Key: map[string]*dynamodb.AttributeValue{
-			"id": {
+			"archive_id": {
 				N: aws.String(key),
 			},
 		},

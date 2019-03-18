@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -22,7 +23,7 @@ var DeleteArchiveLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svcGlacier := glacier.New(awsSession)
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 		svcDynamo := dynamodb.New(awsSession)
 		deleteArchiveOutput := glacierService.DeleteArchive(archiveID, svcGlacier)
 		err := libraryService.DeleteteGlacierInventoryArchive(archiveID, svcDynamo)

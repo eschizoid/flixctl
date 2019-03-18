@@ -48,11 +48,11 @@ Slack Slash API, making the full CLI available from any Slack workspace wishing 
 * https://github.com/adnanh/webhook[Webhooks]
 
 === Pre-requisites
-==== Hardware
-* EC2 Instance
-* EBS Volume
-* Glacier Vault
-* S3 Bucket
+==== Infrastructure
+* 1 EC2 Instance
+* 2 EBS Volume, 1 for ROOT and 1 for Plex Library
+* 1 Glacier Vault (For Plex library cold storage)
+* 1 S3 Bucket (For Plex library cold storage)
 
 ==== Software
 ----
@@ -66,8 +66,8 @@ brew install dep
 |Environment Variable Name|Description
 
 |AWS_RESOURCE_TAG_NAME_VALUE|
-|BOLT_DATABASE|
 |ENABLE_LIBRARY_SYNC|
+|DYNAMODB_ENDPOINT|
 |HOOKS_URL|
 |FLIXCTL_HOST|
 |PLEX_PASSWORD|

@@ -2,6 +2,7 @@ package library
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -25,7 +26,7 @@ var UploadLibraryCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 		svc := dynamodb.New(awsSession)
 		movies, _ := libraryService.GetCachedPlexMovies(svc)
 		var upload models.Upload

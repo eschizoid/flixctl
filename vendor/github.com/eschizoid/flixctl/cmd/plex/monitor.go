@@ -22,16 +22,16 @@ var MonitorPlexCmd = &cobra.Command{
 	Short: "To Monitor Plex Sessions",
 	Long:  "to monitor plex sessions and shut it down if no activity.",
 	Run: func(cmd *cobra.Command, args []string) {
-		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
-			SharedConfigState: sess.SharedConfigEnable,
-		}))
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
-		svc := dynamodb.New(awsSession)
-		Monitor(svc)
+		Monitor()
 	},
 }
 
-func Monitor(svc *dynamodb.DynamoDB) {
+func Monitor() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
+	svc := dynamodb.New(awsSession)
 	plexClient, err := plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), os.Getenv("PLEX_TOKEN"))
 	ShowError(err)
 	m := make(map[string]interface{})

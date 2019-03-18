@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -20,7 +21,7 @@ var TokenCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 		svc := dynamodb.New(awsSession)
 		if resp, err := slack.GetOAuthResponse(slackClientID, slackClientSecret, slackCode, slackRedirectURI, true); err != nil {
 			m := make(map[string]string)
