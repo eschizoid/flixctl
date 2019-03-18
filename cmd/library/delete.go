@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
@@ -19,9 +21,11 @@ var DeleteArchiveLibraryCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
-		svc := glacier.New(awsSession)
-		deleteArchiveOutput := glacierService.DeleteArchive(svc, archiveID)
-		err := libraryService.DeleteteGlacierInventoryArchive(archiveID)
+		svcGlacier := glacier.New(awsSession)
+		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		svcDynamo := dynamodb.New(awsSession)
+		deleteArchiveOutput := glacierService.DeleteArchive(archiveID, svcGlacier)
+		err := libraryService.DeleteteGlacierInventoryArchive(archiveID, svcDynamo)
 		ShowError(err)
 		json, _ := json.Marshal(deleteArchiveOutput)
 		fmt.Println(string(json))

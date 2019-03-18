@@ -18,7 +18,7 @@ var (
 		Use:   "plex",
 		Short: "To Control Plex Media Center",
 	}
-	//maxInactiveTime         string
+	maxInactiveTime         string
 	slackNotification       string
 	slackIncomingHookURL    string
 	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
@@ -26,12 +26,12 @@ var (
 
 var (
 	_ = func() struct{} {
-		//MonitorPlexCmd.Flags().StringVarP(&maxInactiveTime,
-		//	"max-inactive-time",
-		//	"m",
-		//	"30",
-		//	"max inactive minutes before shutting down plex",
-		//)
+		MonitorPlexCmd.Flags().StringVarP(&maxInactiveTime,
+			"max-inactive-time",
+			"m",
+			"30",
+			"max inactive minutes before shutting down plex",
+		)
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
@@ -73,7 +73,7 @@ var (
 			StatusPlexCmd,
 			StopPlexCmd,
 			TokenPlexCmd,
-			//MonitorPlexCmd,
+			MonitorPlexCmd,
 		)
 		return struct{}{}
 	}()

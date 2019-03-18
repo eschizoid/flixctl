@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	libraryService "github.com/eschizoid/flixctl/library"
@@ -23,8 +25,8 @@ var SyncLibraryCmd = &cobra.Command{
 		svc := ec2.New(awsSession, awsSession.Config)
 		instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 		if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
-			SyncMovieLibrary(0)
-			SyncMovieLibrary(1)
+			SyncMovieLibrary(0, awsSession)
+			SyncMovieLibrary(1, awsSession)
 		} else {
 			m := make(map[string]string)
 			m["plex_status"] = strings.ToLower(ec2StatusStopped)
@@ -34,10 +36,12 @@ var SyncLibraryCmd = &cobra.Command{
 	},
 }
 
-func SyncMovieLibrary(unwatched int) {
+func SyncMovieLibrary(unwatched int, awsSession *sess.Session) {
+	awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+	svc := dynamodb.New(awsSession)
 	movies, _ := libraryService.GetLivePlexMovies(unwatched)
 	for _, movie := range movies {
-		err := libraryService.SavePlexMovie(movie)
+		err := libraryService.SavePlexMovie(movie, svc)
 		ShowError(err)
 	}
 }

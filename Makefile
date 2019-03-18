@@ -8,7 +8,7 @@ GOLINT := golangci-lint
 GOFMT := gofmt
 SHELL := /bin/bash
 TARGET := $(shell echo $${PWD\#\#*/})
-VERSION := 1.3.0
+VERSION := 2.0.0
 BUILD := `git rev-parse --short HEAD`
 LDFLAGS=-ldflags "-X=main.VERSION=$(VERSION) -X=main.BUILD=$(BUILD)"
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
@@ -17,7 +17,6 @@ define environment
 {
   "Variables": {
     "AWS_RESOURCE_TAG_NAME_VALUE": "$(AWS_RESOURCE_TAG_NAME_VALUE)",
-    "BOLT_DATABASE": "$(BOLT_DATABASE)",
     "ENABLE_LIBRARY_SYNC": "$(ENABLE_LIBRARY_SYNC)",
     "FLIXCTL_HOST": "$(FLIXCTL_HOST)",
     "HOOKS_URL": "$(HOOKS_URL)",
@@ -134,28 +133,23 @@ zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor z
 
 zip-lambda-plex-dispatcher:
 	zip -j -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
-	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher \
-	$(shell pwd)/infrastructure/database/storm/library.db
+	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher
 
 zip-lambda-plex-executor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
-	$(shell pwd)/aws/lambda/plex/executor/executor \
-	$(shell pwd)/infrastructure/database/storm/library.db
+	$(shell pwd)/aws/lambda/plex/executor/executor
 
 zip-lambda-plex-monitor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/monitor/lambda.zip \
-	$(shell pwd)/aws/lambda/plex/monitor/monitor \
-	$(shell pwd)/infrastructure/database/storm/library.db
+	$(shell pwd)/aws/lambda/plex/monitor/monitor
 
 zip-lambda-torrent-router:
 	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
-	$(shell pwd)/aws/lambda/torrent/torrent \
-	$(shell pwd)/infrastructure/database/storm/library.db
+	$(shell pwd)/aws/lambda/torrent/torrent
 
 zip-lambda-library-router:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
-	$(shell pwd)/aws/lambda/library/library \
-	$(shell pwd)/infrastructure/database/storm/library.db
+	$(shell pwd)/aws/lambda/library/library
 
 deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-plex-monitor deploy-lambda-torrent-router deploy-lambda-library-router
 

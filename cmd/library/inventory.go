@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"strconv"
 
+	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
@@ -25,11 +27,13 @@ var InventoryLibraryCmd = &cobra.Command{
 		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
+		svcGlacier := glacier.New(awsSession)
+		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		svcDynamo := dynamodb.New(awsSession)
 		if sync, _ := strconv.ParseBool(enableLibrarySync); sync && jobID != "" {
-			err := libraryService.DeleteteGlacierInventoryArchives()
+			err := libraryService.DeleteteGlacierInventoryArchives(svcDynamo)
 			ShowError(err)
-			svc := glacier.New(awsSession)
-			jobOutputOutput := glacierService.GetJobOutput(svc, jobID)
+			jobOutputOutput := glacierService.GetJobOutput(svcGlacier, jobID)
 			defer jobOutputOutput.Body.Close()
 			response, err := ioutil.ReadAll(jobOutputOutput.Body)
 			ShowError(err)
@@ -37,13 +41,13 @@ var InventoryLibraryCmd = &cobra.Command{
 			err = json.Unmarshal(response, &inventoryRetrieve)
 			ShowError(err)
 			for _, archive := range inventoryRetrieve.ArchiveList {
-				err = libraryService.SaveGlacierInventoryArchive(archive)
+				err = libraryService.SaveGlacierInventoryArchive(archive, svcDynamo)
 				ShowError(err)
 			}
 		} else {
 			panic("job-id parameter should be provided")
 		}
-		glacierArchives, err := libraryService.GetGlacierInventoryArchives()
+		glacierArchives, err := libraryService.GetGlacierInventoryArchives(svcDynamo)
 		ShowError(err)
 		jsonString, err := json.Marshal(glacierArchives)
 		ShowError(err)

@@ -6,7 +6,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	ec2Service "github.com/eschizoid/flixctl/aws/ec2"
 	libraryService "github.com/eschizoid/flixctl/library"
@@ -20,12 +22,18 @@ var CatalogueLibraryCmd = &cobra.Command{
 	Short: "To Show Plex And Library Catalogue",
 	Long:  "to show plex and library catalogue.",
 	Run: func(cmd *cobra.Command, args []string) {
+		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+			SharedConfigState: sess.SharedConfigEnable,
+		}))
+		svcEc2 := ec2.New(awsSession, awsSession.Config)
+		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		svcDynamo := dynamodb.New(awsSession)
 		switch archiveFilter {
 		case "all": //nolint:goconst
-			cachedMovies, err := libraryService.GetCachedPlexMovies()
+			cachedMovies, err := libraryService.GetCachedPlexMovies(svcDynamo)
 			ShowError(err)
 			var libraryMovies []models.Movie
-			uploads, err := libraryService.GetGlacierMovies()
+			uploads, err := libraryService.GetGlacierMovies(svcDynamo)
 			ShowError(err)
 			for _, upload := range uploads {
 				glacierMovie := models.Movie{
@@ -42,7 +50,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			fmt.Println(string(json))
 		case "archived":
 			var archivedMovies []models.Movie
-			uploads, err := libraryService.GetGlacierMovies()
+			uploads, err := libraryService.GetGlacierMovies(svcDynamo)
 			ShowError(err)
 			for _, upload := range uploads {
 				glacierMovie := models.Movie{
@@ -57,12 +65,8 @@ var CatalogueLibraryCmd = &cobra.Command{
 			json, _ := json.Marshal(archivedMovies)
 			fmt.Println(string(json))
 		case "live":
-			var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
-				SharedConfigState: sess.SharedConfigEnable,
-			}))
-			svc := ec2.New(awsSession, awsSession.Config)
-			instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
-			if ec2Status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
+			instanceID := ec2Service.FetchInstanceID(svcEc2, awsResourceTagNameValue)
+			if ec2Status := ec2Service.Status(svcEc2, instanceID); strings.EqualFold(ec2Status, ec2StatusRunning) {
 				liveMovies, err := libraryService.GetLivePlexMovies(1)
 				ShowError(err)
 				if notify, _ := strconv.ParseBool(slackNotification); notify {
@@ -78,7 +82,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			}
 		case "watched":
 			var watchedMovies []models.Movie
-			plexMovies, err := libraryService.GetCachedPlexMovies()
+			plexMovies, err := libraryService.GetCachedPlexMovies(svcDynamo)
 			ShowError(err)
 			watchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 0
@@ -90,7 +94,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			fmt.Println(string(json))
 		case "unwatched":
 			var unwatchedMovies []models.Movie
-			plexMovies, err := libraryService.GetCachedPlexMovies()
+			plexMovies, err := libraryService.GetCachedPlexMovies(svcDynamo)
 			ShowError(err)
 			unwatchedMovies = filterMovies(plexMovies, func(unwatched int) bool {
 				return unwatched == 1
@@ -101,7 +105,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			json, _ := json.Marshal(unwatchedMovies)
 			fmt.Println(string(json))
 		default:
-			plexMovies, err := libraryService.GetCachedPlexMovies()
+			plexMovies, err := libraryService.GetCachedPlexMovies(svcDynamo)
 			ShowError(err)
 			if notify, _ := strconv.ParseBool(slackNotification); notify {
 				slackService.SendCatalogue(plexMovies, slackIncomingHookURL)

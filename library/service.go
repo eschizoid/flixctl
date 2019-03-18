@@ -4,15 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/eschizoid/flixctl/models"
-	"github.com/jrudio/go-plex-client" //nolint:goimports
-	bolt "go.etcd.io/bbolt"
-)
-
-const (
-	inventoryArchivesBucketName = "glacier_archives"
-	plexMoviesBucketName        = "plex_movies"
-	uploadsBucketName           = "glacier_uploads"
+	"github.com/jrudio/go-plex-client"
 )
 
 var (
@@ -33,6 +27,7 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	for _, metadata := range searchResults.MediaContainer.Metadata {
 		movie := models.Movie{
 			Metadata:  metadata,
+			Title:     metadata.Title,
 			Unwatched: filter,
 		}
 		movies = append(movies, movie)
@@ -40,46 +35,38 @@ func GetLivePlexMovies(filter int) (movies []models.Movie, err error) {
 	return movies, err
 }
 
-func DeleteteGlacierInventoryArchives() (err error) {
-	keys := getAllKeys([]byte(inventoryArchivesBucketName))
-	return models.Database.DeleteAllInventoryArchives(keys)
+func DeleteteGlacierInventoryArchives(svc *dynamodb.DynamoDB) (err error) {
+	return models.DeleteAllInventoryArchives(svc)
 }
 
-func DeleteteGlacierInventoryArchive(key string) (err error) {
-	return models.Database.DeleteInventoryArchive(key)
+func DeleteteGlacierInventoryArchive(key string, svc *dynamodb.DynamoDB) (err error) {
+	return models.DeleteInventoryArchive(key, svc)
 }
 
-func GetCachedPlexMovies() ([]models.Movie, error) {
-	keys := getAllKeys([]byte(plexMoviesBucketName))
-	return models.Database.AllPlexMovies(keys)
+func GetCachedPlexMovies(svc *dynamodb.DynamoDB) ([]models.Movie, error) {
+	return models.AllPlexMovies(svc)
 }
 
-func GetGlacierMovies() (uploads []models.Upload, err error) {
-	keys := getAllKeys([]byte(uploadsBucketName))
-	return models.Database.AllUploads(keys)
+func GetGlacierMovies(svc *dynamodb.DynamoDB) (uploads []models.Upload, err error) {
+	return models.AllUploads(svc)
 }
 
-func GetGlacierInventoryArchives() (archives []models.InventoryArchive, err error) {
-	keys := getAllKeys([]byte(inventoryArchivesBucketName))
-	return models.Database.AllInventoryArchives(keys)
+func GetGlacierInventoryArchives(svc *dynamodb.DynamoDB) (archives []models.InventoryArchive, err error) {
+	return models.AllInventoryArchives(svc)
 }
 
-func FindGlacierMovie(title string) (archives models.Upload, err error) {
-	return models.Database.FindUploadByID(title)
-}
-
-func SaveGlacierInventoryArchive(archive models.InventoryArchive) error {
-	err := models.Database.SaveInventoryArchive(archive)
+func SaveGlacierInventoryArchive(archive models.InventoryArchive, svc *dynamodb.DynamoDB) error {
+	err := models.SaveInventoryArchive(archive, svc)
 	return err
 }
 
-func SaveGlacierMovie(upload models.Upload) error {
-	err := models.Database.SaveUpload(upload)
+func SaveGlacierMovie(upload models.Upload, svc *dynamodb.DynamoDB) error {
+	err := models.SaveUpload(upload, svc)
 	return err
 }
 
-func SavePlexMovie(movie models.Movie) error {
-	err := models.Database.SavePlexMovie(movie)
+func SavePlexMovie(movie models.Movie, svc *dynamodb.DynamoDB) error {
+	err := models.SavePlexMovie(movie, svc)
 	return err
 }
 
@@ -91,24 +78,6 @@ func findMoviesDirectory(directories []plex.Directory, test func(string) bool) (
 		}
 	}
 	return movieDirectory
-}
-
-func getAllKeys(bucket []byte) [][]byte {
-	var keys [][]byte
-	models.Database.Bolt.View(func(tx *bolt.Tx) error { //nolint:errcheck
-		b := tx.Bucket(bucket)
-		_ = b.ForEach(func(k, v []byte) error { //nolint:errcheck
-			// Due to
-			// Byte slices returned from Bolt are only valid during a transaction. Once the transaction has been committed or rolled back then the memory they point to can be reused by a new page or can be unmapped from virtual memory and you'll see an unexpected fault address panic when accessing it.
-			// We copy the slice to retain it
-			dst := make([]byte, len(k))
-			copy(dst, k)
-			keys = append(keys, dst)
-			return nil
-		})
-		return nil
-	})
-	return keys
 }
 
 func showError(err error) {

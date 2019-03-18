@@ -1,38 +1,91 @@
 package models
 
+import (
+	"fmt"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+)
+
 type InventoryArchive struct {
-	ArchiveDescription string
-	ArchiveID          string
-	CreationDate       string
-	SHA256TreeHash     string
-	Size               int
+	ArchiveDescription string `json:"archive_description"`
+	ArchiveID          string `json:"archive_id"`
+	CreationDate       string `json:"creation_date"`
+	SHA256TreeHash     string `json:"sha256_tree_hash"`
+	Size               int    `json:"size"`
 }
 
-func (db *DB) SaveInventoryArchive(inventoryArchive InventoryArchive) error {
-	err := db.Set(inventoryArchivesBucketName, inventoryArchive.ArchiveID, inventoryArchive)
+func SaveInventoryArchive(inventoryArchive InventoryArchive, svc *dynamodb.DynamoDB) (err error) {
+	var av map[string]*dynamodb.AttributeValue
+	av, _ = dynamodbattribute.MarshalMap(inventoryArchive)
+	input := &dynamodb.PutItemInput{
+		Item:      av,
+		TableName: aws.String(inventoryArchivesTableName),
+	}
+	_, err = svc.PutItem(input)
 	return err
 }
 
-func (db *DB) AllInventoryArchives(keys [][]byte) (inventoryArchives []InventoryArchive, err error) {
-	for _, key := range keys {
-		if stringKey := string(key); stringKey != stormMetadataKey {
-			var inventoryArchive InventoryArchive
-			err = db.Get(inventoryArchivesBucketName, stringKey, &inventoryArchive)
-			inventoryArchives = append(inventoryArchives, inventoryArchive)
+func AllInventoryArchives(svc *dynamodb.DynamoDB) (inventoryArchives []InventoryArchive, err error) {
+	params := &dynamodb.ScanInput{
+		TableName: aws.String(inventoryArchivesTableName),
+	}
+	result, _ := svc.Scan(params)
+	for _, i := range result.Items {
+		item := InventoryArchive{}
+		err = dynamodbattribute.UnmarshalMap(i, &item)
+		if err != nil {
+			fmt.Println("Got error unmarshalling:")
+			fmt.Println(err.Error())
 		}
+		inventoryArchives = append(inventoryArchives, item)
 	}
 	return inventoryArchives, err
 }
 
-func (db *DB) DeleteInventoryArchive(key string) (err error) {
-	err = db.Delete(inventoryArchivesBucketName, key)
+func DeleteInventoryArchive(key string, svc *dynamodb.DynamoDB) (err error) {
+	result, _ := svc.GetItem(&dynamodb.GetItemInput{
+		TableName: aws.String(inventoryArchivesTableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"id": {
+				N: aws.String(key),
+			},
+		},
+	})
+	av, _ := dynamodbattribute.MarshalMap(result.Item)
+	input := &dynamodb.DeleteItemInput{
+		Key:       av,
+		TableName: aws.String(inventoryArchivesTableName),
+	}
+	_, err = svc.DeleteItem(input)
+	if err != nil {
+		fmt.Println("Got error calling DeleteItem")
+		fmt.Println(err.Error())
+	}
 	return err
 }
 
-func (db *DB) DeleteAllInventoryArchives(keys [][]byte) (err error) {
-	for _, key := range keys {
-		if stringKey := string(key); stringKey != stormMetadataKey {
-			err = db.Delete(inventoryArchivesBucketName, stringKey)
+func DeleteAllInventoryArchives(svc *dynamodb.DynamoDB) (err error) {
+	params := &dynamodb.ScanInput{
+		TableName: aws.String(inventoryArchivesTableName),
+	}
+	result, err := svc.Scan(params)
+	for _, item := range result.Items {
+		var av map[string]*dynamodb.AttributeValue
+		av, _ = dynamodbattribute.MarshalMap(item)
+		if err != nil {
+			fmt.Println("Got error marshalling map:")
+			fmt.Println(err.Error())
+		}
+		input := &dynamodb.DeleteItemInput{
+			Key:       av,
+			TableName: aws.String(inventoryArchivesTableName),
+		}
+		_, err = svc.DeleteItem(input)
+		if err != nil {
+			fmt.Println("Got error calling DeleteItem")
+			fmt.Println(err.Error())
 		}
 	}
 	return err

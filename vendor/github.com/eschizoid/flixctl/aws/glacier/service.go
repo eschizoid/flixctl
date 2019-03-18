@@ -53,7 +53,7 @@ func InitiateJob(svc *glacier.Glacier, archiveID string) *glacier.InitiateJobOut
 	return result
 }
 
-func DeleteArchive(svc *glacier.Glacier, archiveID string) *glacier.DeleteArchiveOutput { //nolint:dupl
+func DeleteArchive(archiveID string, svc *glacier.Glacier) *glacier.DeleteArchiveOutput { //nolint:dupl
 	input := &glacier.DeleteArchiveInput{
 		AccountId: aws.String("-"),
 		ArchiveId: aws.String(archiveID),
