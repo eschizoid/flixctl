@@ -23,10 +23,11 @@ Slack Slash API, making the full CLI available from any Slack workspace wishing 
 
 === Components
 
-==== Hardware (AWS)
+==== Infrastructure (AWS)
 * https://aws.amazon.com/api-gateway[API Geteway]
 * https://aws.amazon.com/ebs[EBS]
 * https://aws.amazon.com/ec2[EC2]
+* https://aws.amazon.com/dynamodb[DynamoDB]
 * https://aws.amazon.com/glacier[Glacier]
 * https://aws.amazon.com/lambda[Lambda]
 * https://aws.amazon.com/sns[SNS]

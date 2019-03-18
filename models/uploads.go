@@ -1,33 +1,69 @@
 package models
 
 import (
+	"fmt"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/glacier"
-	"github.com/jrudio/go-plex-client" //nolint:goimports
+	"github.com/jrudio/go-plex-client"
 )
 
 type Upload struct {
-	Metadata              plex.Metadata
-	ArchiveCreationOutput glacier.ArchiveCreationOutput
+	Metadata              plex.Metadata                 `json:"metadata"`
+	ArchiveCreationOutput glacier.ArchiveCreationOutput `json:"archive_creation_output"`
+	Title                 string                        `json:"title"`
 }
 
-func (db *DB) SaveUpload(upload Upload) error {
-	err := db.Set(uploadsBucketName, upload.Metadata.Title, upload)
+func SaveUpload(upload Upload, svc *dynamodb.DynamoDB) (err error) {
+	var av map[string]*dynamodb.AttributeValue
+	av, _ = dynamodbattribute.MarshalMap(upload)
+	input := &dynamodb.PutItemInput{
+		Item:      av,
+		TableName: aws.String(uploadsTableName),
+	}
+	_, err = svc.PutItem(input)
 	return err
 }
 
-func (db *DB) AllUploads(keys [][]byte) (uploads []Upload, err error) {
-	for _, key := range keys {
-		if stringKey := string(key); stringKey != stormMetadataKey {
-			var upload Upload
-			err = db.Get(uploadsBucketName, stringKey, &upload)
-			uploads = append(uploads, upload)
+func AllUploads(svc *dynamodb.DynamoDB) (uploads []Upload, err error) {
+	params := &dynamodb.ScanInput{
+		TableName: aws.String(uploadsTableName),
+	}
+	result, err := svc.Scan(params)
+	for _, i := range result.Items {
+		item := Upload{}
+		err = dynamodbattribute.UnmarshalMap(i, &item)
+		if err != nil {
+			fmt.Println("Got error unmarshalling:")
+			fmt.Println(err.Error())
 		}
+		uploads = append(uploads, item)
 	}
 	return uploads, err
 }
 
-func (db *DB) FindUploadByID(title string) (Upload, error) {
-	var upload Upload
-	err := db.Get(uploadsBucketName, title, &upload)
-	return upload, err
+func FindUploadByID(title string, svc *dynamodb.DynamoDB) (Upload, error) {
+	var queryInput = &dynamodb.QueryInput{
+		TableName: aws.String(plexSessionsTableName),
+		KeyConditions: map[string]*dynamodb.Condition{
+			"id": {
+				ComparisonOperator: aws.String("EQ"),
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						S: aws.String(title),
+					},
+				},
+			},
+		},
+	}
+	var result, err = svc.Query(queryInput)
+	item := Upload{}
+	err = dynamodbattribute.UnmarshalMap(result.Items[0], &item)
+	if err != nil {
+		fmt.Println("Got error unmarshalling:")
+		fmt.Println(err.Error())
+	}
+	return item, err
 }

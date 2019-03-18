@@ -92,7 +92,6 @@ case $# in
             cd /home/webhook/go/src/github.com/eschizoid/flixctl
             cp -r infrastructure/hooks/{*.sh,*.json} /opt/webhook-linux-amd64/
             /bin/make install
-            rm -rf /home/webhook/go/src/github.com/eschizoid/flixctl/infrastructure/database/storm/library.db
             /home/webhook/go/bin/flixctl version
             ;;
          *)

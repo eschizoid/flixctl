@@ -5,12 +5,13 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/glacier"
 	glacierService "github.com/eschizoid/flixctl/aws/glacier"
 	libraryService "github.com/eschizoid/flixctl/library"
 	"github.com/eschizoid/flixctl/models"
-	"github.com/jrudio/go-plex-client" //nolint:goimports
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +22,12 @@ var UploadLibraryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
-		movies, _ := libraryService.GetCachedPlexMovies()
+		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+			SharedConfigState: sess.SharedConfigEnable,
+		}))
+		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		svc := dynamodb.New(awsSession)
+		movies, _ := libraryService.GetCachedPlexMovies(svc)
 		var upload models.Upload
 		if batchMode, _ := strconv.ParseBool(enableBatchUpload); batchMode {
 			if maxUploadItems != "" {
@@ -39,23 +45,12 @@ var UploadLibraryCmd = &cobra.Command{
 					upload = models.Upload{
 						ArchiveCreationOutput: *archiveCreationOutput,
 						Metadata:              movie.Metadata,
+						Title:                 movie.Title,
 					}
 				}
-				err := libraryService.SaveGlacierMovie(upload)
+				err := libraryService.SaveGlacierMovie(upload, svc)
 				ShowError(err)
 			}
-		} else {
-			sourceFolder, err := filepath.Abs(filepath.Dir(sourceFile))
-			ShowError(err)
-			archiveCreationOutput := Archive(sourceFile, sourceFolder)
-			upload = models.Upload{
-				ArchiveCreationOutput: *archiveCreationOutput,
-				Metadata: plex.Metadata{
-					Title: sourceFile,
-				},
-			}
-			err = libraryService.SaveGlacierMovie(upload)
-			ShowError(err)
 		}
 		close(shutdownCh)
 	},
