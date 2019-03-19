@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/slack"
@@ -18,7 +19,7 @@ func executePlexCommand(evt json.RawMessage) {
 	case "start":
 		plex.Start()
 	case "stop":
-		plex.Stop()
+		plex.Stop(os.Getenv("SLACK_NOTIFICATION"))
 	case "status":
 		plex.Status()
 	}

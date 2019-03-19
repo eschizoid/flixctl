@@ -21,6 +21,7 @@ case $# in
             ;;
          maybe-shutdown)
             /home/webhook/go/bin/flixctl plex monitor \
+                --slack-notification "${SLACK_NOTIFICATION}" \
                 --max-inactive-time 30
             ;;
          metrics)

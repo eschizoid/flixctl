@@ -21,7 +21,7 @@ var StopPlexCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)
-		Stop()
+		Stop(slackNotification)
 		close(shutdownCh)
 		m := make(map[string]string)
 		m["plex_status"] = "stopped"
@@ -30,7 +30,7 @@ var StopPlexCmd = &cobra.Command{
 	},
 }
 
-func Stop() {
+func Stop(slackNotification string) {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))

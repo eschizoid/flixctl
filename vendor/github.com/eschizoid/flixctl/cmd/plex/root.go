@@ -32,6 +32,12 @@ var (
 			"30",
 			"max inactive minutes before shutting down plex",
 		)
+		MonitorPlexCmd.Flags().StringVarP(&slackNotification,
+			"slack-notification",
+			"n",
+			os.Getenv("SLACK_NOTIFICATION"),
+			"if true, will try to notify to a slack channel",
+		)
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
