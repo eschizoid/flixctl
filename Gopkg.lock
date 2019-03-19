@@ -103,7 +103,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:f1894a51b4a016f33a0a91349c45eb29f85bfd89754e9092c614541f7cdc8a6c"
+  digest = "1:2eb741f3097148dd86451337c00ecd110fa579d494aa7f828e88828204335961"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -129,7 +129,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "7964522c8962bffd68245cfde27f404de111bbee"
+  revision = "dfc23d655e47f8e484a2734b3280475ccade0577"
   version = "2.0.0"
 
 [[projects]]

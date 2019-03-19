@@ -22,11 +22,11 @@ var MonitorPlexCmd = &cobra.Command{
 	Short: "To Monitor Plex Sessions",
 	Long:  "to monitor plex sessions and shut it down if no activity.",
 	Run: func(cmd *cobra.Command, args []string) {
-		Monitor()
+		Monitor(slackNotification)
 	},
 }
 
-func Monitor() {
+func Monitor(slackNotification string) {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
@@ -52,7 +52,7 @@ func Monitor() {
 				m["plex_status"] = "stopped" //nolint:goconst
 			} else {
 				m["plex_status"] = "stopping"
-				asyncShutdown()
+				asyncShutdown(slackNotification)
 			}
 		} else {
 			m["plex_status"] = "running"
@@ -63,9 +63,9 @@ func Monitor() {
 	fmt.Println(string(jsonString))
 }
 
-func asyncShutdown() {
+func asyncShutdown(slackNotification string) {
 	stopTask := func() interface{} {
-		Stop()
+		Stop(slackNotification)
 		return "done shutting down plex!"
 	}
 	tasks := []worker.TaskFunction{stopTask}

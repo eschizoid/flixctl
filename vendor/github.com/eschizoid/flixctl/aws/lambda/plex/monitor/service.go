@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -11,7 +12,7 @@ import (
 
 func executePlexCommand(ctx context.Context, cloudWatchEvent events.CloudWatchEvent) error {
 	fmt.Println(cloudWatchEvent.Time)
-	plex.Monitor()
+	plex.Monitor(os.Getenv("SLACK_NOTIFICATION"))
 	return nil
 }
 

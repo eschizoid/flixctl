@@ -312,7 +312,9 @@ $ flixctl plex stop \
     --slack-notification-channel "monitoring"
 
 $ flixctl plex monitor \
-    --max-inactive-time 30
+    --max-inactive-time 30 \
+    --slack-notification "true" \
+    --slack-notification-channel "monitoring"
 
 $ flixctl plex token
 ----
