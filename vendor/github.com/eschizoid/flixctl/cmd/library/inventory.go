@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -28,7 +29,7 @@ var InventoryLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svcGlacier := glacier.New(awsSession)
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 		svcDynamo := dynamodb.New(awsSession)
 		if sync, _ := strconv.ParseBool(enableLibrarySync); sync && jobID != "" {
 			err := libraryService.DeleteteGlacierInventoryArchives(svcDynamo)

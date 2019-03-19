@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -26,7 +27,7 @@ var CatalogueLibraryCmd = &cobra.Command{
 			SharedConfigState: sess.SharedConfigEnable,
 		}))
 		svcEc2 := ec2.New(awsSession, awsSession.Config)
-		awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+		awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 		svcDynamo := dynamodb.New(awsSession)
 		switch archiveFilter {
 		case "all": //nolint:goconst

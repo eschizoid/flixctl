@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -37,7 +38,7 @@ var SyncLibraryCmd = &cobra.Command{
 }
 
 func SyncMovieLibrary(unwatched int, awsSession *sess.Session) {
-	awsSession.Config.Endpoint = aws.String("http://dynamodb:8000")
+	awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 	svc := dynamodb.New(awsSession)
 	movies, _ := libraryService.GetLivePlexMovies(unwatched)
 	for _, movie := range movies {

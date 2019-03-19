@@ -2,13 +2,16 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/eschizoid/flixctl/cmd/plex"
 )
 
 func executePlexCommand(ctx context.Context, cloudWatchEvent events.CloudWatchEvent) error {
-	//plex.Monitor()
+	fmt.Println(cloudWatchEvent.Time)
+	plex.Monitor()
 	return nil
 }
 
