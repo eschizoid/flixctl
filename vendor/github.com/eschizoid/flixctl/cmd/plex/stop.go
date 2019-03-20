@@ -38,7 +38,9 @@ func Stop(slackNotification string) {
 	var instanceID = ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	var status = ec2Service.Status(svc, instanceID)
 	if status == Ec2StoppedStatus {
-		slackService.SendStatus("stopped", slackIncomingHookURL)
+		if notify, _ := strconv.ParseBool(slackNotification); notify {
+			slackService.SendStatus("stopped", slackIncomingHookURL)
+		}
 		return
 	}
 	var oldVolumeID = ebsService.FetchVolumeID(svc, awsResourceTagNameValue)
