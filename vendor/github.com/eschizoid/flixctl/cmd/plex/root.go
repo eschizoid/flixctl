@@ -38,6 +38,12 @@ var (
 			os.Getenv("SLACK_NOTIFICATION"),
 			"if true, will try to notify to a slack channel",
 		)
+		MonitorPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
+			"slack-notification-channel",
+			"s",
+			os.Getenv("SLACK_MONITORING_HOOK_URL"),
+			"slack channel to notify",
+		)
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",
 			"s",
