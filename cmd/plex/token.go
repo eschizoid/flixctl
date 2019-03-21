@@ -14,11 +14,15 @@ var TokenPlexCmd = &cobra.Command{
 	Short: "To Get Plex Token",
 	Long:  "to get a Plex token for API calls.",
 	Run: func(cmd *cobra.Command, args []string) {
-		plexClient, err := plex.SignIn(os.Getenv("PLEX_USER"), os.Getenv("PLEX_PASSWORD"))
-		ShowError(err)
-		m := make(map[string]interface{})
-		m["plex_token"] = plexClient.Token
-		jsonString, _ := json.Marshal(m)
-		fmt.Println(string(jsonString))
+		Token()
 	},
+}
+
+func Token() {
+	plexClient, err := plex.SignIn(os.Getenv("PLEX_USER"), os.Getenv("PLEX_PASSWORD"))
+	ShowError(err)
+	m := make(map[string]interface{})
+	m["plex_token"] = plexClient.Token
+	jsonString, _ := json.Marshal(m)
+	fmt.Println(string(jsonString))
 }

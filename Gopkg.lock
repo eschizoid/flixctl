@@ -40,7 +40,7 @@
   version = "v1.9.0"
 
 [[projects]]
-  digest = "1:64cebb4d59f95a36c36e277d1f75a61f7917e97702469a9686dd129e2c3eab52"
+  digest = "1:86355c841f3e36d21e73297c5c1fab9302436362f6bb4566038edb4004d56564"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -84,8 +84,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "f9b35e02297c8fcca7a55dd30ed8d4e9dc64f5a3"
-  version = "v1.18.5"
+  revision = "fcb19ead441f7659dd7d7589ff3fb0b45a24d863"
+  version = "v1.18.6"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -103,7 +103,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:efbce68fc8e42b60d9ea884d1dec6f24527e00694243b265ac33d60c3ebd37f9"
+  digest = "1:b0431dcf7cc27ea524d9f429e2e2283afb3fb77824d1baf0f426c294c0c33945"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -129,7 +129,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "9a9754879fc86622ebf84793195846e35ea4a792"
+  revision = "5854482960ab7723f7184ff1c5f6ed2fe2ace5f4"
   version = "2.0.0"
 
 [[projects]]
@@ -321,7 +321,7 @@
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   pruneopts = "UT"
-  revision = "a1f597ede03a7bef967a422b5b3a5bd08805a01e"
+  revision = "b7391e95e576cacdcdd422573063bc057239113d"
 
 [[projects]]
   branch = "master"
