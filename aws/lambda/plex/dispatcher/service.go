@@ -1,22 +1,21 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/url"
 	"regexp"
 
-	"github.com/apex/invoke"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws"
-	sess "github.com/aws/aws-sdk-go/aws/session"
-	lambdaService "github.com/aws/aws-sdk-go/service/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/slack"
+	"github.com/eschizoid/flixctl/cmd/plex"
+	"github.com/eschizoid/flixctl/worker"
 	"github.com/go-playground/form"
 )
 
-var CommandRegexp = regexp.MustCompile(`^(start|stop|status)$`)
+var CommandRegexp = regexp.MustCompile(`^(start|stop|status|token)$`)
 
 func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	switch request.HTTPMethod {
@@ -27,7 +26,7 @@ func router(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 	}
 }
 
-func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) { //nolint:gocyclo
 	values, err := url.ParseQuery(request.Body)
 	if err != nil {
 		return clientError(http.StatusBadRequest)
@@ -43,30 +42,51 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if !slack.VerifySlackRequest(request) {
 		return clientError(http.StatusForbidden)
 	}
-	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
-		SharedConfigState: sess.SharedConfigEnable,
-	}))
-	client := lambdaService.New(session, &aws.Config{Region: aws.String("us-east-1")})
+	var tasks []worker.TaskFunction
 	switch slash.Text {
 	case "start":
-		invokeLambda(client, "start")
+		startTask := func() interface{} {
+			plex.Start()
+			return "done executing start plex!"
+		}
+		tasks = []worker.TaskFunction{startTask}
 	case "stop":
-		invokeLambda(client, "stop")
+		stopTask := func() interface{} {
+			plex.Stop("true")
+			return "done executing stop plex!"
+		}
+		tasks = []worker.TaskFunction{stopTask}
 	case "status":
-		invokeLambda(client, "status")
+		statusTask := func() interface{} {
+			plex.Status()
+			return "done executing status plex!"
+		}
+		tasks = []worker.TaskFunction{statusTask}
+	case "token":
+		tokenTask := func() interface{} {
+			plex.Token()
+			return "done executing token plex!"
+		}
+		tasks = []worker.TaskFunction{tokenTask}
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	resultChannel := worker.PerformTasks(ctx, tasks)
+	for result := range resultChannel {
+		switch v := result.(type) {
+		case error:
+			fmt.Println(v)
+		case string:
+			fmt.Println(v)
+		default:
+			fmt.Println("Some unknown type ")
+		}
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-type": "application/json"},
 		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing %s command"}`, slash.Text),
 	}, nil
-}
-
-func invokeLambda(client *lambdaService.Lambda, operation string) {
-	err := invoke.InvokeAsync(client, "plex-command-executor", slack.Input{Command: operation})
-	if err != nil {
-		fmt.Println("Error invoking λ:", err)
-	}
 }
 
 func clientError(status int) (events.APIGatewayProxyResponse, error) {

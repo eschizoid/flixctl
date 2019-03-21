@@ -53,8 +53,6 @@ build: clean $(TARGET) build-lambdas
 
 clean:
 	@rm -f $(TARGET)
-	@rm -rf $(shell pwd)/aws/lambda/plex/executor/lambda.zip
-	@rm -rf $(shell pwd)/aws/lambda/plex/executor/executor
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/dispatcher
 	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/lambda.zip
@@ -108,14 +106,10 @@ update-vendor:
 	@cp -R torrent/ vendor/github.com/eschizoid/flixctl/torrent
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
 
-build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-executor build-lambda-plex-monitor build-lambda-torrent-router build-lambda-library-router
+build-lambdas: clean build-lambda-plex-dispatcher build-lambda-plex-monitor build-lambda-torrent-router build-lambda-library-router
 
 build-lambda-plex-dispatcher:
 	@cd $(shell pwd)/aws/lambda/plex/dispatcher; \
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
-
-build-lambda-plex-executor:
-	@cd $(shell pwd)/aws/lambda/plex/executor; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 build-lambda-plex-monitor:
@@ -130,15 +124,11 @@ build-lambda-library-router:
 	@cd $(shell pwd)/aws/lambda/library; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
-zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-executor zip-lambda-plex-monitor zip-lambda-torrent-router zip-lambda-library-router
+zip-lambdas: build-lambdas zip-lambda-plex-dispatcher zip-lambda-plex-monitor zip-lambda-torrent-router zip-lambda-library-router
 
 zip-lambda-plex-dispatcher:
 	zip -j -X $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip \
 	$(shell pwd)/aws/lambda/plex/dispatcher/dispatcher
-
-zip-lambda-plex-executor:
-	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
-	$(shell pwd)/aws/lambda/plex/executor/executor
 
 zip-lambda-plex-monitor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/monitor/lambda.zip \
@@ -152,7 +142,7 @@ zip-lambda-library-router:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
 	$(shell pwd)/aws/lambda/library/library
 
-deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-executor deploy-lambda-plex-monitor deploy-lambda-torrent-router deploy-lambda-library-router
+deploy-lambdas: zip-lambdas deploy-lambda-plex-dispatcher deploy-lambda-plex-monitor deploy-lambda-torrent-router deploy-lambda-library-router
 
 deploy-lambda-plex-dispatcher:
 	@aws lambda update-function-code \
@@ -162,20 +152,6 @@ deploy-lambda-plex-dispatcher:
 	@aws lambda update-function-configuration \
 	--function-name plex \
 	--handler dispatcher \
-	--region $(AWS_REGION) \
-	--timeout 900 \
-	--memory-size 128 \
-	--runtime go1.x \
-	--environment "$$environment"
-
-deploy-lambda-plex-executor:
-	@aws lambda update-function-code \
-	--function-name plex-command-executor \
-	--region $(AWS_REGION) \
-	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
-	@aws lambda update-function-configuration \
-	--function-name plex-command-executor \
-	--handler executor \
 	--region $(AWS_REGION) \
 	--timeout 900 \
 	--memory-size 128 \
