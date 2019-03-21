@@ -18,14 +18,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:0838b7b97323a5ff376ad36248d303d9fadcbe158d5f46b6d78356bc5727dc1e"
-  name = "github.com/apex/invoke"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "c1020a6385cea74c80ff3ef223bfe498e1a0e213"
-  version = "v2.0.1"
-
-[[projects]]
   digest = "1:f39fff1c04503565e175cb045fd0c1b917abccdae0be8900388363b2a5e0a10b"
   name = "github.com/aws/aws-lambda-go"
   packages = [
@@ -40,7 +32,7 @@
   version = "v1.9.0"
 
 [[projects]]
-  digest = "1:86355c841f3e36d21e73297c5c1fab9302436362f6bb4566038edb4004d56564"
+  digest = "1:e3b519bb0c9fb2ef8bde3116b63353a9d4f0f82736034f600a7fc341adbeadde"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -80,7 +72,6 @@
     "service/dynamodb/dynamodbattribute",
     "service/ec2",
     "service/glacier",
-    "service/lambda",
     "service/sts",
   ]
   pruneopts = "UT"
@@ -103,7 +94,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:b0431dcf7cc27ea524d9f429e2e2283afb3fb77824d1baf0f426c294c0c33945"
+  digest = "1:353ca55a1fbbde306263c92c4884e073e85d26abbb57d4fcf9ef90e6ae7acb30"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -129,7 +120,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "5854482960ab7723f7184ff1c5f6ed2fe2ace5f4"
+  revision = "43824010ec418f0f468b8d748a196ea98faf3107"
   version = "2.0.0"
 
 [[projects]]
@@ -338,14 +329,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1aa109187d52894bd8929a34a0a483ea4e57d7e32e86d81c64cea84c1978d68e"
+  digest = "1:012ffea19e0c7f3bf69652ba71b42c8ffa9929ad53f8a1d50534b279cfd7a34f"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "6c81ef8f67ca3f42fc9cd71dfbd5f35b0c4b5771"
+  revision = "f7bb7a8bee54210937e93ec56d007d892c1f0580"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -374,7 +365,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/apex/invoke",
     "github.com/aws/aws-lambda-go/events",
     "github.com/aws/aws-lambda-go/lambda",
     "github.com/aws/aws-sdk-go/aws",
@@ -384,7 +374,6 @@
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
     "github.com/aws/aws-sdk-go/service/ec2",
     "github.com/aws/aws-sdk-go/service/glacier",
-    "github.com/aws/aws-sdk-go/service/lambda",
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",
     "github.com/eschizoid/flixctl/aws/glacier",

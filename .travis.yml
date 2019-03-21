@@ -36,19 +36,31 @@ git:
   depth: 1
 
 deploy:
-  provider: releases
-  overwrite: true
-  skip_cleanup: true
-  target_commitish: $TRAVIS_COMMIT
-  tag_name: $TRAVIS_TAG
-  name: $TRAVIS_TAG
-  body: Automated release from Travis CI
-  draft: false
-  file: flixctl
-  api_key:
-    secure: ipGWBWypEB9kr64IuU/H1bk+6JAWd+WMpEUgheH+XAFoMe+PWs8Vze0eW7QqNYn3QhTveafSEO5Glm8UxEkbXIyTkEaqfdEUsRONv7o7Y/7EBT8wUo2M4YzR0rFK1DV9F6FJWiLc8J4KYdXAiKCmeFFQbY2R2Qfc0a0YNbM5A82EoNaJO09oJGmxUprmH9W7oiA9d2Y0FEICsYwf2PddUjkeHrHVFpKwCY4Kj13gs0UmdivxGHYJ9QVqCFWElTDtWQNzt76YuUTSvUWHtzrg3IkZBZ64BdDvdCFCITj+4vL7Jy2uWanq4/nSDzXiVcK6k+IAt39CtRxFoxdgP2lCkK73OgmK35m4b3iOKpQHIvDibnRBHq/2erSEJRe3Nu5YpL9VuaQaoessF11K2P/tUQIp4TCBS6PIY6fox5IAfZkm7OlaAYsZi+KFANoZ8YGv/09jzq5BfjdBnoyydtXVlGWErdMTOsxWyLu1hjXR+SL3d2LM91ZnqJyXVL1zS7bl8616Q2L5JY4uab6Td0iyduzN+/nUS4uVkpggUTo15hiFsgtzvHnr3TNTRLYkeyxSsdRNDkQ1rt7jGqcnyRNu7/6+jg+povY3if+X97QXvDgySdszQazISX8cbrqkdtAYrzQ7eImINbRmHIyzxZA4aDlF0swLMd+RZwPKJbcLVyo=
-  on:
-    tags: true
+  - provider: releases
+    overwrite: true
+    skip_cleanup: true
+    target_commitish: $TRAVIS_COMMIT
+    tag_name: $TRAVIS_TAG
+    name: $TRAVIS_TAG
+    body: Automated release from Travis CI
+    draft: false
+    file: flixctl
+    api_key:
+      secure: ipGWBWypEB9kr64IuU/H1bk+6JAWd+WMpEUgheH+XAFoMe+PWs8Vze0eW7QqNYn3QhTveafSEO5Glm8UxEkbXIyTkEaqfdEUsRONv7o7Y/7EBT8wUo2M4YzR0rFK1DV9F6FJWiLc8J4KYdXAiKCmeFFQbY2R2Qfc0a0YNbM5A82EoNaJO09oJGmxUprmH9W7oiA9d2Y0FEICsYwf2PddUjkeHrHVFpKwCY4Kj13gs0UmdivxGHYJ9QVqCFWElTDtWQNzt76YuUTSvUWHtzrg3IkZBZ64BdDvdCFCITj+4vL7Jy2uWanq4/nSDzXiVcK6k+IAt39CtRxFoxdgP2lCkK73OgmK35m4b3iOKpQHIvDibnRBHq/2erSEJRe3Nu5YpL9VuaQaoessF11K2P/tUQIp4TCBS6PIY6fox5IAfZkm7OlaAYsZi+KFANoZ8YGv/09jzq5BfjdBnoyydtXVlGWErdMTOsxWyLu1hjXR+SL3d2LM91ZnqJyXVL1zS7bl8616Q2L5JY4uab6Td0iyduzN+/nUS4uVkpggUTo15hiFsgtzvHnr3TNTRLYkeyxSsdRNDkQ1rt7jGqcnyRNu7/6+jg+povY3if+X97QXvDgySdszQazISX8cbrqkdtAYrzQ7eImINbRmHIyzxZA4aDlF0swLMd+RZwPKJbcLVyo=
+    on:
+      tags: true
+
+  - provider: s3
+    overwrite: true
+    skip_cleanup: true
+    access_key_id: AKIAIW5QCEPIQ45PA2AQ
+    secret_access_key:
+      secure: S38BYxvPQKkxCCgqh0nSL6K/gEdat02kA9CZYJHiZ0EfW/veRlhSng+uMNh92tCvIO2SFmjYa+ZWb9Tfcb3g7znIaMGYdrwjLoYDRU5/dI+Wex2EUaVncUOEEmt5U5di986jdP5GVKRxNF+yySbsfWV8eYxUY1qiEo9Uke5lJvBKf6x5ZfPmENnafoMfxky0I7PxgvGsFXm8/BJj3PN1UgSNKZtkMCVguOKy9Q+2qoZV++xou307nSedWN6dHceQA2F8Jvy/bzbAW4YGjb7MxV3SkRSUVGPzIR87fj7Y4PQnRXIlquQ/qJX4HTM97d1B1x+SauHxk9y+0xGncVaQ+R0T3x1mSjpfWCLTBCDvY65YJQIgZl42qOSEMn/aClMiwTuAMEPz0dmNDnjWrV1GDDV0vXfnv3r6IYL/w/BMGhX3EborFVTrevULsdeLe579IBTxl8N/hD1W8NEOPvw5dqn4Rl0jQUL/T2Xa868mojHBQqmADa7YNpIc0J98Ze7decNcZFD6LKYAjwZRzX8FS5jTHdgShgoZDJAkXqsn0Sc8Yjfqg4Pyg3YNSyJcVB0zdcp4ecJSsAJWyw2OgerQ8bjZeQPTN/1DxcDHqufNiCA+hhYoWSLe9KD3z/a6Ja3X8T1oYCvVw9adeu3ATHHWsOxGWm7/p07vxbD4MbP/y/g=
+    bucket: marianoflix
+    file: flixctl
+    upload_dir: bin
+    on:
+      tags: true
 
 after_success:
   - test $TRAVIS_BRANCH = "master" &&
