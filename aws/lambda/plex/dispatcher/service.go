@@ -42,33 +42,29 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	if !slack.VerifySlackRequest(request) {
 		return clientError(http.StatusForbidden)
 	}
-	var tasks []worker.TaskFunction
 	switch slash.Text {
 	case "start":
-		startTask := func() interface{} {
-			plex.Start()
-			return "done executing start plex!"
-		}
-		tasks = []worker.TaskFunction{startTask}
+		asyncStart()
 	case "stop":
-		stopTask := func() interface{} {
-			plex.Stop("true")
-			return "done executing stop plex!"
-		}
-		tasks = []worker.TaskFunction{stopTask}
+		asyncStop()
 	case "status":
-		statusTask := func() interface{} {
-			plex.Status()
-			return "done executing status plex!"
-		}
-		tasks = []worker.TaskFunction{statusTask}
+		asyncStatus()
 	case "token":
-		tokenTask := func() interface{} {
-			plex.Token()
-			return "done executing token plex!"
-		}
-		tasks = []worker.TaskFunction{tokenTask}
+		asyncToken()
 	}
+	return events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Headers:    map[string]string{"Content-type": "application/json"},
+		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing %s command"}`, slash.Text),
+	}, nil
+}
+
+func asyncStart() {
+	startTask := func() interface{} {
+		plex.Start()
+		return "done executing start plex!"
+	}
+	tasks := []worker.TaskFunction{startTask}
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	resultChannel := worker.PerformTasks(ctx, tasks)
@@ -82,11 +78,69 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			fmt.Println("Some unknown type ")
 		}
 	}
-	return events.APIGatewayProxyResponse{
-		StatusCode: 200,
-		Headers:    map[string]string{"Content-type": "application/json"},
-		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing %s command"}`, slash.Text),
-	}, nil
+}
+
+func asyncStop() {
+	stopTask := func() interface{} {
+		plex.Stop("true")
+		return "done executing stop plex!"
+	}
+	tasks := []worker.TaskFunction{stopTask}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	resultChannel := worker.PerformTasks(ctx, tasks)
+	for result := range resultChannel {
+		switch v := result.(type) {
+		case error:
+			fmt.Println(v)
+		case string:
+			fmt.Println(v)
+		default:
+			fmt.Println("Some unknown type ")
+		}
+	}
+}
+
+func asyncStatus() {
+	statusTask := func() interface{} {
+		plex.Status()
+		return "done executing status plex!"
+	}
+	tasks := []worker.TaskFunction{statusTask}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	resultChannel := worker.PerformTasks(ctx, tasks)
+	for result := range resultChannel {
+		switch v := result.(type) {
+		case error:
+			fmt.Println(v)
+		case string:
+			fmt.Println(v)
+		default:
+			fmt.Println("Some unknown type ")
+		}
+	}
+}
+
+func asyncToken() {
+	statusToken := func() interface{} {
+		plex.Token()
+		return "done executing token plex!"
+	}
+	tasks := []worker.TaskFunction{statusToken}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	resultChannel := worker.PerformTasks(ctx, tasks)
+	for result := range resultChannel {
+		switch v := result.(type) {
+		case error:
+			fmt.Println(v)
+		case string:
+			fmt.Println(v)
+		default:
+			fmt.Println("Some unknown type ")
+		}
+	}
 }
 
 func clientError(status int) (events.APIGatewayProxyResponse, error) {

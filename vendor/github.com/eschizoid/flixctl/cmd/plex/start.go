@@ -38,7 +38,9 @@ func Start() {
 	var instanceID = ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
 	var status = ec2Service.Status(svc, instanceID)
 	if status == Ec2RunningStatus {
-		slackService.SendStatus("running", slackIncomingHookURL)
+		if notify, _ := strconv.ParseBool(slackNotification); notify {
+			slackService.SendStatus("running", slackIncomingHookURL)
+		}
 		return
 	}
 	ec2Service.Start(svc, instanceID)
