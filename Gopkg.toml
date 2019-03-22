@@ -26,16 +26,12 @@
 
 
 [[constraint]]
-  name = "github.com/apex/invoke"
-  version = "2.0.1"
-
-[[constraint]]
   name = "github.com/aws/aws-lambda-go"
   version = "1.9.0"
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.18.4"
+  version = "1.18.6"
 
 [[constraint]]
   name = "github.com/eschizoid/flixctl"
