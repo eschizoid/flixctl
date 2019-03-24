@@ -45,7 +45,6 @@ Slack Slash API, making the full CLI available from any Slack workspace wishing 
 * https://github.com/transmission/transmission[Transmission]
 * https://api.slack.com/slash-commands[Slack Slash Commands]
 * https://github.com/Sonarr/Sonarr[Sonarr]
-* https://github.com/adnanh/webhook[Webhooks]
 
 === Pre-requisites
 ==== Infrastructure

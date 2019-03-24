@@ -19,23 +19,27 @@ var DownloadTorrentCmd = &cobra.Command{
 	Short: "To Download A Torrent",
 	Long:  "to download a torrent using Transmission client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
-			SharedConfigState: sess.SharedConfigEnable,
-		}))
-		svc := ec2.New(awsSession, awsSession.Config)
-		instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
-		if ec2status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2status, Ec2RunningStatus) {
-			torrent := torrentService.TriggerDownload(magnetLink, downloadDir)
-			body, _ := json.Marshal(torrent)
-			fmt.Println(string(body))
-			if notify, _ := strconv.ParseBool(slackNotification); notify {
-				slackService.SendDownloadStart(*torrent.Name, slackIncomingHookURL)
-			}
-		} else {
-			m := make(map[string]string)
-			m["plex_status"] = strings.ToLower(Ec2StoppedStatus)
-			jsonString, _ := json.Marshal(m)
-			fmt.Println("\n" + string(jsonString))
-		}
+		Download()
 	},
+}
+
+func Download() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	svc := ec2.New(awsSession, awsSession.Config)
+	instanceID := ec2Service.FetchInstanceID(svc, awsResourceTagNameValue)
+	if ec2status := ec2Service.Status(svc, instanceID); strings.EqualFold(ec2status, Ec2RunningStatus) {
+		torrent := torrentService.TriggerDownload(magnetLink, downloadDir)
+		body, _ := json.Marshal(torrent)
+		fmt.Println(string(body))
+		if notify, _ := strconv.ParseBool(slackNotification); notify {
+			slackService.SendDownloadStart(*torrent.Name, slackIncomingHookURL)
+		}
+	} else {
+		m := make(map[string]string)
+		m["plex_status"] = strings.ToLower(Ec2StoppedStatus)
+		jsonString, _ := json.Marshal(m)
+		fmt.Println("\n" + string(jsonString))
+	}
 }
