@@ -2,7 +2,8 @@ package models
 
 type Input struct {
 	Command    string `json:"command"`
-	LambdaName string `json:"command"`
+	Text       string `json:"text"`
+	LambdaName string `json:"Lambda_name"`
 }
 
 type Slash struct {

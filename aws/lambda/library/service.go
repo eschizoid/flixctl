@@ -14,8 +14,9 @@ func executeLibraryCommand(evt json.RawMessage) {
 		panic(err)
 	}
 	switch input.Command {
-	case "start":
-	case "stop":
+	case "library-jobs":
+	case "library-initiate":
+	case "library-catalogue":
 	case "status":
 	}
 	fmt.Println("Successfully executed plex command")

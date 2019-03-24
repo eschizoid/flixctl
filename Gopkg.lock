@@ -18,6 +18,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:0838b7b97323a5ff376ad36248d303d9fadcbe158d5f46b6d78356bc5727dc1e"
+  name = "github.com/apex/invoke"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c1020a6385cea74c80ff3ef223bfe498e1a0e213"
+  version = "v2.0.1"
+
+[[projects]]
   digest = "1:f39fff1c04503565e175cb045fd0c1b917abccdae0be8900388363b2a5e0a10b"
   name = "github.com/aws/aws-lambda-go"
   packages = [
@@ -32,7 +40,7 @@
   version = "v1.9.0"
 
 [[projects]]
-  digest = "1:e3b519bb0c9fb2ef8bde3116b63353a9d4f0f82736034f600a7fc341adbeadde"
+  digest = "1:9875f1f0d8d95a5045ac433ef4030093d1e392394cc2ff343ae92a28988003cc"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -72,11 +80,12 @@
     "service/dynamodb/dynamodbattribute",
     "service/ec2",
     "service/glacier",
+    "service/lambda",
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "fcb19ead441f7659dd7d7589ff3fb0b45a24d863"
-  version = "v1.18.6"
+  revision = "f778816ebd8f4a83264c207c77e6bcd0a5a76603"
+  version = "v1.19.1"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -92,6 +101,37 @@
   pruneopts = "UT"
   revision = "da652975a8eea9fa0735aba8056747a751db0bd3"
   version = "v0.0.1"
+
+[[projects]]
+  digest = "1:2e0804942aa4382117887037cc2db4d68eff2ad3f13e2db7cc0ebe21715f710b"
+  name = "github.com/eschizoid/flixctl"
+  packages = [
+    "aws/ebs",
+    "aws/ec2",
+    "aws/glacier",
+    "aws/lambda/models",
+    "aws/lambda/slack",
+    "aws/snapshot",
+    "cmd",
+    "cmd/auth",
+    "cmd/library",
+    "cmd/nzb",
+    "cmd/ombi",
+    "cmd/plex",
+    "cmd/torrent",
+    "library",
+    "models",
+    "slack",
+    "slack/auth",
+    "slack/library",
+    "slack/plex",
+    "slack/torrent",
+    "torrent",
+    "worker",
+  ]
+  pruneopts = "UT"
+  revision = "465471300e743d7e4c46a5a4b94ca15a244dee3c"
+  version = "2.0.0"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -295,18 +335,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "1272bf9dcd53ea65c09668fb4c76e65deb740072"
+  revision = "addf6b3196f61cd44ce5a76657913698c73479d0"
 
 [[projects]]
   branch = "master"
-  digest = "1:012ffea19e0c7f3bf69652ba71b42c8ffa9929ad53f8a1d50534b279cfd7a34f"
+  digest = "1:6b3e6ddcebac95be1d690dbd53b5aa2e520715becb7e521bb526ccf3b4c53c15"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "f7bb7a8bee54210937e93ec56d007d892c1f0580"
+  revision = "f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -330,3 +370,53 @@
   pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
+
+[solve-meta]
+  analyzer-name = "dep"
+  analyzer-version = 1
+  input-imports = [
+    "github.com/apex/invoke",
+    "github.com/aws/aws-lambda-go/events",
+    "github.com/aws/aws-lambda-go/lambda",
+    "github.com/aws/aws-sdk-go/aws",
+    "github.com/aws/aws-sdk-go/aws/awserr",
+    "github.com/aws/aws-sdk-go/aws/session",
+    "github.com/aws/aws-sdk-go/service/dynamodb",
+    "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
+    "github.com/aws/aws-sdk-go/service/ec2",
+    "github.com/aws/aws-sdk-go/service/glacier",
+    "github.com/aws/aws-sdk-go/service/lambda",
+    "github.com/eschizoid/flixctl/aws/ebs",
+    "github.com/eschizoid/flixctl/aws/ec2",
+    "github.com/eschizoid/flixctl/aws/glacier",
+    "github.com/eschizoid/flixctl/aws/lambda/models",
+    "github.com/eschizoid/flixctl/aws/lambda/slack",
+    "github.com/eschizoid/flixctl/aws/snapshot",
+    "github.com/eschizoid/flixctl/cmd",
+    "github.com/eschizoid/flixctl/cmd/auth",
+    "github.com/eschizoid/flixctl/cmd/library",
+    "github.com/eschizoid/flixctl/cmd/nzb",
+    "github.com/eschizoid/flixctl/cmd/ombi",
+    "github.com/eschizoid/flixctl/cmd/plex",
+    "github.com/eschizoid/flixctl/cmd/torrent",
+    "github.com/eschizoid/flixctl/library",
+    "github.com/eschizoid/flixctl/models",
+    "github.com/eschizoid/flixctl/slack",
+    "github.com/eschizoid/flixctl/slack/auth",
+    "github.com/eschizoid/flixctl/slack/library",
+    "github.com/eschizoid/flixctl/slack/plex",
+    "github.com/eschizoid/flixctl/slack/torrent",
+    "github.com/eschizoid/flixctl/torrent",
+    "github.com/eschizoid/flixctl/worker",
+    "github.com/go-playground/form",
+    "github.com/hekmon/transmissionrpc",
+    "github.com/jrudio/go-plex-client",
+    "github.com/juliensalinas/torrengo/otts",
+    "github.com/juliensalinas/torrengo/td",
+    "github.com/juliensalinas/torrengo/tpb",
+    "github.com/mholt/archiver",
+    "github.com/nlopes/slack",
+    "github.com/spf13/cobra",
+  ]
+  solver-name = "gps-cdcl"
+  solver-version = 1

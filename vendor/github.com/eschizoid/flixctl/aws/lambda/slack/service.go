@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"io"
 	"net/http"
 	"net/url"
@@ -15,13 +14,14 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	lambdaService "github.com/aws/aws-sdk-go/service/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/go-playground/form"
 	"github.com/nlopes/slack"
 )
 
 var PlexCommandRegexp = regexp.MustCompile(`^(start|stop|status)$`)
 
-func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) { //nolint:gocyclo
 	switch request.HTTPMethod {
 	case "POST":
 		values, err := url.ParseQuery(request.Body)
@@ -47,6 +47,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			}
 			input := models.Input{
 				Command:    slash.Token,
+				Text:       slash.Text,
 				LambdaName: "plex-command-executor",
 			}
 			invokeLambda(client, input)
