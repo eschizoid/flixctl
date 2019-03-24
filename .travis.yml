@@ -24,6 +24,7 @@ before_script:
 script:
   - make lint
   - make build
+  - make create-deploy-directory
   #- make deploy-lambdas
   #- go test -cover ./...
   #- go test -v -race ./...  # Run all the tests with the race detector enabled
@@ -49,13 +50,14 @@ deploy:
       secure: ipGWBWypEB9kr64IuU/H1bk+6JAWd+WMpEUgheH+XAFoMe+PWs8Vze0eW7QqNYn3QhTveafSEO5Glm8UxEkbXIyTkEaqfdEUsRONv7o7Y/7EBT8wUo2M4YzR0rFK1DV9F6FJWiLc8J4KYdXAiKCmeFFQbY2R2Qfc0a0YNbM5A82EoNaJO09oJGmxUprmH9W7oiA9d2Y0FEICsYwf2PddUjkeHrHVFpKwCY4Kj13gs0UmdivxGHYJ9QVqCFWElTDtWQNzt76YuUTSvUWHtzrg3IkZBZ64BdDvdCFCITj+4vL7Jy2uWanq4/nSDzXiVcK6k+IAt39CtRxFoxdgP2lCkK73OgmK35m4b3iOKpQHIvDibnRBHq/2erSEJRe3Nu5YpL9VuaQaoessF11K2P/tUQIp4TCBS6PIY6fox5IAfZkm7OlaAYsZi+KFANoZ8YGv/09jzq5BfjdBnoyydtXVlGWErdMTOsxWyLu1hjXR+SL3d2LM91ZnqJyXVL1zS7bl8616Q2L5JY4uab6Td0iyduzN+/nUS4uVkpggUTo15hiFsgtzvHnr3TNTRLYkeyxSsdRNDkQ1rt7jGqcnyRNu7/6+jg+povY3if+X97QXvDgySdszQazISX8cbrqkdtAYrzQ7eImINbRmHIyzxZA4aDlF0swLMd+RZwPKJbcLVyo=
     on:
       tags: true
-
   - provider: s3
     overwrite: true
     skip_cleanup: true
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
     bucket: marianoflix
+    upload-dir: binaries
+    local_dir: deploy
     file: flixctl
     on:
       tags: true

@@ -51,6 +51,10 @@ $(TARGET): $(SRC)
 build: clean $(TARGET) build-lambdas
 	@true
 
+create-deploy-directory:
+	@mkdir deploy
+	@cp flixctl deploy
+
 clean:
 	@rm -f $(TARGET)
 	@rm -rf $(shell pwd)/aws/lambda/plex/dispatcher/lambda.zip
