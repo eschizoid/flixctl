@@ -24,7 +24,7 @@ before_script:
 script:
   - make lint
   - make build
-  #- make create-deploy-directory
+  - make create-deploy-directory
   #- make deploy-lambdas
   #- go test -cover ./...
   #- go test -v -race ./...  # Run all the tests with the race detector enabled
