@@ -26,7 +26,7 @@
   version = "v2.0.1"
 
 [[projects]]
-  digest = "1:f39fff1c04503565e175cb045fd0c1b917abccdae0be8900388363b2a5e0a10b"
+  digest = "1:95fd14230b48a74765db94f7064f0b5617f52739a164f6d41e5b57bec5b3ff9b"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -36,11 +36,11 @@
     "lambdacontext",
   ]
   pruneopts = "UT"
-  revision = "c83699c938a36c6d111f9837be9295184efeeb2e"
-  version = "v1.9.0"
+  revision = "08d251dc58f204411d79012fd6f1beefb7107fea"
+  version = "v1.10.0"
 
 [[projects]]
-  digest = "1:9875f1f0d8d95a5045ac433ef4030093d1e392394cc2ff343ae92a28988003cc"
+  digest = "1:d3e16e0cdbcf7dcbf7012dc73a530135f98f3267acbda503f48fcf4d5a3b1d67"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -84,8 +84,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "f778816ebd8f4a83264c207c77e6bcd0a5a76603"
-  version = "v1.19.1"
+  revision = "56c1def75689cceec1fa6f14c2eedb4b798827f9"
+  version = "v1.19.11"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -103,14 +103,13 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:2e0804942aa4382117887037cc2db4d68eff2ad3f13e2db7cc0ebe21715f710b"
+  digest = "1:7fc8ddb54537feac715028f812808a7e18dc5684170956b654810e134bf55c85"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
     "aws/ec2",
     "aws/glacier",
     "aws/lambda/models",
-    "aws/lambda/slack",
     "aws/snapshot",
     "cmd",
     "cmd/auth",
@@ -130,7 +129,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "465471300e743d7e4c46a5a4b94ca15a244dee3c"
+  revision = "e98f74cefa800a229b1438476c9de2b84bfc0372"
   version = "2.0.0"
 
 [[projects]]
@@ -253,15 +252,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:d4c88b5ad20151a96c1e5a55547a944b6af623aa315f69ee0d172b00f95d27fb"
+  digest = "1:d886a3c32c8c1a770d07e36340f061d3afc948d065ffc3c9a19b01b34d4f0b65"
   name = "github.com/pierrec/lz4"
   packages = [
     ".",
     "internal/xxh32",
   ]
   pruneopts = "UT"
-  revision = "062282ea0dcff40c9fb8525789eef9644b1fbd6e"
-  version = "v2.1.0"
+  revision = "315a67e90e415bcdaff33057da191569bf4d8479"
+  version = "v2.1.1"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -272,12 +271,12 @@
   version = "v0.8.1"
 
 [[projects]]
-  digest = "1:e4c72127d910a96daf869a44f3dd563b86dbe6931a172863a0e99c5ff04b59e4"
+  digest = "1:fd61cf4ae1953d55df708acb6b91492d538f49c305b364a014049914495db426"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "dae0fa8d5b0c810a8ab733fbd5510c7cae84eca4"
-  version = "v1.4.0"
+  revision = "8bdbc7bcc01dcbb8ec23dc8a28e332258d25251f"
+  version = "v1.4.1"
 
 [[projects]]
   digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
@@ -318,15 +317,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:058e9504b9a79bfe86092974d05bb3298d2aa0c312d266d43148de289a5065d9"
-  name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
-  pruneopts = "UT"
-  revision = "b7391e95e576cacdcdd422573063bc057239113d"
-
-[[projects]]
-  branch = "master"
-  digest = "1:31ddc22fd96d06b999d0e639ff93b8829fc274cd518d6c439bba4b5890112229"
+  digest = "1:e972ca828bfa9b68a40a0df47471b0ce464f83a8e519dcadacea3a8cf7257d09"
   name = "golang.org/x/net"
   packages = [
     "html",
@@ -335,18 +326,15 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "addf6b3196f61cd44ce5a76657913698c73479d0"
+  revision = "eb5bcb51f2a31c7d5141d810b70815c05d9c9146"
 
 [[projects]]
   branch = "master"
-  digest = "1:6b3e6ddcebac95be1d690dbd53b5aa2e520715becb7e521bb526ccf3b4c53c15"
+  digest = "1:3e01c69b34e7c3fa4b7a118ca95a6beaecea00f7f4fb701545d83eacd3badb3c"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows",
-  ]
+  packages = ["unix"]
   pruneopts = "UT"
-  revision = "f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb"
+  revision = "97732733099d6a942a73b889770774366de963ed"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -390,7 +378,6 @@
     "github.com/eschizoid/flixctl/aws/ec2",
     "github.com/eschizoid/flixctl/aws/glacier",
     "github.com/eschizoid/flixctl/aws/lambda/models",
-    "github.com/eschizoid/flixctl/aws/lambda/slack",
     "github.com/eschizoid/flixctl/aws/snapshot",
     "github.com/eschizoid/flixctl/cmd",
     "github.com/eschizoid/flixctl/cmd/auth",

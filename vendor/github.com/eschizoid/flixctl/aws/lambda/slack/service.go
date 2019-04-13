@@ -22,8 +22,22 @@ import (
 var PlexCommandRegexp = regexp.MustCompile(`^(start|stop|status)$`)
 
 func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) { //nolint:gocyclo
+
 	switch request.HTTPMethod {
 	case "POST":
+		if VerifySlackRequest(request) {
+			return clientError(http.StatusForbidden)
+		}
+	default:
+		return clientError(http.StatusMethodNotAllowed)
+	}
+
+	session := sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	client := lambdaService.New(session, &aws.Config{Region: aws.String("us-east-1")})
+
+	if _, fromSlackButton := request.QueryStringParameters["lambda-name"]; fromSlackButton {
 		values, err := url.ParseQuery(request.Body)
 		if err != nil {
 			return clientError(http.StatusBadRequest)
@@ -33,13 +47,6 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 		if err != nil {
 			return clientError(http.StatusUnprocessableEntity)
 		}
-		if VerifySlackRequest(request) {
-			return clientError(http.StatusForbidden)
-		}
-		session := sess.Must(sess.NewSessionWithOptions(sess.Options{
-			SharedConfigState: sess.SharedConfigEnable,
-		}))
-		client := lambdaService.New(session, &aws.Config{Region: aws.String("us-east-1")})
 		switch slash.Command {
 		case "/plex":
 			if !PlexCommandRegexp.MatchString(slash.Text) || slash.Text == "" {
@@ -48,30 +55,47 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 			input := models.Input{
 				Command:    slash.Token,
 				Text:       slash.Text,
-				LambdaName: "plex-command-executor",
+				LambdaName: "plex-executor",
 			}
-			invokeLambda(client, input)
+			invokeLambda(client, "plex-executor", input)
 		case "/library-jobs", "/library-initiate", "/library-catalogue":
-			invokeLambda(client, *new(models.Input))
-		case "/movies-search", "/movies-request":
-			invokeLambda(client, *new(models.Input))
-		case "/shows-search", "/shows-request":
-			invokeLambda(client, *new(models.Input))
+			input := models.Input{
+				Command:    slash.Token,
+				Text:       slash.Text,
+				LambdaName: "library-executor",
+			}
+			invokeLambda(client, "library-executor", input)
+		case "/movies-search", "/shows-search":
+			input := models.Input{
+				Command:    slash.Token,
+				Text:       slash.Text,
+				LambdaName: "torrent-search-executor",
+			}
+			invokeLambda(client, "torrent-search-executor", input)
 		case "/torrent-status", "/nzb-status":
-			invokeLambda(client, *new(models.Input))
+			input := models.Input{
+				Command: slash.Token,
+				Text:    slash.Text,
+			}
+			invokeLambda(client, "torrent-status-executor", input)
 		}
-		return events.APIGatewayProxyResponse{
-			StatusCode: 200,
-			Headers:    map[string]string{"Content-type": "application/json"},
-			Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing %s command"}`, slash.Text),
-		}, nil
-	default:
-		return clientError(http.StatusMethodNotAllowed)
+	} else {
+		switch request.QueryStringParameters["lambda-name"] {
+		case "torrent-download":
+			invokeLambda(client, "torrent-download-executor", request.QueryStringParameters)
+		case "torrent-request":
+			invokeLambda(client, "torrent-download-executor", request.QueryStringParameters)
+		}
 	}
+	return events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Headers:    map[string]string{"Content-type": "application/json"},
+		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing command"}`),
+	}, nil
 }
 
-func invokeLambda(client *lambdaService.Lambda, input models.Input) {
-	err := invoke.InvokeAsync(client, input.LambdaName, input)
+func invokeLambda(client *lambdaService.Lambda, lambdaName string, input interface{}) {
+	err := invoke.InvokeAsync(client, lambdaName, input)
 	if err != nil {
 		fmt.Println("Error invoking λ:", err)
 	}

@@ -45,6 +45,7 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, dire
 			TitleLink: util.TorrentDownloadHookURL +
 				"?directory=" + directoryDir +
 				"&name=" + url.QueryEscape(encodedName) +
+				"&lambda-name=" + "torrent-download-executor" +
 				"&notify=" + strconv.FormatBool(notification) +
 				"&magnet=" + url.QueryEscape(encodedMagnetLink) +
 				"&token=" + token,
