@@ -23,18 +23,13 @@
 /aws/lambda/plex/executor/executor
 /aws/lambda/plex/monitor/monitor
 /aws/lambda/slack/slack
-/aws/lambda/torrent/batch/batch
-/aws/lambda/torrent/download/download
-/aws/lambda/torrent/request/request
-/aws/lambda/torrent/search/search
+/aws/lambda/torrent/torrent
 /aws/lambda/library/lambda.zip
 /aws/lambda/plex/executor/lambda.zip
 /aws/lambda/plex/monitor/lambda.zip
 /aws/lambda/slack/lambda.zip
-/aws/lambda/torrent/batch/lambda.zip
-/aws/lambda/torrent/download/lambda.zip
-/aws/lambda/torrent/request/lambda.zip
-/aws/lambda/torrent/search/lambda.zip
+/aws/lambda/torrent/lambda.zip
+infrastructure/systemd/env
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

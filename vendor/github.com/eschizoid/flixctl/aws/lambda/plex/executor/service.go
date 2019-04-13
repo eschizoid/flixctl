@@ -12,10 +12,12 @@ import (
 
 func executePlexCommand(evt json.RawMessage) {
 	var input models.Input
+	fmt.Printf("Exectuing λ with payload: %+v\n", input)
+
 	if err := json.Unmarshal(evt, &input); err != nil {
 		panic(err)
 	}
-	switch input.Command {
+	switch input.Text {
 	case "start":
 		plex.Start()
 	case "stop":

@@ -65,14 +65,8 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/monitor
 	@rm -rf $(shell pwd)/aws/lambda/slack/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/slack/slack
-	@rm -rf $(shell pwd)/aws/lambda/torrent/batch/lambda.zip
-	@rm -rf $(shell pwd)/aws/lambda/torrent/batch/batch
-	@rm -rf $(shell pwd)/aws/lambda/torrent/download/lambda.zip
-	@rm -rf $(shell pwd)/aws/lambda/torrent/download/download
-	@rm -rf $(shell pwd)/aws/lambda/torrent/request/lambda.zip
-	@rm -rf $(shell pwd)/aws/lambda/torrent/request/request
-	@rm -rf $(shell pwd)/aws/lambda/torrent/search/lambda.zip
-	@rm -rf $(shell pwd)/aws/lambda/torrent/search/search
+	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 
 env:
 	@echo "$$environment"
@@ -123,10 +117,7 @@ build-lambdas: clean \
 	build-lambda-plex-executor \
 	build-lambda-plex-monitor \
 	build-lambda-slack-dispatcher \
-	build-lambda-torrent-batch-executor \
-	build-lambda-torrent-download-executor \
-	build-lambda-torrent-request-executor \
-	build-lambda-torrent-search-executor
+	build-lambda-torrent-executor
 
 build-lambda-library-executor:
 	@cd $(shell pwd)/aws/lambda/library; \
@@ -144,20 +135,8 @@ build-lambda-slack-dispatcher:
 	@cd $(shell pwd)/aws/lambda/slack; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
-build-lambda-torrent-batch-executor:
-	@cd $(shell pwd)/aws/lambda/torrent/batch; \
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
-
-build-lambda-torrent-download-executor:
-	@cd $(shell pwd)/aws/lambda/torrent/download; \
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
-
-build-lambda-torrent-request-executor:
-	@cd $(shell pwd)/aws/lambda/torrent/request; \
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
-
-build-lambda-torrent-search-executor:
-	@cd $(shell pwd)/aws/lambda/torrent/search; \
+build-lambda-torrent-executor:
+	@cd $(shell pwd)/aws/lambda/torrent; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 zip-lambdas: build-lambdas \
@@ -165,10 +144,7 @@ zip-lambdas: build-lambdas \
 	zip-lambda-plex-executor \
 	zip-lambda-plex-monitor \
 	zip-lambda-slack-dispatcher \
-	zip-lambda-torrent-batch-executor \
-	zip-lambda-torrent-download-executor \
-	zip-lambda-torrent-request-executor \
-	zip-lambda-torrent-search-executor
+	zip-lambda-torrent-executor
 
 zip-lambda-library-executor:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
@@ -186,31 +162,16 @@ zip-lambda-slack-dispatcher:
 	zip -j -X $(shell pwd)/aws/lambda/slack/lambda.zip \
 	$(shell pwd)/aws/lambda/slack/slack
 
-zip-lambda-torrent-batch-executor:
-	zip -j -X $(shell pwd)/aws/lambda/torrent/batch/lambda.zip \
-	$(shell pwd)/aws/lambda/torrent/batch/batch
-
-zip-lambda-torrent-download-executor:
-	zip -j -X $(shell pwd)/aws/lambda/torrent/download/lambda.zip \
-	$(shell pwd)/aws/lambda/torrent/download/download
-
-zip-lambda-torrent-request-executor:
-	zip -j -X $(shell pwd)/aws/lambda/torrent/request/lambda.zip \
-	$(shell pwd)/aws/lambda/torrent/request/request
-
-zip-lambda-torrent-search-executor:
-	zip -j -X $(shell pwd)/aws/lambda/torrent/search/lambda.zip \
-	$(shell pwd)/aws/lambda/torrent/search/search
+zip-lambda-torrent-executor:
+	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
+	$(shell pwd)/aws/lambda/torrent/torrent
 
 deploy-lambdas: zip-lambdas \
 	deploy-lambda-library-executor \
 	deploy-lambda-plex-executor \
 	deploy-lambda-plex-monitor \
 	deploy-lambda-slack-dispatcher \
-	deploy-lambda-torrent-batch-executor \
-	deploy-lambda-torrent-download-executor \
-	deploy-lambda-torrent-request-executor \
-	deploy-lambda-torrent-search-executor
+	deploy-lambda-torrent-executor
 
 delete-lambdas:
 	@aws lambda delete-function \
@@ -222,113 +183,73 @@ delete-lambdas:
 	@aws lambda delete-function \
 	--function-name slack-dispatcher
 	@aws lambda delete-function \
-	--function-name torrent-batch
-	@aws lambda delete-function \
-	--function-name torrent-download
-	@aws lambda delete-function \
-	--function-name torrent-request
-	@aws lambda delete-function \
-	--function-name torrent-search
+	--function-name torrent-executor
 
 deploy-lambda-library-executor:
-	@aws lambda create-function \
+	@aws lambda update-function-code \
+	--function-name library-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
+	@aws lambda update-function-configuration \
 	--function-name library-executor \
 	--handler library \
 	--region $(AWS_REGION) \
-	--runtime go1.x \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip \
 	--timeout 900 \
 	--memory-size 128 \
 	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-plex-executor:
-	@aws lambda create-function \
+	@aws lambda update-function-code \
+	--function-name plex-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip
+	@aws lambda update-function-configuration \
 	--function-name plex-executor \
 	--handler executor \
 	--region $(AWS_REGION) \
-	--runtime go1.x \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/plex/executor/lambda.zip \
 	--timeout 900 \
 	--memory-size 128 \
 	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-plex-monitor:
-	@aws lambda create-function \
+	@aws lambda update-function-code \
+	--function-name plex-monitor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/plex/monitor/lambda.zip
+	@aws lambda update-function-configuration \
 	--function-name plex-monitor \
 	--handler monitor \
 	--region $(AWS_REGION) \
-	--runtime go1.x \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/plex/monitor/lambda.zip \
 	--timeout 900 \
 	--memory-size 128 \
 	--runtime go1.x \
 	--environment "$$environment"
 
 deploy-lambda-slack-dispatcher:
-	@aws lambda create-function \
+	@aws lambda update-function-code \
+	--function-name slack-dispatcher \
+	--zip-file fileb://$(shell pwd)/aws/lambda/slack/lambda.zip
+	@aws lambda update-function-configuration \
 	--function-name slack-dispatcher \
 	--handler slack \
 	--region $(AWS_REGION) \
-	--runtime go1.x \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/slack/lambda.zip \
 	--timeout 900 \
 	--memory-size 128 \
 	--runtime go1.x \
 	--environment "$$environment"
 
-deploy-lambda-torrent-batch-executor:
-	@aws lambda create-function \
-	--function-name torrent-batch \
-	--handler batch \
+deploy-lambda-torrent-executor:
+	@aws lambda update-function-code \
+	--function-name torrent-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name torrent-executor \
+	--handler torrent \
 	--region $(AWS_REGION) \
-	--runtime go1.x \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/batch/lambda.zip \
-	--timeout 900 \
-	--memory-size 128 \
-	--runtime go1.x \
-	--environment "$$environment"
-
-deploy-lambda-torrent-download-executor:
-	@aws lambda create-function \
-	--function-name torrent-download \
-	--handler download \
-	--region $(AWS_REGION) \
-	--runtime go1.x \
-	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/download/lambda.zip \
-	--timeout 900 \
-	--memory-size 128 \
-	--runtime go1.x \
-	--environment "$$environment"
-
-deploy-lambda-torrent-request-executor:
-	@aws lambda create-function \
-	--function-name torrent-request \
-	--handler request \
-	--region $(AWS_REGION) \
-	--runtime go1.x \
-	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/request/lambda.zip \
-	--timeout 900 \
-	--memory-size 128 \
-	--runtime go1.x \
-	--environment "$$environment"
-
-deploy-lambda-torrent-search-executor:
-	@aws lambda create-function \
-	--function-name torrent-search \
-	--handler search \
-	--region $(AWS_REGION) \
-	--runtime go1.x \
-	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
-	--zip-file fileb://$(shell pwd)/aws/lambda/torrent/search/lambda.zip \
 	--timeout 900 \
 	--memory-size 128 \
 	--runtime go1.x \
