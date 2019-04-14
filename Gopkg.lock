@@ -103,7 +103,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:7fc8ddb54537feac715028f812808a7e18dc5684170956b654810e134bf55c85"
+  digest = "1:d0175d67e2e8ec3490298217ce48701649f72cb364de0d5319e0ce8133afa366"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
@@ -129,7 +129,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "e98f74cefa800a229b1438476c9de2b84bfc0372"
+  revision = "d13978d38f7a2b98890f4de2c19012117074c380"
   version = "2.0.0"
 
 [[projects]]
@@ -317,6 +317,22 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:349364d865aae8d5cbdcb27d0f53dab91d686cc295e55f4c8139cf83b79544b7"
+  name = "golang.org/x/crypto"
+  packages = [
+    "curve25519",
+    "ed25519",
+    "ed25519/internal/edwards25519",
+    "internal/chacha20",
+    "internal/subtle",
+    "poly1305",
+    "ssh",
+  ]
+  pruneopts = "UT"
+  revision = "88737f569e3a9c7ab309cdc09a07fe7fc87233c3"
+
+[[projects]]
+  branch = "master"
   digest = "1:e972ca828bfa9b68a40a0df47471b0ce464f83a8e519dcadacea3a8cf7257d09"
   name = "golang.org/x/net"
   packages = [
@@ -330,9 +346,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3e01c69b34e7c3fa4b7a118ca95a6beaecea00f7f4fb701545d83eacd3badb3c"
+  digest = "1:e8668d5ed5c474915dfbeef0e32aebafb280803e4efe76950c1b71f60ef39088"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "cpu",
+    "unix",
+  ]
   pruneopts = "UT"
   revision = "97732733099d6a942a73b889770774366de963ed"
 
@@ -404,6 +423,7 @@
     "github.com/mholt/archiver",
     "github.com/nlopes/slack",
     "github.com/spf13/cobra",
+    "golang.org/x/crypto/ssh",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -48,9 +48,10 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 
 	lambdaName := request.QueryStringParameters["lambda"]
 	command := strings.Replace(slash.Command, "/", "", -1)
+	text := slash.Text
 	input := models.Input{
 		Command:    command,
-		Text:       slash.Text,
+		Parameter:  text,
 		LambdaName: lambdaName,
 	}
 	fmt.Printf("Invoking λ with payload: %+v\n", lambdaName)
@@ -60,7 +61,7 @@ func dispatch(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResp
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-type": "application/json"},
-		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing command %s"}`, command),
+		Body:       fmt.Sprintf(`{"response_type": "ephemeral", "text":"Executing command [%s] with parameters []"}`, command),
 	}, nil
 }
 

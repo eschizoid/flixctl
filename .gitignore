@@ -19,11 +19,13 @@
 /pkg/
 /src/
 /Godeps/
+/aws/lambda/admin/admin
 /aws/lambda/library/library
 /aws/lambda/plex/executor/executor
 /aws/lambda/plex/monitor/monitor
 /aws/lambda/slack/slack
 /aws/lambda/torrent/torrent
+/aws/lambda/admin/lambda.zip
 /aws/lambda/library/lambda.zip
 /aws/lambda/plex/executor/lambda.zip
 /aws/lambda/plex/monitor/lambda.zip

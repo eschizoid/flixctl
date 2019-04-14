@@ -19,11 +19,11 @@ var DownloadTorrentCmd = &cobra.Command{
 	Short: "To Download A Torrent",
 	Long:  "to download a torrent using Transmission client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		Download()
+		Download(magnetLink, downloadDir)
 	},
 }
 
-func Download() {
+func Download(magnetLink string, downloadDir string) {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
