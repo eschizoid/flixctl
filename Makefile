@@ -57,6 +57,8 @@ create-deploy-directory:
 
 clean:
 	@rm -f $(TARGET)
+	@rm -rf $(shell pwd)/aws/lambda/admin/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/admin/admin
 	@rm -rf $(shell pwd)/aws/lambda/library/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/library/library
 	@rm -rf $(shell pwd)/aws/lambda/plex/executor/lambda.zip
@@ -113,11 +115,16 @@ update-vendor:
 	@cp -R worker/ vendor/github.com/eschizoid/flixctl/worker
 
 build-lambdas: clean \
+	build-lambda-flixctl-admin-executor \
 	build-lambda-library-executor \
 	build-lambda-plex-executor \
 	build-lambda-plex-monitor \
 	build-lambda-slack-dispatcher \
 	build-lambda-torrent-executor
+
+build-lambda-flixctl-admin-executor:
+	@cd $(shell pwd)/aws/lambda/admin; \
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 build-lambda-library-executor:
 	@cd $(shell pwd)/aws/lambda/library; \
@@ -140,11 +147,16 @@ build-lambda-torrent-executor:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 zip-lambdas: build-lambdas \
+	zip-lambda-flixctl-admin-executor \
 	zip-lambda-library-executor \
 	zip-lambda-plex-executor \
 	zip-lambda-plex-monitor \
 	zip-lambda-slack-dispatcher \
 	zip-lambda-torrent-executor
+
+zip-lambda-flixctl-admin-executor:
+	zip -j -X $(shell pwd)/aws/lambda/admin/lambda.zip \
+	$(shell pwd)/aws/lambda/admin/admin
 
 zip-lambda-library-executor:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
@@ -167,6 +179,7 @@ zip-lambda-torrent-executor:
 	$(shell pwd)/aws/lambda/torrent/torrent
 
 deploy-lambdas: zip-lambdas \
+	deploy-lambda-flixctl-admin-executor \
 	deploy-lambda-library-executor \
 	deploy-lambda-plex-executor \
 	deploy-lambda-plex-monitor \
@@ -174,6 +187,8 @@ deploy-lambdas: zip-lambdas \
 	deploy-lambda-torrent-executor
 
 delete-lambdas:
+	@aws lambda delete-function \
+	--function-name flixctl-admin-executor
 	@aws lambda delete-function \
 	--function-name library-executor
 	@aws lambda delete-function \
@@ -184,6 +199,20 @@ delete-lambdas:
 	--function-name slack-dispatcher
 	@aws lambda delete-function \
 	--function-name torrent-executor
+
+deploy-lambda-flixctl-admin-executor:
+	@aws lambda update-function-code \
+	--function-name flixctl-admin-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/admin/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name flixctl-admin-executor \
+	--handler admin \
+	--region $(AWS_REGION) \
+	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
+	--timeout 900 \
+	--memory-size 128 \
+	--runtime go1.x \
+	--environment "$$environment"
 
 deploy-lambda-library-executor:
 	@aws lambda update-function-code \
