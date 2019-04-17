@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"golang.org/x/crypto/ssh"
 )
@@ -25,16 +26,23 @@ func executeAdminCommand(evt json.RawMessage) {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
-	conn, _ := ssh.Dial("tcp", os.Getenv("FLIXCTL_HOST"), config)
+	conn, _ := ssh.Dial("tcp", os.Getenv("FLIXCTL_HOST")+":22", config)
 	defer conn.Close()
 
 	switch input.Command {
 	case "renew-certs":
-		runCommand("", conn)
+		for _, command := range constants.RenewCertsCommands {
+			runCommand(command, conn)
+		}
+
 	case "restart-services":
-		runCommand("", conn)
+		for _, command := range constants.RestartServicesCommands {
+			runCommand(command, conn)
+		}
 	case "purge-slack":
-		runCommand("", conn)
+		for _, command := range constants.SlackCleanerCommands {
+			runCommand(command, conn)
+		}
 	}
 }
 

@@ -7,11 +7,11 @@ import (
 )
 
 var (
-	TorrentDownloadHookURL        = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "torrent-download")
-	LibraryInitiateArchiveHookURL = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-initiate-archive")
-	LibraryInventoryHookURL       = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-inventory")
-	LibraryDownloadHookURL        = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-download")
-	LibraryDeleteHookURL          = fmt.Sprintf("https://%s:9000/hooks/%s", os.Getenv("FLIXCTL_HOST"), "library-delete")
+	TorrentDownloadHookURL        = fmt.Sprintf("https://%s/prod/torrent/download?lambda=torrent-executor", os.Getenv("FLIXCTL_HOST"))
+	LibraryInitiateArchiveHookURL = fmt.Sprintf("https://%s/prod/torrent/download?lambda=library-executor", os.Getenv("FLIXCTL_HOST"))
+	LibraryInventoryHookURL       = fmt.Sprintf("https://%s/prod/torrent/download?lambda=library-executor", os.Getenv("FLIXCTL_HOST"))
+	LibraryDownloadHookURL        = fmt.Sprintf("https://%s/prod/torrent/download?lambda=library-executor", os.Getenv("FLIXCTL_HOST"))
+	LibraryDeleteHookURL          = fmt.Sprintf("https://%s/prod/torrent/download?lambda=library-executor", os.Getenv("FLIXCTL_HOST"))
 	SigningSecret                 = os.Getenv("SLACK_SIGNING_SECRET")
 )
 

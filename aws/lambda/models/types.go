@@ -2,7 +2,7 @@ package models
 
 type Input struct {
 	Command    string `json:"command"`
-	Parameter  string `json:"text"`
+	Argument   string `json:"text"`
 	LambdaName string `json:"Lambda_name"`
 }
 
