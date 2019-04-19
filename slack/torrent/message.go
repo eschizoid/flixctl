@@ -1,10 +1,8 @@
 package torrent
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"net/url"
 	"strconv"
 
 	util "github.com/eschizoid/flixctl/slack"
@@ -13,12 +11,9 @@ import (
 	"github.com/nlopes/slack"
 )
 
-func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, directoryDir string, notification bool) {
+func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, len(search.Out))
-	token := util.SigningSecret
 	for _, torrentResult := range search.Out {
-		encodedMagnetLink := base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet))
-		encodedName := base64.StdEncoding.EncodeToString([]byte(torrentResult.Name))
 		attachmentFieldSize := slack.AttachmentField{
 			Title: "Size",
 			Value: torrentResult.Size,
@@ -39,21 +34,21 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string, dire
 			Value: torrentResult.Source,
 			Short: true,
 		}
+		attachmentFieldMagnetLink := slack.AttachmentField{
+			Title: "Magnet Link",
+			Value: torrentResult.Magnet,
+			Short: true,
+		}
 		attachment := slack.Attachment{
-			Color: "#C40203",
-			Title: torrentResult.Name,
-			TitleLink: util.TorrentDownloadHookURL +
-				"?directory=" + directoryDir +
-				"&name=" + url.QueryEscape(encodedName) +
-				"&lambda=" + "torrent-download-executor" +
-				"&notify=" + strconv.FormatBool(notification) +
-				"&magnet=" + url.QueryEscape(encodedMagnetLink) +
-				"&token=" + token,
+			Color:     "#C40203",
+			Title:     torrentResult.Name,
+			TitleLink: util.TorrentDownloadHookURL,
 			Fields: []slack.AttachmentField{
 				attachmentFieldSize,
 				attachmentFieldSeeders,
 				attachmentFieldUploadDate,
 				attachmentFieldSource,
+				attachmentFieldMagnetLink,
 			},
 			Footer:     "Torrent Client",
 			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/transmission/51fa8bddc5425861.png",

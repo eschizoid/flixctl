@@ -17,7 +17,7 @@ func executePlexCommand(evt json.RawMessage) {
 	if err := json.Unmarshal(evt, &input); err != nil {
 		panic(err)
 	}
-	switch input.Parameter {
+	switch input.Argument {
 	case "start":
 		plex.Start()
 	case "stop":

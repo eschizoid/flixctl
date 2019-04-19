@@ -47,7 +47,7 @@ func Search(keywords string) {
 	out, _ := json.Marshal(torrentSearch.Out)
 	fmt.Println(string(out))
 	if notify, _ := strconv.ParseBool(slackNotification); notify {
-		slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL, downloadDir, true)
+		slackService.SendDownloadLinks(&torrentSearch, slackIncomingHookURL)
 	}
 }
 

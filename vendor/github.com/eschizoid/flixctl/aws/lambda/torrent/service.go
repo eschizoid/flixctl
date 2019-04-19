@@ -16,13 +16,13 @@ func executeTorrentCommand(evt json.RawMessage) {
 	}
 	switch input.Command {
 	case "torrent-search":
-		torrent.Search(input.Parameter)
+		torrent.Search(input.Argument)
 	case "torrent-status":
 		torrent.Status()
 	case "torrent-movies-download":
-		torrent.Download(input.Parameter, "/plex/movies")
+		torrent.Download(input.Argument, "/plex/movies")
 	case "torrent-shows-download":
-		torrent.Download(input.Parameter, "/plex/shows")
+		torrent.Download(input.Argument, "/plex/shows")
 	}
 	fmt.Println("Successfully executed plex command")
 }
