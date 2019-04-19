@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:d3e16e0cdbcf7dcbf7012dc73a530135f98f3267acbda503f48fcf4d5a3b1d67"
+  digest = "1:10497773f5de0b0b07af94a987c97d4ff96bf2adcf62ba5abfe87d43a0178af5"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -84,8 +84,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "56c1def75689cceec1fa6f14c2eedb4b798827f9"
-  version = "v1.19.11"
+  revision = "ca6d5f771b63df153f02fe5b117434d5ebafeeda"
+  version = "v1.19.15"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -103,12 +103,14 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:d0175d67e2e8ec3490298217ce48701649f72cb364de0d5319e0ce8133afa366"
+  branch = "master"
+  digest = "1:b36302c84739eb6fbcee64ef2ba292af967f42fdf8f336f4af8b6943550b11ed"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/ebs",
     "aws/ec2",
     "aws/glacier",
+    "aws/lambda/admin/constants",
     "aws/lambda/models",
     "aws/snapshot",
     "cmd",
@@ -129,8 +131,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "d13978d38f7a2b98890f4de2c19012117074c380"
-  version = "2.0.0"
+  revision = "0be14bf4e74208289b13dfdbefebf4559f99170b"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -174,11 +175,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ecde78f3d3bfb976082aa96b1eeea0764a44bfe295b5bad82bc1377da45be37f"
+  digest = "1:11dac7ae01b4c3559e5e7d53c9659514b6579fac842369d51f7a26075e49c400"
   name = "github.com/hekmon/transmissionrpc"
   packages = ["."]
   pruneopts = "UT"
-  revision = "7676caffba20863657fda40f9c34cedbc3d34bd3"
+  revision = "4352aea9f1b8457261dc9b03e8d32ced8fa1a471"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -252,15 +253,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:d886a3c32c8c1a770d07e36340f061d3afc948d065ffc3c9a19b01b34d4f0b65"
+  digest = "1:cf9272ab0a637cb1ffa40e2b6220108d7016a36b3eb357e4b57aacb7a8f725c0"
   name = "github.com/pierrec/lz4"
   packages = [
     ".",
     "internal/xxh32",
   ]
   pruneopts = "UT"
-  revision = "315a67e90e415bcdaff33057da191569bf4d8479"
-  version = "v2.1.1"
+  revision = "9419d2361c8ae111073ffe3337ecc364fb590921"
+  version = "v2.1.2"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -317,7 +318,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:349364d865aae8d5cbdcb27d0f53dab91d686cc295e55f4c8139cf83b79544b7"
+  digest = "1:4b4fbe3cfa58f1f95eb0ab4fefc95efda7af333722f7f272c9828ecabb25a0ac"
   name = "golang.org/x/crypto"
   packages = [
     "curve25519",
@@ -329,7 +330,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "88737f569e3a9c7ab309cdc09a07fe7fc87233c3"
+  revision = "df01cb2cc480549d72034218dd98bf97671450ac"
 
 [[projects]]
   branch = "master"
@@ -342,18 +343,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "eb5bcb51f2a31c7d5141d810b70815c05d9c9146"
+  revision = "1f3472d942ba824034fb77cab6a6cfc1bc8a2c3c"
 
 [[projects]]
   branch = "master"
-  digest = "1:e8668d5ed5c474915dfbeef0e32aebafb280803e4efe76950c1b71f60ef39088"
+  digest = "1:c391c9a5dd4ee0c11962f64f8b9a9c31225699866b8013043fa5849aa1655e79"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "97732733099d6a942a73b889770774366de963ed"
+  revision = "e8e3143a4f4a00f1fafef0dd82ba78223281b01b"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -396,6 +397,7 @@
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",
     "github.com/eschizoid/flixctl/aws/glacier",
+    "github.com/eschizoid/flixctl/aws/lambda/admin/constants",
     "github.com/eschizoid/flixctl/aws/lambda/models",
     "github.com/eschizoid/flixctl/aws/snapshot",
     "github.com/eschizoid/flixctl/cmd",
