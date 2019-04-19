@@ -15,9 +15,9 @@ Flixctl provides an easy way to provision a Plex installation on the cloud and c
 that users normally bundle up with Plex, such as torrent (transmission) and nzb clients (nzbget), movies and shows requests
 (ombi), and monitoring utilities (tautulli) just to mention a few.
 
-Inspired by `kubectl`, `flixctl` aims to provide a simple CLI for controlling the infrastructure necessary for a true
-MaaS (Movies as a Service) architecture. All flixctl commands were conceived with the idea to be later abstracted using
-Slack Slash API, making the full CLI available from any Slack workspace wishing to install it.
+Inspired by `kubectl`, `flixctl` aims to provide a simple API for provision the required infrastructure for a true MaaS
+(Movies as a Service) architecture. All flixctl commands were abstracted using Slack Slash API and backing them up by AWS
+Lambda. The flexibility of this architecture allows an easy installation of the full API into any Slack workspace.
 
 === Architecture
 
