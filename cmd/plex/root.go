@@ -19,6 +19,7 @@ var (
 		Short: "To Control Plex Media Center",
 	}
 	maxInactiveTime         string
+	monitorEnabled          string
 	slackNotification       string
 	slackIncomingHookURL    string
 	awsResourceTagNameValue = os.Getenv("AWS_RESOURCE_TAG_NAME_VALUE")
@@ -43,6 +44,12 @@ var (
 			"s",
 			os.Getenv("SLACK_MONITORING_HOOK_URL"),
 			"slack channel to notify",
+		)
+		MonitorPlexCmd.Flags().StringVarP(&monitorEnabled,
+			"enabled",
+			"e",
+			"",
+			"to enable/disable lambda plex monitor",
 		)
 		StartPlexCmd.Flags().StringVarP(&slackIncomingHookURL,
 			"slack-notification-channel",

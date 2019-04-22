@@ -10,7 +10,9 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/cloudwatchevents"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	cloudWatchService "github.com/eschizoid/flixctl/aws/cloudwatch"
 	"github.com/eschizoid/flixctl/models"
 	"github.com/eschizoid/flixctl/worker"
 	"github.com/jrudio/go-plex-client"
@@ -22,6 +24,13 @@ var MonitorPlexCmd = &cobra.Command{
 	Short: "To Monitor Plex Sessions",
 	Long:  "to monitor plex sessions and shut it down if no activity.",
 	Run: func(cmd *cobra.Command, args []string) {
+		if enabledLambdaMonitor, _ := strconv.ParseBool(monitorEnabled); enabledLambdaMonitor {
+			enabledMonitorRule()
+			return
+		} else if !enabledLambdaMonitor {
+			disabledMonitorRule()
+			return
+		}
 		Monitor(slackNotification)
 	},
 }
@@ -59,6 +68,30 @@ func Monitor(slackNotification string) {
 		}
 		m["last_activity"] = fmt.Sprintf("%d/%d/%d %d:%d", lastActiveTime.Month(), lastActiveTime.Day(), lastActiveTime.Year(), lastActiveTime.Hour(), lastActiveTime.Minute())
 	}
+	jsonString, _ := json.Marshal(m)
+	fmt.Println(string(jsonString))
+}
+
+func enabledMonitorRule() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	svc := cloudwatchevents.New(awsSession)
+	cloudWatchService.EnableRule(svc, "plex-monitor-rule")
+	m := make(map[string]interface{})
+	m["plex_monitor_rule_enabled"] = "true" //nolint:goconst
+	jsonString, _ := json.Marshal(m)
+	fmt.Println(string(jsonString))
+}
+
+func disabledMonitorRule() {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	svc := cloudwatchevents.New(awsSession)
+	cloudWatchService.DisableRule(svc, "plex-monitor-rule")
+	m := make(map[string]interface{})
+	m["plex_monitor_rule_disabled"] = "true" //nolint:goconst
 	jsonString, _ := json.Marshal(m)
 	fmt.Println(string(jsonString))
 }
