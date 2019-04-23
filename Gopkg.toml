@@ -38,8 +38,8 @@
   version = "1.19.15"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/eschizoid/flixctl"
+  version = "2.0.0"
 
 [[constraint]]
   name = "github.com/go-playground/form"

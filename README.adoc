@@ -218,22 +218,6 @@ Flags:
 
 Use "flixctl ombi [command] --help" for more information about a command.
 ----
-==== ```flixctl nzb```
-----
-$ flixctl nzb --help
-To Control Nzb Client
-
-Usage:
-  flixctl nzb [command]
-
-Available Commands:
-  status      To Show Nzb Status
-
-Flags:
-  -h, --help   help for nzb
-
-Use "flixctl nzb [command] --help" for more information about a command.
-----
 ==== ```flixctl auth```
 ----
 $ flixctl auth --help

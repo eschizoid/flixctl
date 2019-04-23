@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:10497773f5de0b0b07af94a987c97d4ff96bf2adcf62ba5abfe87d43a0178af5"
+  digest = "1:b6ed6f43844644c04ac26925f40bb7b8596fae79b3fd1d772b63c76a5f3a9915"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -76,6 +76,7 @@
     "private/protocol/rest",
     "private/protocol/restjson",
     "private/protocol/xml/xmlutil",
+    "service/cloudwatchevents",
     "service/dynamodb",
     "service/dynamodb/dynamodbattribute",
     "service/ec2",
@@ -103,7 +104,6 @@
   version = "v0.0.1"
 
 [[projects]]
-  branch = "master"
   digest = "1:b36302c84739eb6fbcee64ef2ba292af967f42fdf8f336f4af8b6943550b11ed"
   name = "github.com/eschizoid/flixctl"
   packages = [
@@ -131,7 +131,8 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "0be14bf4e74208289b13dfdbefebf4559f99170b"
+  revision = "310ddb3f38ca23e10e9b227db3b9349bee797491"
+  version = "2.0.0"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -330,7 +331,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "df01cb2cc480549d72034218dd98bf97671450ac"
+  revision = "d864b10871cd4370fe574816b489c819c675ccc7"
 
 [[projects]]
   branch = "master"
@@ -343,18 +344,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "1f3472d942ba824034fb77cab6a6cfc1bc8a2c3c"
+  revision = "afa5a82059c6356159f699d81beff22a81842231"
 
 [[projects]]
   branch = "master"
-  digest = "1:c391c9a5dd4ee0c11962f64f8b9a9c31225699866b8013043fa5849aa1655e79"
+  digest = "1:e6c02fc27ab754451291d6ab582aabaf46f5e977be1d7ad7e05c89639cf5cac7"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "e8e3143a4f4a00f1fafef0dd82ba78223281b01b"
+  revision = "953cdadca894cdc07be76fc99f95b40c28f06623"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -389,6 +390,8 @@
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/awserr",
     "github.com/aws/aws-sdk-go/aws/session",
+    "github.com/aws/aws-sdk-go/service/cloudwatch",
+    "github.com/aws/aws-sdk-go/service/cloudwatchevents",
     "github.com/aws/aws-sdk-go/service/dynamodb",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
     "github.com/aws/aws-sdk-go/service/ec2",
