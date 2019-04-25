@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 
@@ -20,9 +21,19 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-status":
 		torrent.Status()
 	case "torrent-movies-download":
-		torrent.Download(input.Argument, "/plex/movies")
+		magnetLink, err := base64.StdEncoding.DecodeString(input.Argument)
+		if err != nil {
+			fmt.Println("Error decoding while decoding magnet link: ", err)
+			panic(err)
+		}
+		torrent.Download(string(magnetLink), "/plex/movies")
 	case "torrent-shows-download":
-		torrent.Download(input.Argument, "/plex/shows")
+		magnetLink, err := base64.StdEncoding.DecodeString(input.Argument)
+		if err != nil {
+			fmt.Println("Error decoding while decoding magnet link: ", err)
+			panic(err)
+		}
+		torrent.Download(string(magnetLink), "/plex/shows")
 	}
 	fmt.Println("Successfully executed plex command")
 }

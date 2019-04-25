@@ -33,7 +33,7 @@ func Chunk(fileName string) []string {
 	for i := uint64(0); i < totalParts; i++ {
 		partSize := int(math.Min(maxFileChunkSize, float64(fileSize-int64(i*maxFileChunkSize))))
 		fmt.Printf("Part size: %d\n", partSize)
-		partBuffer := make([]byte, partSize)
+		partBuffer := make([]byte, 0, partSize)
 		_, err = file.Read(partBuffer)
 		showError(err)
 		// write to disk
@@ -69,7 +69,7 @@ func ComputeTreeHash(fileName string) string {
 	file, err := os.Open(fileName)
 	showError(err)
 	defer file.Close()
-	buf := make([]byte, maxTreeHashChunkSize)
+	buf := make([]byte, 0, maxTreeHashChunkSize)
 	var hashes [][]byte
 	for {
 		n, err := io.ReadAtLeast(file, buf, maxTreeHashChunkSize)

@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:b6ed6f43844644c04ac26925f40bb7b8596fae79b3fd1d772b63c76a5f3a9915"
+  digest = "1:c852fa2ee21890dc420a4d759badded1b64548fb7e965a41464ca2a96ca78e8e"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -63,18 +63,22 @@
     "aws/session",
     "aws/signer/v4",
     "internal/ini",
+    "internal/s3err",
     "internal/sdkio",
     "internal/sdkrand",
     "internal/sdkuri",
     "internal/shareddefaults",
     "private/protocol",
     "private/protocol/ec2query",
+    "private/protocol/eventstream",
+    "private/protocol/eventstream/eventstreamapi",
     "private/protocol/json/jsonutil",
     "private/protocol/jsonrpc",
     "private/protocol/query",
     "private/protocol/query/queryutil",
     "private/protocol/rest",
     "private/protocol/restjson",
+    "private/protocol/restxml",
     "private/protocol/xml/xmlutil",
     "service/cloudwatchevents",
     "service/dynamodb",
@@ -82,11 +86,14 @@
     "service/ec2",
     "service/glacier",
     "service/lambda",
+    "service/s3",
+    "service/s3/s3iface",
+    "service/s3/s3manager",
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "ca6d5f771b63df153f02fe5b117434d5ebafeeda"
-  version = "v1.19.15"
+  revision = "c44180fe5d17e41f3aa22bdea42c073b344bcaac"
+  version = "v1.19.17"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -104,9 +111,11 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:b36302c84739eb6fbcee64ef2ba292af967f42fdf8f336f4af8b6943550b11ed"
+  branch = "master"
+  digest = "1:30e4f7348df2af0a54da1f45edb78a095f01b837852c2558f88ebfe7e4d63d70"
   name = "github.com/eschizoid/flixctl"
   packages = [
+    "aws/cloudwatch",
     "aws/ebs",
     "aws/ec2",
     "aws/glacier",
@@ -131,8 +140,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "310ddb3f38ca23e10e9b227db3b9349bee797491"
-  version = "2.0.0"
+  revision = "827bdb3f003deeac9acc2c4b06fe2264ad246bff"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -331,11 +339,11 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "d864b10871cd4370fe574816b489c819c675ccc7"
+  revision = "c05e17bb3b2dca130fc919668a96b4bec9eb9442"
 
 [[projects]]
   branch = "master"
-  digest = "1:e972ca828bfa9b68a40a0df47471b0ce464f83a8e519dcadacea3a8cf7257d09"
+  digest = "1:88e27d7a91ad3aafb5184e55268c3cbf976ca8ba8b14259b01f80b05f93f0493"
   name = "golang.org/x/net"
   packages = [
     "html",
@@ -344,27 +352,29 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "afa5a82059c6356159f699d81beff22a81842231"
+  revision = "4829fb13d2c62012c17688fa7f629f371014946d"
 
 [[projects]]
   branch = "master"
-  digest = "1:e6c02fc27ab754451291d6ab582aabaf46f5e977be1d7ad7e05c89639cf5cac7"
+  digest = "1:9e58d5274a95c70358b4d22c39dd3bc7490a827b778728ac73af8fdd93a20704"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "953cdadca894cdc07be76fc99f95b40c28f06623"
+  revision = "18eb32c0e2f0c2bc8d17842ed4ad41486f349ad4"
 
 [[projects]]
-  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
+  digest = "1:f4ea3f623a07a2602bb9c1624d6dc7d291261278ba2484508fac559dc7926048"
   name = "golang.org/x/text"
   packages = [
     "collate",
     "collate/build",
     "internal/colltab",
     "internal/gen",
+    "internal/language",
+    "internal/language/compact",
     "internal/tag",
     "internal/triegen",
     "internal/ucd",
@@ -377,8 +387,8 @@
     "unicode/rangetable",
   ]
   pruneopts = "UT"
-  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
-  version = "v0.3.0"
+  revision = "c942b20a5d85b458c4dce1589326051d85e25d6d"
+  version = "v0.3.1"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -390,13 +400,15 @@
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/awserr",
     "github.com/aws/aws-sdk-go/aws/session",
-    "github.com/aws/aws-sdk-go/service/cloudwatch",
     "github.com/aws/aws-sdk-go/service/cloudwatchevents",
     "github.com/aws/aws-sdk-go/service/dynamodb",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
     "github.com/aws/aws-sdk-go/service/ec2",
     "github.com/aws/aws-sdk-go/service/glacier",
     "github.com/aws/aws-sdk-go/service/lambda",
+    "github.com/aws/aws-sdk-go/service/s3",
+    "github.com/aws/aws-sdk-go/service/s3/s3manager",
+    "github.com/eschizoid/flixctl/aws/cloudwatch",
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",
     "github.com/eschizoid/flixctl/aws/glacier",

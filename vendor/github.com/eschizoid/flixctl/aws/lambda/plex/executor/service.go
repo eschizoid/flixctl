@@ -24,6 +24,8 @@ func executePlexCommand(evt json.RawMessage) {
 		plex.Stop(slackNotification)
 	case "status":
 		plex.Status()
+	case "token":
+		plex.Token()
 	}
 	fmt.Println("Successfully executed plex command")
 }

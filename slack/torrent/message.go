@@ -1,6 +1,7 @@
 package torrent
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 )
 
 func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
-	var attachments = make([]slack.Attachment, len(search.Out))
+	var attachments = make([]slack.Attachment, 0, len(search.Out))
 	for _, torrentResult := range search.Out {
 		attachmentFieldSize := slack.AttachmentField{
 			Title: "Size",
@@ -36,8 +37,8 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 		}
 		attachmentFieldMagnetLink := slack.AttachmentField{
 			Title: "Magnet Link",
-			Value: torrentResult.Magnet,
-			Short: true,
+			Value: base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet)),
+			Short: false,
 		}
 		attachment := slack.Attachment{
 			Color:     "#C40203",
@@ -95,7 +96,7 @@ func SendDownloadStart(torrentName string, slackIncomingHookURL string) {
 }
 
 func SendStatus(torrents []transmissionrpc.Torrent, slackIncomingHookURL string) {
-	var attachments = make([]slack.Attachment, len(torrents))
+	var attachments = make([]slack.Attachment, 0, len(torrents))
 	for _, torrentFile := range torrents {
 		var name = fmt.Sprintf("*Name*: %s", *torrentFile.Name)
 		var percentDone = fmt.Sprintf("*Percentage*: %.2f%%", *torrentFile.PercentDone*100)
