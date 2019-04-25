@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/aws/aws-lambda-go/lambda"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
@@ -53,7 +52,7 @@ func downloadPublicKey() ssh.AuthMethod {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	downloader := s3manager.NewDownloader(awsSession)
-	sshKey := s3.DownloadItem(downloader, "marianoflix", "certicates/marianoflix.pem")
+	sshKey := s3.DownloadItem(downloader, "marianoflix", "marianoflix.pem", "certicates/marianoflix.pem")
 	key, err := ioutil.ReadFile(sshKey.Name())
 	if err != nil {
 		panic(err)
@@ -88,5 +87,9 @@ func runCommand(cmd string, conn *ssh.Client) {
 }
 
 func main() {
-	lambda.Start(executeAdminCommand)
+	var input = models.Input{
+		Command: "restart-services",
+	}
+	command, _ := json.Marshal(input)
+	executeAdminCommand(command)
 }
