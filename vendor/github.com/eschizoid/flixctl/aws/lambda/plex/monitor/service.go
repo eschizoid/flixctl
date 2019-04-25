@@ -16,14 +16,14 @@ func executePlexCommand(ctx context.Context, cloudWatchEvent events.CloudWatchEv
 	return nil
 }
 
-func main() {
-	lambda.Start(executePlexCommand)
-}
-
 func getTime() time.Time {
 	location, err := time.LoadLocation("America/Chicago")
 	if err != nil {
 		fmt.Println(err)
 	}
 	return time.Now().In(location)
+}
+
+func main() {
+	lambda.Start(executePlexCommand)
 }

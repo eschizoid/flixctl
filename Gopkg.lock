@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:30e4f7348df2af0a54da1f45edb78a095f01b837852c2558f88ebfe7e4d63d70"
+  digest = "1:0fbb0ccb606ce25172f3f7d9fd4854ab0ee1974177e72ee74537b7448990061b"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -121,6 +121,7 @@
     "aws/glacier",
     "aws/lambda/admin/constants",
     "aws/lambda/models",
+    "aws/s3",
     "aws/snapshot",
     "cmd",
     "cmd/auth",
@@ -140,7 +141,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "827bdb3f003deeac9acc2c4b06fe2264ad246bff"
+  revision = "ffa6936a27d6106581ab82673b7b02b40986786f"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -414,6 +415,7 @@
     "github.com/eschizoid/flixctl/aws/glacier",
     "github.com/eschizoid/flixctl/aws/lambda/admin/constants",
     "github.com/eschizoid/flixctl/aws/lambda/models",
+    "github.com/eschizoid/flixctl/aws/s3",
     "github.com/eschizoid/flixctl/aws/snapshot",
     "github.com/eschizoid/flixctl/cmd",
     "github.com/eschizoid/flixctl/cmd/auth",
