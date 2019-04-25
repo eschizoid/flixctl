@@ -12,7 +12,7 @@ import (
 )
 
 func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL string) {
-	var attachments = make([]slack.Attachment, len(jobDescriptions))
+	var attachments = make([]slack.Attachment, 0, len(jobDescriptions))
 	token := util.SigningSecret
 	for _, jobDescription := range jobDescriptions {
 		var url string
@@ -86,7 +86,7 @@ func SendJobs(jobDescriptions []*glacier.JobDescription, slackIncomingHookURL st
 }
 
 func SendInventory(archives []models.InventoryArchive, slackIncomingHookURL string) {
-	var attachments = make([]slack.Attachment, len(archives))
+	var attachments = make([]slack.Attachment, 0, len(archives))
 	token := util.SigningSecret
 	for _, archive := range archives {
 		attachmentTitle := slack.AttachmentField{

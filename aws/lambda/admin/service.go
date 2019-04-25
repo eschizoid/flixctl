@@ -7,8 +7,11 @@ import (
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	sess "github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
+	"github.com/eschizoid/flixctl/aws/s3"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -21,7 +24,7 @@ func executeAdminCommand(evt json.RawMessage) {
 	config := &ssh.ClientConfig{
 		User: "username",
 		Auth: []ssh.AuthMethod{
-			publicKey(os.Getenv("FLIXCTL_PUBLIC_KEY_PATH")),
+			downloadPublicKey(),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
@@ -34,7 +37,6 @@ func executeAdminCommand(evt json.RawMessage) {
 		for _, command := range constants.RenewCertsCommands {
 			runCommand(command, conn)
 		}
-
 	case "restart-services":
 		for _, command := range constants.RestartServicesCommands {
 			runCommand(command, conn)
@@ -44,6 +46,23 @@ func executeAdminCommand(evt json.RawMessage) {
 			runCommand(command, conn)
 		}
 	}
+}
+
+func downloadPublicKey() ssh.AuthMethod {
+	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
+		SharedConfigState: sess.SharedConfigEnable,
+	}))
+	downloader := s3manager.NewDownloader(awsSession)
+	sshKey := s3.DownloadItem(downloader, "marianoflix", "certicates/marianoflix.pem")
+	key, err := ioutil.ReadFile(sshKey.Name())
+	if err != nil {
+		panic(err)
+	}
+	signer, err := ssh.ParsePrivateKey(key)
+	if err != nil {
+		panic(err)
+	}
+	return ssh.PublicKeys(signer)
 }
 
 func runCommand(cmd string, conn *ssh.Client) {
@@ -66,18 +85,6 @@ func runCommand(cmd string, conn *ssh.Client) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func publicKey(path string) ssh.AuthMethod {
-	key, err := ioutil.ReadFile(path)
-	if err != nil {
-		panic(err)
-	}
-	signer, err := ssh.ParsePrivateKey(key)
-	if err != nil {
-		panic(err)
-	}
-	return ssh.PublicKeys(signer)
 }
 
 func main() {
