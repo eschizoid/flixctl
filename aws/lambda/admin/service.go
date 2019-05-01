@@ -2,10 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
+	"time"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
@@ -21,14 +24,17 @@ func executeAdminCommand(evt json.RawMessage) {
 	}
 
 	config := &ssh.ClientConfig{
-		User: "username",
+		User: "centos",
 		Auth: []ssh.AuthMethod{
 			downloadPublicKey(),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
-	conn, _ := ssh.Dial("tcp", os.Getenv("FLIXCTL_HOST")+":22", config)
+	conn, err := ssh.Dial("tcp", os.Getenv("FLIXCTL_HOST")+":22", config)
+	if err != nil {
+		panic(err)
+	}
 	defer conn.Close()
 
 	switch input.Command {
@@ -37,12 +43,17 @@ func executeAdminCommand(evt json.RawMessage) {
 			runCommand(command, conn)
 		}
 	case "restart-services":
-		for _, command := range constants.RestartServicesCommands {
-			runCommand(command, conn)
+		services := []string{"httpd", "jackett", "nzbget", "ombi", "plexmediaserver", "radarr", "sonarr", "s3fs", "tautulli", "transmission-daemon"}
+		for _, service := range services {
+			runCommand(fmt.Sprintf(constants.RestartServicesCommand, service), conn)
 		}
 	case "purge-slack":
-		for _, command := range constants.SlackCleanerCommands {
-			runCommand(command, conn)
+		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
+		for _, channel := range slackChannels {
+			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
+			time.Sleep(10 * time.Second)
+			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
+			time.Sleep(10 * time.Second)
 		}
 	}
 }
@@ -87,9 +98,5 @@ func runCommand(cmd string, conn *ssh.Client) {
 }
 
 func main() {
-	var input = models.Input{
-		Command: "restart-services",
-	}
-	command, _ := json.Marshal(input)
-	executeAdminCommand(command)
+	lambda.Start(executeAdminCommand)
 }

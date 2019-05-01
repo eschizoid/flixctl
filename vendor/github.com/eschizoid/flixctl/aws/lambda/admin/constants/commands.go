@@ -12,56 +12,19 @@ var RenewCertsCommands = []string{
 	`/opt/dehydrated/dehydrated -c -o /opt/ssl`,
 }
 
-var RestartServicesCommands = []string{
-	`for plex_service in httpd \
-        jackett \
-        nzbget \
-        ombi \
-        plexmediaserver \
-        radarr \
-        sonarr \
-        s3fs \
-        tautulli \
-        transmission-daemon; do \
-        sudo systemctl restart ${plex_service} \
-    done`,
-}
+var RestartServicesCommand = "sudo systemctl restart %s"
 
 var SlackCleanerCommands = []string{
-	`for channel in monitoring; do \
-        /bin/slack-cleaner --perform \
-            --quiet \
-            --token "${SLACK_LEGACY_TOKEN}" \
-            --message \
-            --group ${channel} \
-            --bot \
-    done`,
-	`sleep 5`,
-	`for channel in monitoring; do \
-        /bin/slack-cleaner --perform \
-            --quiet \
-            --token "${SLACK_LEGACY_TOKEN}" \
-            --message \
-            --group ${channel} \
-            --user "*" \
-    done`,
-	`sleep 5`,
-	`for channel in new-releases requests travis; do \
-        /bin/slack-cleaner --perform \
-            --quiet \
-            --token "${SLACK_LEGACY_TOKEN}" \
-            --message \
-            --channel ${channel} \
-        --bot \
-    done`,
-	`sleep 5`,
-	`for channel in new-releases requests travis; do \
-        /bin/slack-cleaner --perform \
-            --quiet \
-            --token "${SLACK_LEGACY_TOKEN}" \
-            --message \
-            --channel ${channel} \
-            --user "*" \
-        done`,
-	`sleep 5`,
+	`/bin/slack-cleaner --perform \
+        --quiet \
+        --token %s \
+        --message \
+        --group %s \
+        --bot`,
+	`/bin/slack-cleaner --perform \
+        --quiet \
+        --token %s \
+        --message \
+        --group %s \
+        --user "*"`,
 }
