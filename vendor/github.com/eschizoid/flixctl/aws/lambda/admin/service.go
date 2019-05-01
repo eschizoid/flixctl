@@ -48,8 +48,8 @@ func executeAdminCommand(evt json.RawMessage) {
 			runCommand(fmt.Sprintf(constants.RestartServicesCommand, service), conn)
 		}
 	case "purge-slack":
-		slackPrivateChannels := []string{"monitoring", "new-releases", "requests", "travis"}
-		for _, channel := range slackPrivateChannels {
+		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
+		for _, channel := range slackChannels {
 			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
 			time.Sleep(10 * time.Second)
 			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
