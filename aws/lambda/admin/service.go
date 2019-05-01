@@ -37,7 +37,7 @@ func executeAdminCommand(evt json.RawMessage) {
 	}
 	defer conn.Close()
 
-	switch input.Command {
+	switch input.Argument {
 	case "renew-certs":
 		for _, command := range constants.RenewCertsCommands {
 			runCommand(command, conn)
@@ -63,7 +63,7 @@ func downloadPublicKey() ssh.AuthMethod {
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
 	downloader := s3manager.NewDownloader(awsSession)
-	sshKey := s3.DownloadItem(downloader, "marianoflix", "marianoflix.pem", "certicates/marianoflix.pem")
+	sshKey := s3.DownloadItem(downloader, "marianoflix", "certicates/marianoflix.pem", "/tmp/marianoflix.pem")
 	key, err := ioutil.ReadFile(sshKey.Name())
 	if err != nil {
 		panic(err)
