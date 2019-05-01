@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:c852fa2ee21890dc420a4d759badded1b64548fb7e965a41464ca2a96ca78e8e"
+  digest = "1:efd617ed29b251a29c1c64f241aa4e20eff4ecf2578229746651a964818ca652"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "c44180fe5d17e41f3aa22bdea42c073b344bcaac"
-  version = "v1.19.17"
+  revision = "6da73e9d95fc247fc64d0de87cf33655ed615e3f"
+  version = "v1.19.22"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0fbb0ccb606ce25172f3f7d9fd4854ab0ee1974177e72ee74537b7448990061b"
+  digest = "1:4a4d199b857676bac1e0b50c498afa30363d638f4ea4736621e8c91dbb0c68c7"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -141,7 +141,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "ffa6936a27d6106581ab82673b7b02b40986786f"
+  revision = "9cda42a5f25870d4b025c0bfc0eb7adba24f2e0a"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -216,7 +216,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:39cb6cced5f0e9b373d26bd77c179b253051bd5b72f364af15a6a7caeb244524"
+  digest = "1:762a24e38b39b59a2ceef21101e1befe04033aada94d6fdf0e36c0dc29de311b"
   name = "github.com/juliensalinas/torrengo"
   packages = [
     "core",
@@ -225,7 +225,7 @@
     "tpb",
   ]
   pruneopts = "UT"
-  revision = "0464f8be5b21d776ce531a2dc0c27107e2c6d9b8"
+  revision = "1b98cea3a29da40651396794a5b21798263b18ed"
 
 [[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
@@ -263,15 +263,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:cf9272ab0a637cb1ffa40e2b6220108d7016a36b3eb357e4b57aacb7a8f725c0"
+  digest = "1:259f9b7645983a7a823318d78aa96dec68af8891f706493ac1ec04d819cb977c"
   name = "github.com/pierrec/lz4"
   packages = [
     ".",
     "internal/xxh32",
   ]
   pruneopts = "UT"
-  revision = "9419d2361c8ae111073ffe3337ecc364fb590921"
-  version = "v2.1.2"
+  revision = "d705d4371bfccdf47f10e45584e896026c83616f"
+  version = "v2.2.3"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -340,11 +340,11 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "c05e17bb3b2dca130fc919668a96b4bec9eb9442"
+  revision = "a29dc8fdc73485234dbef99ebedb95d2eced08de"
 
 [[projects]]
   branch = "master"
-  digest = "1:88e27d7a91ad3aafb5184e55268c3cbf976ca8ba8b14259b01f80b05f93f0493"
+  digest = "1:df0b90aab660f9cf40a37135ae257dbdb35bbda30e397eccf1ab0bbc1f1e03ba"
   name = "golang.org/x/net"
   packages = [
     "html",
@@ -353,21 +353,21 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "4829fb13d2c62012c17688fa7f629f371014946d"
+  revision = "9ce7a6920f093fc0b908c4a5f66ae049110f417e"
 
 [[projects]]
   branch = "master"
-  digest = "1:9e58d5274a95c70358b4d22c39dd3bc7490a827b778728ac73af8fdd93a20704"
+  digest = "1:8acf841d7417aa2621a2b923f6262673033d407053ab49a4db9ec34378e1b49b"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "18eb32c0e2f0c2bc8d17842ed4ad41486f349ad4"
+  revision = "d89cdac9e8725f2aefce25fcbfef41134c9ad412"
 
 [[projects]]
-  digest = "1:f4ea3f623a07a2602bb9c1624d6dc7d291261278ba2484508fac559dc7926048"
+  digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -388,8 +388,8 @@
     "unicode/rangetable",
   ]
   pruneopts = "UT"
-  revision = "c942b20a5d85b458c4dce1589326051d85e25d6d"
-  version = "v0.3.1"
+  revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
+  version = "v0.3.2"
 
 [solve-meta]
   analyzer-name = "dep"
