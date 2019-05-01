@@ -22,6 +22,7 @@ func executeAdminCommand(evt json.RawMessage) {
 	if err := json.Unmarshal(evt, &input); err != nil {
 		panic(err)
 	}
+	fmt.Printf("Exectuing λ with payload: %+v\n", input)
 
 	config := &ssh.ClientConfig{
 		User: "centos",
@@ -36,18 +37,24 @@ func executeAdminCommand(evt json.RawMessage) {
 		panic(err)
 	}
 	defer conn.Close()
-
 	switch input.Argument {
 	case "renew-certs":
+		fmt.Printf("Executing %s command", input.Argument)
 		for _, command := range constants.RenewCertsCommands {
 			runCommand(command, conn)
 		}
+		fmt.Printf("Succesfully executed %s", input.Argument)
 	case "restart-services":
+		fmt.Printf("Executing %s command", input.Argument)
 		services := []string{"httpd", "jackett", "nzbget", "ombi", "plexmediaserver", "radarr", "sonarr", "s3fs", "tautulli", "transmission-daemon"}
 		for _, service := range services {
+			fmt.Printf("Exectuing λ with payload: %+v\n", input)
 			runCommand(fmt.Sprintf(constants.RestartServicesCommand, service), conn)
+			fmt.Printf("Succesfully restarted %s service", service)
 		}
+		fmt.Printf("Succesfully executed %s", input.Argument)
 	case "purge-slack":
+		fmt.Printf("Executing %s command", input.Argument)
 		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
 		for _, channel := range slackChannels {
 			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
@@ -55,6 +62,7 @@ func executeAdminCommand(evt json.RawMessage) {
 			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
 			time.Sleep(10 * time.Second)
 		}
+		fmt.Printf("Succesfully executed %s", input.Argument)
 	}
 }
 
