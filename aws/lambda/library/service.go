@@ -13,6 +13,7 @@ func executeLibraryCommand(evt json.RawMessage) {
 	if err := json.Unmarshal(evt, &input); err != nil {
 		panic(err)
 	}
+	fmt.Printf("Exectuing λ with payload: %+v\n", input)
 	switch input.Command {
 	case "library-jobs":
 	case "library-initiate":

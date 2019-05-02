@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
-func DownloadItem(downloader *s3manager.Downloader, bucket string, item string, key string) *os.File {
-	file, err := os.Create(item)
+func DownloadItem(downloader *s3manager.Downloader, bucket string, key string, destination string) *os.File {
+	file, err := os.Create(destination)
 	if err != nil {
 		exitErrorf("Unable to open file %q, %v", err)
 	}
@@ -21,7 +21,7 @@ func DownloadItem(downloader *s3manager.Downloader, bucket string, item string, 
 			Key:    aws.String(key),
 		})
 	if err != nil {
-		exitErrorf("Unable to download item %q, %v", item, err)
+		exitErrorf("Unable to download item %q, %v", destination, err)
 	}
 	fmt.Println("Downloaded", file.Name(), numBytes, "bytes")
 	return file
