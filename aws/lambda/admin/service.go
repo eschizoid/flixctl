@@ -64,12 +64,10 @@ func executeAdminCommand(evt json.RawMessage) {
 		fmt.Printf("Executing %s command \n", input.Argument)
 		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
 		for _, channel := range slackChannels {
-			commandBot := fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
-			commandUser := fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			command := fmt.Sprintf(constants.SlackCleanerCommand, os.Getenv("SLACK_LEGACY_TOKEN"), channel)
 			message := fmt.Sprintf("Succesfully purged slack channel %s", channel)
 			commandTask := func() interface{} {
-				runCommand(commandBot, conn)
-				runCommand(commandUser, conn)
+				runCommand(command, conn)
 				return message
 			}
 			tasks = append(tasks, commandTask)
