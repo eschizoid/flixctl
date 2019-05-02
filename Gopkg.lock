@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2f79bbdb279251d92377541e9f7af80c376b90b6ec1934373fa34a6d81bb9b9d"
+  digest = "1:0135aecada324c1c5d13318c37aab08eadbe39f69ee3d7f9a7209269dcf32eaf"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -141,7 +141,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "895f019880410fdc5f15358166e1b3a6c2287b72"
+  revision = "ec1ebf9bf6941de76f5fecf6798f09be67aed98f"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -357,14 +357,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:8acf841d7417aa2621a2b923f6262673033d407053ab49a4db9ec34378e1b49b"
+  digest = "1:f10f93207898ddd197d0ae3f9b21006bf34e536d770d48346bf3d412bd92630d"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "d89cdac9e8725f2aefce25fcbfef41134c9ad412"
+  revision = "3ef323f4f1fd101bc77a8d8ebdd224dfdb707e93"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"

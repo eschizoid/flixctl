@@ -18,12 +18,14 @@ var SlackCleanerCommands = []string{
 	`/bin/slack-cleaner --perform \
         --quiet \
         --token %s \
+        --rate 2 \
         --message \
         --group %s \
         --bot`,
 	`/bin/slack-cleaner --perform \
         --quiet \
         --token %s \
+        --rate 2 \
         --message \
         --group %s \
         --user "*"`,

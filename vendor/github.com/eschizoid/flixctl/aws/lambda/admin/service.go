@@ -1,12 +1,12 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
-	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	sess "github.com/aws/aws-sdk-go/aws/session"
@@ -14,6 +14,7 @@ import (
 	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/aws/s3"
+	"github.com/eschizoid/flixctl/worker"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -37,6 +38,7 @@ func executeAdminCommand(evt json.RawMessage) {
 		panic(err)
 	}
 	defer conn.Close()
+	var tasks []worker.TaskFunction
 	switch input.Argument {
 	case "renew-certs":
 		fmt.Printf("Executing %s command", input.Argument)
@@ -49,19 +51,29 @@ func executeAdminCommand(evt json.RawMessage) {
 		services := []string{"httpd", "jackett", "nzbget", "ombi", "plexmediaserver", "radarr", "sonarr", "s3fs", "tautulli", "transmission-daemon"}
 		for _, service := range services {
 			fmt.Printf("Exectuing λ with payload: %+v\n", input)
-			runCommand(fmt.Sprintf(constants.RestartServicesCommand, service), conn)
-			fmt.Printf("Succesfully restarted %s service", service)
+			command := fmt.Sprintf(constants.RestartServicesCommand, service)
+			commandTask := func() interface{} {
+				runCommand(command, conn)
+				return fmt.Sprintf("Succesfully executed %s", input.Argument)
+			}
+			tasks = append(tasks, commandTask)
 		}
+		asyncCommandExecution(tasks)
 		fmt.Printf("Succesfully executed %s", input.Argument)
 	case "purge-slack":
 		fmt.Printf("Executing %s command", input.Argument)
 		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
 		for _, channel := range slackChannels {
-			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
-			time.Sleep(10 * time.Second)
-			runCommand(fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel), conn)
-			time.Sleep(10 * time.Second)
+			commandBot := fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			commandUser := fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			commandTask := func() interface{} {
+				runCommand(commandBot, conn)
+				runCommand(commandUser, conn)
+				return fmt.Sprintf("Succesfully executed %s", input.Argument)
+			}
+			tasks = append(tasks, commandTask)
 		}
+		asyncCommandExecution(tasks)
 		fmt.Printf("Succesfully executed %s", input.Argument)
 	}
 }
@@ -102,6 +114,22 @@ func runCommand(cmd string, conn *ssh.Client) {
 	err = sess.Run(cmd)
 	if err != nil {
 		panic(err)
+	}
+}
+
+func asyncCommandExecution(tasks []worker.TaskFunction) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	resultChannel := worker.PerformTasks(ctx, tasks)
+	for result := range resultChannel {
+		switch v := result.(type) {
+		case error:
+			fmt.Println(v)
+		case string:
+			fmt.Println(v)
+		default:
+			fmt.Println("Some unknown type ")
+		}
 	}
 }
 
