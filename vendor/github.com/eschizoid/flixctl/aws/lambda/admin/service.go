@@ -41,40 +41,39 @@ func executeAdminCommand(evt json.RawMessage) {
 	var tasks []worker.TaskFunction
 	switch input.Argument {
 	case "renew-certs":
-		fmt.Printf("Executing %s command", input.Argument)
+		fmt.Printf("Executing %s command \n", input.Argument)
 		for _, command := range constants.RenewCertsCommands {
 			runCommand(command, conn)
 		}
-		fmt.Printf("Succesfully executed %s", input.Argument)
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "restart-services":
-		fmt.Printf("Executing %s command", input.Argument)
+		fmt.Printf("Executing %s command \n", input.Argument)
 		services := []string{"httpd", "jackett", "nzbget", "ombi", "plexmediaserver", "radarr", "sonarr", "s3fs", "tautulli", "transmission-daemon"}
 		for _, service := range services {
-			fmt.Printf("Exectuing λ with payload: %+v\n", input)
 			command := fmt.Sprintf(constants.RestartServicesCommand, service)
+			message := fmt.Sprintf("Succesfully restarted service %s", service)
 			commandTask := func() interface{} {
 				runCommand(command, conn)
-				return fmt.Sprintf("Succesfully executed %s", input.Argument)
+				return message
 			}
 			tasks = append(tasks, commandTask)
 		}
 		asyncCommandExecution(tasks)
-		fmt.Printf("Succesfully executed %s", input.Argument)
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "purge-slack":
-		fmt.Printf("Executing %s command", input.Argument)
+		fmt.Printf("Executing %s command \n", input.Argument)
 		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
 		for _, channel := range slackChannels {
-			commandBot := fmt.Sprintf(constants.SlackCleanerCommands[0], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
-			commandUser := fmt.Sprintf(constants.SlackCleanerCommands[1], os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			command := fmt.Sprintf(constants.SlackCleanerCommand, os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			message := fmt.Sprintf("Succesfully purged slack channel %s", channel)
 			commandTask := func() interface{} {
-				runCommand(commandBot, conn)
-				runCommand(commandUser, conn)
-				return fmt.Sprintf("Succesfully executed %s", input.Argument)
+				runCommand(command, conn)
+				return message
 			}
 			tasks = append(tasks, commandTask)
 		}
 		asyncCommandExecution(tasks)
-		fmt.Printf("Succesfully executed %s", input.Argument)
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	}
 }
 
