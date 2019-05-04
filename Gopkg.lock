@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:efd617ed29b251a29c1c64f241aa4e20eff4ecf2578229746651a964818ca652"
+  digest = "1:5fc845ab44b6ca640d8ba8ff1b0fa9f87bd77e00bf09be068deb6b05fda4a5ed"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "6da73e9d95fc247fc64d0de87cf33655ed615e3f"
-  version = "v1.19.22"
+  revision = "86dc5d0ebe9f30ac9e939da21c240a98519343f2"
+  version = "v1.19.24"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:839d19af7600578aee81079734883cb71a13b25ff88552d4b4a59be040a3a6a9"
+  digest = "1:958e2b570e7d1f7b83d9def4062a1e4a364564d0277e6c3acada6bfced42bf36"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -141,7 +141,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "c6bc7c67a133b0121ac6fb8aa5b858ea9445ed33"
+  revision = "88c092ef51ecc3e5218e98d76d0529a1f53e3eef"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -353,7 +353,7 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "9ce7a6920f093fc0b908c4a5f66ae049110f417e"
+  revision = "f4e77d36d62c17c2336347bb2670ddbd02d092b7"
 
 [[projects]]
   branch = "master"
