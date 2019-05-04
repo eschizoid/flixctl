@@ -19,6 +19,7 @@ var SlackCleanerCommand = `sudo /bin/slack-cleaner --perform \
     --token %s \
     --rate 2 \
     --message \
+    --file \
     --channel %s \
     --bot \
     --user "*"`
