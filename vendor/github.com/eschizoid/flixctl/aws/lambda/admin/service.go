@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -14,6 +15,7 @@ import (
 	"github.com/eschizoid/flixctl/aws/lambda/admin/constants"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/aws/s3"
+	auth "github.com/eschizoid/flixctl/cmd/auth"
 	"github.com/eschizoid/flixctl/worker"
 	"golang.org/x/crypto/ssh"
 )
@@ -40,6 +42,29 @@ func executeAdminCommand(evt json.RawMessage) {
 	defer conn.Close()
 	var tasks []worker.TaskFunction
 	switch input.Argument {
+	case "oauth-token":
+		fmt.Printf("Executing %s command \n", input.Argument)
+		message := fmt.Sprintf("Succesfully executed oauth-tokens")
+		commandTask := func() interface{} {
+			auth.GetOauthToke()
+			return message
+		}
+		asyncCommandExecution(append(tasks, commandTask))
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
+	case "purge-slack":
+		fmt.Printf("Executing %s command \n", input.Argument)
+		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
+		for _, channel := range slackChannels {
+			command := fmt.Sprintf(constants.SlackCleanerCommand, os.Getenv("SLACK_LEGACY_TOKEN"), channel)
+			message := fmt.Sprintf("Succesfully purged slack channel %s", channel)
+			commandTask := func() interface{} {
+				runCommand(command, conn)
+				return message
+			}
+			tasks = append(tasks, commandTask)
+		}
+		asyncCommandExecution(tasks)
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "renew-certs":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		for _, command := range constants.RenewCertsCommands {
@@ -52,20 +77,6 @@ func executeAdminCommand(evt json.RawMessage) {
 		for _, service := range services {
 			command := fmt.Sprintf(constants.RestartServicesCommand, service)
 			message := fmt.Sprintf("Succesfully restarted service %s", service)
-			commandTask := func() interface{} {
-				runCommand(command, conn)
-				return message
-			}
-			tasks = append(tasks, commandTask)
-		}
-		asyncCommandExecution(tasks)
-		fmt.Printf("Succesfully executed %s \n", input.Argument)
-	case "purge-slack":
-		fmt.Printf("Executing %s command \n", input.Argument)
-		slackChannels := []string{"monitoring", "new-releases", "requests", "travis"}
-		for _, channel := range slackChannels {
-			command := fmt.Sprintf(constants.SlackCleanerCommand, os.Getenv("SLACK_LEGACY_TOKEN"), channel)
-			message := fmt.Sprintf("Succesfully purged slack channel %s", channel)
 			commandTask := func() interface{} {
 				runCommand(command, conn)
 				return message
