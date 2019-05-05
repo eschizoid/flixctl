@@ -17,8 +17,8 @@ as torrent and nzb clients (transmission nzbget), movies and shows searches (son
 (ombi), and monitoring utilities (tautulli) just to mention a few.
 
 Inspired by `kubectl`, `flixctl` was designed to be leveraged using Slack Slash API in conjunction with AWS Lambda. The flexibility
-of this architecture allows an easy installation of the full `flixctl` API into any Slack workspace. Meaning the provisioning
-and administration of a true true MaSaS (Movies and Show as a Service) architecture can be done using only Slack.
+of this architecture allows an easy installation of the full `flixctl` API into any Slack workspace. This means the provision
+and administration of a true true MaSaS (Movies and Show as a Service) architecture can be done via Slack.
 
 === Architecture
 
