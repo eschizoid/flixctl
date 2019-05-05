@@ -61,12 +61,16 @@ clean:
 	@rm -rf $(shell pwd)/aws/lambda/admin/admin
 	@rm -rf $(shell pwd)/aws/lambda/library/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/library/library
+	@rm -rf $(shell pwd)/aws/lambda/movies/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/movies/movies
 	@rm -rf $(shell pwd)/aws/lambda/plex/executor/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/plex/executor/executor
 	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/plex/monitor/monitor
 	@rm -rf $(shell pwd)/aws/lambda/slack/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/slack/slack
+	@rm -rf $(shell pwd)/aws/lambda/shows/lambda.zip
+	@rm -rf $(shell pwd)/aws/lambda/shows/shows
 	@rm -rf $(shell pwd)/aws/lambda/torrent/lambda.zip
 	@rm -rf $(shell pwd)/aws/lambda/torrent/torrent
 
@@ -117,8 +121,10 @@ update-vendor:
 build-lambdas: clean \
 	build-lambda-flixctl-admin-executor \
 	build-lambda-library-executor \
+	build-lambda-movies-executor \
 	build-lambda-plex-executor \
 	build-lambda-plex-monitor \
+	build-lambda-shows-executor \
 	build-lambda-slack-dispatcher \
 	build-lambda-torrent-executor
 
@@ -130,12 +136,20 @@ build-lambda-library-executor:
 	@cd $(shell pwd)/aws/lambda/library; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
+build-lambda-movies-executor:
+	@cd $(shell pwd)/aws/lambda/movies; \
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
+
 build-lambda-plex-executor:
 	@cd $(shell pwd)/aws/lambda/plex/executor; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 build-lambda-plex-monitor:
 	@cd $(shell pwd)/aws/lambda/plex/monitor; \
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
+
+build-lambda-shows-executor:
+	@cd $(shell pwd)/aws/lambda/shows; \
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD)
 
 build-lambda-slack-dispatcher:
@@ -149,9 +163,11 @@ build-lambda-torrent-executor:
 zip-lambdas: build-lambdas \
 	zip-lambda-flixctl-admin-executor \
 	zip-lambda-library-executor \
+	zip-lambda-movies-executor \
 	zip-lambda-plex-executor \
 	zip-lambda-plex-monitor \
 	zip-lambda-slack-dispatcher \
+	zip-lambda-shows-executor \
 	zip-lambda-torrent-executor
 
 zip-lambda-flixctl-admin-executor:
@@ -161,6 +177,10 @@ zip-lambda-flixctl-admin-executor:
 zip-lambda-library-executor:
 	zip -j -X $(shell pwd)/aws/lambda/library/lambda.zip \
 	$(shell pwd)/aws/lambda/library/library
+
+zip-lambda-movies-executor:
+	zip -j -X $(shell pwd)/aws/lambda/movies/lambda.zip \
+	$(shell pwd)/aws/lambda/library/movies
 
 zip-lambda-plex-executor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
@@ -174,6 +194,10 @@ zip-lambda-slack-dispatcher:
 	zip -j -X $(shell pwd)/aws/lambda/slack/lambda.zip \
 	$(shell pwd)/aws/lambda/slack/slack
 
+zip-lambda-shows-executor:
+	zip -j -X $(shell pwd)/aws/lambda/movies/lambda.zip \
+	$(shell pwd)/aws/lambda/library/movies
+
 zip-lambda-torrent-executor:
 	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
 	$(shell pwd)/aws/lambda/torrent/torrent
@@ -181,9 +205,11 @@ zip-lambda-torrent-executor:
 deploy-lambdas: zip-lambdas \
 	deploy-lambda-flixctl-admin-executor \
 	deploy-lambda-library-executor \
+	deploy-lambda-movies-executor \
 	deploy-lambda-plex-executor \
 	deploy-lambda-plex-monitor \
 	deploy-lambda-slack-dispatcher \
+	deploy-lambda-shows-executor \
 	deploy-lambda-torrent-executor
 
 delete-lambdas:
@@ -192,11 +218,15 @@ delete-lambdas:
 	@aws lambda delete-function \
 	--function-name library-executor
 	@aws lambda delete-function \
+	--function-name movies-executor
+	@aws lambda delete-function \
 	--function-name plex-executor
 	@aws lambda delete-function \
 	--function-name plex-monitor
 	@aws lambda delete-function \
 	--function-name slack-dispatcher
+	@aws lambda delete-function \
+	--function-name shows-executor
 	@aws lambda delete-function \
 	--function-name torrent-executor
 
@@ -220,6 +250,20 @@ deploy-lambda-library-executor:
 	--zip-file fileb://$(shell pwd)/aws/lambda/library/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name library-executor \
+	--handler library \
+	--region $(AWS_REGION) \
+	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
+	--timeout 900 \
+	--memory-size 128 \
+	--runtime go1.x \
+	--environment "$$environment"
+
+deploy-lambda-movies-executor:
+	@aws lambda update-function-code \
+	--function-name movies-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/movies/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name movies-executor \
 	--handler library \
 	--region $(AWS_REGION) \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
@@ -263,6 +307,20 @@ deploy-lambda-slack-dispatcher:
 	@aws lambda update-function-configuration \
 	--function-name slack-dispatcher \
 	--handler slack \
+	--region $(AWS_REGION) \
+	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
+	--timeout 900 \
+	--memory-size 128 \
+	--runtime go1.x \
+	--environment "$$environment"
+
+deploy-lambda-shows-executor:
+	@aws lambda update-function-code \
+	--function-name shows-executor \
+	--zip-file fileb://$(shell pwd)/aws/lambda/shows/lambda.zip
+	@aws lambda update-function-configuration \
+	--function-name shows-executor \
+	--handler library \
 	--region $(AWS_REGION) \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
 	--timeout 900 \
