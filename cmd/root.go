@@ -10,6 +10,8 @@ import (
 	"github.com/eschizoid/flixctl/cmd/nzb"
 	"github.com/eschizoid/flixctl/cmd/ombi"
 	"github.com/eschizoid/flixctl/cmd/plex"
+	"github.com/eschizoid/flixctl/cmd/radarr"
+	"github.com/eschizoid/flixctl/cmd/sonarr"
 	"github.com/eschizoid/flixctl/cmd/torrent"
 	"github.com/spf13/cobra"
 )
@@ -21,6 +23,8 @@ var FlixctlCmd = &cobra.Command{
   * NZB Client
   * Ombi
   * Plex
+  * Radarr
+  * Sonarr
   * Torrent Client`,
 }
 
@@ -52,6 +56,8 @@ var (
 			nzb.RootNzbCmd,
 			ombi.RootOmbiCmd,
 			plex.RootPlexCmd,
+			radarr.RootRadarrCmd,
+			sonarr.RootSonarrCmd,
 			torrent.RootTorrentCmd,
 		)
 		return struct{}{}

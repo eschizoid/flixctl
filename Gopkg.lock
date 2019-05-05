@@ -111,8 +111,8 @@
   version = "v0.0.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:4a2786fad502ce0fe50a83986e8721b5dfd06ff07d3338ef1150a8b34fa83ef8"
+  branch = "feature/movies-shows-lambdas"
+  digest = "1:12fbca4f7aa28f7f4600b07970dba8b925950cfa0830be1459724a6689a7b3df"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -129,6 +129,8 @@
     "cmd/nzb",
     "cmd/ombi",
     "cmd/plex",
+    "cmd/radarr",
+    "cmd/sonarr",
     "cmd/torrent",
     "library",
     "models",
@@ -141,7 +143,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "88ccd81f3a58af7a73cb0bdd33b2f9c4c08617e9"
+  revision = "1a40555b445e6568dd1187107328546ebd906112"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -423,6 +425,8 @@
     "github.com/eschizoid/flixctl/cmd/nzb",
     "github.com/eschizoid/flixctl/cmd/ombi",
     "github.com/eschizoid/flixctl/cmd/plex",
+    "github.com/eschizoid/flixctl/cmd/radarr",
+    "github.com/eschizoid/flixctl/cmd/sonarr",
     "github.com/eschizoid/flixctl/cmd/torrent",
     "github.com/eschizoid/flixctl/library",
     "github.com/eschizoid/flixctl/models",

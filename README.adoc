@@ -11,13 +11,14 @@ image:https://travis-ci.com/eschizoid/flixctl.svg?branch=master["Build Status", 
 image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Card", link="https://goreportcard.com/report/github.com/eschizoid/flixctl"]
 image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="https://godoc.org/github.com/eschizoid/flixctl"]
 
-Flixctl provides an easy way to provision a Plex installation on the cloud and control some of the most popular components
-that users normally bundle up with Plex, such as torrent (transmission) and nzb clients (nzbget), movies and shows requests
+`flixctl` provides an easy way to provision a Plex installation on the cloud. After the provisioning of the main infrastructure
+is done, `flixctl` can also be used to control some of the most popular components that users normally bundle up with Plex, such
+as torrent and nzb clients (transmission nzbget), movies and shows searches (sonarr and radarr), movies and shows requests
 (ombi), and monitoring utilities (tautulli) just to mention a few.
 
-Inspired by `kubectl`, `flixctl` aims to provide a simple API for provision the required infrastructure for a true MaaS
-(Movies as a Service) architecture. All flixctl commands were abstracted using Slack Slash API and backing them up by AWS
-Lambda. The flexibility of this architecture allows an easy installation of the full API into any Slack workspace.
+Inspired by `kubectl`, `flixctl` was designed to be leveraged using Slack Slash API in conjunction with AWS Lambda. The flexibility
+of this architecture allows an easy installation of the full `flixctl` API into any Slack workspace. Meaning the provisioning
+and administration of a true true MaSaS (Movies and Show as a Service) architecture can be done using only Slack.
 
 === Architecture
 
@@ -41,10 +42,10 @@ Lambda. The flexibility of this architecture allows an easy installation of the 
 * https://github.com/tidusjar/Ombi[Ombi]
 * https://github.com/plexinc/plex-media-player[Plex]
 * https://github.com/Radarr/Radarr[Radarr]
+* https://github.com/Sonarr/Sonarr[Sonarr]
 * https://github.com/Tautulli/Tautulli[Tautulli]
 * https://github.com/transmission/transmission[Transmission]
 * https://api.slack.com/slash-commands[Slack Slash Commands]
-* https://github.com/Sonarr/Sonarr[Sonarr]
 
 === Pre-requisites
 ==== Infrastructure
@@ -74,6 +75,7 @@ brew install dep
 |PLEX_USER|
 |SLACK_CLIENT ID|
 |SLACK_CLIENT_SECRET|
+|SLACK_LEGACY_TOKEN|
 |SLACK_REDIRECT_URI|
 |SLACK_MONITORING_HOOK_URL|
 |SLACK_NEW_RELEASES_HOOK_URL|
@@ -123,6 +125,8 @@ To Control The Following flixctl Components:
   * NZB Client
   * Ombi
   * Plex
+  * Radarr
+  * Sonarr
   * Torrent Client
 
 Usage:
@@ -134,6 +138,8 @@ Available Commands:
   nzb         To Control Nzb Client
   ombi        To Control Ombi
   plex        To Control Plex Media Center
+  radarr      To Control Radarr
+  sonarr      To Control Sonarr
   torrent     To Control Torrent Client
   version     To Get flixctl Version
 
@@ -361,3 +367,4 @@ $ flixctl library upload \
 $ flixctl library upload \
     --enable-batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
+----
