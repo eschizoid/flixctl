@@ -264,7 +264,7 @@ deploy-lambda-movies-executor:
 	--zip-file fileb://$(shell pwd)/aws/lambda/movies/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name movies-executor \
-	--handler library \
+	--handler movies \
 	--region $(AWS_REGION) \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
 	--timeout 900 \
@@ -320,7 +320,7 @@ deploy-lambda-shows-executor:
 	--zip-file fileb://$(shell pwd)/aws/lambda/shows/lambda.zip
 	@aws lambda update-function-configuration \
 	--function-name shows-executor \
-	--handler library \
+	--handler shows \
 	--region $(AWS_REGION) \
 	--role arn:aws:iam::623592657701:role/lambda_basic_execution \
 	--timeout 900 \

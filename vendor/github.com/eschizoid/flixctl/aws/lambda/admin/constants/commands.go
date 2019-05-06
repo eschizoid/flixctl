@@ -12,7 +12,7 @@ var RenewCertsCommands = []string{
 	`sudo /opt/dehydrated/dehydrated -c -o /opt/ssl`,
 }
 
-var RestartServicesCommand = "sudo systemctl restart %s"
+var RestartServicesCommand = `sudo systemctl restart %s`
 
 var SlackCleanerCommand = `sudo /bin/slack-cleaner --perform \
     --quiet \

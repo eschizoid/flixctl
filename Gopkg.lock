@@ -111,7 +111,6 @@
   version = "v0.0.1"
 
 [[projects]]
-  branch = "feature/movies-shows-lambdas"
   digest = "1:12fbca4f7aa28f7f4600b07970dba8b925950cfa0830be1459724a6689a7b3df"
   name = "github.com/eschizoid/flixctl"
   packages = [
@@ -143,7 +142,8 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "1a40555b445e6568dd1187107328546ebd906112"
+  revision = "9e98f2144f77c4e32309e16ed3eea995f8500397"
+  version = "2.1.0"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
