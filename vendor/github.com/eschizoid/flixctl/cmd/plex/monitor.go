@@ -24,15 +24,19 @@ var MonitorPlexCmd = &cobra.Command{
 	Short: "To Monitor Plex Sessions",
 	Long:  "to monitor plex sessions and shut it down if no activity.",
 	Run: func(cmd *cobra.Command, args []string) {
-		if enabledLambdaMonitor, _ := strconv.ParseBool(monitorEnabled); enabledLambdaMonitor {
-			enabledMonitorRule()
-			return
-		} else if !enabledLambdaMonitor {
-			disabledMonitorRule()
-			return
-		}
+		EnableDisableMonitor(monitorEnabled)
 		Monitor(slackNotification)
 	},
+}
+
+func EnableDisableMonitor(activateMonitor string) {
+	if enabledLambdaMonitor, _ := strconv.ParseBool(activateMonitor); enabledLambdaMonitor {
+		enabledMonitorRule()
+		return
+	} else if !enabledLambdaMonitor {
+		disabledMonitorRule()
+		return
+	}
 }
 
 func Monitor(slackNotification string) {
