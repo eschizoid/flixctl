@@ -17,6 +17,12 @@ func executePlexCommand(evt json.RawMessage) {
 		panic(err)
 	}
 	switch input.Argument {
+	case "enable-monitor":
+		activateMonitor := "true"
+		plex.EnableDisableMonitor(activateMonitor)
+	case "disable-monitor":
+		activateMonitor := "false"
+		plex.EnableDisableMonitor(activateMonitor)
 	case "start":
 		plex.Start()
 	case "stop":
