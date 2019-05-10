@@ -17,10 +17,10 @@ func executePlexCommand(evt json.RawMessage) {
 		panic(err)
 	}
 	switch input.Argument {
-	case "enable-monitor":
+	case "enable-monitoring":
 		activateMonitor := "true" //nolint:goconst
 		plex.EnableDisableMonitor(activateMonitor)
-	case "disable-monitor":
+	case "disable-monitoring":
 		activateMonitor := "false" //nolint:goconst
 		plex.EnableDisableMonitor(activateMonitor)
 	case "start":

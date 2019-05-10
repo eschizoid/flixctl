@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:5fc845ab44b6ca640d8ba8ff1b0fa9f87bd77e00bf09be068deb6b05fda4a5ed"
+  digest = "1:a74b75fedca0eff71c34fc5ac2daae562edb7e75d4d9cedb669f3d7d9d1c4c90"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "86dc5d0ebe9f30ac9e939da21c240a98519343f2"
-  version = "v1.19.24"
+  revision = "a8ae6f5bdfb1f0d87da6aeb8611463a430dc820f"
+  version = "v1.19.27"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -111,7 +111,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:228bdeebf68baa61b9b93161a5f679cbdc50d6aae6b9750c012123ce58f13533"
+  digest = "1:56b25c42a2a40f11c978a1e43b660c2f08c6bf4ca53118ecdb51b5d19eef1201"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -142,7 +142,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "45f214bf045758715fef9f32cbfc4a3262eec87e"
+  revision = "f6d774e5b7f2c24bfb2269f06dda3ffd85a8451f"
   version = "2.1.0"
 
 [[projects]]
@@ -215,6 +215,22 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "8a3d10f8ebdaf2d86d6212383b2513b4e3de822d"
+
+[[projects]]
+  branch = "master"
+  digest = "1:5580bb985245fbbd6928091aade9e06a8d4d1ca410fd80ba115882fafa1902ae"
+  name = "github.com/jrudio/go-radarr-client"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8c6eeb33f4b46e16fdb29b55742fca28239f14cf"
+
+[[projects]]
+  branch = "master"
+  digest = "1:53dab5dd20d9e0e71d1d2868e5fdbdffccc22ea8e62fb20d97daf0d932b53581"
+  name = "github.com/jrudio/go-sonarr-client"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ec124ce2d81ee6699e4e27c2527e77dc80b241ba"
 
 [[projects]]
   branch = "master"
@@ -330,7 +346,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4b4fbe3cfa58f1f95eb0ab4fefc95efda7af333722f7f272c9828ecabb25a0ac"
+  digest = "1:c702843f592f44c2c558f08478b71331119d31907e7945f1cedc9ee3c932e493"
   name = "golang.org/x/crypto"
   packages = [
     "curve25519",
@@ -342,7 +358,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "a29dc8fdc73485234dbef99ebedb95d2eced08de"
+  revision = "cbcb750295291b33242907a04be40e80801d0cfc"
 
 [[projects]]
   branch = "master"
@@ -355,18 +371,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "f4e77d36d62c17c2336347bb2670ddbd02d092b7"
+  revision = "a4d6f7feada510cc50e69a37b484cb0fdc6b7876"
 
 [[projects]]
   branch = "master"
-  digest = "1:76eb085408ed50effcb126e51935c2f5150974c607dcff34e9f0d647104cce72"
+  digest = "1:00a3a12527dd7a3af0d24260fd14887ebd69aaf924303b6a4a67f35eb9b6c012"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "a43fa875dd822b81eb6d2ad538bc1f4caba169bd"
+  revision = "a5b02f93d862f065920dd6a40dddc66b60d0dec4"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
@@ -440,6 +456,8 @@
     "github.com/go-playground/form",
     "github.com/hekmon/transmissionrpc",
     "github.com/jrudio/go-plex-client",
+    "github.com/jrudio/go-radarr-client",
+    "github.com/jrudio/go-sonarr-client",
     "github.com/juliensalinas/torrengo/otts",
     "github.com/juliensalinas/torrengo/td",
     "github.com/juliensalinas/torrengo/tpb",

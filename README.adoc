@@ -12,13 +12,13 @@ image:https://goreportcard.com/badge/github.com/eschizoid/flixctl["Go Report Car
 image:https://godoc.org/github.com/eschizoid/flixctl?status.svg["GoDoc", link="https://godoc.org/github.com/eschizoid/flixctl"]
 
 `flixctl` provides an easy way to provision a Plex installation on the cloud. After the provisioning of the main infrastructure
-is done, `flixctl` can also be used to control some of the most popular components that users normally bundle up with Plex, such
-as torrent and nzb clients (transmission nzbget), movies and shows searches (sonarr and radarr), movies and shows requests
-(ombi), and monitoring utilities (tautulli) just to mention a few.
+it's done, `flixctl` can also be used to control some of the most popular components that users normally bundle up with
+Plex: torrent and newsgroup clients (transmission and nzbget), movies and shows searches (sonarr and radarr), movies and
+shows requests (ombi), and monitoring utilities (tautulli) just to mention a few.
 
 Inspired by `kubectl`, `flixctl` was designed to be leveraged using Slack Slash API in conjunction with AWS Lambda. The flexibility
 of this architecture allows an easy installation of the full `flixctl` API into any Slack workspace. This means the provision
-and administration of a true true MaSaS (Movies and Show as a Service) architecture can be done via Slack.
+and administration of a true MaSaS (Movies and Show as a Service) architecture can be done via Slack.
 
 === Architecture
 
