@@ -1,7 +1,6 @@
 package radarr
 
 import (
-	"fmt"
 	"os"
 
 	slackService "github.com/eschizoid/flixctl/slack/radarr"
@@ -14,7 +13,7 @@ var SearchRadarrCmd = &cobra.Command{
 	Short: "To Search Movies",
 	Long:  "to search movies using radarr client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := radarr.New(fmt.Sprintf("htttp://%s:%d/sonarr", os.Getenv("FLIXCTL_HOST"), 9443), os.Getenv("RADARR_API_KEY"))
+		client, err := radarr.New(os.Getenv("RADARR_URL"), os.Getenv("RADARR_API_KEY"))
 		if err != nil {
 			panic(err)
 		}
