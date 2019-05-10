@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:a74b75fedca0eff71c34fc5ac2daae562edb7e75d4d9cedb669f3d7d9d1c4c90"
+  digest = "1:45c781af9396a253e1a3e3ba7dc5de85d408f3b2a3560565d14c78a6eb866ffa"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "a8ae6f5bdfb1f0d87da6aeb8611463a430dc820f"
-  version = "v1.19.27"
+  revision = "d2d56572a432fff4d2dca7b4e52b3ee956d5c4bc"
+  version = "v1.19.28"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -111,7 +111,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:56b25c42a2a40f11c978a1e43b660c2f08c6bf4ca53118ecdb51b5d19eef1201"
+  digest = "1:877715c325715a17e4d64d6b21dc635ac5df1ff66d46886caad734c23bbe0ef6"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -137,12 +137,14 @@
     "slack/auth",
     "slack/library",
     "slack/plex",
+    "slack/radarr",
+    "slack/sonarr",
     "slack/torrent",
     "torrent",
     "worker",
   ]
   pruneopts = "UT"
-  revision = "f6d774e5b7f2c24bfb2269f06dda3ffd85a8451f"
+  revision = "fb31b5b43a46974b5612cba99dd783955545619e"
   version = "2.1.0"
 
 [[projects]]
@@ -450,6 +452,8 @@
     "github.com/eschizoid/flixctl/slack/auth",
     "github.com/eschizoid/flixctl/slack/library",
     "github.com/eschizoid/flixctl/slack/plex",
+    "github.com/eschizoid/flixctl/slack/radarr",
+    "github.com/eschizoid/flixctl/slack/sonarr",
     "github.com/eschizoid/flixctl/slack/torrent",
     "github.com/eschizoid/flixctl/torrent",
     "github.com/eschizoid/flixctl/worker",

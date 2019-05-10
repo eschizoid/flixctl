@@ -1,3 +1,4 @@
+//nolint:dupl
 package radarr
 
 import (
@@ -19,7 +20,7 @@ func SendMovies(results []radarr.Movie, slackIncomingHookURL string) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color:     "#C40203",
+			Color:     "#FFC32E",
 			Title:     radarResult.CleanTitle,
 			TitleLink: radarResult.YouTubeTrailerID,
 			Fields: []slack.AttachmentField{
@@ -33,10 +34,10 @@ func SendMovies(results []radarr.Movie, slackIncomingHookURL string) {
 	}
 	if len(attachments) == 0 {
 		attachments = append(attachments, slack.Attachment{
-			Color:      "#C40203",
+			Color:      "#FFC32E",
 			Text:       "*No Movies found*",
 			MarkdownIn: []string{"text"},
-			Footer:     "Torrent Client",
+			Footer:     "Radarr Client",
 			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/radarr/989ae3e6536a72dc.png",
 			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 		})
@@ -46,6 +47,6 @@ func SendMovies(results []radarr.Movie, slackIncomingHookURL string) {
 	}
 	err := slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
-		fmt.Printf("Error while sending download links: [%s]\n", err)
+		fmt.Printf("Error while sending movies: [%s]\n", err)
 	}
 }

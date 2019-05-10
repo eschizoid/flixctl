@@ -14,7 +14,7 @@ var SearchSonarrCmd = &cobra.Command{
 	Short: "To Search Shows",
 	Long:  "to search shows using sonarr client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := sonarr.New(fmt.Sprintf("htttp://%s:%d/sonarr", os.Getenv("FLIXCTL_HOST"), 9443), os.Getenv("SONARR_API_KEY"))
+		client, err := sonarr.New(fmt.Sprintf("htttp://%s:%d/sonarr", os.Getenv("FLIXCTL_HOST"), 10443), os.Getenv("SONARR_API_KEY"))
 		if err != nil {
 			panic(err)
 		}

@@ -1,3 +1,4 @@
+//nolint:dupl
 package sonarr
 
 import (
@@ -19,7 +20,7 @@ func SendShows(results []sonarr.SearchResults, slackIncomingHookURL string) {
 			Short: true,
 		}
 		attachment := slack.Attachment{
-			Color:     "#C40203",
+			Color:     "#5DBCD2",
 			Title:     sonarResult.CleanTitle,
 			TitleLink: sonarResult.Network,
 			Fields: []slack.AttachmentField{
@@ -33,10 +34,10 @@ func SendShows(results []sonarr.SearchResults, slackIncomingHookURL string) {
 	}
 	if len(attachments) == 0 {
 		attachments = append(attachments, slack.Attachment{
-			Color:      "#C40203",
+			Color:      "#5DBCD2",
 			Text:       "*No Shows found*",
 			MarkdownIn: []string{"text"},
-			Footer:     "Torrent Client",
+			Footer:     "Sonarr Client",
 			FooterIcon: "https://emoji.slack-edge.com/TD00VE755/sonarr/7b3bc1604171f754.png",
 			Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
 		})
@@ -46,6 +47,6 @@ func SendShows(results []sonarr.SearchResults, slackIncomingHookURL string) {
 	}
 	err := slack.PostWebhook(slackIncomingHookURL, message)
 	if err != nil {
-		fmt.Printf("Error while sending download links: [%s]\n", err)
+		fmt.Printf("Error while sending shows: [%s]\n", err)
 	}
 }
