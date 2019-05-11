@@ -111,14 +111,14 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:eadc088111b610d6ab250e1094da4f5b3046b5e19577ae21c84a703cbf69b1ad"
+  branch = "master"
+  digest = "1:8323973f2420e74e3a0a6df617d97b4e111ca595afb22f49b9dc9dff4e82fa96"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
     "aws/ebs",
     "aws/ec2",
     "aws/glacier",
-    "aws/lambda/admin/constants",
     "aws/lambda/models",
     "aws/s3",
     "aws/snapshot",
@@ -144,8 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "1c802194d9444d2ec65b2f1d1997321fa33e6371"
-  version = "2.1.0"
+  revision = "cbd9ccc51a50283bbd1b463c2b74ff68d0a7194d"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -433,7 +432,6 @@
     "github.com/eschizoid/flixctl/aws/ebs",
     "github.com/eschizoid/flixctl/aws/ec2",
     "github.com/eschizoid/flixctl/aws/glacier",
-    "github.com/eschizoid/flixctl/aws/lambda/admin/constants",
     "github.com/eschizoid/flixctl/aws/lambda/models",
     "github.com/eschizoid/flixctl/aws/s3",
     "github.com/eschizoid/flixctl/aws/snapshot",
