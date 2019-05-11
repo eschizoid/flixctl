@@ -10,6 +10,7 @@ var (
 	RootOmbiCmd = &cobra.Command{
 		Use:   "ombi",
 		Short: "To Control Ombi",
+		Long: "to control ombi",
 	}
 	keywords             string
 	slackNotification    string

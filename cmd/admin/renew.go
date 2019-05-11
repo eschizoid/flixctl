@@ -1,6 +1,10 @@
-package constants
+package admin
 
-var RenewCertsCommands = []string{
+import (
+	"github.com/spf13/cobra"
+)
+
+var RemoteRenewCerts = []string{
 	`sudo openssl pkcs12 \
         -export \
         -password env:PLEX_PASSWORD \
@@ -12,14 +16,19 @@ var RenewCertsCommands = []string{
 	`sudo /opt/dehydrated/dehydrated -c -o /opt/ssl`,
 }
 
-var RestartServicesCommand = `sudo systemctl restart %s`
+var RenewCertsCmd = &cobra.Command{
+	Use:   "renew-certs",
+	Short: "To Renew Certs",
+	Long:  "to renew tls certificates all plex related services",
+	Run: func(cmd *cobra.Command, args []string) {
+		RenewCerts()
+	},
+}
 
-var SlackCleanerCommand = `sudo /bin/slack-cleaner --perform \
-    --quiet \
-    --token %s \
-    --rate 2 \
-    --message \
-    --file \
-    --channel %s \
-    --bot \
-    --user "*"`
+func RenewCerts() {
+	conn := GetSSHConnection()
+	defer conn.Close()
+	for _, command := range RemoteRenewCerts {
+		RunCommand(command, conn)
+	}
+}
