@@ -111,7 +111,7 @@
   version = "v0.0.1"
 
 [[projects]]
-  digest = "1:877715c325715a17e4d64d6b21dc635ac5df1ff66d46886caad734c23bbe0ef6"
+  digest = "1:eadc088111b610d6ab250e1094da4f5b3046b5e19577ae21c84a703cbf69b1ad"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -144,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "fb31b5b43a46974b5612cba99dd783955545619e"
+  revision = "1c802194d9444d2ec65b2f1d1997321fa33e6371"
   version = "2.1.0"
 
 [[projects]]
