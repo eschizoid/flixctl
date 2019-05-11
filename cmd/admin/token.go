@@ -1,4 +1,4 @@
-package library
+package admin
 
 import (
 	"encoding/json"
@@ -13,16 +13,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var TokenCmd = &cobra.Command{
-	Use:   "token",
+var SlackOauthTokenCmd = &cobra.Command{
+	Use:   "slack-token",
 	Short: "To Get An Oauth Token",
-	Long:  "to get an oauth token for a given client id",
+	Long:  "to get a slack oauth token for a given client id",
 	Run: func(cmd *cobra.Command, args []string) {
-		GetOauthToke()
+		SlackOauthToken()
 	},
 }
 
-func GetOauthToke() {
+func SlackOauthToken() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))

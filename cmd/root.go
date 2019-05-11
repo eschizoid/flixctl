@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	auth "github.com/eschizoid/flixctl/cmd/auth"
+	"github.com/eschizoid/flixctl/cmd/admin"
 	"github.com/eschizoid/flixctl/cmd/library"
 	"github.com/eschizoid/flixctl/cmd/nzb"
 	"github.com/eschizoid/flixctl/cmd/ombi"
@@ -51,7 +51,7 @@ var (
 	_ = func() struct{} {
 		FlixctlCmd.AddCommand(
 			VersionCmd,
-			auth.OauthSlackRootCmd,
+			admin.FlixctlAdminRootCmd,
 			library.RootLibraryCmd,
 			nzb.RootNzbCmd,
 			ombi.RootOmbiCmd,

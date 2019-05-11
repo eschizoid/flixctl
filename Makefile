@@ -38,8 +38,7 @@ define environment
     "SONARR_API_KEY": "$(SONARR_API_KEY)",
     "SONARR_URL": "$(SONARR_URL)",
     "TAUTULI_API_KEY": "$(TAUTULI_API_KEY)",
-    "TR_AUTH": "$(TR_AUTH)",
-    "UPDATE_VENDOR": "$(UPDATE_VENDOR)"
+    "TR_AUTH": "$(TR_AUTH)"
   }
 }
 endef
@@ -82,9 +81,7 @@ env:
 	@echo "$$environment"
 
 install:
-ifeq ($(UPDATE_VENDOR), true)
 	@$(MAKE) -f $(THIS_FILE) update-vendor
-endif
 	@$(GOINSTALL) $(LDFLAGS)
 
 uninstall: clean
