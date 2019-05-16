@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/torrent"
+	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
 )
 
 func executeTorrentCommand(evt json.RawMessage) {
@@ -17,25 +17,39 @@ func executeTorrentCommand(evt json.RawMessage) {
 	}
 	switch input.Command {
 	case "torrent-search":
-		torrent.Search(input.Argument)
+		fmt.Printf("Executing %s command \n", input.Argument)
+		if input.Argument == "help" { //nolint:goconst
+			slackLambdaService.SendTorrentHelp("")
+		} else {
+			torrent.Search(input.Argument)
+		}
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "torrent-status":
-		torrent.Status()
+		fmt.Printf("Executing %s command \n", input.Argument)
+		if input.Argument == "help" {
+			slackLambdaService.SendTorrentHelp("")
+		} else {
+			torrent.Status()
+		}
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "torrent-movies-download":
-		magnetLink, err := base64.StdEncoding.DecodeString(input.Argument)
-		if err != nil {
-			fmt.Println("Error decoding while decoding magnet link: ", err)
-			panic(err)
+		fmt.Printf("Executing %s command \n", input.Argument)
+		if input.Argument == "help" {
+			slackLambdaService.SendTorrentHelp("")
+		} else {
+			torrent.Download(input.Argument, "/plex/movies")
 		}
-		torrent.Download(string(magnetLink), "/plex/movies")
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	case "torrent-shows-download":
-		magnetLink, err := base64.StdEncoding.DecodeString(input.Argument)
-		if err != nil {
-			fmt.Println("Error decoding while decoding magnet link: ", err)
-			panic(err)
+		fmt.Printf("Executing %s command \n", input.Argument)
+		if input.Argument == "help" {
+			slackLambdaService.SendTorrentHelp("")
+		} else {
+			torrent.Download(input.Argument, "/plex/shows")
 		}
-		torrent.Download(string(magnetLink), "/plex/shows")
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	}
-	fmt.Println("Successfully executed plex command")
+	fmt.Println("Successfully executed λ torrent")
 }
 
 func main() {

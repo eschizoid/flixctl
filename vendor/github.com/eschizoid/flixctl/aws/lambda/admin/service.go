@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/admin"
+	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
 )
 
 func executeAdminCommand(evt json.RawMessage) {
@@ -31,6 +32,10 @@ func executeAdminCommand(evt json.RawMessage) {
 	case "slack-purge":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		admin.SlackPurge()
+		fmt.Printf("Succesfully executed %s \n", input.Argument)
+	case "help":
+		fmt.Printf("Executing %s command \n", input.Argument)
+		slackLambdaService.SendAdminHelp("")
 		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	}
 }

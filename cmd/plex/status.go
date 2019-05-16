@@ -16,7 +16,7 @@ import (
 var StatusPlexCmd = &cobra.Command{
 	Use:   "status",
 	Short: "To Get Plex Status",
-	Long:  "to get the status of the Plex Media Center.",
+	Long:  "to get the status of the Plex Media Server.",
 	Run: func(cmd *cobra.Command, args []string) {
 		status := Status()
 		m := make(map[string]interface{})

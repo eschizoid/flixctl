@@ -13,14 +13,18 @@ var SearchSonarrCmd = &cobra.Command{
 	Short: "To Search Shows",
 	Long:  "to search shows using sonarr client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := sonarr.New(os.Getenv("SONARR_URL"), os.Getenv("SONARR_API_KEY"))
-		if err != nil {
-			panic(err)
-		}
-		results, err := client.Search(keywords)
-		if err != nil {
-			panic(err)
-		}
-		slackService.SendShows(results, slackIncomingHookURL)
+		SearchShows()
 	},
+}
+
+func SearchShows() {
+	client, err := sonarr.New(os.Getenv("SONARR_URL"), os.Getenv("SONARR_API_KEY"))
+	if err != nil {
+		panic(err)
+	}
+	results, err := client.Search(keywords)
+	if err != nil {
+		panic(err)
+	}
+	slackService.SendShows(results, slackIncomingHookURL)
 }

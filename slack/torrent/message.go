@@ -1,9 +1,9 @@
 package torrent
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"strconv"
 
 	util "github.com/eschizoid/flixctl/slack"
@@ -37,7 +37,7 @@ func SendDownloadLinks(search *torrent.Search, slackIncomingHookURL string) {
 		}
 		attachmentFieldMagnetLink := slack.AttachmentField{
 			Title: "Magnet Link",
-			Value: base64.StdEncoding.EncodeToString([]byte(torrentResult.Magnet)),
+			Value: url.QueryEscape(torrentResult.Magnet),
 			Short: false,
 		}
 		attachment := slack.Attachment{

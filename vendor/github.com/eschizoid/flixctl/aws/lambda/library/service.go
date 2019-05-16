@@ -19,8 +19,9 @@ func executeLibraryCommand(evt json.RawMessage) {
 	case "library-initiate":
 	case "library-catalogue":
 	case "status":
+	case "help":
 	}
-	fmt.Println("Successfully executed plex command")
+	fmt.Println("Successfully executed λ library")
 }
 
 func main() {

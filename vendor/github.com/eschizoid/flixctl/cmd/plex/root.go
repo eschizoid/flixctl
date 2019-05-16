@@ -16,7 +16,7 @@ const (
 var (
 	RootPlexCmd = &cobra.Command{
 		Use:   "plex",
-		Short: "To Control Plex Media Center",
+		Short: "To Control Plex Media Server",
 	}
 	maxInactiveTime         string
 	monitorEnabled          string

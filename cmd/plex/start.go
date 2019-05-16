@@ -17,7 +17,7 @@ import (
 var StartPlexCmd = &cobra.Command{
 	Use:   "start",
 	Short: "To Start Plex",
-	Long:  "to start the Plex Media Center.",
+	Long:  "to start the Plex Media Server.",
 	Run: func(cmd *cobra.Command, args []string) {
 		shutdownCh := make(chan struct{})
 		go Indicator(shutdownCh)

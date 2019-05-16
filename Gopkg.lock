@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:45c781af9396a253e1a3e3ba7dc5de85d408f3b2a3560565d14c78a6eb866ffa"
+  digest = "1:e3a0304c17b589863c6b625382ddd7b02b568e183121f8c97a8d1da8efcfb102"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "d2d56572a432fff4d2dca7b4e52b3ee956d5c4bc"
-  version = "v1.19.28"
+  revision = "a477e606271572b4f67e2b367429bbaabe3157ab"
+  version = "v1.19.32"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:8323973f2420e74e3a0a6df617d97b4e111ca595afb22f49b9dc9dff4e82fa96"
+  digest = "1:c8ec37b5b5ad0b7ed5d6b4f2bfdd6396960a55d74c772f179d492738ae44f80b"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -144,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "cbd9ccc51a50283bbd1b463c2b74ff68d0a7194d"
+  revision = "d726116eb67a005628c15643a819da080916f6d5"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -359,7 +359,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "cbcb750295291b33242907a04be40e80801d0cfc"
+  revision = "22d7a77e9e5f409e934ed268692e56707cd169e5"
 
 [[projects]]
   branch = "master"
@@ -372,18 +372,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "a4d6f7feada510cc50e69a37b484cb0fdc6b7876"
+  revision = "3ec19112720433827bbce8be9342797f5a6aaaf9"
 
 [[projects]]
   branch = "master"
-  digest = "1:00a3a12527dd7a3af0d24260fd14887ebd69aaf924303b6a4a67f35eb9b6c012"
+  digest = "1:dc6f8baa48474aa1652f038dbae44d4eb6b314f0579cbca3efc13558f48cf1d6"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "a5b02f93d862f065920dd6a40dddc66b60d0dec4"
+  revision = "61b9204099cb1bebc803c9ffb9b2d3acd9d457d9"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"

@@ -3,6 +3,7 @@ package torrent
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -176,9 +177,14 @@ func Status() []transmissionrpc.Torrent {
 func TriggerDownload(magnetLink string, downloadDir string) *transmissionrpc.Torrent {
 	var err error
 	var torrent *transmissionrpc.Torrent
+	decodedValue, err := url.QueryUnescape(magnetLink)
+	if err != nil {
+		fmt.Printf("Unable to escape magnet link: [%s]", err)
+		panic(err)
+	}
 	torrent, err = Transmission.TorrentAdd(&transmissionrpc.TorrentAddPayload{
 		DownloadDir: &downloadDir,
-		Filename:    &magnetLink,
+		Filename:    &decodedValue,
 	})
 	if err != nil {
 		fmt.Printf("Could not download torrent using the given magnet link: [%s]", err)
