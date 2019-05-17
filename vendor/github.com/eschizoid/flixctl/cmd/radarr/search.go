@@ -13,14 +13,18 @@ var SearchRadarrCmd = &cobra.Command{
 	Short: "To Search Movies",
 	Long:  "to search movies using radarr client.",
 	Run: func(cmd *cobra.Command, args []string) {
-		client, err := radarr.New(os.Getenv("RADARR_URL"), os.Getenv("RADARR_API_KEY"))
-		if err != nil {
-			panic(err)
-		}
-		results, err := client.Search(keywords)
-		if err != nil {
-			panic(err)
-		}
-		slackService.SendMovies(results, slackIncomingHookURL)
+		SearchMovies()
 	},
+}
+
+func SearchMovies() {
+	client, err := radarr.New(os.Getenv("RADARR_URL"), os.Getenv("RADARR_API_KEY"))
+	if err != nil {
+		panic(err)
+	}
+	results, err := client.Search(keywords)
+	if err != nil {
+		panic(err)
+	}
+	slackService.SendMovies(results, slackIncomingHookURL)
 }

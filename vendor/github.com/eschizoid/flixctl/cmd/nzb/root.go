@@ -8,7 +8,7 @@ var (
 	RootNzbCmd = &cobra.Command{
 		Use:   "nzb",
 		Short: "To Control NZB Client",
-		Long: "to control nzb client",
+		Long:  "to control nzb client",
 	}
 )
 
