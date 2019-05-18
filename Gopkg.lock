@@ -40,7 +40,7 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:e3a0304c17b589863c6b625382ddd7b02b568e183121f8c97a8d1da8efcfb102"
+  digest = "1:42e5152fc8847e5be6e5c81141fa1946c77ca2748ecee4f0eff3afca12c5f487"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "a477e606271572b4f67e2b367429bbaabe3157ab"
-  version = "v1.19.32"
+  revision = "0db84dcbcc56669065730700b054eb6d1438a0f7"
+  version = "v1.19.33"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f014a659413f22eaa9f05a2074cf6ec8c5d43b8e7a0920cbde5c6b722d899170"
+  digest = "1:0938a0f93cb1311de0dff4f6cc88a365c15d48afa8735c1787fa654abda4fe48"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -145,7 +145,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "2708490edc4b375b02d6c55c00db39f067e376ff"
+  revision = "b63ac324df4a4da554a9945a1fb29299b5ea6c94"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -302,12 +302,12 @@
   version = "v0.8.1"
 
 [[projects]]
-  digest = "1:fd61cf4ae1953d55df708acb6b91492d538f49c305b364a014049914495db426"
+  digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8bdbc7bcc01dcbb8ec23dc8a28e332258d25251f"
-  version = "v1.4.1"
+  revision = "839c75faf7f98a33d445d181f3018b5c3409a45e"
+  version = "v1.4.2"
 
 [[projects]]
   digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
