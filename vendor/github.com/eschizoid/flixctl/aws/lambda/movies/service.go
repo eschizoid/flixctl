@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
@@ -29,7 +30,7 @@ func executeMoviesCommand(evt json.RawMessage) {
 	case "movies-request":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendMoviesHelp("")
+			slackLambdaService.SendMoviesHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			ombi.Request()
 		}

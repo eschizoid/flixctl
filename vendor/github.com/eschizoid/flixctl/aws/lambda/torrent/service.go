@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
@@ -43,7 +44,7 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-shows-download":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendTorrentHelp("")
+			slackLambdaService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			torrent.Download(input.Argument, "/plex/shows")
 		}

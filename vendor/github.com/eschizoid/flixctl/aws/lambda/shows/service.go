@@ -2,11 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"flixctl/cmd/ombi"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
+	"github.com/eschizoid/flixctl/cmd/ombi"
 	"github.com/eschizoid/flixctl/cmd/sonarr"
 	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
 )
@@ -29,7 +30,7 @@ func executeShowsCommand(evt json.RawMessage) {
 	case "shows-request":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendShowsHelp("")
+			slackLambdaService.SendShowsHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			ombi.Request()
 		}
