@@ -29,7 +29,7 @@ func SendAdminHelp(slackIncomingHookURL string) {
 	}
 	attachment := slack.Attachment{
 		Color:     "#C40203",
-		Title:     "👋 Need some help with" + "`/admin` 💥?",
+		Title:     "👋 Need some help with" + "`/admin`?",
 		TitleLink: util.TorrentDownloadHookURL,
 		Fields: []slack.AttachmentField{
 			attachmentRenewCerts,
@@ -78,7 +78,6 @@ func SendMoviesHelp(slackIncomingHookURL string) {
 	}
 }
 
-
 func SendPlexHelp(slackIncomingHookURL string) {
 	var attachments = make([]slack.Attachment, 0, 4)
 	attachmentPlexDisableMonitoring := slack.AttachmentField{
@@ -106,9 +105,9 @@ func SendPlexHelp(slackIncomingHookURL string) {
 		Short: false,
 	}
 	attachment := slack.Attachment{
-		Color:      "#C40203",
-		Title:      "👋 Need some help with" + "`/plex`?",
-		TitleLink:  util.TorrentDownloadHookURL,
+		Color:     "#C40203",
+		Title:     "👋 Need some help with" + "`/plex`?",
+		TitleLink: util.TorrentDownloadHookURL,
 		Fields: []slack.AttachmentField{
 			attachmentPlexDisableMonitoring,
 			attachmentPlexEnableMonitoring,

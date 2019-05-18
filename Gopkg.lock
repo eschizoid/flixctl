@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:c8ec37b5b5ad0b7ed5d6b4f2bfdd6396960a55d74c772f179d492738ae44f80b"
+  digest = "1:f014a659413f22eaa9f05a2074cf6ec8c5d43b8e7a0920cbde5c6b722d899170"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -135,6 +135,7 @@
     "models",
     "slack",
     "slack/auth",
+    "slack/lambda",
     "slack/library",
     "slack/plex",
     "slack/radarr",
@@ -144,7 +145,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "d726116eb67a005628c15643a819da080916f6d5"
+  revision = "2708490edc4b375b02d6c55c00db39f067e376ff"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -448,6 +449,7 @@
     "github.com/eschizoid/flixctl/models",
     "github.com/eschizoid/flixctl/slack",
     "github.com/eschizoid/flixctl/slack/auth",
+    "github.com/eschizoid/flixctl/slack/lambda",
     "github.com/eschizoid/flixctl/slack/library",
     "github.com/eschizoid/flixctl/slack/plex",
     "github.com/eschizoid/flixctl/slack/radarr",
