@@ -30,6 +30,7 @@ define environment
     "SLACK_CLIENT_SECRET": "$(SLACK_CLIENT_SECRET)",
     "SLACK_REDIRECT_URI": "$(SLACK_REDIRECT_URI)",
     "SLACK_LEGACY_TOKEN": "$(SLACK_LEGACY_TOKEN)",
+    "SLACK_GENERAL_HOOK_URL": "$(SLACK_GENERAL_HOOK_URL)",
     "SLACK_MONITORING_HOOK_URL": "$(SLACK_MONITORING_HOOK_URL)",
     "SLACK_NEW_RELEASES_HOOK_URL": "$(SLACK_NEW_RELEASES_HOOK_URL)",
     "SLACK_NOTIFICATION": "$(SLACK_NOTIFICATION)",
@@ -181,7 +182,7 @@ zip-lambda-library-executor:
 
 zip-lambda-movies-executor:
 	zip -j -X $(shell pwd)/aws/lambda/movies/lambda.zip \
-	$(shell pwd)/aws/lambda/library/movies
+	$(shell pwd)/aws/lambda/movies/movies
 
 zip-lambda-plex-executor:
 	zip -j -X $(shell pwd)/aws/lambda/plex/executor/lambda.zip \
@@ -196,8 +197,8 @@ zip-lambda-slack-dispatcher:
 	$(shell pwd)/aws/lambda/slack/slack
 
 zip-lambda-shows-executor:
-	zip -j -X $(shell pwd)/aws/lambda/movies/lambda.zip \
-	$(shell pwd)/aws/lambda/library/movies
+	zip -j -X $(shell pwd)/aws/lambda/shows/lambda.zip \
+	$(shell pwd)/aws/lambda/shows/shows
 
 zip-lambda-torrent-executor:
 	zip -j -X $(shell pwd)/aws/lambda/torrent/lambda.zip \
