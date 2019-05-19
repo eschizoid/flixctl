@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -24,6 +25,7 @@ const (
 var (
 	Regex   = regexp.MustCompile("[[:^ascii:]]")
 	Timeout = time.Duration(15000 * 1000 * 1000)
+	port , _ = strconv.Atoi(os.Getenv("TRANSMISSION_PORT"))
 
 	Transmission, _ = transmissionrpc.New(
 		os.Getenv("FLIXCTL_HOST"),
@@ -31,7 +33,7 @@ var (
 		strings.Split(os.Getenv("TR_AUTH"), ":")[1],
 		&transmissionrpc.AdvancedConfig{
 			HTTPS: true,
-			Port:  443,
+			Port:  uint16(port),
 		})
 
 	Sources = map[string]string{
@@ -159,10 +161,11 @@ func Status() []transmissionrpc.Torrent {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	response, err := Transmission.TorrentGetAll()
-	var torrents []transmissionrpc.Torrent
 	if err != nil {
+		fmt.Printf("Unable to list torrents being donwloaded: [%s]", err)
 		panic(err)
 	}
+	var torrents []transmissionrpc.Torrent
 	for _, torrent := range response {
 		if files := torrent.Files; len(files) > 0 && files[0].Name != "" {
 			torrents = append(torrents, *torrent)
