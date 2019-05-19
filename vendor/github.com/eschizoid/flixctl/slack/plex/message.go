@@ -88,7 +88,7 @@ func SendPlexHelp(slackIncomingHookURL string) {
 		MarkdownIn: []string{"text", "fields"},
 	}
 	attachmentLearnMore := slack.Attachment{
-		Text: fmt.Sprintf("<http://%s|like this>", TitleLink),
+		Text: fmt.Sprintf("<http://%s|Learn More>", TitleLink),
 	}
 	message := &slack.WebhookMessage{
 		Attachments: []slack.Attachment{

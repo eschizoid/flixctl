@@ -11,7 +11,7 @@ type Slash struct {
 	TeamID      string `form:"team_id"`
 	TeamDomain  string `form:"team_domain"`
 	ChannelID   string `form:"channel_id"`
-	ChannelName string `form:"chann	el_name"`
+	ChannelName string `form:"channel_name"`
 	UserID      string `form:"user_id"`
 	UserName    string `form:"user_name"`
 	Command     string `form:"command"`
