@@ -1,3 +1,4 @@
+//nolint:dupl
 package main
 
 import (
@@ -9,7 +10,7 @@ import (
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/ombi"
 	"github.com/eschizoid/flixctl/cmd/radarr"
-	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
+	slackService "github.com/eschizoid/flixctl/slack/radarr"
 )
 
 func executeMoviesCommand(evt json.RawMessage) {
@@ -22,7 +23,7 @@ func executeMoviesCommand(evt json.RawMessage) {
 	case "movies-search":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" { //nolint:goconst
-			slackLambdaService.SendMoviesHelp("")
+			slackService.SendMoviesHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			radarr.SearchMovies()
 		}
@@ -30,7 +31,7 @@ func executeMoviesCommand(evt json.RawMessage) {
 	case "movies-request":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendMoviesHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
+			slackService.SendMoviesHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			ombi.Request()
 		}

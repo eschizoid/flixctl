@@ -25,7 +25,7 @@ const (
 var (
 	Regex   = regexp.MustCompile("[[:^ascii:]]")
 	Timeout = time.Duration(15000 * 1000 * 1000)
-	port , _ = strconv.Atoi(os.Getenv("TRANSMISSION_PORT"))
+	port, _ = strconv.Atoi(os.Getenv("TRANSMISSION_PORT"))
 
 	Transmission, _ = transmissionrpc.New(
 		os.Getenv("FLIXCTL_HOST"),

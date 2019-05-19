@@ -50,3 +50,37 @@ func SendShows(results []sonarr.SearchResults, slackIncomingHookURL string) {
 		fmt.Printf("Error while sending shows: [%s]\n", err)
 	}
 }
+
+func SendShowsHelp(slackIncomingHookURL string) {
+	const TitleLink = "https://github.com/eschizoid/flixctl/blob/master/README.adoc"
+
+	attachmentRequestShows := slack.AttachmentField{
+		Value: "✅ Request shows via Ombi:\n`/shows-request`",
+		Short: false,
+	}
+	attachmentSearchShows := slack.AttachmentField{
+		Value: "✅ Search shows using Sonarr client:\n`/shows-search`",
+		Short: false,
+	}
+	attachment := slack.Attachment{
+		Text: "👋 Need some help with `/shows-request` or `/shows-search`?",
+		Fields: []slack.AttachmentField{
+			attachmentRequestShows,
+			attachmentSearchShows,
+		},
+		MarkdownIn: []string{"text", "fields"},
+	}
+	attachmentLearnMore := slack.Attachment{
+		Text: fmt.Sprintf("<http://%s|Learn More>", TitleLink),
+	}
+	message := &slack.WebhookMessage{
+		Attachments: []slack.Attachment{
+			attachment,
+			attachmentLearnMore,
+		},
+	}
+	err := slack.PostWebhook(slackIncomingHookURL, message)
+	if err != nil {
+		fmt.Printf("Error while sending shows help: [%s]\n", err)
+	}
+}

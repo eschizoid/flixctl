@@ -50,3 +50,38 @@ func SendMovies(results []radarr.Movie, slackIncomingHookURL string) {
 		fmt.Printf("Error while sending movies: [%s]\n", err)
 	}
 }
+
+func SendMoviesHelp(slackIncomingHookURL string) {
+	const TitleLink = "https://github.com/eschizoid/flixctl/blob/master/README.adoc"
+
+	attachmentRequestMovie := slack.AttachmentField{
+		Value: "✅ Request movies via Ombi:\n`/movies-request`",
+		Short: false,
+	}
+	attachmentSearchMovie := slack.AttachmentField{
+		Value: "✅ Search movies using Radarr client:\n`/movies-search`",
+		Short: false,
+	}
+	attachment := slack.Attachment{
+		Text: "👋 Need some help with `/movies-request` or `/movies-search`?",
+		Fields: []slack.AttachmentField{
+			attachmentRequestMovie,
+			attachmentSearchMovie,
+		},
+		MarkdownIn: []string{"text", "fields"},
+		Ts:         json.Number(strconv.FormatInt(util.GetTimeStamp(), 10)),
+	}
+	attachmentLearnMore := slack.Attachment{
+		Text: fmt.Sprintf("<http://%s|Learn More>", TitleLink),
+	}
+	message := &slack.WebhookMessage{
+		Attachments: []slack.Attachment{
+			attachment,
+			attachmentLearnMore,
+		},
+	}
+	err := slack.PostWebhook(slackIncomingHookURL, message)
+	if err != nil {
+		fmt.Printf("Error while sending movies help: [%s]\n", err)
+	}
+}

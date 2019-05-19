@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/torrent"
-	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
+	slackService "github.com/eschizoid/flixctl/slack/torrent"
 )
 
 func executeTorrentCommand(evt json.RawMessage) {
@@ -20,7 +20,7 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-search":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" { //nolint:goconst
-			slackLambdaService.SendTorrentHelp("")
+			slackService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			torrent.Search(input.Argument)
 		}
@@ -28,7 +28,7 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-status":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendTorrentHelp("")
+			slackService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			torrent.Status()
 		}
@@ -36,7 +36,7 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-movies-download":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendTorrentHelp("")
+			slackService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			torrent.Download(input.Argument, "/plex/movies")
 		}
@@ -44,7 +44,7 @@ func executeTorrentCommand(evt json.RawMessage) {
 	case "torrent-shows-download":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
+			slackService.SendTorrentHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			torrent.Download(input.Argument, "/plex/shows")
 		}

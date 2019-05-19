@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	sess "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	slackService "github.com/eschizoid/flixctl/slack/auth"
+	slackService "github.com/eschizoid/flixctl/slack/admin"
 	"github.com/nlopes/slack"
 	"github.com/spf13/cobra"
 )

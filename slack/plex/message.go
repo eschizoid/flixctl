@@ -47,3 +47,57 @@ func SendToken(token string, slackIncomingHookURL string) {
 		fmt.Printf("Error while sending plex token: [%s]\n", err)
 	}
 }
+
+func SendPlexHelp(slackIncomingHookURL string) {
+	const TitleLink = "https://github.com/eschizoid/flixctl/blob/master/README.adoc"
+
+	attachmentPlexDisableMonitoring := slack.AttachmentField{
+		Value: "✅ Enable Plex monitoring:\n`/plex disable-monitoring`",
+		Short: false,
+	}
+	attachmentPlexEnableMonitoring := slack.AttachmentField{
+		Value: "✅ Disable Plex monitoring:\n`/plex enable-monitoring`",
+		Short: false,
+	}
+	attachmentPlexStart := slack.AttachmentField{
+		Value: "✅ Start Plex:\n`/plex start`",
+		Short: false,
+	}
+	attachmentPlexStop := slack.AttachmentField{
+		Value: "✅ Stop Plex:\n`/plex stop`",
+		Short: false,
+	}
+	attachmentPlexStatus := slack.AttachmentField{
+		Value: "✅ Get Plex status:\n`/plex status`",
+		Short: false,
+	}
+	attachmentPlexToken := slack.AttachmentField{
+		Value: "✅ Get Plex token:\n`/plex token`",
+		Short: false,
+	}
+	attachment := slack.Attachment{
+		Text: "👋 Need some help with `/plex`?",
+		Fields: []slack.AttachmentField{
+			attachmentPlexDisableMonitoring,
+			attachmentPlexEnableMonitoring,
+			attachmentPlexStart,
+			attachmentPlexStop,
+			attachmentPlexStatus,
+			attachmentPlexToken,
+		},
+		MarkdownIn: []string{"text", "fields"},
+	}
+	attachmentLearnMore := slack.Attachment{
+		Text: fmt.Sprintf("<http://%s|like this>", TitleLink),
+	}
+	message := &slack.WebhookMessage{
+		Attachments: []slack.Attachment{
+			attachment,
+			attachmentLearnMore,
+		},
+	}
+	err := slack.PostWebhook(slackIncomingHookURL, message)
+	if err != nil {
+		fmt.Printf("Error while sending plex help: [%s]\n", err)
+	}
+}
