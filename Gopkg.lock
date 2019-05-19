@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0938a0f93cb1311de0dff4f6cc88a365c15d48afa8735c1787fa654abda4fe48"
+  digest = "1:234b42cd8d4768969bff6ccdb08229c131e1ff2393d848aba7663714060f12f8"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -134,8 +134,7 @@
     "library",
     "models",
     "slack",
-    "slack/auth",
-    "slack/lambda",
+    "slack/admin",
     "slack/library",
     "slack/plex",
     "slack/radarr",
@@ -145,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "b63ac324df4a4da554a9945a1fb29299b5ea6c94"
+  revision = "7dac24dcdaa37dbbee7bc22b8ff9cff82f3a5690"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -310,12 +309,12 @@
   version = "v1.4.2"
 
 [[projects]]
-  digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
+  digest = "1:22799aea8fe96dd5693abdd1eaa14b1b29e3eafbdc7733fa155b3cb556c8a7ae"
   name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
-  version = "v0.0.3"
+  revision = "67fc4837d267bc9bfd6e47f77783fcc3dffc68de"
+  version = "v0.0.4"
 
 [[projects]]
   digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
@@ -448,8 +447,7 @@
     "github.com/eschizoid/flixctl/library",
     "github.com/eschizoid/flixctl/models",
     "github.com/eschizoid/flixctl/slack",
-    "github.com/eschizoid/flixctl/slack/auth",
-    "github.com/eschizoid/flixctl/slack/lambda",
+    "github.com/eschizoid/flixctl/slack/admin",
     "github.com/eschizoid/flixctl/slack/library",
     "github.com/eschizoid/flixctl/slack/plex",
     "github.com/eschizoid/flixctl/slack/radarr",
