@@ -86,6 +86,7 @@ brew install dep
 |SONARR_API_KEY|
 |SONARR_URL|
 |TAUTULI_API_KEY|
+|TRANSMISSION_PORT|
 |TR_AUTH|
 |===
 
