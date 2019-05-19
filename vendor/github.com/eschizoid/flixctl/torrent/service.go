@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -24,6 +25,7 @@ const (
 var (
 	Regex   = regexp.MustCompile("[[:^ascii:]]")
 	Timeout = time.Duration(15000 * 1000 * 1000)
+	port, _ = strconv.Atoi(os.Getenv("TRANSMISSION_PORT"))
 
 	Transmission, _ = transmissionrpc.New(
 		os.Getenv("FLIXCTL_HOST"),
@@ -31,7 +33,7 @@ var (
 		strings.Split(os.Getenv("TR_AUTH"), ":")[1],
 		&transmissionrpc.AdvancedConfig{
 			HTTPS: true,
-			Port:  12443,
+			Port:  uint16(port),
 		})
 
 	Sources = map[string]string{

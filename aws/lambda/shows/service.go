@@ -1,3 +1,4 @@
+//nolint:dupl
 package main
 
 import (
@@ -9,7 +10,7 @@ import (
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/ombi"
 	"github.com/eschizoid/flixctl/cmd/sonarr"
-	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
+	slackService "github.com/eschizoid/flixctl/slack/sonarr"
 )
 
 func executeShowsCommand(evt json.RawMessage) {
@@ -22,7 +23,7 @@ func executeShowsCommand(evt json.RawMessage) {
 	case "shows-search":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" { //nolint:goconst
-			slackLambdaService.SendShowsHelp("")
+			slackService.SendShowsHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			sonarr.SearchShows()
 		}
@@ -30,7 +31,7 @@ func executeShowsCommand(evt json.RawMessage) {
 	case "shows-request":
 		fmt.Printf("Executing %s command \n", input.Argument)
 		if input.Argument == "help" {
-			slackLambdaService.SendShowsHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
+			slackService.SendShowsHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		} else {
 			ombi.Request()
 		}

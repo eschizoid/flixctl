@@ -40,7 +40,7 @@ define environment
     "SONARR_URL": "$(SONARR_URL)",
     "TAUTULI_API_KEY": "$(TAUTULI_API_KEY)",
     "TRANSMISSION_PORT": "$(TRANSMISSION_PORT)",
-    "TR_AUTH": "$(TR_AUTH)",
+    "TR_AUTH": "$(TR_AUTH)"
   }
 }
 endef

@@ -130,3 +130,47 @@ func SendStatus(torrents []transmissionrpc.Torrent, slackIncomingHookURL string)
 		fmt.Printf("Error while sending torrents download status: [%s]\n", err)
 	}
 }
+
+func SendTorrentHelp(slackIncomingHookURL string) {
+	const TitleLink = "https://github.com/eschizoid/flixctl/blob/master/README.adoc"
+
+	attachmentTorrentSearch := slack.AttachmentField{
+		Value: "✅ Search for a movie using the given keyword(s):\n`/torrent-search`",
+		Short: false,
+	}
+	attachmentTorrentStatus := slack.AttachmentField{
+		Value: "✅ Show the status the shows and movies being downloaded:\n`/torrent-status`",
+		Short: false,
+	}
+	attachmentTorrentMoviesDownload := slack.AttachmentField{
+		Value: "✅ Download a movie using Transmission client:\n`/torrent-movies-download`",
+		Short: false,
+	}
+	attachmentTorrentShowsDownload := slack.AttachmentField{
+		Value: "✅ Download a show using Transmission client:\n`/torrent-shows-download`",
+		Short: false,
+	}
+	attachment := slack.Attachment{
+		Text: "👋 Need some help with `/torrent-search`, `/torrent-status`, `/torrent-movies-download` or `/torrent-shows-download`?",
+		Fields: []slack.AttachmentField{
+			attachmentTorrentSearch,
+			attachmentTorrentStatus,
+			attachmentTorrentMoviesDownload,
+			attachmentTorrentShowsDownload,
+		},
+		MarkdownIn: []string{"text", "fields"},
+	}
+	attachmentLearnMore := slack.Attachment{
+		Text: fmt.Sprintf("<http://%s|Learn More>", TitleLink),
+	}
+	message := &slack.WebhookMessage{
+		Attachments: []slack.Attachment{
+			attachment,
+			attachmentLearnMore,
+		},
+	}
+	err := slack.PostWebhook(slackIncomingHookURL, message)
+	if err != nil {
+		fmt.Printf("Error while sending torrent help: [%s]\n", err)
+	}
+}

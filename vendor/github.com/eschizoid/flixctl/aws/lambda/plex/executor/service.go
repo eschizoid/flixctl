@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/eschizoid/flixctl/aws/lambda/models"
 	"github.com/eschizoid/flixctl/cmd/plex"
-	slackLambdaService "github.com/eschizoid/flixctl/slack/lambda"
+	slackService "github.com/eschizoid/flixctl/slack/plex"
 )
 
 func executePlexCommand(evt json.RawMessage) {
@@ -36,7 +36,7 @@ func executePlexCommand(evt json.RawMessage) {
 		plex.Token()
 	case "help":
 		fmt.Printf("Executing %s command \n", input.Argument)
-		slackLambdaService.SendPlexHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
+		slackService.SendPlexHelp(os.Getenv("SLACK_GENERAL_HOOK_URL"))
 		fmt.Printf("Succesfully executed %s \n", input.Argument)
 	}
 	fmt.Println("Successfully executed λ plex")
