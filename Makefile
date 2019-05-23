@@ -21,6 +21,7 @@ define environment
     "DYNAMODB_ENDPOINT": "$(DYNAMODB_ENDPOINT)",
     "FLIXCTL_HOST": "$(FLIXCTL_HOST)",
     "HOOKS_URL": "$(HOOKS_URL)",
+    "PLEX_PORT": "$(PLEX_PORT)",
     "PLEX_PASSWORD": "$(PLEX_PASSWORD)",
     "PLEX_TOKEN": "$(PLEX_TOKEN)",
     "PLEX_USER": "$(PLEX_USER)",

@@ -32,10 +32,10 @@ var MonitorPlexCmd = &cobra.Command{
 func EnableDisableMonitor(activateMonitor string) {
 	if enabledLambdaMonitor, _ := strconv.ParseBool(activateMonitor); enabledLambdaMonitor {
 		enabledMonitorRule()
-		return
+		os.Exit(0)
 	} else if !enabledLambdaMonitor {
 		disabledMonitorRule()
-		return
+		os.Exit(0)
 	}
 }
 
@@ -45,7 +45,7 @@ func Monitor(slackNotification string) {
 	}))
 	awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 	svc := dynamodb.New(awsSession)
-	plexClient, err := plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), os.Getenv("PLEX_TOKEN"))
+	plexClient, err := plex.New(fmt.Sprintf("https://%s:%s", os.Getenv("FLIXCTL_HOST"), os.Getenv("PLEX_PORT")), os.Getenv("PLEX_TOKEN"))
 	ShowError(err)
 	m := make(map[string]interface{})
 	sessions, _ := plexClient.GetSessions()
