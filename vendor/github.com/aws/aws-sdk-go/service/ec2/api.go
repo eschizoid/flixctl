@@ -2020,9 +2020,9 @@ func (c *EC2) AuthorizeSecurityGroupEgressRequest(input *AuthorizeSecurityGroupE
 // [VPC only] Adds the specified egress rules to a security group for use with
 // a VPC.
 //
-// An outbound rule permits instances to send traffic to the specified destination
-// IPv4 or IPv6 CIDR address ranges, or to the specified destination security
-// groups for the same VPC.
+// An outbound rule permits instances to send traffic to the specified IPv4
+// or IPv6 CIDR address ranges, or to the instances associated with the specified
+// destination security groups.
 //
 // You specify a protocol for each rule (for example, TCP). For the TCP and
 // UDP protocols, you must also specify the destination port or port range.
@@ -2110,9 +2110,9 @@ func (c *EC2) AuthorizeSecurityGroupIngressRequest(input *AuthorizeSecurityGroup
 //
 // Adds the specified ingress rules to a security group.
 //
-// An inbound rule permits instances to receive traffic from the specified destination
-// IPv4 or IPv6 CIDR address ranges, or from the specified destination security
-// groups.
+// An inbound rule permits instances to receive traffic from the specified IPv4
+// or IPv6 CIDR address ranges, or from the instances associated with the specified
+// destination security groups.
 //
 // You specify a protocol for each rule (for example, TCP). For TCP and UDP,
 // you must also specify the destination port or port range. For ICMP/ICMPv6,
@@ -3405,8 +3405,8 @@ func (c *EC2) CreateClientVpnRouteRequest(input *CreateClientVpnRouteInput) (req
 //
 // Adds a route to a network to a Client VPN endpoint. Each Client VPN endpoint
 // has a route table that describes the available destination network routes.
-// Each route in the route table specifies the path for traﬃc to speciﬁc resources
-// or networks.
+// Each route in the route table specifies the path for traﬃc to speciﬁc
+// resources or networks.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -5573,6 +5573,83 @@ func (c *EC2) CreateSnapshot(input *CreateSnapshotInput) (*Snapshot, error) {
 // for more information on using Contexts.
 func (c *EC2) CreateSnapshotWithContext(ctx aws.Context, input *CreateSnapshotInput, opts ...request.Option) (*Snapshot, error) {
 	req, out := c.CreateSnapshotRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateSnapshots = "CreateSnapshots"
+
+// CreateSnapshotsRequest generates a "aws/request.Request" representing the
+// client's request for the CreateSnapshots operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateSnapshots for more information on using the CreateSnapshots
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateSnapshotsRequest method.
+//    req, resp := client.CreateSnapshotsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/ec2-2016-11-15/CreateSnapshots
+func (c *EC2) CreateSnapshotsRequest(input *CreateSnapshotsInput) (req *request.Request, output *CreateSnapshotsOutput) {
+	op := &request.Operation{
+		Name:       opCreateSnapshots,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateSnapshotsInput{}
+	}
+
+	output = &CreateSnapshotsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateSnapshots API operation for Amazon Elastic Compute Cloud.
+//
+// Creates crash-consistent snapshots of multiple EBS volumes and stores the
+// data in S3. Volumes are chosen by specifying an instance. Any attached volumes
+// will produce one snapshot each that is crash-consistent across the instance.
+// Boot volumes can be excluded by changing the paramaters.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Elastic Compute Cloud's
+// API operation CreateSnapshots for usage and error information.
+// See also, https://docs.aws.amazon.com/goto/WebAPI/ec2-2016-11-15/CreateSnapshots
+func (c *EC2) CreateSnapshots(input *CreateSnapshotsInput) (*CreateSnapshotsOutput, error) {
+	req, out := c.CreateSnapshotsRequest(input)
+	return out, req.Send()
+}
+
+// CreateSnapshotsWithContext is the same as CreateSnapshots with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateSnapshots for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *EC2) CreateSnapshotsWithContext(ctx aws.Context, input *CreateSnapshotsInput, opts ...request.Option) (*CreateSnapshotsOutput, error) {
+	req, out := c.CreateSnapshotsRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -10537,7 +10614,7 @@ func (c *EC2) DescribeByoipCidrsWithContext(ctx aws.Context, input *DescribeByoi
 //    // Example iterating over at most 3 pages of a DescribeByoipCidrs operation.
 //    pageNum := 0
 //    err := client.DescribeByoipCidrsPages(params,
-//        func(page *DescribeByoipCidrsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeByoipCidrsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -10668,7 +10745,7 @@ func (c *EC2) DescribeCapacityReservationsWithContext(ctx aws.Context, input *De
 //    // Example iterating over at most 3 pages of a DescribeCapacityReservations operation.
 //    pageNum := 0
 //    err := client.DescribeCapacityReservationsPages(params,
-//        func(page *DescribeCapacityReservationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeCapacityReservationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -10801,7 +10878,7 @@ func (c *EC2) DescribeClassicLinkInstancesWithContext(ctx aws.Context, input *De
 //    // Example iterating over at most 3 pages of a DescribeClassicLinkInstances operation.
 //    pageNum := 0
 //    err := client.DescribeClassicLinkInstancesPages(params,
-//        func(page *DescribeClassicLinkInstancesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClassicLinkInstancesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -10931,7 +11008,7 @@ func (c *EC2) DescribeClientVpnAuthorizationRulesWithContext(ctx aws.Context, in
 //    // Example iterating over at most 3 pages of a DescribeClientVpnAuthorizationRules operation.
 //    pageNum := 0
 //    err := client.DescribeClientVpnAuthorizationRulesPages(params,
-//        func(page *DescribeClientVpnAuthorizationRulesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClientVpnAuthorizationRulesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11062,7 +11139,7 @@ func (c *EC2) DescribeClientVpnConnectionsWithContext(ctx aws.Context, input *De
 //    // Example iterating over at most 3 pages of a DescribeClientVpnConnections operation.
 //    pageNum := 0
 //    err := client.DescribeClientVpnConnectionsPages(params,
-//        func(page *DescribeClientVpnConnectionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClientVpnConnectionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11192,7 +11269,7 @@ func (c *EC2) DescribeClientVpnEndpointsWithContext(ctx aws.Context, input *Desc
 //    // Example iterating over at most 3 pages of a DescribeClientVpnEndpoints operation.
 //    pageNum := 0
 //    err := client.DescribeClientVpnEndpointsPages(params,
-//        func(page *DescribeClientVpnEndpointsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClientVpnEndpointsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11322,7 +11399,7 @@ func (c *EC2) DescribeClientVpnRoutesWithContext(ctx aws.Context, input *Describ
 //    // Example iterating over at most 3 pages of a DescribeClientVpnRoutes operation.
 //    pageNum := 0
 //    err := client.DescribeClientVpnRoutesPages(params,
-//        func(page *DescribeClientVpnRoutesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClientVpnRoutesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11452,7 +11529,7 @@ func (c *EC2) DescribeClientVpnTargetNetworksWithContext(ctx aws.Context, input 
 //    // Example iterating over at most 3 pages of a DescribeClientVpnTargetNetworks operation.
 //    pageNum := 0
 //    err := client.DescribeClientVpnTargetNetworksPages(params,
-//        func(page *DescribeClientVpnTargetNetworksOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeClientVpnTargetNetworksOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11740,7 +11817,7 @@ func (c *EC2) DescribeDhcpOptionsWithContext(ctx aws.Context, input *DescribeDhc
 //    // Example iterating over at most 3 pages of a DescribeDhcpOptions operation.
 //    pageNum := 0
 //    err := client.DescribeDhcpOptionsPages(params,
-//        func(page *DescribeDhcpOptionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeDhcpOptionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -11870,7 +11947,7 @@ func (c *EC2) DescribeEgressOnlyInternetGatewaysWithContext(ctx aws.Context, inp
 //    // Example iterating over at most 3 pages of a DescribeEgressOnlyInternetGateways operation.
 //    pageNum := 0
 //    err := client.DescribeEgressOnlyInternetGatewaysPages(params,
-//        func(page *DescribeEgressOnlyInternetGatewaysOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeEgressOnlyInternetGatewaysOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -12298,7 +12375,7 @@ func (c *EC2) DescribeFleetsWithContext(ctx aws.Context, input *DescribeFleetsIn
 //    // Example iterating over at most 3 pages of a DescribeFleets operation.
 //    pageNum := 0
 //    err := client.DescribeFleetsPages(params,
-//        func(page *DescribeFleetsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeFleetsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -12430,7 +12507,7 @@ func (c *EC2) DescribeFlowLogsWithContext(ctx aws.Context, input *DescribeFlowLo
 //    // Example iterating over at most 3 pages of a DescribeFlowLogs operation.
 //    pageNum := 0
 //    err := client.DescribeFlowLogsPages(params,
-//        func(page *DescribeFlowLogsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeFlowLogsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -12636,7 +12713,7 @@ func (c *EC2) DescribeFpgaImagesWithContext(ctx aws.Context, input *DescribeFpga
 //    // Example iterating over at most 3 pages of a DescribeFpgaImages operation.
 //    pageNum := 0
 //    err := client.DescribeFpgaImagesPages(params,
-//        func(page *DescribeFpgaImagesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeFpgaImagesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -12774,7 +12851,7 @@ func (c *EC2) DescribeHostReservationOfferingsWithContext(ctx aws.Context, input
 //    // Example iterating over at most 3 pages of a DescribeHostReservationOfferings operation.
 //    pageNum := 0
 //    err := client.DescribeHostReservationOfferingsPages(params,
-//        func(page *DescribeHostReservationOfferingsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeHostReservationOfferingsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -12904,7 +12981,7 @@ func (c *EC2) DescribeHostReservationsWithContext(ctx aws.Context, input *Descri
 //    // Example iterating over at most 3 pages of a DescribeHostReservations operation.
 //    pageNum := 0
 //    err := client.DescribeHostReservationsPages(params,
-//        func(page *DescribeHostReservationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeHostReservationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -13038,7 +13115,7 @@ func (c *EC2) DescribeHostsWithContext(ctx aws.Context, input *DescribeHostsInpu
 //    // Example iterating over at most 3 pages of a DescribeHosts operation.
 //    pageNum := 0
 //    err := client.DescribeHostsPages(params,
-//        func(page *DescribeHostsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeHostsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -13168,7 +13245,7 @@ func (c *EC2) DescribeIamInstanceProfileAssociationsWithContext(ctx aws.Context,
 //    // Example iterating over at most 3 pages of a DescribeIamInstanceProfileAssociations operation.
 //    pageNum := 0
 //    err := client.DescribeIamInstanceProfileAssociationsPages(params,
-//        func(page *DescribeIamInstanceProfileAssociationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeIamInstanceProfileAssociationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -13640,7 +13717,7 @@ func (c *EC2) DescribeImportImageTasksWithContext(ctx aws.Context, input *Descri
 //    // Example iterating over at most 3 pages of a DescribeImportImageTasks operation.
 //    pageNum := 0
 //    err := client.DescribeImportImageTasksPages(params,
-//        func(page *DescribeImportImageTasksOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeImportImageTasksOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -13770,7 +13847,7 @@ func (c *EC2) DescribeImportSnapshotTasksWithContext(ctx aws.Context, input *Des
 //    // Example iterating over at most 3 pages of a DescribeImportSnapshotTasks operation.
 //    pageNum := 0
 //    err := client.DescribeImportSnapshotTasksPages(params,
-//        func(page *DescribeImportSnapshotTasksOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeImportSnapshotTasksOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14001,7 +14078,7 @@ func (c *EC2) DescribeInstanceCreditSpecificationsWithContext(ctx aws.Context, i
 //    // Example iterating over at most 3 pages of a DescribeInstanceCreditSpecifications operation.
 //    pageNum := 0
 //    err := client.DescribeInstanceCreditSpecificationsPages(params,
-//        func(page *DescribeInstanceCreditSpecificationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeInstanceCreditSpecificationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14152,7 +14229,7 @@ func (c *EC2) DescribeInstanceStatusWithContext(ctx aws.Context, input *Describe
 //    // Example iterating over at most 3 pages of a DescribeInstanceStatus operation.
 //    pageNum := 0
 //    err := client.DescribeInstanceStatusPages(params,
-//        func(page *DescribeInstanceStatusOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeInstanceStatusOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14297,7 +14374,7 @@ func (c *EC2) DescribeInstancesWithContext(ctx aws.Context, input *DescribeInsta
 //    // Example iterating over at most 3 pages of a DescribeInstances operation.
 //    pageNum := 0
 //    err := client.DescribeInstancesPages(params,
-//        func(page *DescribeInstancesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeInstancesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14427,7 +14504,7 @@ func (c *EC2) DescribeInternetGatewaysWithContext(ctx aws.Context, input *Descri
 //    // Example iterating over at most 3 pages of a DescribeInternetGateways operation.
 //    pageNum := 0
 //    err := client.DescribeInternetGatewaysPages(params,
-//        func(page *DescribeInternetGatewaysOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeInternetGatewaysOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14635,7 +14712,7 @@ func (c *EC2) DescribeLaunchTemplateVersionsWithContext(ctx aws.Context, input *
 //    // Example iterating over at most 3 pages of a DescribeLaunchTemplateVersions operation.
 //    pageNum := 0
 //    err := client.DescribeLaunchTemplateVersionsPages(params,
-//        func(page *DescribeLaunchTemplateVersionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeLaunchTemplateVersionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14765,7 +14842,7 @@ func (c *EC2) DescribeLaunchTemplatesWithContext(ctx aws.Context, input *Describ
 //    // Example iterating over at most 3 pages of a DescribeLaunchTemplates operation.
 //    pageNum := 0
 //    err := client.DescribeLaunchTemplatesPages(params,
-//        func(page *DescribeLaunchTemplatesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeLaunchTemplatesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -14897,7 +14974,7 @@ func (c *EC2) DescribeMovingAddressesWithContext(ctx aws.Context, input *Describ
 //    // Example iterating over at most 3 pages of a DescribeMovingAddresses operation.
 //    pageNum := 0
 //    err := client.DescribeMovingAddressesPages(params,
-//        func(page *DescribeMovingAddressesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeMovingAddressesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15027,7 +15104,7 @@ func (c *EC2) DescribeNatGatewaysWithContext(ctx aws.Context, input *DescribeNat
 //    // Example iterating over at most 3 pages of a DescribeNatGateways operation.
 //    pageNum := 0
 //    err := client.DescribeNatGatewaysPages(params,
-//        func(page *DescribeNatGatewaysOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeNatGatewaysOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15160,7 +15237,7 @@ func (c *EC2) DescribeNetworkAclsWithContext(ctx aws.Context, input *DescribeNet
 //    // Example iterating over at most 3 pages of a DescribeNetworkAcls operation.
 //    pageNum := 0
 //    err := client.DescribeNetworkAclsPages(params,
-//        func(page *DescribeNetworkAclsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeNetworkAclsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15365,7 +15442,7 @@ func (c *EC2) DescribeNetworkInterfacePermissionsWithContext(ctx aws.Context, in
 //    // Example iterating over at most 3 pages of a DescribeNetworkInterfacePermissions operation.
 //    pageNum := 0
 //    err := client.DescribeNetworkInterfacePermissionsPages(params,
-//        func(page *DescribeNetworkInterfacePermissionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeNetworkInterfacePermissionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15495,7 +15572,7 @@ func (c *EC2) DescribeNetworkInterfacesWithContext(ctx aws.Context, input *Descr
 //    // Example iterating over at most 3 pages of a DescribeNetworkInterfaces operation.
 //    pageNum := 0
 //    err := client.DescribeNetworkInterfacesPages(params,
-//        func(page *DescribeNetworkInterfacesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeNetworkInterfacesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15706,7 +15783,7 @@ func (c *EC2) DescribePrefixListsWithContext(ctx aws.Context, input *DescribePre
 //    // Example iterating over at most 3 pages of a DescribePrefixLists operation.
 //    pageNum := 0
 //    err := client.DescribePrefixListsPages(params,
-//        func(page *DescribePrefixListsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribePrefixListsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15850,7 +15927,7 @@ func (c *EC2) DescribePrincipalIdFormatWithContext(ctx aws.Context, input *Descr
 //    // Example iterating over at most 3 pages of a DescribePrincipalIdFormat operation.
 //    pageNum := 0
 //    err := client.DescribePrincipalIdFormatPages(params,
-//        func(page *DescribePrincipalIdFormatOutput, lastPage bool) bool {
+//        func(page *ec2.DescribePrincipalIdFormatOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -15980,7 +16057,7 @@ func (c *EC2) DescribePublicIpv4PoolsWithContext(ctx aws.Context, input *Describ
 //    // Example iterating over at most 3 pages of a DescribePublicIpv4Pools operation.
 //    pageNum := 0
 //    err := client.DescribePublicIpv4PoolsPages(params,
-//        func(page *DescribePublicIpv4PoolsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribePublicIpv4PoolsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -16069,7 +16146,7 @@ func (c *EC2) DescribeRegionsRequest(input *DescribeRegionsInput) (req *request.
 // Disabling Regions (https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#manage-account-payment-enable-disable-regions)
 // in the AWS Billing and Cost Management User Guide.
 //
-// For a list of the Regions supported by Amazon EC2, see  Regions and Endpoints
+// For a list of the Regions supported by Amazon EC2, see Regions and Endpoints
 // (https://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -16369,7 +16446,7 @@ func (c *EC2) DescribeReservedInstancesModificationsWithContext(ctx aws.Context,
 //    // Example iterating over at most 3 pages of a DescribeReservedInstancesModifications operation.
 //    pageNum := 0
 //    err := client.DescribeReservedInstancesModificationsPages(params,
-//        func(page *DescribeReservedInstancesModificationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeReservedInstancesModificationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -16510,7 +16587,7 @@ func (c *EC2) DescribeReservedInstancesOfferingsWithContext(ctx aws.Context, inp
 //    // Example iterating over at most 3 pages of a DescribeReservedInstancesOfferings operation.
 //    pageNum := 0
 //    err := client.DescribeReservedInstancesOfferingsPages(params,
-//        func(page *DescribeReservedInstancesOfferingsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeReservedInstancesOfferingsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -16648,7 +16725,7 @@ func (c *EC2) DescribeRouteTablesWithContext(ctx aws.Context, input *DescribeRou
 //    // Example iterating over at most 3 pages of a DescribeRouteTables operation.
 //    pageNum := 0
 //    err := client.DescribeRouteTablesPages(params,
-//        func(page *DescribeRouteTablesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeRouteTablesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -16786,7 +16863,7 @@ func (c *EC2) DescribeScheduledInstanceAvailabilityWithContext(ctx aws.Context, 
 //    // Example iterating over at most 3 pages of a DescribeScheduledInstanceAvailability operation.
 //    pageNum := 0
 //    err := client.DescribeScheduledInstanceAvailabilityPages(params,
-//        func(page *DescribeScheduledInstanceAvailabilityOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeScheduledInstanceAvailabilityOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -16916,7 +16993,7 @@ func (c *EC2) DescribeScheduledInstancesWithContext(ctx aws.Context, input *Desc
 //    // Example iterating over at most 3 pages of a DescribeScheduledInstances operation.
 //    pageNum := 0
 //    err := client.DescribeScheduledInstancesPages(params,
-//        func(page *DescribeScheduledInstancesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeScheduledInstancesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -17128,7 +17205,7 @@ func (c *EC2) DescribeSecurityGroupsWithContext(ctx aws.Context, input *Describe
 //    // Example iterating over at most 3 pages of a DescribeSecurityGroups operation.
 //    pageNum := 0
 //    err := client.DescribeSecurityGroupsPages(params,
-//        func(page *DescribeSecurityGroupsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSecurityGroupsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -17383,7 +17460,7 @@ func (c *EC2) DescribeSnapshotsWithContext(ctx aws.Context, input *DescribeSnaps
 //    // Example iterating over at most 3 pages of a DescribeSnapshots operation.
 //    pageNum := 0
 //    err := client.DescribeSnapshotsPages(params,
-//        func(page *DescribeSnapshotsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSnapshotsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -17745,7 +17822,7 @@ func (c *EC2) DescribeSpotFleetRequestsWithContext(ctx aws.Context, input *Descr
 //    // Example iterating over at most 3 pages of a DescribeSpotFleetRequests operation.
 //    pageNum := 0
 //    err := client.DescribeSpotFleetRequestsPages(params,
-//        func(page *DescribeSpotFleetRequestsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSpotFleetRequestsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -17891,7 +17968,7 @@ func (c *EC2) DescribeSpotInstanceRequestsWithContext(ctx aws.Context, input *De
 //    // Example iterating over at most 3 pages of a DescribeSpotInstanceRequests operation.
 //    pageNum := 0
 //    err := client.DescribeSpotInstanceRequestsPages(params,
-//        func(page *DescribeSpotInstanceRequestsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSpotInstanceRequestsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18028,7 +18105,7 @@ func (c *EC2) DescribeSpotPriceHistoryWithContext(ctx aws.Context, input *Descri
 //    // Example iterating over at most 3 pages of a DescribeSpotPriceHistory operation.
 //    pageNum := 0
 //    err := client.DescribeSpotPriceHistoryPages(params,
-//        func(page *DescribeSpotPriceHistoryOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSpotPriceHistoryOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18161,7 +18238,7 @@ func (c *EC2) DescribeStaleSecurityGroupsWithContext(ctx aws.Context, input *Des
 //    // Example iterating over at most 3 pages of a DescribeStaleSecurityGroups operation.
 //    pageNum := 0
 //    err := client.DescribeStaleSecurityGroupsPages(params,
-//        func(page *DescribeStaleSecurityGroupsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeStaleSecurityGroupsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18294,7 +18371,7 @@ func (c *EC2) DescribeSubnetsWithContext(ctx aws.Context, input *DescribeSubnets
 //    // Example iterating over at most 3 pages of a DescribeSubnets operation.
 //    pageNum := 0
 //    err := client.DescribeSubnetsPages(params,
-//        func(page *DescribeSubnetsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeSubnetsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18427,7 +18504,7 @@ func (c *EC2) DescribeTagsWithContext(ctx aws.Context, input *DescribeTagsInput,
 //    // Example iterating over at most 3 pages of a DescribeTags operation.
 //    pageNum := 0
 //    err := client.DescribeTagsPages(params,
-//        func(page *DescribeTagsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeTagsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18560,7 +18637,7 @@ func (c *EC2) DescribeTransitGatewayAttachmentsWithContext(ctx aws.Context, inpu
 //    // Example iterating over at most 3 pages of a DescribeTransitGatewayAttachments operation.
 //    pageNum := 0
 //    err := client.DescribeTransitGatewayAttachmentsPages(params,
-//        func(page *DescribeTransitGatewayAttachmentsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeTransitGatewayAttachmentsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18691,7 +18768,7 @@ func (c *EC2) DescribeTransitGatewayRouteTablesWithContext(ctx aws.Context, inpu
 //    // Example iterating over at most 3 pages of a DescribeTransitGatewayRouteTables operation.
 //    pageNum := 0
 //    err := client.DescribeTransitGatewayRouteTablesPages(params,
-//        func(page *DescribeTransitGatewayRouteTablesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeTransitGatewayRouteTablesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18822,7 +18899,7 @@ func (c *EC2) DescribeTransitGatewayVpcAttachmentsWithContext(ctx aws.Context, i
 //    // Example iterating over at most 3 pages of a DescribeTransitGatewayVpcAttachments operation.
 //    pageNum := 0
 //    err := client.DescribeTransitGatewayVpcAttachmentsPages(params,
-//        func(page *DescribeTransitGatewayVpcAttachmentsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeTransitGatewayVpcAttachmentsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -18953,7 +19030,7 @@ func (c *EC2) DescribeTransitGatewaysWithContext(ctx aws.Context, input *Describ
 //    // Example iterating over at most 3 pages of a DescribeTransitGateways operation.
 //    pageNum := 0
 //    err := client.DescribeTransitGatewaysPages(params,
-//        func(page *DescribeTransitGatewaysOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeTransitGatewaysOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -19196,7 +19273,7 @@ func (c *EC2) DescribeVolumeStatusWithContext(ctx aws.Context, input *DescribeVo
 //    // Example iterating over at most 3 pages of a DescribeVolumeStatus operation.
 //    pageNum := 0
 //    err := client.DescribeVolumeStatusPages(params,
-//        func(page *DescribeVolumeStatusOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVolumeStatusOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -19336,7 +19413,7 @@ func (c *EC2) DescribeVolumesWithContext(ctx aws.Context, input *DescribeVolumes
 //    // Example iterating over at most 3 pages of a DescribeVolumes operation.
 //    pageNum := 0
 //    err := client.DescribeVolumesPages(params,
-//        func(page *DescribeVolumesOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVolumesOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -19479,7 +19556,7 @@ func (c *EC2) DescribeVolumesModificationsWithContext(ctx aws.Context, input *De
 //    // Example iterating over at most 3 pages of a DescribeVolumesModifications operation.
 //    pageNum := 0
 //    err := client.DescribeVolumesModificationsPages(params,
-//        func(page *DescribeVolumesModificationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVolumesModificationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -19764,7 +19841,7 @@ func (c *EC2) DescribeVpcClassicLinkDnsSupportWithContext(ctx aws.Context, input
 //    // Example iterating over at most 3 pages of a DescribeVpcClassicLinkDnsSupport operation.
 //    pageNum := 0
 //    err := client.DescribeVpcClassicLinkDnsSupportPages(params,
-//        func(page *DescribeVpcClassicLinkDnsSupportOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcClassicLinkDnsSupportOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -19895,7 +19972,7 @@ func (c *EC2) DescribeVpcEndpointConnectionNotificationsWithContext(ctx aws.Cont
 //    // Example iterating over at most 3 pages of a DescribeVpcEndpointConnectionNotifications operation.
 //    pageNum := 0
 //    err := client.DescribeVpcEndpointConnectionNotificationsPages(params,
-//        func(page *DescribeVpcEndpointConnectionNotificationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcEndpointConnectionNotificationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20026,7 +20103,7 @@ func (c *EC2) DescribeVpcEndpointConnectionsWithContext(ctx aws.Context, input *
 //    // Example iterating over at most 3 pages of a DescribeVpcEndpointConnections operation.
 //    pageNum := 0
 //    err := client.DescribeVpcEndpointConnectionsPages(params,
-//        func(page *DescribeVpcEndpointConnectionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcEndpointConnectionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20156,7 +20233,7 @@ func (c *EC2) DescribeVpcEndpointServiceConfigurationsWithContext(ctx aws.Contex
 //    // Example iterating over at most 3 pages of a DescribeVpcEndpointServiceConfigurations operation.
 //    pageNum := 0
 //    err := client.DescribeVpcEndpointServiceConfigurationsPages(params,
-//        func(page *DescribeVpcEndpointServiceConfigurationsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcEndpointServiceConfigurationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20287,7 +20364,7 @@ func (c *EC2) DescribeVpcEndpointServicePermissionsWithContext(ctx aws.Context, 
 //    // Example iterating over at most 3 pages of a DescribeVpcEndpointServicePermissions operation.
 //    pageNum := 0
 //    err := client.DescribeVpcEndpointServicePermissionsPages(params,
-//        func(page *DescribeVpcEndpointServicePermissionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcEndpointServicePermissionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20491,7 +20568,7 @@ func (c *EC2) DescribeVpcEndpointsWithContext(ctx aws.Context, input *DescribeVp
 //    // Example iterating over at most 3 pages of a DescribeVpcEndpoints operation.
 //    pageNum := 0
 //    err := client.DescribeVpcEndpointsPages(params,
-//        func(page *DescribeVpcEndpointsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcEndpointsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20621,7 +20698,7 @@ func (c *EC2) DescribeVpcPeeringConnectionsWithContext(ctx aws.Context, input *D
 //    // Example iterating over at most 3 pages of a DescribeVpcPeeringConnections operation.
 //    pageNum := 0
 //    err := client.DescribeVpcPeeringConnectionsPages(params,
-//        func(page *DescribeVpcPeeringConnectionsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcPeeringConnectionsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -20751,7 +20828,7 @@ func (c *EC2) DescribeVpcsWithContext(ctx aws.Context, input *DescribeVpcsInput,
 //    // Example iterating over at most 3 pages of a DescribeVpcs operation.
 //    pageNum := 0
 //    err := client.DescribeVpcsPages(params,
-//        func(page *DescribeVpcsOutput, lastPage bool) bool {
+//        func(page *ec2.DescribeVpcsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -22348,7 +22425,7 @@ func (c *EC2) EnableEbsEncryptionByDefaultRequest(input *EnableEbsEncryptionByDe
 // snapshot is also encrypted. For more information, see Amazon EBS Snapshots
 // (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html).
 //
-// Once EBS encryption by default is enabled, you can no longer launch older-generation
+// After EBS encryption by default is enabled, you can no longer launch older-generation
 // instance types that do not support encryption. For more information, see
 // Supported Instance Types (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#EBSEncryption_supported_instances).
 //
@@ -23206,8 +23283,8 @@ func (c *EC2) GetEbsDefaultKmsKeyIdRequest(input *GetEbsDefaultKmsKeyIdInput) (r
 // GetEbsDefaultKmsKeyId API operation for Amazon Elastic Compute Cloud.
 //
 // Describes the default customer master key (CMK) that your account uses to
-// encrypt EBS volumes if you don’t specify a CMK in the API call. You can change
-// this default using ModifyEbsDefaultKmsKeyId.
+// encrypt EBS volumes if you don’t specify a CMK in the API call. You can
+// change this default using ModifyEbsDefaultKmsKeyId.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -23726,7 +23803,7 @@ func (c *EC2) GetTransitGatewayAttachmentPropagationsWithContext(ctx aws.Context
 //    // Example iterating over at most 3 pages of a GetTransitGatewayAttachmentPropagations operation.
 //    pageNum := 0
 //    err := client.GetTransitGatewayAttachmentPropagationsPages(params,
-//        func(page *GetTransitGatewayAttachmentPropagationsOutput, lastPage bool) bool {
+//        func(page *ec2.GetTransitGatewayAttachmentPropagationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -23857,7 +23934,7 @@ func (c *EC2) GetTransitGatewayRouteTableAssociationsWithContext(ctx aws.Context
 //    // Example iterating over at most 3 pages of a GetTransitGatewayRouteTableAssociations operation.
 //    pageNum := 0
 //    err := client.GetTransitGatewayRouteTableAssociationsPages(params,
-//        func(page *GetTransitGatewayRouteTableAssociationsOutput, lastPage bool) bool {
+//        func(page *ec2.GetTransitGatewayRouteTableAssociationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -23988,7 +24065,7 @@ func (c *EC2) GetTransitGatewayRouteTablePropagationsWithContext(ctx aws.Context
 //    // Example iterating over at most 3 pages of a GetTransitGatewayRouteTablePropagations operation.
 //    pageNum := 0
 //    err := client.GetTransitGatewayRouteTablePropagationsPages(params,
-//        func(page *GetTransitGatewayRouteTablePropagationsOutput, lastPage bool) bool {
+//        func(page *ec2.GetTransitGatewayRouteTablePropagationsOutput, lastPage bool) bool {
 //            pageNum++
 //            fmt.Println(page)
 //            return pageNum <= 3
@@ -24696,7 +24773,7 @@ func (c *EC2) ModifyEbsDefaultKmsKeyIdRequest(input *ModifyEbsDefaultKmsKeyIdInp
 // ModifyEbsDefaultKmsKeyId API operation for Amazon Elastic Compute Cloud.
 //
 // Changes the default customer master key (CMK) that your account uses to encrypt
-// EBS volumes if you don’t specify a CMK in the API call.
+// EBS volumes if you don't specify a CMK in the API call.
 //
 // Your account has an AWS-managed default CMK that is used for encrypting an
 // EBS volume when no CMK is specified in the API call that creates the volume.
@@ -31568,7 +31645,7 @@ type AllocateHostsInput struct {
 	// Indicates whether the host accepts any untargeted instance launches that
 	// match its instance type configuration, or if it only accepts Host tenancy
 	// instance launches that specify its unique host ID. For more information,
-	// see  Understanding Instance Placement and Host Affinity (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/how-dedicated-hosts-work.html#dedicated-hosts-understanding)
+	// see Understanding Instance Placement and Host Affinity (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/how-dedicated-hosts-work.html#dedicated-hosts-understanding)
 	// in the Amazon EC2 User Guide for Linux Instances.
 	//
 	// Default: on
@@ -36826,19 +36903,16 @@ type CopyImageInput struct {
 	// the default CMK for EBS is used. If a KmsKeyId is specified, the Encrypted
 	// flag must also be set.
 	//
-	// The CMK identifier may be provided in any of the following formats:
+	// To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name,
+	// or alias ARN. When using an alias name, prefix it with "alias/". For example:
 	//
-	//    * Key ID
+	//    * Key ID: 1234abcd-12ab-34cd-56ef-1234567890ab
 	//
-	//    * ARN using key ID. The ID ARN contains the arn:aws:kms namespace, followed
-	//    by the Region of the CMK, the AWS account ID of the CMK owner, the key
-	//    namespace, and then the CMK ID. For example, arn:aws:kms:us-east-1:012345678910:key/abcd1234-a123-456a-a12b-a123b4cd56ef.
+	//    * Key ARN: arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab
 	//
+	//    * Alias name: alias/ExampleAlias
 	//
-	//    * ARN using key alias. The alias ARN contains the arn:aws:kms namespace,
-	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
-	//    the alias namespace, and then the CMK alias. For example, arn:aws:kms:us-east-1:012345678910:alias/ExampleAlias.
-	//
+	//    * Alias ARN: arn:aws:kms:us-east-2:111122223333:alias/ExampleAlias
 	//
 	// AWS parses KmsKeyId asynchronously, meaning that the action you call may
 	// appear to complete even though you provided an invalid identifier. This action
@@ -37014,11 +37088,9 @@ type CopySnapshotInput struct {
 	//    by the Region of the CMK, the AWS account ID of the CMK owner, the key
 	//    namespace, and then the CMK ID. For example, arn:aws:kms:us-east-1:012345678910:key/abcd1234-a123-456a-a12b-a123b4cd56ef.
 	//
-	//
 	//    * ARN using key alias. The alias ARN contains the arn:aws:kms namespace,
 	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
 	//    the alias namespace, and then the CMK alias. For example, arn:aws:kms:us-east-1:012345678910:alias/ExampleAlias.
-	//
 	//
 	// AWS parses KmsKeyId asynchronously, meaning that the action you call may
 	// appear to complete even though you provided an invalid identifier. The action
@@ -39812,7 +39884,7 @@ type CreateNetworkInterfaceInput struct {
 	Groups []*string `locationName:"SecurityGroupId" locationNameList:"SecurityGroupId" type:"list"`
 
 	// Indicates the type of network interface. To create an Elastic Fabric Adapter
-	// (EFA), specify efa. For more information, see  Elastic Fabric Adapter (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html)
+	// (EFA), specify efa. For more information, see Elastic Fabric Adapter (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html)
 	// in the Amazon Elastic Compute Cloud User Guide.
 	//
 	// If you are not creating an EFA, specify interface or omit this parameter.
@@ -40659,6 +40731,105 @@ func (s *CreateSnapshotInput) SetVolumeId(v string) *CreateSnapshotInput {
 	return s
 }
 
+type CreateSnapshotsInput struct {
+	_ struct{} `type:"structure"`
+
+	// Copies the tags from the specified instance to all snapshots.
+	CopyTagsFromSource *string `type:"string" enum:"CopyTagsFromSource"`
+
+	// A description propagated to every snapshot specified by the instance.
+	Description *string `type:"string"`
+
+	// Checks whether you have the required permissions for the action without actually
+	// making the request. Provides an error response. If you have the required
+	// permissions, the error response is DryRunOperation. Otherwise, it is UnauthorizedOperation.
+	DryRun *bool `type:"boolean"`
+
+	// The instance to specify which volumes should be included in the snapshots.
+	//
+	// InstanceSpecification is a required field
+	InstanceSpecification *InstanceSpecification `type:"structure" required:"true"`
+
+	// Tags to apply to every snapshot specified by the instance.
+	TagSpecifications []*TagSpecification `locationName:"TagSpecification" locationNameList:"item" type:"list"`
+}
+
+// String returns the string representation
+func (s CreateSnapshotsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateSnapshotsInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateSnapshotsInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateSnapshotsInput"}
+	if s.InstanceSpecification == nil {
+		invalidParams.Add(request.NewErrParamRequired("InstanceSpecification"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetCopyTagsFromSource sets the CopyTagsFromSource field's value.
+func (s *CreateSnapshotsInput) SetCopyTagsFromSource(v string) *CreateSnapshotsInput {
+	s.CopyTagsFromSource = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *CreateSnapshotsInput) SetDescription(v string) *CreateSnapshotsInput {
+	s.Description = &v
+	return s
+}
+
+// SetDryRun sets the DryRun field's value.
+func (s *CreateSnapshotsInput) SetDryRun(v bool) *CreateSnapshotsInput {
+	s.DryRun = &v
+	return s
+}
+
+// SetInstanceSpecification sets the InstanceSpecification field's value.
+func (s *CreateSnapshotsInput) SetInstanceSpecification(v *InstanceSpecification) *CreateSnapshotsInput {
+	s.InstanceSpecification = v
+	return s
+}
+
+// SetTagSpecifications sets the TagSpecifications field's value.
+func (s *CreateSnapshotsInput) SetTagSpecifications(v []*TagSpecification) *CreateSnapshotsInput {
+	s.TagSpecifications = v
+	return s
+}
+
+type CreateSnapshotsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// List of snapshots.
+	Snapshots []*SnapshotInfo `locationName:"snapshotSet" locationNameList:"item" type:"list"`
+}
+
+// String returns the string representation
+func (s CreateSnapshotsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateSnapshotsOutput) GoString() string {
+	return s.String()
+}
+
+// SetSnapshots sets the Snapshots field's value.
+func (s *CreateSnapshotsOutput) SetSnapshots(v []*SnapshotInfo) *CreateSnapshotsOutput {
+	s.Snapshots = v
+	return s
+}
+
 // Contains the parameters for CreateSpotDatafeedSubscription.
 type CreateSpotDatafeedSubscriptionInput struct {
 	_ struct{} `type:"structure"`
@@ -41379,13 +41550,13 @@ type CreateVolumeInput struct {
 	DryRun *bool `locationName:"dryRun" type:"boolean"`
 
 	// Specifies the encryption state of the volume. The default effect of setting
-	// the Encrypted parameter to true through the console, API, or CLI depends
-	// on the volume's origin (new or from a snapshot), starting encryption state,
-	// ownership, and whether account-level encryption (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/account-level-encryption.html)
+	// the Encrypted parameter to true depends on the volume origin (new or from
+	// a snapshot), starting encryption state, ownership, and whether account-level
+	// encryption (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/account-level-encryption.html)
 	// is enabled. Each default case can be overridden by specifying a customer
-	// master key (CMK) with the KmsKeyId parameter in addition to setting Encrypted
+	// master key (CMK) using the KmsKeyId parameter, in addition to setting Encrypted
 	// to true. For a complete list of possible encryption cases, see Amazon EBS
-	// Encryption (AWSEC2/latest/UserGuide/EBSEncryption.htm).
+	// Encryption (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 	//
 	// Encrypted Amazon EBS volumes may only be attached to instances that support
 	// Amazon EBS encryption. For more information, see Supported Instance Types
@@ -41421,11 +41592,9 @@ type CreateVolumeInput struct {
 	//    by the Region of the CMK, the AWS account ID of the CMK owner, the key
 	//    namespace, and then the CMK ID. For example, arn:aws:kms:us-east-1:012345678910:key/abcd1234-a123-456a-a12b-a123b4cd56ef.
 	//
-	//
 	//    * ARN using key alias. The alias ARN contains the arn:aws:kms namespace,
 	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
 	//    the alias namespace, and then the CMK alias. For example, arn:aws:kms:us-east-1:012345678910:alias/ExampleAlias.
-	//
 	//
 	// AWS parses KmsKeyId asynchronously, meaning that the action you call may
 	// appear to complete even though you provided an invalid identifier. The action
@@ -43216,6 +43385,8 @@ type DeleteFlowLogsInput struct {
 	DryRun *bool `type:"boolean"`
 
 	// One or more flow log IDs.
+	//
+	// Constraint: Maximum of 1000 flow log IDs.
 	//
 	// FlowLogIds is a required field
 	FlowLogIds []*string `locationName:"FlowLogId" locationNameList:"item" type:"list" required:"true"`
@@ -46356,9 +46527,8 @@ type DescribeClassicLinkInstancesInput struct {
 	//    to find all resources assigned a tag with a specific key, regardless of
 	//    the tag value.
 	//
-	//    * vpc-id - The ID of the VPC to which the instance is linked.
-	//
-	// vpc-id - The ID of the VPC that the instance is linked to.
+	//    * vpc-id - The ID of the VPC to which the instance is linked. vpc-id -
+	//    The ID of the VPC that the instance is linked to.
 	Filters []*Filter `locationName:"Filter" locationNameList:"Filter" type:"list"`
 
 	// One or more instance IDs. Must be instances linked to a VPC through ClassicLink.
@@ -48130,6 +48300,8 @@ type DescribeFlowLogsInput struct {
 	Filter []*Filter `locationNameList:"Filter" type:"list"`
 
 	// One or more flow log IDs.
+	//
+	// Constraint: Maximum of 1000 flow log IDs.
 	FlowLogIds []*string `locationName:"FlowLogId" locationNameList:"item" type:"list"`
 
 	// The maximum number of results to return with a single call. To retrieve the
@@ -50119,7 +50291,6 @@ type DescribeInstancesInput struct {
 	//
 	//    * instance.group-name - The name of the security group for the instance.
 	//
-	//
 	//    * ip-address - The public IPv4 address of the instance.
 	//
 	//    * kernel-id - The kernel ID.
@@ -50128,7 +50299,6 @@ type DescribeInstancesInput struct {
 	//
 	//    * launch-index - When launching multiple instances, this is the index
 	//    for the instance in the launch group (for example, 0, 1, 2, and so on).
-	//
 	//
 	//    * launch-time - The time when the instance was launched.
 	//
@@ -51121,7 +51291,6 @@ type DescribeNetworkAclsInput struct {
 	//    entry.
 	//
 	//    * entry.port-range.to - The end of the port range specified in the entry.
-	//
 	//
 	//    * entry.protocol - The protocol specified in the entry (tcp | udp | icmp
 	//    or a protocol number).
@@ -52335,7 +52504,7 @@ type DescribeReservedInstancesModificationsInput struct {
 	//    * modification-result.target-configuration.availability-zone - The Availability
 	//    Zone for the new Reserved Instances.
 	//
-	//    * modification-result.target-configuration.instance-count  - The number
+	//    * modification-result.target-configuration.instance-count - The number
 	//    of new Reserved Instances.
 	//
 	//    * modification-result.target-configuration.instance-type - The instance
@@ -52463,7 +52632,7 @@ type DescribeReservedInstancesOfferingsInput struct {
 	//    SUSE Linux (Amazon VPC) | Red Hat Enterprise Linux | Red Hat Enterprise
 	//    Linux (Amazon VPC) | Windows | Windows (Amazon VPC) | Windows with SQL
 	//    Server Standard | Windows with SQL Server Standard (Amazon VPC) | Windows
-	//    with SQL Server Web |  Windows with SQL Server Web (Amazon VPC) | Windows
+	//    with SQL Server Web | Windows with SQL Server Web (Amazon VPC) | Windows
 	//    with SQL Server Enterprise | Windows with SQL Server Enterprise (Amazon
 	//    VPC))
 	//
@@ -63871,7 +64040,6 @@ type ImportImageInput struct {
 	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
 	//    the alias namespace, and then the CMK alias. For example, arn:aws:kms:us-east-1:012345678910:alias/ExampleAlias.
 	//
-	//
 	// AWS parses KmsKeyId asynchronously, meaning that the action you call may
 	// appear to complete even though you provided an invalid identifier. This action
 	// will eventually report failure.
@@ -64766,7 +64934,6 @@ type ImportSnapshotInput struct {
 	//    * ARN using key alias. The alias ARN contains the arn:aws:kms namespace,
 	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
 	//    the alias namespace, and then the CMK alias. For example, arn:aws:kms:us-east-1:012345678910:alias/ExampleAlias.
-	//
 	//
 	// AWS parses KmsKeyId asynchronously, meaning that the action you call may
 	// appear to complete even though you provided an invalid identifier. This action
@@ -66223,7 +66390,7 @@ type InstanceNetworkInterfaceSpecification struct {
 	//
 	// If you are not creating an EFA, specify interface or omit this parameter.
 	//
-	// Valide values: interface | efa
+	// Valid values: interface | efa
 	InterfaceType *string `type:"string"`
 
 	// A number of IPv6 addresses to assign to the network interface. Amazon EC2
@@ -66404,6 +66571,39 @@ func (s *InstancePrivateIpAddress) SetPrivateDnsName(v string) *InstancePrivateI
 // SetPrivateIpAddress sets the PrivateIpAddress field's value.
 func (s *InstancePrivateIpAddress) SetPrivateIpAddress(v string) *InstancePrivateIpAddress {
 	s.PrivateIpAddress = &v
+	return s
+}
+
+// The instance details to specify which volumes should be snapshotted.
+type InstanceSpecification struct {
+	_ struct{} `type:"structure"`
+
+	// Excludes the root volume from being snapshotted.
+	ExcludeBootVolume *bool `type:"boolean"`
+
+	// The instance to specify which volumes should be snapshotted.
+	InstanceId *string `type:"string"`
+}
+
+// String returns the string representation
+func (s InstanceSpecification) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s InstanceSpecification) GoString() string {
+	return s.String()
+}
+
+// SetExcludeBootVolume sets the ExcludeBootVolume field's value.
+func (s *InstanceSpecification) SetExcludeBootVolume(v bool) *InstanceSpecification {
+	s.ExcludeBootVolume = &v
+	return s
+}
+
+// SetInstanceId sets the InstanceId field's value.
+func (s *InstanceSpecification) SetInstanceId(v string) *InstanceSpecification {
+	s.InstanceId = &v
 	return s
 }
 
@@ -68265,7 +68465,13 @@ type LaunchTemplateInstanceNetworkInterfaceSpecificationRequest struct {
 	// The IDs of one or more security groups.
 	Groups []*string `locationName:"SecurityGroupId" locationNameList:"SecurityGroupId" type:"list"`
 
-	// The type of networking interface.
+	// The type of network interface. To create an Elastic Fabric Adapter (EFA),
+	// specify efa. For more information, see Elastic Fabric Adapter (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html)
+	// in the Amazon Elastic Compute Cloud User Guide.
+	//
+	// If you are not creating an EFA, specify interface or omit this parameter.
+	//
+	// Valid values: interface | efa
 	InterfaceType *string `type:"string"`
 
 	// The number of IPv6 addresses to assign to a network interface. Amazon EC2
@@ -69488,7 +69694,6 @@ type ModifyEbsDefaultKmsKeyIdInput struct {
 	//    * ARN using key ID. The ID ARN contains the arn:aws:kms namespace, followed
 	//    by the Region of the CMK, the AWS account ID of the CMK owner, the key
 	//    namespace, and then the CMK ID. For example, arn:aws:kms:us-east-1:012345678910:key/abcd1234-a123-456a-a12b-a123b4cd56ef.
-	//
 	//
 	//    * ARN using key alias. The alias ARN contains the arn:aws:kms namespace,
 	//    followed by the Region of the CMK, the AWS account ID of the CMK owner,
@@ -75461,7 +75666,10 @@ type RegisterImageInput struct {
 	// PV AMI can make instances launched from the AMI unreachable.
 	EnaSupport *bool `locationName:"enaSupport" type:"boolean"`
 
-	// The full path to your AMI manifest in Amazon S3 storage.
+	// The full path to your AMI manifest in Amazon S3 storage. The specified bucket
+	// must have the aws-exec-read canned access control list (ACL) to ensure that
+	// it can be accessed by Amazon EC2. For more information, see Canned ACLs (https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl)
+	// in the Amazon S3 Service Developer Guide.
 	ImageLocation *string `type:"string"`
 
 	// The ID of the kernel.
@@ -79922,7 +80130,7 @@ type RunInstancesInput struct {
 	CpuOptions *CpuOptionsRequest `type:"structure"`
 
 	// The credit option for CPU usage of the T2 or T3 instance. Valid values are
-	// standard and unlimited. To change this attribute after launch, use  ModifyInstanceCreditSpecification
+	// standard and unlimited. To change this attribute after launch, use ModifyInstanceCreditSpecification
 	// (https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyInstanceCreditSpecification.html).
 	// For more information, see Burstable Performance Instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html)
 	// in the Amazon Elastic Compute Cloud User Guide.
@@ -79956,8 +80164,7 @@ type RunInstancesInput struct {
 
 	// An elastic GPU to associate with the instance. An Elastic GPU is a GPU resource
 	// that you can attach to your Windows instance to accelerate the graphics performance
-	// of your applications. For more information, see  Amazon EC2 Elastic GPUs
-	// (https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/elastic-graphics.html)
+	// of your applications. For more information, see Amazon EC2 Elastic GPUs (https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/elastic-graphics.html)
 	// in the Amazon Elastic Compute Cloud User Guide.
 	ElasticGpuSpecification []*ElasticGpuSpecification `locationNameList:"item" type:"list"`
 
@@ -80018,7 +80225,7 @@ type RunInstancesInput struct {
 	// The ID of the kernel.
 	//
 	// We recommend that you use PV-GRUB instead of kernels and RAM disks. For more
-	// information, see  PV-GRUB (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedkernels.html)
+	// information, see PV-GRUB (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedkernels.html)
 	// in the Amazon Elastic Compute Cloud User Guide.
 	KernelId *string `type:"string"`
 
@@ -80089,7 +80296,7 @@ type RunInstancesInput struct {
 	// Center and search for the kernel ID.
 	//
 	// We recommend that you use PV-GRUB instead of kernels and RAM disks. For more
-	// information, see  PV-GRUB (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedkernels.html)
+	// information, see PV-GRUB (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UserProvidedkernels.html)
 	// in the Amazon Elastic Compute Cloud User Guide.
 	RamdiskId *string `type:"string"`
 
@@ -82580,6 +82787,113 @@ func (s *SnapshotDiskContainer) SetUrl(v string) *SnapshotDiskContainer {
 // SetUserBucket sets the UserBucket field's value.
 func (s *SnapshotDiskContainer) SetUserBucket(v *UserBucket) *SnapshotDiskContainer {
 	s.UserBucket = v
+	return s
+}
+
+// Object that contains information about a snapshot.
+type SnapshotInfo struct {
+	_ struct{} `type:"structure"`
+
+	// Description specified by the CreateSnapshotRequest that has been applied
+	// to all snapshots.
+	Description *string `locationName:"description" type:"string"`
+
+	// Boolean that specifies whether or not this snapshot is encrypted.
+	Encrypted *bool `locationName:"encrypted" type:"boolean"`
+
+	// Account id used when creating this snapshot.
+	OwnerId *string `locationName:"ownerId" type:"string"`
+
+	// Progress this snapshot has made towards completing.
+	Progress *string `locationName:"progress" type:"string"`
+
+	// Snapshot id that can be used to describe this snapshot.
+	SnapshotId *string `locationName:"snapshotId" type:"string"`
+
+	// Time this snapshot was started. This is the same for all snapshots initiated
+	// by the same request.
+	StartTime *time.Time `locationName:"startTime" type:"timestamp"`
+
+	// Current state of the snapshot.
+	State *string `locationName:"state" type:"string" enum:"SnapshotState"`
+
+	// Tags associated with this snapshot.
+	Tags []*Tag `locationName:"tagSet" locationNameList:"item" type:"list"`
+
+	// Source volume from which this snapshot was created.
+	VolumeId *string `locationName:"volumeId" type:"string"`
+
+	// Size of the volume from which this snapshot was created.
+	VolumeSize *int64 `locationName:"volumeSize" type:"integer"`
+}
+
+// String returns the string representation
+func (s SnapshotInfo) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s SnapshotInfo) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *SnapshotInfo) SetDescription(v string) *SnapshotInfo {
+	s.Description = &v
+	return s
+}
+
+// SetEncrypted sets the Encrypted field's value.
+func (s *SnapshotInfo) SetEncrypted(v bool) *SnapshotInfo {
+	s.Encrypted = &v
+	return s
+}
+
+// SetOwnerId sets the OwnerId field's value.
+func (s *SnapshotInfo) SetOwnerId(v string) *SnapshotInfo {
+	s.OwnerId = &v
+	return s
+}
+
+// SetProgress sets the Progress field's value.
+func (s *SnapshotInfo) SetProgress(v string) *SnapshotInfo {
+	s.Progress = &v
+	return s
+}
+
+// SetSnapshotId sets the SnapshotId field's value.
+func (s *SnapshotInfo) SetSnapshotId(v string) *SnapshotInfo {
+	s.SnapshotId = &v
+	return s
+}
+
+// SetStartTime sets the StartTime field's value.
+func (s *SnapshotInfo) SetStartTime(v time.Time) *SnapshotInfo {
+	s.StartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *SnapshotInfo) SetState(v string) *SnapshotInfo {
+	s.State = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *SnapshotInfo) SetTags(v []*Tag) *SnapshotInfo {
+	s.Tags = v
+	return s
+}
+
+// SetVolumeId sets the VolumeId field's value.
+func (s *SnapshotInfo) SetVolumeId(v string) *SnapshotInfo {
+	s.VolumeId = &v
+	return s
+}
+
+// SetVolumeSize sets the VolumeSize field's value.
+func (s *SnapshotInfo) SetVolumeSize(v int64) *SnapshotInfo {
+	s.VolumeSize = &v
 	return s
 }
 
@@ -89339,6 +89653,11 @@ const (
 )
 
 const (
+	// CopyTagsFromSourceVolume is a CopyTagsFromSource enum value
+	CopyTagsFromSourceVolume = "volume"
+)
+
+const (
 	// CurrencyCodeValuesUsd is a CurrencyCodeValues enum value
 	CurrencyCodeValuesUsd = "USD"
 )
@@ -90113,6 +90432,27 @@ const (
 
 	// InstanceTypeI3Metal is a InstanceType enum value
 	InstanceTypeI3Metal = "i3.metal"
+
+	// InstanceTypeI3enLarge is a InstanceType enum value
+	InstanceTypeI3enLarge = "i3en.large"
+
+	// InstanceTypeI3enXlarge is a InstanceType enum value
+	InstanceTypeI3enXlarge = "i3en.xlarge"
+
+	// InstanceTypeI3en2xlarge is a InstanceType enum value
+	InstanceTypeI3en2xlarge = "i3en.2xlarge"
+
+	// InstanceTypeI3en3xlarge is a InstanceType enum value
+	InstanceTypeI3en3xlarge = "i3en.3xlarge"
+
+	// InstanceTypeI3en6xlarge is a InstanceType enum value
+	InstanceTypeI3en6xlarge = "i3en.6xlarge"
+
+	// InstanceTypeI3en12xlarge is a InstanceType enum value
+	InstanceTypeI3en12xlarge = "i3en.12xlarge"
+
+	// InstanceTypeI3en24xlarge is a InstanceType enum value
+	InstanceTypeI3en24xlarge = "i3en.24xlarge"
 
 	// InstanceTypeHi14xlarge is a InstanceType enum value
 	InstanceTypeHi14xlarge = "hi1.4xlarge"

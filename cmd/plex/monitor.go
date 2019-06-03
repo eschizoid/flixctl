@@ -24,19 +24,16 @@ var MonitorPlexCmd = &cobra.Command{
 	Short: "To Monitor Plex Sessions",
 	Long:  "to monitor plex sessions and shut it down if no activity.",
 	Run: func(cmd *cobra.Command, args []string) {
-		EnableDisableMonitor(monitorEnabled)
 		Monitor(slackNotification)
+		enabledLambdaMonitor, err := strconv.ParseBool(monitorEnabled)
+		if err == nil && enabledLambdaMonitor {
+			EnabledMonitorRule()
+			os.Exit(0)
+		} else if err == nil && !enabledLambdaMonitor {
+			DisabledMonitorRule()
+			os.Exit(0)
+		}
 	},
-}
-
-func EnableDisableMonitor(activateMonitor string) {
-	if enabledLambdaMonitor, _ := strconv.ParseBool(activateMonitor); enabledLambdaMonitor {
-		enabledMonitorRule()
-		os.Exit(0)
-	} else if !enabledLambdaMonitor {
-		disabledMonitorRule()
-		os.Exit(0)
-	}
 }
 
 func Monitor(slackNotification string) {
@@ -45,7 +42,7 @@ func Monitor(slackNotification string) {
 	}))
 	awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 	svc := dynamodb.New(awsSession)
-	plexClient, err := plex.New(fmt.Sprintf("https://%s:%s", os.Getenv("FLIXCTL_HOST"), os.Getenv("PLEX_PORT")), os.Getenv("PLEX_TOKEN"))
+	plexClient, err := plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), os.Getenv("PLEX_TOKEN"))
 	ShowError(err)
 	m := make(map[string]interface{})
 	sessions, _ := plexClient.GetSessions()
@@ -76,7 +73,7 @@ func Monitor(slackNotification string) {
 	fmt.Println(string(jsonString))
 }
 
-func enabledMonitorRule() {
+func EnabledMonitorRule() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))
@@ -88,7 +85,7 @@ func enabledMonitorRule() {
 	fmt.Println(string(jsonString))
 }
 
-func disabledMonitorRule() {
+func DisabledMonitorRule() {
 	var awsSession = sess.Must(sess.NewSessionWithOptions(sess.Options{
 		SharedConfigState: sess.SharedConfigEnable,
 	}))

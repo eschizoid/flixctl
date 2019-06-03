@@ -26,7 +26,7 @@
   version = "v2.0.1"
 
 [[projects]]
-  digest = "1:95fd14230b48a74765db94f7064f0b5617f52739a164f6d41e5b57bec5b3ff9b"
+  digest = "1:98d2b07cc619145bc24a43233452ba3f7e576c4e94cb2e49aca067a3ae23121e"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -36,11 +36,11 @@
     "lambdacontext",
   ]
   pruneopts = "UT"
-  revision = "08d251dc58f204411d79012fd6f1beefb7107fea"
-  version = "v1.10.0"
+  revision = "4c210d7623089d36b6bb6febf5a5e553bf73fbfb"
+  version = "v1.11.1"
 
 [[projects]]
-  digest = "1:b372a722f9803220bde34245b70fd60d3c4db3ad5fdc9c10f1c1e0ff6606bb86"
+  digest = "1:d3028965428708dc6a7f6f7ec28d80f973fb8a132c08f028d8739ac122c436e5"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "a4072efa95b76eb4d8eaebe701abee730cce3e60"
-  version = "v1.19.37"
+  revision = "742c1495174cefd893992396b014bd6b7c91a293"
+  version = "v1.19.42"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a7234013ba232a032116837ac4ab3541565f058fa241d9579e247ff53cf21aee"
+  digest = "1:870280ee29f0a5d9a8fc0d5d196a5d502f53b19caea3b44aaba5145077492c60"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -144,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "750b81d19b6d4773a9924fed262f904391fb5cd1"
+  revision = "3ded6fd074061e4001568ddb1c2e5810f3cb490b"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -179,6 +179,14 @@
   version = "v1.4.0"
 
 [[projects]]
+  digest = "1:af105c7c5dc0b4ae41991f122cae860b9600f7d226072c2a83127048c991660c"
+  name = "github.com/hashicorp/go-cleanhttp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "eda1e5db218aad1db63ca4642c8906b26bcf2744"
+  version = "v0.5.1"
+
+[[projects]]
   digest = "1:9715d8b13bda6dada8327ad7d4791ec8d4c2be49a660c8a9293361f80daac913"
   name = "github.com/hekmon/cunits"
   packages = ["."]
@@ -188,11 +196,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:11dac7ae01b4c3559e5e7d53c9659514b6579fac842369d51f7a26075e49c400"
+  digest = "1:e6d4021bc3806cb894d16613984ca3b91ad929df40af0f19133cf9dcb9566b52"
   name = "github.com/hekmon/transmissionrpc"
   packages = ["."]
   pruneopts = "UT"
-  revision = "4352aea9f1b8457261dc9b03e8d32ced8fa1a471"
+  revision = "1d589625bacd4058ffe3b9e884a88f158d9e1d15"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -347,7 +355,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:c702843f592f44c2c558f08478b71331119d31907e7945f1cedc9ee3c932e493"
+  digest = "1:ef3ffa0905f706132b35e4995ff4031b02e24be795892620553d57b06883ff68"
   name = "golang.org/x/crypto"
   packages = [
     "curve25519",
@@ -359,7 +367,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "22d7a77e9e5f409e934ed268692e56707cd169e5"
+  revision = "20be4c3c3ed52bfccdb2d59a412ee1a936d175a7"
 
 [[projects]]
   branch = "master"
@@ -372,18 +380,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "f3200d17e092c607f615320ecaad13d87ad9a2b3"
+  revision = "60506f45cf65977eb3a9c6e30f995f54a721c271"
 
 [[projects]]
   branch = "master"
-  digest = "1:6ca893cbde40a147ad530131113a470c0a96833dd015298d9dd74ed713768677"
+  digest = "1:4bb3e552e0c6745f9cf718126fcfb615775178146e6435ea8ba01b105f07102e"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "0e01d883c5c5e3a1741118a9962f68d71b0a6ed4"
+  revision = "4c4f7f33c9ed00de01c4c741d2177abfcfe19307"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
