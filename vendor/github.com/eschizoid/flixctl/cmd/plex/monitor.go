@@ -43,10 +43,11 @@ func Monitor(slackNotification string) {
 	}))
 	awsSession.Config.Endpoint = aws.String(os.Getenv("DYNAMODB_ENDPOINT"))
 	svc := dynamodb.New(awsSession)
-	plexClient, err := plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), os.Getenv("PLEX_TOKEN"))
+	plexClient, err := plex.New("https://marianoflix.duckdns.org:32400", "5e4DzsuvjNr_B3aGqmq_")
 	ShowError(err)
 	m := make(map[string]interface{})
-	sessions, _ := plexClient.GetSessions()
+	sessions, err := plexClient.GetSessions()
+	ShowError(err)
 	if sessions.MediaContainer.Size > 0 {
 		now := getTime()
 		err = models.SaveLastActiveSession("last_activity", svc)

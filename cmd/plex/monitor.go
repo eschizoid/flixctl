@@ -46,7 +46,8 @@ func Monitor(slackNotification string) {
 	plexClient, err := plex.New(fmt.Sprintf("https://%s:32400", os.Getenv("FLIXCTL_HOST")), os.Getenv("PLEX_TOKEN"))
 	ShowError(err)
 	m := make(map[string]interface{})
-	sessions, _ := plexClient.GetSessions()
+	sessions, err := plexClient.GetSessions()
+	ShowError(err)
 	if sessions.MediaContainer.Size > 0 {
 		now := getTime()
 		err = models.SaveLastActiveSession("last_activity", svc)

@@ -30,7 +30,7 @@ var (
 		MonitorPlexCmd.Flags().StringVarP(&maxInactiveTime,
 			"max-inactive-time",
 			"m",
-			"30",
+			"60",
 			"max inactive minutes before shutting down plex",
 		)
 		MonitorPlexCmd.Flags().StringVarP(&slackNotification,
