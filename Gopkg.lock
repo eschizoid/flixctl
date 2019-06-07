@@ -40,7 +40,7 @@
   version = "v1.11.1"
 
 [[projects]]
-  digest = "1:d3028965428708dc6a7f6f7ec28d80f973fb8a132c08f028d8739ac122c436e5"
+  digest = "1:01b0b50735cf48f43739c0c55d306650714fc4ad9873c98b7c291659a982bceb"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "742c1495174cefd893992396b014bd6b7c91a293"
-  version = "v1.19.42"
+  revision = "1fbd98bfc4019214235f69e4863bad1147765c49"
+  version = "v1.19.43"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ef839b1fe48dd15c872b92b9d971f73d0f2d7704ed8f74872378bac1a4840ea7"
+  digest = "1:39f8d89d6659f7e72329a056f9c3309eabb66663709400704cea4148fa6bb7a5"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -144,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "ecdaa2d1aa7d889b795e2567efae45d77b062630"
+  revision = "0920836ce3cc2f980b250f4aaa048bbc586a8727"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -355,7 +355,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ef3ffa0905f706132b35e4995ff4031b02e24be795892620553d57b06883ff68"
+  digest = "1:9aba49bc9bf2db945f04cf18262f2d9ce45496ddbaa6d1c2e8295eedabd6979c"
   name = "golang.org/x/crypto"
   packages = [
     "curve25519",
@@ -367,7 +367,7 @@
     "ssh",
   ]
   pruneopts = "UT"
-  revision = "20be4c3c3ed52bfccdb2d59a412ee1a936d175a7"
+  revision = "f99c8df09eb5bff426315721bfa5f16a99cad32c"
 
 [[projects]]
   branch = "master"
