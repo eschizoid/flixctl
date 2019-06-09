@@ -40,7 +40,7 @@
   version = "v1.11.1"
 
 [[projects]]
-  digest = "1:01b0b50735cf48f43739c0c55d306650714fc4ad9873c98b7c291659a982bceb"
+  digest = "1:4995268cd8539dbd4fac7f5d6d56a9553d13308c9f93a1ccad10af1a70c8a969"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -92,8 +92,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "1fbd98bfc4019214235f69e4863bad1147765c49"
-  version = "v1.19.43"
+  revision = "36f1478b1b241bd8ba1e21424b85eeb1f74f2bb4"
+  version = "v1.19.46"
 
 [[projects]]
   digest = "1:d052bda13fd17bd8cf52ccae57b0a03ffeea80cffc2cffc62741235fa34f92cf"
@@ -112,7 +112,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:39f8d89d6659f7e72329a056f9c3309eabb66663709400704cea4148fa6bb7a5"
+  digest = "1:e6b1f8d4413ac81f67b17473d84e7919ca151d7bf8133dea728c28772a839d3b"
   name = "github.com/eschizoid/flixctl"
   packages = [
     "aws/cloudwatch",
@@ -144,7 +144,7 @@
     "worker",
   ]
   pruneopts = "UT"
-  revision = "0920836ce3cc2f980b250f4aaa048bbc586a8727"
+  revision = "1a57719c034f8035453c471c79895c50e208137c"
 
 [[projects]]
   digest = "1:9ca9ccfaa0481e4c277fd73f872975c63b469b8edd99f616198b6362793b9d8d"
@@ -219,11 +219,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5ed61bd13b057e3197346aa2df34c3db26e8b5dbca874d81c7626f9207a0a1f4"
+  digest = "1:c40b7ae9565ccfae2ee2a2b311cc0a8e147af37f8052ed0f33ff8292c4762a29"
   name = "github.com/jrudio/go-plex-client"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8a3d10f8ebdaf2d86d6212383b2513b4e3de822d"
+  revision = "d7f547958589b0ed4072f8e42c8a503cee79b67f"
 
 [[projects]]
   branch = "master"
@@ -252,7 +252,7 @@
     "tpb",
   ]
   pruneopts = "UT"
-  revision = "1b98cea3a29da40651396794a5b21798263b18ed"
+  revision = "7949e524c7f6ec689a66104fe7e7258f114526a9"
 
 [[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
@@ -317,12 +317,12 @@
   version = "v1.4.2"
 
 [[projects]]
-  digest = "1:22799aea8fe96dd5693abdd1eaa14b1b29e3eafbdc7733fa155b3cb556c8a7ae"
+  digest = "1:e096613fb7cf34743d49af87d197663cfccd61876e2219853005a57baedfa562"
   name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "UT"
-  revision = "67fc4837d267bc9bfd6e47f77783fcc3dffc68de"
-  version = "v0.0.4"
+  revision = "f2b07da1e2c38d5f12845a4f607e2e1018cbb1f5"
+  version = "v0.0.5"
 
 [[projects]]
   digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
@@ -380,7 +380,7 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "60506f45cf65977eb3a9c6e30f995f54a721c271"
+  revision = "461777fb6f67e8cb9d70cda16573678d085a74cf"
 
 [[projects]]
   branch = "master"
@@ -391,7 +391,7 @@
     "unix",
   ]
   pruneopts = "UT"
-  revision = "4c4f7f33c9ed00de01c4c741d2177abfcfe19307"
+  revision = "5b15430b70e38eb7f9c844f97c25f25a246d5c63"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
