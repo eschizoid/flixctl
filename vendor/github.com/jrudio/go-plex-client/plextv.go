@@ -38,7 +38,7 @@ type PinResponse struct {
 }
 
 // RequestPIN will retrieve a code (valid for 15 minutes) from plex.tv to link an app to your plex account
-func RequestPIN() (PinResponse, error) {
+func RequestPIN(requestHeaders headers) (PinResponse, error) {
 	endpoint := "/api/v2/pins.json"
 
 	// POST request and returns a 201 status code
@@ -53,11 +53,11 @@ func RequestPIN() (PinResponse, error) {
 	// }
 	var pinInformation PinResponse
 
-	headers := defaultHeaders()
+	if requestHeaders.ClientIdentifier == "" {
+		requestHeaders = defaultHeaders()
+	}
 
-	headers.ClientIdentifier = "go-plex-client-1234"
-
-	resp, err := post(plexURL+endpoint, nil, headers)
+	resp, err := post(plexURL+endpoint, nil, requestHeaders)
 
 	if err != nil {
 		return pinInformation, err
@@ -85,7 +85,10 @@ func CheckPIN(id int, clientIdentifier string) (PinResponse, error) {
 	endpoint = endpoint + strconv.Itoa(id) + ".json"
 
 	headers := defaultHeaders()
-	headers.ClientIdentifier = "go-plex-client-1234"
+
+	if clientIdentifier != "" {
+		headers.ClientIdentifier = clientIdentifier
+	}
 
 	resp, err := get(plexURL+endpoint, headers)
 
@@ -123,7 +126,7 @@ func (p Plex) LinkAccount(code string) error {
 		"code": []string{code},
 	}
 
-	headers := defaultHeaders()
+	headers := p.Headers
 
 	headers.ContentType = "application/x-www-form-urlencoded"
 
@@ -162,7 +165,7 @@ func (p Plex) GetWebhooks() ([]string, error) {
 
 	endpoint := "/api/v2/user/webhooks"
 
-	resp, err := p.get(plexURL+endpoint, defaultHeaders())
+	resp, err := p.get(plexURL+endpoint, p.Headers)
 
 	if err != nil {
 		return webhooks, err
@@ -212,7 +215,7 @@ func (p Plex) SetWebhooks(webhooks []string) error {
 		body.Add("urls[]", hook)
 	}
 
-	headers := defaultHeaders()
+	headers := p.Headers
 
 	headers.ContentType = "application/x-www-form-urlencoded"
 
@@ -237,7 +240,7 @@ func (p Plex) MyAccount() (UserPlexTV, error) {
 
 	var account UserPlexTV
 
-	resp, err := p.get(plexURL+endpoint, defaultHeaders())
+	resp, err := p.get(plexURL+endpoint, p.Headers)
 
 	if err != nil {
 		return account, err

@@ -13,6 +13,16 @@ var RemoteRenewCerts = []string{
         -in /opt/ssl/marianoflix.duckdns.org/cert.pem \
         -certfile /opt/ssl/marianoflix.duckdns.org/fullchain.pem`,
 	`sudo chown plex:plex /var/lib/plexmediaserver/ssl/marianoflix.duckdns.org.pfx`,
+	`sudo cp /opt/ssl/marianoflix.duckdns.org/fullchain.pem /opt/nzbget/fullchain.pem`,
+	`sudo cp /opt/ssl/marianoflix.duckdns.org/privkey.pem /opt/nzbget/privkey.pem`,
+	`sudo chown nzbget:nzbget /opt/nzbget/fullchain.pem`,
+	`sudo chown nzbget:nzbget /opt/nzbget/privkey.pem`,
+	`sudo cp /opt/ssl/marianoflix.duckdns.org/fullchain.pem /opt/Tautulli/fullchain.pem`,
+	`sudo cp /opt/ssl/marianoflix.duckdns.org/privkey.pem /opt/Tautulli/privkey.pem`,
+	`sudo cp /opt/ssl/marianoflix.duckdns.org/cert.pem /opt/Tautulli/cert.pem`,
+	`sudo chown tautulli:tautulli /opt/Tautulli/fullchain.pem`,
+	`sudo chown tautulli:tautulli /opt/Tautulli/privkey.pem`,
+	`sudo chown tautulli:tautulli /opt/Tautulli/cert.pem`,
 	`sudo /opt/dehydrated/dehydrated -c -o /opt/ssl`,
 }
 
