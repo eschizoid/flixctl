@@ -366,3 +366,6 @@ $ flixctl library upload \
     --enable-batch-mode "false" \
     --source-file "/plex/movies/trainspoting/Trainspoting.mkv"
 ----
+
+
+New changes to README here... SOFIA IS SO SMART!!
